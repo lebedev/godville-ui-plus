@@ -7,15 +7,15 @@
     <r:Seq>
     <r:li>
     <r:Description>
-        <version>0.4.31.2</version>
+        <version>0.4.31.3</version>
         <targetApplication>
             <r:Description>
             <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
             <minVersion>4.0</minVersion>
             <maxVersion>36.0</maxVersion>
-            <updateLink>http://example.com</updateLink>
+            <updateLink>https://github.com/zeird/godville-ui-plus/raw/master/build/godville-ui-plus%40badluck.dicey.xpi</updateLink>
             <updateHash>
-            sha256:c22ad513c1243959a6d8e6b3cfad18a2a9141306f0165da6b05b008b2042e502
+            sha256:e1824796970115cb98d525ecba7f3cfbc5a20b92d692b1ab95b130956756bdb8
             </updateHash>
             </r:Description>
         </targetApplication>
