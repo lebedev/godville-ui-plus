@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<r:RDF xmlns:r="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns="http://www.mozilla.org/2004/em-rdf#">
+
+<r:Description about="urn:mozilla:extension:godville-ui-plus@badluck.dicey">
+    <updates>
+    <r:Seq>
+    <r:li>
+    <r:Description>
+        <version>0.4.31.2</version>
+        <targetApplication>
+            <r:Description>
+            <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
+            <minVersion>4.0</minVersion>
+            <maxVersion>36.0</maxVersion>
+            <updateLink>http://example.com</updateLink>
+            <updateHash>
+            sha256:c22ad513c1243959a6d8e6b3cfad18a2a9141306f0165da6b05b008b2042e502
+            </updateHash>
+            </r:Description>
+        </targetApplication>
+    </r:Description>
+    </r:li>
+    </r:Seq>
+    </updates>
+</r:Description>
+
+</r:RDF>
