@@ -2,21 +2,21 @@
 <RDF:RDF xmlns:NS1="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
-                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHydlBXGvwpwy04OJcYT1qYLmOuVTt4BW1/wexaJNyDKXLFRG65rqMl16amtY38P9a7T8NJQEaAbpQACsStkTvJNjgWx+DbeBKwnKCGMhvRs885ADMssKdFykeLoZlOTQ2xDOt1aeGWbTXuvRIXoC+CADRjdeL72GbNqA2zT4mWX">
-    <NS1:updates RDF:resource="rdf:#$yDGAI2"/>
-  </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$yDGAI2">
-    <RDF:li RDF:resource="rdf:#$zDGAI2"/>
+  <RDF:Seq RDF:about="rdf:#$JDGAI2">
+    <RDF:li RDF:resource="rdf:#$KDGAI2"/>
   </RDF:Seq>
-  <RDF:Description RDF:about="rdf:#$zDGAI2"
-                   NS1:version="0.4.31.3">
-    <NS1:targetApplication RDF:resource="rdf:#$CDGAI2"/>
+  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
+                   NS1:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHkeJonTmDTNHlU1pkXyPTFtjX0a8GCRF5fUMR5jKtxIvDD3oh0m6ZUeM3g02wQWIZaicRXB1jhF3GnoOaOWHwp4niSQ/moEMyijfHdCNQS0NWIUaWy9vXORHrrbFe11g6AsT2uDeirsf20ggtfD8mxZakUz8en1nGR6vdZlRq3Z">
+    <NS1:updates RDF:resource="rdf:#$JDGAI2"/>
   </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$CDGAI2"
+  <RDF:Description RDF:about="rdf:#$KDGAI2"
+                   NS1:version="0.4.32.0">
+    <NS1:targetApplication RDF:resource="rdf:#$NDGAI2"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$NDGAI2"
                    NS1:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    NS1:minVersion="4.0"
                    NS1:maxVersion="36.0"
                    NS1:updateLink="https://github.com/zeird/godville-ui-plus/raw/master/build/godville-ui-plus%40badluck.dicey.xpi"
-                   NS1:updateHash="sha256:e1824796970115cb98d525ecba7f3cfbc5a20b92d692b1ab95b130956756bdb8" />
+                   NS1:updateHash="sha256:1882089a09d297864408bb9c5eeecb6108355fe7863901f75c9eb16c9b0555d0" />
 </RDF:RDF>
