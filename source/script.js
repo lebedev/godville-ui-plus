@@ -20,8 +20,8 @@ var ui_data = {
 		
 		$('<div>', {id:"motd"}).insertAfter($('#menu_bar')).hide();
 		$('#motd').load('news .game.clearfix:first a', function() {
-			ui_improver.monstersOfTheDay = $('#motd a').text();
-			$('#motd').remove()
+			ui_improver.monstersOfTheDay = new RegExp($('#motd a:eq(0)').text() + '|' + $('#motd a:eq(1)').text());
+			$('#motd').remove();
 		});
 	},
 
@@ -929,21 +929,16 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($('#news'))) {
 			ui_utils.addSayPhraseAfterLabel($('#news'), 'Противник', 'бей', 'hit', 'Подсказать ' + ui_data.char_sex[1] + ' о возможности нанесения сильного удара вне очереди');
 		}
-		var monsterWithCapabilities = false;
-		var monstersOfTheDay = false;
+		var isMonsterOfTheDay = false;
+		var isMonsterWithCapabilities = false;
 		// Если герой дерется с монстром
 		if ($('#news .line')[0].style.display != 'none') {
-			var currentMonster = $('#hk_monster_name .l_val').text();
-			var monsterTypes = ['Врачующий', 'Дарующий', 'Зажиточный', 'Запасливый', 'Кирпичный', 'Латающий', 'Лучезарный', 'Сияющий', 'Сюжетный', 'Линяющий'];
-			monstersOfTheDay = ui_improver.monstersOfTheDay.match(currentMonster);
-			for (var i = 0; i < monsterTypes.length; i++) 
-				if (currentMonster.match(monsterTypes[i])){
-					monsterWithCapabilities = true;
-					break;
-				}
+			var currentMonster = $('#news .l_val').text();
+			isMonsterOfTheDay = currentMonster.match(ui_improver.monstersOfTheDay);
+			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий/);
 		}
-		ui_informer.update('monster of the day', monstersOfTheDay);
-		ui_informer.update('monster with capabilities', monsterWithCapabilities);
+		ui_informer.update('monster of the day', isMonsterOfTheDay);
+		ui_informer.update('monster with capabilities', isMonsterWithCapabilities);
 		if (this.isFirstTime) {
 			this.news = $('.f_news.line').text() + ui_storage.get('Stats:HP');
 			this.lastNews = new Date();
