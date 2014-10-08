@@ -37,9 +37,9 @@ var ui_data = {
 					ui_informer.update('new posts', true);
 				}
 			}	
-			var data, timer = 0;
-			this.lastVersion = response.match(/Текущая версия[^<]*<[^<]*<[^<]*/)[0].replace(/[^>]*>[^>]*>/, '');
-			var r = new RegExp('<[^>]*>Ссылка на скачивание Godville UI\\+ для ' + GM_browser);
+			//var data, timer = 0;
+			//this.lastVersion = response.match(/Текущая версия[^<]*<[^<]*<[^<]*/)[0].replace(/[^>]*>[^>]*>/, '');
+			/*var r = new RegExp('<[^>]*>Ссылка на скачивание Godville UI\\+ для ' + GM_browser);
 			var link = response.match(r)[0].replace(/^([^\"]*\")/, '').replace(/(".*)$/, '');
 			if (this.lastVersion == '') {
 				data = '<span>Не удалось узнать номер последней версии. Попробуйте обновить страницу.</span>';
@@ -79,10 +79,10 @@ var ui_data = {
 				ui_informer.update('new version', false);
 				ui_informer.update('new version', timer != 0); //timer == 0 as false, timer != 0 as true
 				ui_menu_bar.append('<div>' + data + '</div>');
-			}, timer);
+			}, timer);*/
 		})
 		.error(function() {
-			ui_menu_bar.append('<span>Не удалось узнать номер последней версии. Попробуйте обновить страницу.</span>');
+			ui_menu_bar.append('<span>Не удалось получить количество постов. Попробуйте обновить страницу.</span>');
 		});
 	}
 };
