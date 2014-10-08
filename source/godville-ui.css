@@ -1,0 +1,166 @@
+body {
+	overflow: auto;
+}
+
+.frInputArea textarea {
+	resize: vertical;
+}
+
+.hint_bar_capt {
+	padding-bottom: 0.75em;
+}
+
+.gu_new_badge_pos {
+		right: 20px;
+		top: 2px;
+}
+
+#hero_block {
+	margin-bottom: 0 !important;
+	position: relative;
+	z-index: 300;
+}
+
+.s_col {
+	padding: 0em 0.8em;
+}
+
+.c_col {
+	padding: 0em 0.8em;
+}
+
+.c_col .pbar .p_bar {
+	width: 99% !important;
+	position: relative;
+	left: 0;
+}
+
+#menu_bar {
+	padding-top: 1em;
+}
+
+.gp_label {
+	width: auto;
+	line-height: 145%;
+}
+
+.gp_val {
+	width: auto;
+	line-height: 145%;
+}
+
+.voice_generator{
+	float: left;
+	margin-left: 0.3em;
+}
+
+.l_capt {
+	margin-right: 0em;
+}
+
+#arena_say_box a {
+	margin-left: 1em;
+}
+
+#stats_log {
+	width: 90%;
+	overflow-x: hidden;
+	white-space: nowrap;
+	margin: auto;
+}
+
+#stats_log li {
+	display: inline;
+	list-item-style: none;
+	margin-left: 0.5em;
+}
+
+#stats_log .prana		 { color: #199bdc; }
+#stats_log .exp				{ color: #f9b436; }
+#stats_log .task				{ color: pink; }
+#stats_log .level		 { color: red; font-weight: bold; }
+#stats_log .inv				{ color: darkgrey; }
+#stats_log .hp	 { color: green; }
+#stats_log .gold				{ color: #ffd700; }
+#stats_log .monster { color: darkmagenta; }
+#stats_log .death		 { color: red; }
+#stats_log .brick		 { color: mediumblue; }
+#stats_log .wood		 { color: saddlebrown; }
+#stats_log .battery		 { color: blue; }
+#stats_log .retirement	{ color: Darkorange; }
+#stats_log {
+	display: block;
+	position: relative;
+}
+
+#timeout_bar {
+	height: 3px;
+	width: 0px;
+	display: block;
+	position: fixed;
+	z-index: 2;
+	opacity: 0.5;
+	top: 0px;
+	left: 0px;
+	background: lawngreen;
+}
+
+#ui_menu_bar {
+	font-size: 90%;
+	text-align: center;
+}
+
+#ui_menu_bar li {
+	display: inline;
+	padding: 0 0.3em;
+}
+#ui_menu_bar ul {
+	list-style: none outside none;
+	margin: 0 0 0.7em 0;
+	padding: 0;
+}
+
+#informer_bar {
+	display: block;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+#informer_bar div {
+	float: right;
+	margin: 0.4em 0.4em 0 0;
+	padding: 0.1em 0.5em;
+	background: Beige;
+	border: 1px solid orange;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+/*.msgDockWrapper {
+	z-index: 301;
+}
+
+.msgDock {
+	z-index: 301;
+}
+
+.msgDock.frbutton_pressed {
+	z-index: 302;
+}*/
+
+a {
+	cursor: pointer;
+}
+
+.dockfrname_w {
+	height: 100%
+}
+
+#facebox {
+	z-index: 303;
+}
+
+#facebox_overlay {
+	z-index: 302;
+}
