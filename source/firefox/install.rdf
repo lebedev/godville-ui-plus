@@ -1,31 +1,28 @@
 <?xml version="1.0"?>
-<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-    <Description about="urn:mozilla:install-manifest">
-        <em:id>godville-ui-plus@badluck.dicey</em:id>
-        <em:name>Godville UI+</em:name>
-        <em:version>$VERSION</em:version>
-        <em:description>Godville.net UI improvements</em:description>
-        <em:icon64URL>chrome://godvilleui/content/images/icon64.png</em:icon64URL>
-        <em:creator>Badluck</em:creator>
-        <em:contributor>Ryoko</em:contributor>
-        <em:contributor>https://godville.net/gods/Ryoko</em:contributor>
-        <em:contributor>Neniu</em:contributor>
-        <em:contributor>https://godville.net/gods/Neniu</em:contributor>
-        <em:contributor>Шоп</em:contributor>
-        <em:contributor>https://godville.net/gods/Шоп</em:contributor>
-        <em:homepageURL>http://godville.net/gods/Бэдлак</em:homepageURL>
-        <em:targetApplication>
-            <Description>
-                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-                <em:minVersion>4.0</em:minVersion>
-                <em:maxVersion>36.0</em:maxVersion>
-            </Description>
-        </em:targetApplication>
-    <em:type>2</em:type>
-    <em:updateURL>https://github.com/zeird/godville-ui-plus/raw/master/update.rdf</em:updateURL>
-    <em:updateKey>
-        MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANKFNhQWVpWeQjh6tZ8fDrDDK+4Jo8Jv
-        2txjP4bweGWS0hxQHH9AukjJfcn+vIbAzvJhXNqy9OARzLHtaNhXz8UCAwEAAQ==
-    </em:updateKey>
-    </Description>
-</RDF>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="rdf:#$QBpYp2"
+                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   em:minVersion="4.0"
+                   em:maxVersion="36.0" />
+  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+                   em:id="godville-ui-plus@badluck.dicey"
+                   em:name="Godville UI+"
+                   em:version="$VERSION"
+                   em:description="Godville.net UI improvements"
+                   em:icon64URL="chrome://godvilleui/content/images/icon64.png"
+                   em:creator="Badluck"
+                   em:homepageURL="http://godville.net/gods/Бэдлак"
+                   em:type="2"
+                   em:updateURL="https://github.com/zeird/godville-ui-plus/raw/master/update.rdf"
+                   em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCuSgo/y28qv71LGfEqKOxBA8nDh4F+EPfNsoG9NCc71OiNGNcG2vVFDShNXu0NRWeF6ooxwIiiEhdnN5X78acJwIPKIxx5RgbC5ris+fOTgmZWq+lbLxjJ8issefiknDDHKB5Di8IDBjEM9rw0RdSa3PDIKKL8gxrNY3ffxcI3FQIDAQAB">
+    <em:contributor>Ryoko</em:contributor>
+    <em:contributor>https://godville.net/gods/Ryoko</em:contributor>
+    <em:contributor>Neniu</em:contributor>
+    <em:contributor>https://godville.net/gods/Neniu</em:contributor>
+    <em:contributor>Шоп</em:contributor>
+    <em:contributor>https://godville.net/gods/Шоп</em:contributor>
+    <em:targetApplication RDF:resource="rdf:#$QBpYp2"/>
+  </RDF:Description>
+</RDF:RDF>
