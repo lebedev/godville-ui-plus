@@ -1,0 +1,26 @@
+{
+  "name": "godville-ui-plus",
+  "version": "1.3.0",
+  "description": "Godville.net UI improvements",
+  "main": "Gruntfile.js",
+  "private": true,
+  "dependencies": {
+    "grunt": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-compress": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-exec": "*",
+    "grunt-prompt": "*",
+    "es6-symbol": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zeird/godville-ui-plus.git"
+  },
+  "author": "Badluck Dice",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zeird/godville-ui-plus/issues"
+  },
+  "homepage": "https://github.com/zeird/godville-ui-plus"
+}
