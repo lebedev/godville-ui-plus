@@ -96,10 +96,10 @@ module.exports = function(grunt) {
                 } else {
                   var new_version = value.split('.'),
                       old_version = grunt.config('old_version').split('.');
-                  return new_version[0] > old_version[0] ||
-                         new_version[1] > old_version[1] ||
-                         new_version[2] > old_version[2] ||
-                         new_version[3] > old_version[3];
+                  return +new_version[0] > +old_version[0] ||
+                         +new_version[1] > +old_version[1] ||
+                         +new_version[2] > +old_version[2] ||
+                         +new_version[3] > +old_version[3];
                 }
               },
               filter: function(value) {
@@ -139,8 +139,7 @@ module.exports = function(grunt) {
             'prompt:copy',
             'copy',
             'process_chrome',
-            'process_firefox',
-            'clean'
+            'process_firefox'
           ]);
         } else {
           grunt.fail.warn("The required files don't exist. Can't run in 'release' mode.");
@@ -173,6 +172,7 @@ module.exports = function(grunt) {
     grunt.config.set('token_request', grunt.file.read('publish/token_request'));
     grunt.task.run([
       'compress:chrome',
+      'clean:chrome',
       'exec:token_request',
       'get_token',
       'set_token_to_upload',
@@ -188,6 +188,7 @@ module.exports = function(grunt) {
     grunt.config.set('update', grunt.file.read('publish/update'));
     grunt.task.run([
       'compress:firefox',
+      'clean:firefox',
       'exec:update',
       'exec:sign',
       'exec:publish_firefox'
