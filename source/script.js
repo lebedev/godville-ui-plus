@@ -525,8 +525,20 @@ var ui_logger = {
 		if (diff) {
 			// Если нужно, то преобразовываем в число с одним знаком после запятой
 			if (parseInt(diff) != diff) diff = diff.toFixed(1);
-			// Добавление плюсика
-			var s = (diff < 0) ? ("exp,tsk".match(name) ? '→' + ui_stats.get(id) : diff) : '+' + diff;
+			// Добавление плюcа, минуса или стрелочки
+			var s;
+			if (diff < 0) {
+				if (name === 'exp') {
+					s = '→' + ui_stats.get(id);
+				} else if (name === 'tsk' && ui_storage.get('Stats:Task_Name') !== $('.q_name').text()) {
+					ui_storage.set('Stats:Task_Name', $('.q_name').text());
+					s = '→' + ui_stats.get(id);
+				} else {
+					s = diff;
+				}
+			} else {
+				s = '+' + diff;
+			}
 			this.appendStr(id, klass, name + s, descr);
 		}
 	},
