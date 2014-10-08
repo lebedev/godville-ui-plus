@@ -11,21 +11,20 @@ var storage = {
 	get: function(id) {
 		var val = localStorage.getItem(this._get_key(id));
 		if (val) val = val.replace(/^[NSB]\]/, '');
-		if (val == 'true') return true;
-		else if (val == 'false') return false;
+		if (val === 'true') return true;
+		else if (val === 'false') return false;
 		else return val;
 	}
 };
 
 function updateMenu() {
-	if (god_name == "") return;
+	if (god_name === "") return;
 	ImproveInProcess = true;
-	if ($j('a#ui_options').length == 0) {
-		$j('div#profile_main p:first').append(' | <a id="ui_options" href="#">Настройки UI</a>');
-		$j('#ui_options').click();
-		$j('a#ui_options').click(function() {
+	if ($j('#ui_options').length === 0) {
+		$j('#profile_main p:first').append(' | <a id="ui_options" href="#">Настройки UI</a>');
+		//$j('#ui_options').click();
+		$j('#ui_options').click(function() {
 			loadOptions();
-			//restore_options();
 			return false;
 		});
 	}
@@ -44,9 +43,9 @@ function loadOptions() {
 	restore_options();
 	$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css({'position' : 'relative', 'top' : '0.25em'});
 	$j('input:not(.menu-checkbox):not(.option-checkbox)[type=radio]').css({'position' : 'relative', 'top' : '0.25em'});
-	if (GM_browser == 'Firefox') {
+	if (GM_browser === 'Firefox') {
 		$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css('transform', 'scale(0.7)');
-	} else if (GM_browser == 'Chrome') {
+	} else if (GM_browser === 'Chrome') {
 		$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css('-webkit-transform', 'scale(0.69)');
 	}
 	$j('#forbidden_informers').click(function() {
@@ -84,7 +83,7 @@ function loadOptions() {
 		$j('#godvilleUI_words').slideToggle("slow");
 	});
 	$j('<div>', {id:"temp"}).insertAfter($j('div#profile_main')).hide();
-	if (storage.get('sex') == 'female') {
+	if (storage.get('sex') === 'female') {
 		$j('#voice_menu .l_capt:first').text($j('#voice_menu .l_capt:first').text().replace('героя', 'героини'));
 		$j('#voice_menu .g_desc:first').text($j('#voice_menu .g_desc:first').text().replace('герою', 'героине'));	
 	}
@@ -126,10 +125,10 @@ function reset_options(form) {
 
 function save_options(form) {
 	ImproveInProcess = true;
-	if (form == 1) {
+	if (form === 1) {
 		$j('img#gui_word_progress').show();
 		var text = $j('textarea#ta_edit').val();
-		if (text == "") return;
+		if (text === "") return;
 		var t_list = text.split("\n"); var t_out = [];
 		for (var i = 0; i < t_list.length; i++) {
 			if (t_list[i] != '') t_out.push(t_list[i]);
@@ -296,7 +295,7 @@ function restore_options() {
 	if (forbiddenInformers) {
 		forbiddenInformers = forbiddenInformers.split(',');
 		for (var i = 0; i < $j('.informer-checkbox').length; i++) {
-			if (forbiddenInformers.indexOf($j('.informer-checkbox')[i].id) == -1)
+			if (forbiddenInformers.indexOf($j('.informer-checkbox')[i].id) === -1)
 				$j('.informer-checkbox')[i].checked = true;
 		}
 	} else {
@@ -316,11 +315,14 @@ var phrases = {heal : "Лечись", pray: "Молись", sacrifice : "Жер�
 var def = "";
 var curr_sect = "";
 var ImproveInProcess = false;
-var god_name = $j('div#opt_change_profile div:first div:first').text();
-	if (god_name != "") localStorage.setItem("GM_Options:User", god_name);
+var god_name = $j('#opt_change_profile div:first div:first').text();
+	if (god_name !== "") localStorage.setItem("GM_Options:User", god_name);
 	else god_name = localStorage.getItem("GM_Options:User");
 var isDataRead = false;
 updateMenu();
+if (location.hash === "#ui_options") {
+	loadOptions();
+}
 
 // Event and Listeners
 document.addEventListener("DOMNodeInserted", function () {

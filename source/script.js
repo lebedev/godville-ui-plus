@@ -235,7 +235,9 @@ var ui_menu_bar = {
 		ui_data.checkLastVersion();
 		$('.hint_bar_close', this.bar).append(this.getToggleButton('закрыть'));
 		$('#menu_bar').after(this.bar);
-		$('#menu_bar ul').append($('<li> | </li>')).append(this.getToggleButton('<strong>ui</strong>'));
+		$('#menu_bar ul').append('<li> | </li>')
+						 .append(this.getToggleButton('<strong>ui</strong>'))
+						 .append('<li> | </li><a href="user/profile#ui_options">настройки</a>');
 	},
 // gets toggle button
 	getToggleButton: function(text) {
@@ -401,7 +403,7 @@ var ui_words = {
 		return ['Этот предмет наделяет героя случайной аурой',
 				'Данный предмет можно активировать только во время дуэли',
 				'Этот предмет может случайным образом повлиять на героя',
-				'Этот предмет ищет для героя босса',	//'Этот предмет помогает герою найти монстра-босса',	//Предыдущая версия
+				'Этот предмет ищет для героя босса',
 				'Этот предмет заводит герою случайного друга из числа активных героев',
 				'Активация инвайта увеличит счетчик доступных приглашений',
 				'Этот предмет полностью восстанавливает здоровье героя',
@@ -935,6 +937,8 @@ var ui_improver = {
 		if ($('#news .line')[0].style.display != 'none') {
 			var currentMonster = $('#news .l_val').text();
 			isMonsterOfTheDay = currentMonster.match(ui_improver.monstersOfTheDay);
+			console.log(ui_improver.monstersOfTheDay);
+			console.log(isMonsterOfTheDay);
 			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий/);
 		}
 		ui_informer.update('monster of the day', isMonsterOfTheDay);
