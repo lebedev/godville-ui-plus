@@ -74,7 +74,7 @@ module.exports = function(grunt) {
         cmd: "<%= publish %>"
       },
       publish_firefox: {
-        cmd: 'git add --all && git commit -m "Version <%= new_version %>" && git tag -a v<%= new_version %> -m "Release v<%= new_version %>" && git push origin master'
+        cmd: 'git add --all && git commit -m "Version <%= new_version %>" && git tag -a v<%= new_version %> -m "Release v<%= new_version %>" && git push --follow-tags origin master'
       }
     },
     prompt: {
