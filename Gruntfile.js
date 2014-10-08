@@ -138,7 +138,7 @@ module.exports = function(grunt) {
           grunt.task.run([
             'prompt:copy',
             'copy',
-            //'process_chrome',
+            'process_chrome',
             'process_firefox'
           ]);
         } else {
