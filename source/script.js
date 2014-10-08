@@ -936,9 +936,7 @@ var ui_improver = {
 		// Если герой дерется с монстром
 		if ($('#news .line')[0].style.display != 'none') {
 			var currentMonster = $('#news .l_val').text();
-			isMonsterOfTheDay = currentMonster.match(ui_improver.monstersOfTheDay);
-			console.log(ui_improver.monstersOfTheDay);
-			console.log(isMonsterOfTheDay);
+			isMonsterOfTheDay = ui_improver.monstersOfTheDay && currentMonster.match(ui_improver.monstersOfTheDay);
 			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий/);
 		}
 		ui_informer.update('monster of the day', isMonsterOfTheDay);
