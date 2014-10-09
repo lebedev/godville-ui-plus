@@ -20,14 +20,14 @@ var ui_data = {
 		localStorage.setItem('GM_CurrentUser', this.god_name);
 		
 		// init forum data
-		//if (!ui_storage.get('Forum1')) {
+		/*if (!ui_storage.get('Forum1')) {
 			ui_storage.set('Forum1', '{}');
 			ui_storage.set('Forum2', '{"2812": 0}');
 			ui_storage.set('Forum3', '{}');
 			ui_storage.set('Forum4', '{}');
 			ui_storage.set('Forum5', '{}');
 			ui_storage.set('Forum6', '{}');
-		//}
+		}*/
 
 		// get monsters of the day
 		$('<div>', {id:"motd"}).insertAfter($('#menu_bar')).hide();

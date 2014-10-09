@@ -23,13 +23,12 @@ contentLoad: function(event) {
 				setTimeout(function(){loader.createScript(doc, 'chrome://godvilleui/content/options.js');}, 1000);
 			}
 		}
-		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
+		/*if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
 			if (!windowStats.get(doc)) {
 				windowStats.set(doc,'scriptsLoaded');
-				loader.createScript(doc, 'chrome://godvilleui/content/jquery-2.1.0.min.js');
 				loader.createScript(doc, 'chrome://godvilleui/content/forum.js');
 			}
-		}
+		}*/
 	}
 },
 
