@@ -13,7 +13,7 @@ contentLoad: function(event) {
 				loader.createScript(doc, 'chrome://godvilleui/content/script.js');
 			}
 		}
-		if (path.match(/^\/(?:profile|rk_success)/)) {
+		if (path.match(/^\/user\/(?:profile|rk_success)/)) {
 			if (windowStats.get(doc) == null) {
 				windowStats.set(doc,'scriptsLoaded');
 				loader.createScript(doc, 'chrome://godvilleui/content/jquery-2.1.0.min.js');
