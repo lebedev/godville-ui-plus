@@ -176,7 +176,6 @@ function save_options(form) {
 					$j('#cb_status').css('color', 'green');
 					storage.set('Option:useBackground', custom_link);
 				} else if (storage.get('Option:useBackground') && storage.get('Option:useBackground') != 'cloud') {
-					GM_log(storage.get('Option:useBackground') + '123' + storage.get('Option:useBackground') != 'cloud');
 					$j('#cb_status').text('тот же');
 					$j('#cb_status').css('color', 'blue');
 				} else {
@@ -210,7 +209,6 @@ function save_options(form) {
 		document.getElementById('transform!').checked = $j('#transformer:checked').length;
 		var forbiddenInformers = [];
 		for (var i = 0; i < $j('.informer-checkbox').length; i++) {
-			GM_log($j('.informer-checkbox')[i].id + ' ' + $j('.informer-checkbox')[i].checked)
 			if (!$j('.informer-checkbox')[i].checked)
 				forbiddenInformers.push($j('.informer-checkbox')[i].id);
 		}
@@ -251,19 +249,9 @@ function restore_options() {
 					option = option.slice(0, pos) + '_' + option.charAt(pos).toLowerCase() + option.slice(pos + 1);
 				}
 				$j('#' + option).prop('checked', true);
-			}// else 
-				//GM_log(localStorage.key(i) + ' NULL');
+			}
 		}
 	}
-
-	/*////////////////////////////
-	r = new RegExp('^GM_');
-	GM_log(r);
-	for (var i = 0; i < localStorage.length; i++) {
-		if (localStorage.key(i).match(r))
-			GM_log(localStorage.key(i));
-	}
-	*/////////////////////////////
 
 	if ($j('#relocate_duel_buttons:checked').length) {
 		$j('#relocate_duel_buttons_desc').hide();
