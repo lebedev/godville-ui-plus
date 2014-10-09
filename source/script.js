@@ -17,7 +17,19 @@ var ui_data = {
 		ui_storage.set('sex', document.title.match('героиня') ? 'female' : 'male');
 		this.char_sex = document.title.match('героиня') ? ['героиню', 'героине'] : ['героя', 'герою'];
 		ui_storage.set('ui_s', '');
+		localStorage.setItem('GM_CurrentUser', this.god_name);
 		
+		// init forum data
+		//if (!ui_storage.get('Forum1')) {
+			ui_storage.set('Forum1', '{}');
+			ui_storage.set('Forum2', '{"2812": 0}');
+			ui_storage.set('Forum3', '{}');
+			ui_storage.set('Forum4', '{}');
+			ui_storage.set('Forum5', '{}');
+			ui_storage.set('Forum6', '{}');
+		//}
+
+		// get monsters of the day
 		$('<div>', {id:"motd"}).insertAfter($('#menu_bar')).hide();
 		$('#motd').load('news .game.clearfix:first a', function() {
 			ui_improver.monstersOfTheDay = new RegExp($('#motd a:eq(0)').text() + '|' + $('#motd a:eq(1)').text());
