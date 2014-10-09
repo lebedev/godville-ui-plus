@@ -32,7 +32,7 @@ function updateMenu() {
 }
 
 function loadOptions() {
-	if (!(localStorage.getItem('GM_Options:User') || $j('div#profile_main').length)) {
+	if (!(localStorage.getItem('GM_CurrentUser') || $j('div#profile_main').length)) {
 		setTimeout(function() {loadOptions()}, 100);
 		return;
 	}
