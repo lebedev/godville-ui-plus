@@ -1,8 +1,8 @@
 GM_log=function(msg) {try {console.log('GM_log: '+msg);} catch(e) {}};
-GM_addStyle=function(css, id) {gm_func.addStyle(css, id)};
-GM_addGlobalStyleURL=function(uri, id) {gm_func.addStyleURI('chrome://godvilleui/content/' + uri, id)};
-GM_getResource=function(resname) {return 'chrome://godvilleui/content/' + resname};
-const GM_browser='Firefox';
+GM_addStyle=function(css, id) {gm_func.addStyle(css, id);};
+GM_addGlobalStyleURL=function(uri, id) {gm_func.addStyleURI('chrome://godvilleui/content/' + uri, id);};
+GM_getResource=function(resname) {return 'chrome://godvilleui/content/' + resname;};
+var GM_browser='Firefox';
 //GM_getResourceText=function(res) {
 //	return godvilleui_gmCompiler.getUrlContents('chrome://godvilleui/content/' + res);
 //};

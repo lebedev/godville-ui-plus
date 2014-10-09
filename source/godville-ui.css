@@ -75,19 +75,19 @@ body {
 	margin-left: 0.5em;
 }
 
-#stats_log .prana		 { color: #199bdc; }
-#stats_log .exp				{ color: #f9b436; }
-#stats_log .task				{ color: pink; }
-#stats_log .level		 { color: red; font-weight: bold; }
-#stats_log .inv				{ color: darkgrey; }
-#stats_log .hp	 { color: green; }
-#stats_log .gold				{ color: #ffd700; }
+#stats_log .prana { color: #199bdc; }
+#stats_log .exp { color: #f9b436; }
+#stats_log .task { color: pink; }
+#stats_log .level { color: red; font-weight: bold; }
+#stats_log .inv { color: #882D17; }
+#stats_log .hp { color: green; }
+#stats_log .gold { color: #ffd700; }
 #stats_log .monster { color: darkmagenta; }
-#stats_log .death		 { color: red; }
-#stats_log .brick		 { color: mediumblue; }
-#stats_log .wood		 { color: saddlebrown; }
-#stats_log .battery		 { color: blue; }
-#stats_log .retirement	{ color: Darkorange; }
+#stats_log .death { color: red; }
+#stats_log .brick { color: mediumblue; }
+#stats_log .wood { color: saddlebrown; }
+#stats_log .battery { color: blue; }
+#stats_log .retirement { color: darkorange; }
 #stats_log {
 	display: block;
 	position: relative;

@@ -33,7 +33,7 @@ function updateMenu() {
 
 function loadOptions() {
 	if (!(localStorage.getItem('GM_CurrentUser') || $j('#profile_main').length)) {
-		setTimeout(function() {loadOptions()}, 100);
+		setTimeout(function() {loadOptions();}, 100);
 		return;
 	}
 	ImproveInProcess = true;
@@ -117,7 +117,7 @@ function addOnClick($el, text) {
 function reset_options(form) {
 	ImproveInProcess = true;
 	var $elem = $j('#ta_edit');
-	var text = def['phrases'][curr_sect];
+	var text = def.phrases[curr_sect];
 	$elem.attr('rows', text.length);
 	$elem.val(text.join("\n"));
 	ImproveInProcess = false;
@@ -125,13 +125,14 @@ function reset_options(form) {
 
 function save_options(form) {
 	ImproveInProcess = true;
+	var i;
 	if (form === 1) {
 		$j('#gui_word_progress').show();
 		var text = $j('#ta_edit').val();
 		if (text === "") return;
 		var t_list = text.split("\n"); var t_out = [];
-		for (var i = 0; i < t_list.length; i++) {
-			if (t_list[i] != '') t_out.push(t_list[i]);
+		for (i = 0; i < t_list.length; i++) {
+			if (t_list[i] !== '') t_out.push(t_list[i]);
 		}
 		storage.set("phrases_" + curr_sect, t_out.join("||"));
 		$j('#gui_word_progress').fadeOut("slow");
@@ -140,7 +141,7 @@ function save_options(form) {
 	} else {
 		$j('#gui_options_progress').show();
 
-		for (var i = 0; i < $j('.option-checkbox').length; i++) {
+		for (i = 0; i < $j('.option-checkbox').length; i++) {
 			var option = $j('.option-checkbox')[i].id;
 			// option = "first_second_third" to option = "firstSecondThird"
 			var parts = option.split('_');
@@ -167,7 +168,7 @@ function save_options(form) {
 					var reader = new FileReader();
 					reader.onload = function(e) {
 						storage.set('Option:useBackground', e.target.result);
-					}
+					};
 					reader.readAsDataURL(custom_file);
 					$j('#cb_status').text('файл');
 					$j('#cb_status').css('color', 'green');
@@ -208,7 +209,7 @@ function save_options(form) {
 		document.getElementById('smelt!').checked = $j('#smelter:checked').length;
 		document.getElementById('transform!').checked = $j('#transformer:checked').length;
 		var forbiddenInformers = [];
-		for (var i = 0; i < $j('.informer-checkbox').length; i++) {
+		for (i = 0; i < $j('.informer-checkbox').length; i++) {
 			if (!$j('.informer-checkbox')[i].checked)
 				forbiddenInformers.push($j('.informer-checkbox')[i].id);
 		}
@@ -226,7 +227,7 @@ function setText(element_name) {
 	$j('#words a').css({'text-decoration' : 'underline', 'color' : '#199BDC', 'cursor' : 'pointer'});
 	$j('#words a#l_' + element_name).css({'text-decoration' : 'none', 'color' : '#DA251D'});
 	var text_list = storage.get("phrases_" + element_name);
-	var text = (text_list && text_list != "") ? text_list.split("||") : def['phrases'][element_name];
+	var text = (text_list && text_list !== "") ? text_list.split("||") : def.phrases[element_name];
 	$j('#ta_edit').attr('rows', text.length).val(text.join("\n"));
 
 	$j('#ta_edit').removeAttr('disabled');
@@ -239,8 +240,8 @@ function setText(element_name) {
 // Restores select box state to saved value from localStorage.
 function restore_options() {
 	def = getWords();
-	var r = new RegExp('^' + storage._get_key('Option:'));
-	for (var i = 0; i < localStorage.length; i++) {
+	var i, r = new RegExp('^' + storage._get_key('Option:'));
+	for (i = 0; i < localStorage.length; i++) {
 		if (localStorage.key(i).match(r)) {
 			var option = localStorage.key(i).replace(r, '');
 			if (storage.get(localStorage.key(i).replace(storage._get_key(''), ''))) {
@@ -282,7 +283,7 @@ function restore_options() {
 	var forbiddenInformers = storage.get('Option:forbiddenInformers');
 	if (forbiddenInformers) {
 		forbiddenInformers = forbiddenInformers.split(',');
-		for (var i = 0; i < $j('.informer-checkbox').length; i++) {
+		for (i = 0; i < $j('.informer-checkbox').length; i++) {
 			if (forbiddenInformers.indexOf($j('.informer-checkbox')[i].id) === -1)
 				$j('.informer-checkbox')[i].checked = true;
 		}

@@ -41,7 +41,7 @@ var ui_data = {
 	checkLastVersion: function() {
 		$.get('forums/show_topic/2812', function(response) {
 			
-			if (ui_utils.isDeveloper() || ui_storage.get('Option:forbiddenInformers') != null && !ui_storage.get('Option:forbiddenInformers').match('new_posts')) {
+			if (ui_utils.isDeveloper() || ui_storage.get('Option:forbiddenInformers') !== null && !ui_storage.get('Option:forbiddenInformers').match('new_posts')) {
 				var posts = parseInt(response.match(/Сообщений\: \d+/)[0].match(/\d+/));
 				if (posts > ui_storage.get('posts')) {
 					ui_storage.set('posts', posts);
@@ -156,7 +156,10 @@ var ui_utils = {
 	},
 // Escapes HTML symbols
 	escapeHTML: function(str) {
-		return str.replace(/[&"<>]/g, function (m) {({ "&": "&amp;", '"': "&quot;", "<": "&lt;", ">": "&gt;" })[m]});
+		return String(str).replace(/&/g, "&amp;")
+						  .replace(/"/g, "&quot;")
+						  .replace(/</g, "&lt;")
+						  .replace(/>/g, "&gt;");
 	}
 };
 
@@ -243,7 +246,7 @@ var ui_menu_bar = {
 			this.append(this.getDumpButton('stats', 'Stats'));
 			this.append($('<span>, </span>'));
 			this.append(this.getDumpButton('logger', 'Logger'));
-		} else this.append('<br>')
+		} else this.append('<br>');
 		ui_data.checkLastVersion();
 		$('.hint_bar_close', this.bar).append(this.getToggleButton('закрыть'));
 		$('#menu_bar').after(this.bar);
@@ -285,7 +288,7 @@ var ui_storage = {
 	diff: function(id, value) {
 		var diff = null;
 		var old = this.get(id);
-		if (old != null) {
+		if (old !== null) {
 			diff = value - old;
 		}
 		return diff;
@@ -298,9 +301,9 @@ var ui_storage = {
 	},
 // dumps all values related to current god_name
 	dump: function(selector) {
-		var lines = new Array;
-		var r = new RegExp('^GM_' + ui_data.god_name + ':' + (selector == null ? '' : selector));
-		for(var i = 0; i < localStorage.length; i++) {
+		var lines = [];
+		var r = new RegExp('^GM_' + ui_data.god_name + ':' + (selector === null ? '' : selector));
+		for (var i = 0; i < localStorage.length; i++) {
 			if (localStorage.key(i).match(r)) {
 				lines.push(localStorage.key(i) + " = " + localStorage[localStorage.key(i)]);
 			}
@@ -318,12 +321,13 @@ var ui_storage = {
 	clearStorage: function() {
 		if (localStorage.getItem('GM_clean050613') != 'true') {
 			try {
-				var idx_lst = [];
-				var r = new RegExp('^GM_.*');
-				var settings = new RegExp('^GM_[^:]+:Option:(?:forbiddenInformers|forcePageRefresh|freezeVoiceButton|relocateDuelButtons|useBackground|useHeil|useHeroName|useShortPhrases|hideChargeButton)');
-				var stuff = new RegExp('^GM_[^:]+:(phrases|Stats|Logger).*');
+				var key,
+					idx_lst = [],
+					r = new RegExp('^GM_.*'),
+					settings = new RegExp('^GM_[^:]+:Option:(?:forbiddenInformers|forcePageRefresh|freezeVoiceButton|relocateDuelButtons|useBackground|useHeil|useHeroName|useShortPhrases|hideChargeButton)'),
+					stuff = new RegExp('^GM_[^:]+:(phrases|Stats|Logger).*');
 				for (var i = 0; i < localStorage.length; i++) {
-					var key = localStorage.key(i);
+					key = localStorage.key(i);
 					if (key.match(r) && (!(key.match(settings) || key.match(stuff)) || key.match('undefined'))) idx_lst.push(key);
 				}
 				for(key in idx_lst) {
@@ -370,14 +374,14 @@ var ui_words = {
 		for (var i = 0; i < sects.length; i++) {
 			var t = sects[i];
 			var text = ui_storage.get('phrases_' + t);
-			if (text && text != "") {
-				this.base['phrases'][t] = text.split("||");
+			if (text && text !== "") {
+				this.base.phrases[t] = text.split("||");
 			}
 		}
 	},
 // single phrase gen
 	randomPhrase: function(sect) {
-		return ui_utils.getRandomItem(this.base['phrases'][sect]);
+		return ui_utils.getRandomItem(this.base.phrases[sect]);
 	},
 // main phrase constructor
 	longPhrase: function(sect, item_name, len) {
@@ -392,7 +396,7 @@ var ui_words = {
 		} else if (ui_storage.get('Option:useShortPhrases')) {
 			phrases = [this.randomPhrase(sect)];
 		} else {
-			phrases = this._longPhrase_recursion(this.base['phrases'][sect].slice(), (len || 100) - prefix.length);
+			phrases = this._longPhrase_recursion(this.base.phrases[sect].slice(), (len || 100) - prefix.length);
 		}
 		this.currentPhrase = prefix ? prefix + this._changeFirstLetter(phrases.join(' ')) : phrases.join(' ');
 		return this.currentPhrase;
@@ -408,7 +412,7 @@ var ui_words = {
 
 // Checkers
 	isCategoryItem: function(cat, item_name) {
-		return this.base['items'][cat].indexOf(item_name) >= 0;
+		return this.base.items[cat].indexOf(item_name) >= 0;
 	},
 	
 	canBeActivatedItemType: function(desc) {
@@ -452,7 +456,7 @@ var ui_words = {
 
 	_addHeil: function(text) {
 		if (!ui_storage.get('Option:useHeil')) return text;
-		return ui_utils.getRandomItem(this.base['phrases']['heil']) + ', ' + this._changeFirstLetter(text);
+		return ui_utils.getRandomItem(this.base.phrases.heil) + ', ' + this._changeFirstLetter(text);
 	},
 
 // Private (или типа того)
@@ -490,7 +494,7 @@ var ui_stats = {
 		var $label = ui_utils.findLabel($container, label);
 		var $field = $label.siblings('.l_val');
 		var value = parser($field.text());
-		if (id == 'Brick' || id == 'Wood') return this.set(id, Math.floor(value*10 + 0.5))
+		if (id == 'Brick' || id == 'Wood') return this.set(id, Math.floor(value*10 + 0.5));
 		else return this.set(id, value);
 	}
 };
@@ -526,7 +530,7 @@ var ui_logger = {
 		while ($('#stats_log li').position().left + $('#stats_log li').width() < 0 || $('#stats_log li')[0].className == "separator") {
 			$('#stats_log li:first').remove();
 		}
-		if ($('#fader').position().left != 0) {
+		if ($('#fader').position().left !== 0) {
 			$('#fader').css("left", parseFloat($('#fader').css("left").replace('px', '')) - $('#fader').position().left);
 		}
 	},
@@ -647,7 +651,7 @@ var ui_informer = {
 	// PRIVATE
 	load: function() {
 		var fl = ui_storage.get('informer_flags');
-		if (!fl || fl == "") fl = ' {}';
+		if (!fl || fl === "") fl = ' {}';
 		this.flags = JSON.parse(fl);
 	},
 	
@@ -773,9 +777,9 @@ var ui_improver = {
 			.click(function() {
 				var rand = Math.floor(Math.random()*ui_improver.trophyList.length);
 				item_first = ui_improver.trophyList[rand];
-				item_second = (ui_improver.trophyList[rand + 1] && ui_improver.trophyList[rand][0] == ui_improver.trophyList[rand + 1][0])
-							? ui_improver.trophyList[rand + 1]
-							: ui_improver.trophyList[rand - 1];
+				var condition = ui_improver.trophyList[rand + 1] && ui_improver.trophyList[rand][0] == ui_improver.trophyList[rand + 1][0];
+				item_second = condition ? ui_improver.trophyList[rand + 1]
+										: ui_improver.trophyList[rand - 1];
 				ui_utils.sayToHero(ui_words.mergePhrase(item_first + ' и ' + item_second));
 				return false;
 			});
@@ -795,13 +799,16 @@ var ui_improver = {
 			setTimeout(function() {
 				$('#inventory li:hidden').remove();
 			}, 1000);
-			var flags = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'transformer', 'quest box', 'bylina box'];
-			var types = new Array(flags.length);
-			for (var i = 0; i < types.length; i++)
+			var i,
+				flags = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'transformer', 'quest box', 'bylina box'],
+				types = new Array(flags.length),
+				good_box = false,
+				to_arena_box = false,
+				bold_item = false;
+
+			for (i = 0; i < types.length; i++) {
 				types[i] = false;
-			var good_box = false;
-			var to_arena_box = false;
-			var bold_item = false;
+			}
 
 			ui_improver.trophyList = [];
 
@@ -849,13 +856,13 @@ var ui_improver = {
 			}
 			
 			ui_improver.trophyList.sort();
-			for (var i = ui_improver.trophyList.length - 1; i >= 0; i--) {
+			for (i = ui_improver.trophyList.length - 1; i >= 0; i--) {
 				if (!((ui_improver.trophyList[i - 1] && ui_improver.trophyList[i][0] == ui_improver.trophyList[i - 1][0]) || (ui_improver.trophyList[i + 1] && ui_improver.trophyList[i][0] == ui_improver.trophyList[i + 1][0]))) {
 					ui_improver.trophyList.splice(i, 1);
 				}
 			}
 			
-			for (var i = 0; i < flags.length; i++) {
+			for (i = 0; i < flags.length; i++) {
 				ui_informer.update(flags[i], types[i]);
 			}
 			// Не понял зачем это, пока отключаю так как не отключается информер
@@ -865,7 +872,7 @@ var ui_improver = {
 			ui_informer.update('good box', good_box);
 			
 			ui_informer.update('smelt!', types[9] && ui_storage.get('Stats:Gold') >= 3000);
-			ui_informer.update(flags[9], types[9] && !(ui_storage.get('Stats:Gold') >= 3000));
+			ui_informer.update(flags[9], types[9] && ui_storage.get('Stats:Gold') < 3000);
 			
 			ui_informer.update('to arena box', to_arena_box);
 		
@@ -889,10 +896,10 @@ var ui_improver = {
 				ui_improver.hucksterNews = '';
 			}
 			ui_informer.update('SMELT TIME', ui_improver.hucksterNews && ui_improver.hucksterNews[0] == "2");
-			if (ui_informer.flags['SMELT TIME'] == true && !$('#smelt_time').length) {
+			if (ui_informer.flags['SMELT TIME'] === true && !$('#smelt_time').length) {
 				$('#fader').append('<audio loop preload="auto" id="smelt_time" src="arena.ogg"></audio>');
 				$('#smelt_time')[0].play();
-			} else if (ui_informer.flags['SMELT TIME'] != true && $('#smelt_time').length) {
+			} else if (ui_informer.flags['SMELT TIME'] !== true && $('#smelt_time').length) {
 				$('#smelt_time')[0].pause();
 				$('#smelt_time').remove();
 			}
@@ -991,15 +998,37 @@ var ui_improver = {
 
 // ---------- Map --------------
 	improveMap: function() {
-		if (ui_data.isMap){
-			var $box = $('#cntrl .voice_generator');
-			var $boxML = $('#map .dml');
-			var $boxMC = $('#map .dmc');
-			var kRow = $boxML.length;
-			var kColumn = $boxML[0].textContent.length;
+		if (ui_data.isMap) {
+			var i, j,
+				$box = $('#cntrl .voice_generator'),
+				$boxML = $('#map .dml'),
+				$boxMC = $('#map .dmc'),
+				kRow = $boxML.length,
+				kColumn = $boxML[0].textContent.length;
+
+			//	Функция итерации
+			var MapIteration = function (MapThermo, iPointer, jPointer, step) {
+				step++;
+				for (var iStep = -1; iStep <= 1; iStep++) {
+					for (var jStep = -1; jStep <= 1; jStep++) {
+						if (iStep !== jStep && (iStep === 0 || jStep === 0)) {
+							var iNext = iPointer + iStep,
+								jNext = jPointer + jStep;
+							if (iNext >= 0 && iNext < kRow && jNext >= 0 && jNext < kColumn) {
+								if (MapThermo[iNext][jNext] != -1) {
+									if (MapThermo[iNext][jNext] > step || MapThermo[iNext][jNext] === 0) {
+										MapThermo[iNext][jNext] = step;
+										MapIteration(MapThermo, iNext, jNext, step);
+									}
+								}
+							}
+						}
+					}
+				}
+			};
 
 			//	Гласы направления делаем невидимыми
-			for (var i = 0; i < 4; i++){
+			for (i = 0; i < 4; i++){
 				$box[i].style.visibility = 'hidden';
 			}
 
@@ -1008,15 +1037,16 @@ var ui_improver = {
 			var MaxMap = 0;	//	Счетчик указателей  
 			//	Карта возможного клада
 			var MapArray = [];
-			for (var i = 0; i < kRow; i++){
+			for (i = 0; i < kRow; i++) {
 				MapArray[i] = [];
-				for (var j = 0; j < kColumn; j++)
+				for (j = 0; j < kColumn; j++) {
 					MapArray[i][j] = ('?!@'.indexOf($boxML[i].textContent[j]) != - 1) ? 0 : -1;
+				}
 			}
 			for (var si = 0; si < kRow; si++) {
 				//	Ищем где мы находимся
-				var j = $boxML[si].textContent.indexOf('@');
-				if (j != -1){ 
+				j = $boxML[si].textContent.indexOf('@');
+				if (j != -1) { 
 					//	Проверяем куда можно пройти
 					if ($boxML[si-1].textContent[j] != '#' || isJumping && (si == 1 || si != 1 && $boxML[si-2].textContent[j] != '#'))
 						$box[0].style.visibility = '';	//	Север
@@ -1029,70 +1059,55 @@ var ui_improver = {
 				} 
 				//	Ищем указатели
 				for (var sj = 0; sj < kColumn; sj++) {
-					var Pointer = $boxML[si].textContent[sj];
+					var ik, jk,
+						Pointer = $boxML[si].textContent[sj];
 					if ('←→↓↑↙↘↖↗'.indexOf(Pointer) != - 1) {
 						MaxMap++;
 						$boxMC[si * kColumn + sj].style.color = 'green';
-						for (var ik = 0; ik < kRow; ik++) 
-							for (var jk = 0; jk < kColumn; jk++) {
-								var istep = parseInt((Math.abs(jk - sj) - 1) / 5);
-								var jstep = parseInt((Math.abs(ik - si) - 1) / 5);
-								if ('←→'.indexOf(Pointer) != - 1 && ik >= si - istep && ik <= si + istep ||
+						for (ik = 0; ik < kRow; ik++) 
+							for (jk = 0; jk < kColumn; jk++) {
+								var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
+									jstep = parseInt((Math.abs(ik - si) - 1) / 5);
+								if ('←→'.indexOf(Pointer) != -1 && ik >= si - istep && ik <= si + istep ||
 										Pointer == '↓' && ik >= si + istep ||
 										Pointer == '↑' && ik <= si - istep ||
-										'↙↘'.indexOf(Pointer) != - 1 && ik > si + istep ||
-										'↖↗'.indexOf(Pointer) != - 1 && ik < si - istep)
+										'↙↘'.indexOf(Pointer) != -1 && ik > si + istep ||
+										'↖↗'.indexOf(Pointer) != -1 && ik < si - istep)
 									if (Pointer == '→' && jk >= sj + jstep ||
 											Pointer == '←' && jk <= sj - jstep ||
-											'↓↑'.indexOf(Pointer) != - 1 && jk >= sj - jstep && jk <= sj + jstep ||
-											'↘↗'.indexOf(Pointer) != - 1 && jk > sj + jstep ||
-											'↙↖'.indexOf(Pointer) != - 1 && jk < sj - jstep)
+											'↓↑'.indexOf(Pointer) != -1 && jk >= sj - jstep && jk <= sj + jstep ||
+											'↘↗'.indexOf(Pointer) != -1 && jk > sj + jstep ||
+											'↙↖'.indexOf(Pointer) != -1 && jk < sj - jstep)
 										if (MapArray[ik][jk] >= 0)
 											MapArray[ik][jk]++;
 							}
 					}
-					if ('✺☀♨☁❄✵'.indexOf(Pointer) != - 1) {
+					if ('✺☀♨☁❄✵'.indexOf(Pointer) != -1) {
 						MaxMap++;
 						$boxMC[si * kColumn + sj].style.color = 'green';
-						var TermoMinStep = 0;	//	Минимальное количество шагов до клада
-						var TermoMaxStep = 0;	//	Максимальное количество шагов до клада
+						var ThermoMinStep = 0;	//	Минимальное количество шагов до клада
+						var ThermoMaxStep = 0;	//	Максимальное количество шагов до клада
 						switch(Pointer){
-							case '✺': TermoMinStep = 1; TermoMaxStep = 2; break;	//	✺ - очень горячо(1-2)
-							case '☀': TermoMinStep = 3; TermoMaxStep = 5; break;	//	☀ - горячо(3-5)
-							case '♨': TermoMinStep = 6; TermoMaxStep = 9; break;	//	♨ - тепло(6-9)
-							case '☁': TermoMinStep = 10; TermoMaxStep = 13; break;	//	☁ - свежо(10-13)
-							case '❄': TermoMinStep = 14; TermoMaxStep = 18; break;	//	❄ - холодно(14-18)
-							case '✵': TermoMinStep = 19; TermoMaxStep = 100; break;	//	✵ - очень холодно(19)
+							case '✺': ThermoMinStep = 1; ThermoMaxStep = 2; break;	//	✺ - очень горячо(1-2)
+							case '☀': ThermoMinStep = 3; ThermoMaxStep = 5; break;	//	☀ - горячо(3-5)
+							case '♨': ThermoMinStep = 6; ThermoMaxStep = 9; break;	//	♨ - тепло(6-9)
+							case '☁': ThermoMinStep = 10; ThermoMaxStep = 13; break;	//	☁ - свежо(10-13)
+							case '❄': ThermoMinStep = 14; ThermoMaxStep = 18; break;	//	❄ - холодно(14-18)
+							case '✵': ThermoMinStep = 19; ThermoMaxStep = 100; break;	//	✵ - очень холодно(19)
 						}
-						//	Функция итерации
-						var MapIteration = function (MapTermo, iPointer, jPointer, step) {
-							step++;
-							for (var iStep = -1; iStep <= 1; iStep++)
-								for (var jStep = -1; jStep <= 1; jStep++)
-									if (iStep != jStep & (iStep == 0 || jStep == 0)){
-										 var iNext = iPointer + iStep;
-										 var jNext = jPointer + jStep;
-										 if (iNext >= 0 & iNext < kRow & jNext >= 0 & jNext < kColumn)
-												if (MapTermo[iNext][jNext] != -1)
-													if (MapTermo[iNext][jNext] > step || MapTermo[iNext][jNext] == 0) {
-														MapTermo[iNext][jNext] = step;
-														MapIteration(MapTermo, iNext, jNext, step);
-													}
-									}
-						}; 
 						//	Временная карта возможных ходов
-						var MapTermo = [];
-						for (var ik = 0; ik < kRow; ik++) {
-							MapTermo[ik] = [];
-							for (var jk = 0; jk < kColumn; jk++)
-								MapTermo[ik][jk] = ($boxML[ik].textContent[jk] == '#' || ((Math.abs(jk - sj) + Math.abs(ik - si)) > TermoMaxStep)) ? -1 : 0;
+						var MapThermo = [];
+						for (ik = 0; ik < kRow; ik++) {
+							MapThermo[ik] = [];
+							for (jk = 0; jk < kColumn; jk++)
+								MapThermo[ik][jk] = ($boxML[ik].textContent[jk] == '#' || ((Math.abs(jk - sj) + Math.abs(ik - si)) > ThermoMaxStep)) ? -1 : 0;
 						} 
 						//	Запускаем итерацию
-						MapIteration(MapTermo, si, sj, 0);
+						MapIteration(MapThermo, si, sj, 0);
 						//	Метим возможный клад
-						for (var ik = ((si - TermoMaxStep) > 0 ? si - TermoMaxStep : 0); ik <= ((si + TermoMaxStep) < kRow ? si + TermoMaxStep : kRow - 1); ik++)
-							for (var jk = ((sj - TermoMaxStep) > 0 ? sj - TermoMaxStep : 0); jk <= ((sj + TermoMaxStep) < kColumn ? sj + TermoMaxStep : kColumn - 1); jk++)
-								if (MapTermo[ik][jk] >= TermoMinStep & MapTermo[ik][jk] <= TermoMaxStep)
+						for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++)
+							for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++)
+								if (MapThermo[ik][jk] >= ThermoMinStep & MapThermo[ik][jk] <= ThermoMaxStep)
 									if (MapArray[ik][jk] >= 0)
 										MapArray[ik][jk]++;
 					}
@@ -1101,9 +1116,9 @@ var ui_improver = {
 				}
 			}
 			//	Отрисовываем возможный клад 
-			if (MaxMap != 0)
-				for (var i = 0; i < kRow; i++)
-					for (var j = 0; j < kColumn; j++)
+			if (MaxMap !== 0)
+				for (i = 0; i < kRow; i++)
+					for (j = 0; j < kColumn; j++)
 						if (MapArray[i][j] == MaxMap)
 							$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] == '@') ? 'blue' : 'red';
 		}
@@ -1182,7 +1197,7 @@ var ui_improver = {
 		if (ui_storage.get('Stats:Inv') != ui_stats.setFromLabelCounter('Inv', $box, 'Инвентарь') || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length)
 			this.inventoryChanged = true;
 		ui_informer.update('much_gold', ui_stats.setFromLabelCounter('Gold', $box, 'Золота', gold_parser) >= (ui_stats.get('Brick') > 1000 ? 10000 : 3000));
-		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, 'Здоровье') == 0);
+		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, 'Здоровье') === 0);
 
 		//Shovel pictogramm start
 		var digVoice = $('#hk_gold_we .voice_generator');
@@ -1227,7 +1242,7 @@ var ui_improver = {
 		if (ui_data.isArena) return;
 		if (ui_utils.findLabel($('#pet'), 'Статус')[0].style.display!='none'){
 			if (!ui_utils.isAlreadyImproved($('#pet'))){
-				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge gc_new_badge gu_new_badge_pos" style="display: block;">0</div>'))
+				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge gc_new_badge gu_new_badge_pos" style="display: block;">0</div>'));
 			} 
 			$('#pet_badge').text(ui_utils.findLabel($('#pet'), 'Статус').siblings('.l_val').text().replace(/[^0-9:]/g, ''));
 			if ($('#pet .block_content')[0].style.display == 'none') 
@@ -1249,7 +1264,7 @@ var ui_improver = {
 			seq += parseInt($('#eq_' + i + ' .eq_level').text()) || 0;
 		}
 		if (!ui_utils.isAlreadyImproved($('#equipment')))
-			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge gc_new_badge gu_new_badge_pos" style="display: block;">0</div>'))
+			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge gc_new_badge gu_new_badge_pos" style="display: block;">0</div>'));
 		$('#equip_badge').text((seq / 7).toFixed(1));
 	},
 // ---------- Group HP --------------
@@ -1266,7 +1281,7 @@ var ui_improver = {
 // ---------- Pantheons --------------	
 	improvePantheons: function() {
 		if (ui_data.isArena) return;
-		if (ui_storage.get('Option:relocateDuelButtons') != null && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
+		if (ui_storage.get('Option:relocateDuelButtons') !== null && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
 			if (!$('#pantheons.arena_link_relocated').length) {
 				$('#pantheons').addClass('arena_link_relocated');
 				$('.arena_link_wrap').insertBefore($('#pantheons_content')).addClass('p_group_sep').css('padding-top', 0);
@@ -1275,7 +1290,7 @@ var ui_improver = {
 			$('#pantheons').removeClass('arena_link_relocated').removeClass('both');
 			$('.arena_link_wrap').insertBefore($('#control .arena_msg')).removeClass('p_group_sep').css('padding-top', '0.5em');
 		}
-		if (ui_storage.get('Option:relocateDuelButtons') != null && ui_storage.get('Option:relocateDuelButtons').match('chf')) {
+		if (ui_storage.get('Option:relocateDuelButtons') !== null && ui_storage.get('Option:relocateDuelButtons').match('chf')) {
 			if (!$('#pantheons.chf_link_relocated').length) {
 				$('#pantheons').addClass('chf_link_relocated');
 				$('.chf_link_wrap:first').insertBefore($('#pantheons_content'));
@@ -1286,7 +1301,7 @@ var ui_improver = {
 			$('.chf_link_wrap').removeClass('p_group_sep');
 			$('#pantheons .chf_link_wrap').insertAfter($('#control .arena_msg'));
 		}/*
-		if (ui_storage.get('Option:relocateDuelButtons') != null && ui_storage.get('Option:relocateDuelButtons').match('cvs')) {
+		if (ui_storage.get('Option:relocateDuelButtons') !== null && ui_storage.get('Option:relocateDuelButtons').match('cvs')) {
 			if (!$('#pantheons.cvs_link_relocated').length) {
 				$('#pantheons').addClass('cvs_link_relocated');
 				$('.chf_link_wrap:first').insertBefore($('#pantheons_content'));
@@ -1336,13 +1351,14 @@ var ui_improver = {
 			});
 		}
 
+		var color, background;
 		if (ui_storage.get('Option:useBackground') == 'cloud') {
 			if (!$('#fader.cloud').length) {
 				$('body').css('background-image', 'url(' + GM_getResource("images/background.jpg") + ')');
-				var color = new Array(2);
+				color = new Array(2);
 				if (ui_storage.get('uiMenuVisible')) {color[0] = '241,247,253'; color[1] = '233,243,253';}
 				else {color[0] = '253,252,255'; color[1] = '243,248,253';}
-				var background = 'linear-gradient(to right, rgba(' + color[0] + ',2) 30%, rgba(' + color[1] + ',0) 100%)';
+				background = 'linear-gradient(to right, rgba(' + color[0] + ',2) 30%, rgba(' + color[1] + ',0) 100%)';
 				$('#fader').show().css('background', background).addClass('cloud').removeClass('custom');
 			}
 		} else if (ui_storage.get('Option:useBackground')) {
@@ -1361,10 +1377,9 @@ var ui_improver = {
 		} else if ($('#fader.cloud, #fader.custom').length) {
 			$('#fader').show();
 			$('body').css('background-image', '');
-			var color;
 			if (ui_storage.get('ui_s') == 'th_nightly') color = '0,0,0';
 			else color = '255,255,255';
-			var background = 'linear-gradient(to right, rgba(' + color + ',2) 30%, rgba(' + color + ',0) 100%)';
+			background = 'linear-gradient(to right, rgba(' + color + ',2) 30%, rgba(' + color + ',0) 100%)';
 			$('#fader').css('background', background).removeClass('cloud').removeClass('custom');
 		}
 		
@@ -1372,10 +1387,9 @@ var ui_improver = {
 			ui_improver.Shovel = false;
 			ui_storage.set('ui_s', localStorage.getItem('ui_s'));
 			if (!ui_storage.get('Option:useBackground')) {
-				var color;
 				if (ui_storage.get('ui_s') == 'th_nightly') color = '0,0,0';
 				else color = '255,255,255';
-				var background = 'linear-gradient(to right, rgba(' + color[0] + ',2) 30%, rgba(' + color[1] + ',0) 100%)';
+				background = 'linear-gradient(to right, rgba(' + color[0] + ',2) 30%, rgba(' + color[1] + ',0) 100%)';
 				$('#fader').css('background', background);
 			}
 		}
@@ -1436,17 +1450,19 @@ var ui_improver = {
 			$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
 		}
 		
+		var i;
+		
 		//proper message tabs appearance
-		if ($('.frDockCell').length && $('.frDockCell:last').position().top != 0) {
+		if ($('.frDockCell').length && $('.frDockCell:last').position().top !== 0) {
 			var row_capacity;
 			$('.frDockCell').css('clear', '');
-			for (var i = 0; i < $('.frDockCell').length; i++) {
-				if ($('.frDockCell').eq(i).position().top != 0) {
+			for (i = 0; i < $('.frDockCell').length; i++) {
+				if ($('.frDockCell').eq(i).position().top !== 0) {
 					row_capacity = i;
 					break;
 				}
 			}
-			for (var i = $('.frDockCell').length%row_capacity; i < $('.frDockCell').length; i+=row_capacity)
+			for (i = $('.frDockCell').length%row_capacity; i < $('.frDockCell').length; i+=row_capacity)
 				$('.frDockCell').eq(i).css('clear', 'right');
 		}
 		
@@ -1464,7 +1480,7 @@ var ui_improver = {
 	},
 		
 	add_css: function () {
-		if ($('#ui_css').length == 0) {
+		if ($('#ui_css').length === 0) {
 			GM_addGlobalStyleURL('godville-ui.css', 'ui_css');
 		}
 	}

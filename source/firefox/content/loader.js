@@ -6,7 +6,7 @@ contentLoad: function(event) {
 	if (doc.location.href.match(/^https?:\/\/godville.net/)) {
 		var windowStats = new WeakMap();
 		if (path.match(/^\/superhero/)) {
-			if (windowStats.get(doc) == null) {
+			if (!windowStats.get(doc)) {
 				windowStats.set(doc,'scriptsLoaded');
 				loader.createScript(doc, 'chrome://godvilleui/content/phrases.js');
 				loader.createScript(doc, 'chrome://godvilleui/content/gm_func.js');
@@ -14,17 +14,17 @@ contentLoad: function(event) {
 			}
 		}
 		if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-			if (windowStats.get(doc) == null) {
+			if (!windowStats.get(doc)) {
 				windowStats.set(doc,'scriptsLoaded');
 				loader.createScript(doc, 'chrome://godvilleui/content/jquery-2.1.0.min.js');
 				loader.createScript(doc, 'chrome://godvilleui/content/phrases.js');
 				loader.createScript(doc, 'chrome://godvilleui/content/gm_func.js');
 				loader.createScript(doc, 'chrome://godvilleui/content/options-page.js');
-				setTimeout(function(){loader.createScript(doc, 'chrome://godvilleui/content/options.js');}, 1000)     
+				setTimeout(function(){loader.createScript(doc, 'chrome://godvilleui/content/options.js');}, 1000);
 			}
 		}
 		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-			if (windowStats.get(doc) == null) {
+			if (!windowStats.get(doc)) {
 				windowStats.set(doc,'scriptsLoaded');
 				loader.createScript(doc, 'chrome://godvilleui/content/jquery-2.1.0.min.js');
 				loader.createScript(doc, 'chrome://godvilleui/content/forum.js');
