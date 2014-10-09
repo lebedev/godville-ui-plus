@@ -77,6 +77,9 @@ module.exports = function(grunt) {
         cmd: 'git add --all && git commit -m "Version <%= new_version %>" && git tag -a v<%= new_version %> -m "Release v<%= new_version %>" && git push --follow-tags origin master'
       }
     },
+    jshint: {
+      all: ['Gruntfile.js', 'source/**/*.js']
+    },
     prompt: {
       copy: {
         options: {
@@ -116,11 +119,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-prompt');
 
   grunt.task.registerTask('compile', 'A sample task that logs stuff.', function(arg) {
     if (arguments.length === 1 && (arg === 'debug' || arg === 'release')) {
+      grunt.task.run('jshint');
       grunt.log.ok("Compiling in " + arg + " mode.");
       grunt.config.set('compile_path', arg);
       if (arg === 'debug') {
