@@ -316,8 +316,8 @@ var def = "";
 var curr_sect = "";
 var ImproveInProcess = false;
 var god_name = $j('#opt_change_profile div:first div:first').text();
-	if (god_name !== "") localStorage.setItem("GM_Options:User", god_name);
-	else god_name = localStorage.getItem("GM_Options:User");
+	if (god_name !== "") localStorage.setItem("GM_CurrentUser", god_name);
+	else god_name = localStorage.getItem("GM_CurrentUser");
 var isDataRead = false;
 updateMenu();
 if (location.hash === "#ui_options") {
