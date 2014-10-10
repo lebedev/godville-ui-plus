@@ -544,7 +544,7 @@ var ui_logger = {
 			// Добавление плюcа, минуса или стрелочки
 			var s;
 			if (diff < 0) {
-				if (name === 'exp') {
+				if (name === 'exp' && ui_storage.get('Logger:Level') !== $('#hk_level .l_val').text()) {
 					s = '→' + ui_stats.get(id);
 				} else if (name === 'tsk' && ui_storage.get('Stats:Task_Name') !== $('.q_name').text()) {
 					ui_storage.set('Stats:Task_Name', $('.q_name').text());
@@ -577,11 +577,11 @@ var ui_logger = {
 			this.watchStatsValue('Enemy_Gold', 'e:gld', 'Золото', 'monster');
 			this.watchStatsValue('Enemy_Inv', 'e:inv', 'Инвентарь', 'monster');
 		}
+		this.watchStatsValue('Exp', 'exp', 'Опыт (проценты)');
 		this.watchStatsValue('Level', 'lvl', 'Уровень');
 		this.watchStatsValue('HP', 'hp', 'Здоровье');
 		this.watchStatsValue('Prana', 'pr', 'Прана (проценты)');
 		this.watchStatsValue('Battery', 'bt', 'Заряды');
-		this.watchStatsValue('Exp', 'exp', 'Опыт (проценты)');
 		this.watchStatsValue('Task', 'tsk', 'Задание (проценты)');
 		this.watchStatsValue('Monster', 'mns', 'Монстры');
 		this.watchStatsValue('Inv', 'inv', 'Инвентарь');
