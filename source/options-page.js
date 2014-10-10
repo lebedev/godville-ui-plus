@@ -17,7 +17,7 @@ return '<p>\n' +
 '						<div class="bl_capt">Godville UI+ настройки</div>\n' +
 '						<div id="add_general" class="bl_content">\n' +
 '							<div class="new_line" style="margin-bottom: 0.8em;">\n' +
-'								<label class="l_capt" for="disable_voice_generators">Виключить генераторы гласов</label>\n' +
+'								<label class="l_capt" for="disable_voice_generators">Выключить генераторы гласов</label>\n' +
 '								<div class="field_content">\n' +
 '									<input id="disable_voice_generators" name="disable_voice_generators" class="option-checkbox" type="checkbox">\n' +
 '								</div>\n' +
