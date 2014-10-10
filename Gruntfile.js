@@ -123,54 +123,42 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-prompt');
 
-  grunt.task.registerTask('compile', 'A sample task that logs stuff.', function(arg) {
-    if (arguments.length === 1 && (arg === 'debug' || arg === 'release')) {
-      grunt.task.run('jshint');
-      grunt.log.ok("Compiling in " + arg + " mode.");
-      grunt.config.set('compile_path', arg);
-      if (arg === 'debug') {
-        var new_version = grunt.file.read('current_version').split('.');
-        new_version[3]++;
-        grunt.config.set('new_version', new_version.join('.'));
-        grunt.task.run([
-          'copy',
-          'compress:firefox',
-          'clean:firefox'
-        ]);
-      } else if (arg === 'release') {
-        if (grunt.file.exists('publish')) {
-          grunt.config.set('old_version', grunt.file.read('current_version'));
-          grunt.task.run([
-            'prompt:copy',
-            'copy',
-            'process_chrome',
-            'process_firefox'
-          ]);
-        } else {
-          grunt.fail.warn("The required files don't exist. Can't run in 'release' mode.");
-          return false;
-        }
-      }
-      return true;
+  grunt.task.registerTask('debug', 'Compiles in debug mode.', function() {
+    grunt.log.ok("Compiling in debug mode.");
+    grunt.config.set('compile_path', 'debug');
+    var new_version = grunt.file.read('current_version').split('.');
+    new_version[3]++;
+    grunt.config.set('new_version', new_version.join('.'));
+    grunt.task.run([
+      'jshint',
+      'copy',
+      'compress:firefox',
+      'clean:firefox'
+    ]);
+  });
+
+  grunt.task.registerTask('release', 'Compiles in release mode.', function() {
+    grunt.log.ok("Compiling in release mode.");
+    if (grunt.file.exists('publish')) {
+      grunt.config.set('compile_path', 'release');
+      grunt.config.set('old_version', grunt.file.read('current_version'));
+      grunt.task.run([
+        'jshint',
+        'exec:sign',
+        'prompt:copy',
+        'copy',
+        'process_chrome',
+        'process_firefox',
+      ]);
     } else {
-      grunt.fail.warn("Possible arguments are 'debug' and 'release'.");
+      grunt.fail.warn("The required files don't exist. Can't run in 'release' mode.");
       return false;
     }
   });
 
-  grunt.task.registerTask('get_token', 'Gets token from publish/token.', function() {
-    grunt.config.set('access_token', grunt.file.readJSON('publish/token').access_token);
-    grunt.log.writeln(grunt.config('access_token'));
-  });
-
-  grunt.task.registerTask('set_token_to_upload', 'Sets token to an upload command.', function() {
-    grunt.config.set('upload', grunt.file.read('publish/upload').replace('$TOKEN', grunt.config('access_token')));
-    grunt.log.writeln(grunt.config('upload'));
-  });
-
-  grunt.task.registerTask('set_token_to_publish', 'Sets token to a publish command.', function() {
-    grunt.config.set('publish', grunt.file.read('publish/publish').replace('$TOKEN', grunt.config('access_token')));
-    grunt.log.writeln(grunt.config('publish'));
+  grunt.task.registerTask('exec_with_token', 'Sets token to a command and runs it.', function(arg) {
+    grunt.config.set(arg, grunt.file.read('publish/' + arg).replace('$TOKEN', grunt.file.readJSON('publish/token').access_token));
+    grunt.task.run('exec:' + arg);
   });
 
   grunt.task.registerTask('process_chrome', 'Compiles and publishes Chrome extension to Chrome Web Store.', function() {
@@ -179,12 +167,9 @@ module.exports = function(grunt) {
       'compress:chrome',
       'clean:chrome',
       'exec:token_request',
-      'get_token',
-      'set_token_to_upload',
-      'exec:upload',
+      'exec_with_token:upload',
       'exec:token_request',
-      'get_token',
-      'set_token_to_publish',
+      'exec_with_token:publish_chrome',
       'exec:publish_chrome'
     ]);
   });
@@ -200,6 +185,6 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('default', ['compile:debug']);
+  grunt.registerTask('default', ['debug']);
 
 };
