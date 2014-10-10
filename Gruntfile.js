@@ -71,7 +71,7 @@ module.exports = function(grunt) {
         cwd: 'publish'
       },
       publish_chrome: {
-        cmd: "<%= publish %>"
+        cmd: "<%= publish_chrome %>"
       },
       publish_firefox: {
         cmd: 'git add --all && git commit -m "Version <%= new_version %>" && git tag -a v<%= new_version %> -m "Release v<%= new_version %>" && git push --follow-tags origin master'
@@ -169,8 +169,7 @@ module.exports = function(grunt) {
       'exec:token_request',
       'exec_with_token:upload',
       'exec:token_request',
-      'exec_with_token:publish_chrome',
-      'exec:publish_chrome'
+      'exec_with_token:publish_chrome'
     ]);
   });
 
