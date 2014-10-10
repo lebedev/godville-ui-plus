@@ -98,12 +98,18 @@ body {
 	width: 0px;
 	display: block;
 	position: fixed;
-	z-index: 2;
-	opacity: 0.5;
+	z-index: 302;
+	opacity: 0.75;
 	top: 0px;
 	left: 0px;
-	background: lawngreen;
 }
+#timeout_bar.day {
+	background: dodgerblue;
+}
+#timeout_bar.night {
+	background: chartreuse;
+}
+
 
 #ui_menu_bar {
 	font-size: 90%;

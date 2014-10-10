@@ -169,7 +169,7 @@ var ui_utils = {
 var ui_timeout_bar = {
 // creates timeout bar element
 	create: function() {
-		this.elem = $('<div id="timeout_bar" />');
+		this.elem = $('<div id="timeout_bar" class="' + (ui_storage.get('ui_s') == 'th_nightly' ? 'night' : 'day') + '"/>');
 		$('#menu_bar').after(this.elem);
 	},
 // starts timeout bar
@@ -1391,6 +1391,11 @@ var ui_improver = {
 				else color = '255,255,255';
 				background = 'linear-gradient(to right, rgba(' + color[0] + ',2) 30%, rgba(' + color[1] + ',0) 100%)';
 				$('#fader').css('background', background);
+			}
+			if (ui_storage.get('ui_s') == 'th_nightly') {
+				$('#timeout_bar').addClass('night').removeClass('day');
+			} else {
+				$('#timeout_bar').addClass('day').removeClass('night');
 			}
 		}
 	},
