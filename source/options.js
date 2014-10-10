@@ -162,8 +162,8 @@ function save_options(form) {
 
 		if ($j('#use_background:checked').length) {
 			if ($j('#custom_background:checked').length) {
-				var custom_file = $j('#custom_file')[0].files[0];
-				var custom_link = $j('#custom_link').val().match(/https?:\/\/.*/);
+				var custom_file = $j('#custom_file')[0].files[0],
+					custom_link = $j('#custom_link').val().match(/https?:\/\/.*/);
 				if (custom_file && custom_file.type.match(/^image\/(bmp|cis\-cod|gif|ief|jpeg|jpg|pipeg|png|svg\+xml|tiff|x\-cmu\-raster|x\-cmx|x\-icon|x\-portable\-anymap|x\-portable\-bitmap|x\-portable\-graymap|x\-portable\-pixmap|x\-rgb|x\-xbitmap|x\-xpixmap|x\-xwindowdump)$/i)) {
 					var reader = new FileReader();
 					reader.onload = function(e) {
@@ -194,6 +194,8 @@ function save_options(form) {
 			}
 			else if ($j('#cloud_background:checked').length)
 				storage.set('Option:useBackground', 'cloud');
+		} else {
+			storage.set('Option:useBackground', '');
 		}
 
 		if ($j('#freeze_voice_button:checked').length) {

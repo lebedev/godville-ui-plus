@@ -205,20 +205,13 @@ var ui_menu_bar = {
 // toggles ui dialog	
 	toggle: function(visible) {
 		ui_storage.set('uiMenuVisible', !ui_storage.get('uiMenuVisible'));
-		if (ui_storage.get('Option:useBackground'))
-			$('#fader').hide();
+		var cloud = $('#fader.cloud').length;
+		if (cloud) {
+			$('#fader').removeClass('up down');
+		}
 		this.bar.slideToggle("slow", function() {
-			if (ui_storage.get('Option:useBackground') == 'cloud') {
-				var color = new Array(2);
-				if (ui_storage.get('uiMenuVisible')) {
-					color[0] = '241,247,253';
-					color[1] = '233,243,253';
-				} else {
-					color[0] = '253,252,255';
-					color[1] = '243,248,253';
-				}
-				var background = 'linear-gradient(to right, rgba(' + color[0] + ',2) 30%, rgba(' + color[1] + ',0) 100%)';
-				$('#fader').css('background', background).show();
+			if (cloud) {
+				$('#fader').addClass(ui_storage.get('uiMenuVisible') ? 'down' : 'up');
 			}
 		});
 	},
@@ -512,7 +505,7 @@ var ui_logger = {
 	create: function() {
 		this.elem = $('<ul id="stats_log" />');
 		$('#menu_bar').after(this.elem);
-		this.elem.append('<div id="fader" style="position: absolute; left: 0; float: left; width: 50px; height: 100%;" />');
+		this.elem.append('<div id="fader" />');
 		this.need_separator = false;
 	},
 
@@ -1351,15 +1344,25 @@ var ui_improver = {
 			});
 		}
 
-		var color, background;
+		if (localStorage.getItem('ui_s') != ui_storage.get('ui_s')) {
+			ui_improver.Shovel = false;
+			ui_storage.set('ui_s', localStorage.getItem('ui_s'));
+			if (ui_storage.get('ui_s') == 'th_nightly') {
+				$('#timeout_bar').addClass('night').removeClass('day');
+			} else {
+				$('#timeout_bar').addClass('day').removeClass('night');
+			}
+		}
+
 		if (ui_storage.get('Option:useBackground') == 'cloud') {
 			if (!$('#fader.cloud').length) {
 				$('body').css('background-image', 'url(' + GM_getResource("images/background.jpg") + ')');
-				color = new Array(2);
-				if (ui_storage.get('uiMenuVisible')) {color[0] = '241,247,253'; color[1] = '233,243,253';}
-				else {color[0] = '253,252,255'; color[1] = '243,248,253';}
-				background = 'linear-gradient(to right, rgba(' + color[0] + ',2) 30%, rgba(' + color[1] + ',0) 100%)';
-				$('#fader').show().css('background', background).addClass('cloud').removeClass('custom');
+				if (ui_storage.get('uiMenuVisible')) {
+					$('#fader').addClass('down');
+				} else {
+					$('#fader').addClass('up');
+				}
+				$('#fader').addClass('cloud').removeClass('day night');
 			}
 		} else if (ui_storage.get('Option:useBackground')) {
 			//Mini-hash to check if that is the same background
@@ -1372,30 +1375,14 @@ var ui_improver = {
 			if (hash != this.hash) {
 				this.hash = hash;
 				$('body').css('background-image', 'url(' + ui_utils.escapeHTML(str) + ')');
-				$('#fader').hide().removeClass('cloud').addClass('custom');
+				$('#fader').removeClass('cloud up down day night');
 			}
-		} else if ($('#fader.cloud, #fader.custom').length) {
-			$('#fader').show();
+		} else {
 			$('body').css('background-image', '');
-			if (ui_storage.get('ui_s') == 'th_nightly') color = '0,0,0';
-			else color = '255,255,255';
-			background = 'linear-gradient(to right, rgba(' + color + ',2) 30%, rgba(' + color + ',0) 100%)';
-			$('#fader').css('background', background).removeClass('cloud').removeClass('custom');
-		}
-		
-		if (localStorage.getItem('ui_s') != ui_storage.get('ui_s')) {
-			ui_improver.Shovel = false;
-			ui_storage.set('ui_s', localStorage.getItem('ui_s'));
-			if (!ui_storage.get('Option:useBackground')) {
-				if (ui_storage.get('ui_s') == 'th_nightly') color = '0,0,0';
-				else color = '255,255,255';
-				background = 'linear-gradient(to right, rgba(' + color[0] + ',2) 30%, rgba(' + color[1] + ',0) 100%)';
-				$('#fader').css('background', background);
-			}
-			if (ui_storage.get('ui_s') == 'th_nightly') {
-				$('#timeout_bar').addClass('night').removeClass('day');
-			} else {
-				$('#timeout_bar').addClass('day').removeClass('night');
+			if (ui_storage.get('ui_s') == 'th_nightly' && !$('#fader.night').length) {
+				$('#fader').addClass('night').removeClass('cloud up down day');
+			} else if (ui_storage.get('ui_s') != 'th_nightly' && !$('#fader.day').length) {
+				$('#fader').addClass('day').removeClass('cloud up down night');
 			}
 		}
 	},
@@ -1505,19 +1492,6 @@ var starter = setInterval(function() {
 		ui_menu_bar.create();
 		ui_informer.init();
 		ui_improver.improve();
-		if (ui_utils.isDeveloper()) {
-			setInterval(function() {
-				$('#fader').load('forums/show/2 td', function() {
-					var posts = parseInt($('#fader .entry-title:contains("Аддоны для Firefox и Chrome - дополнения в интерфейс игры")').parent().next().text());
-					if (posts > ui_storage.get('posts')) {
-						ui_storage.set('posts', posts);
-						ui_informer.update('new posts', false);
-						ui_informer.update('new posts', true);
-					}
-					$('#fader').empty();
-				});
-			}, 300000);
-		}
 		var finish = new Date();
 		GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
 	}

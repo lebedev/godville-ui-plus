@@ -72,7 +72,7 @@ return '<p>\n' +
 '							</div>\n' +
 '							<div class="new_line"><label class="l_capt" for="use_background">Включить фон</label>\n' +
 '								<div class="field_content">\n' +
-'									<input id="use_background" name="use_background" class="option-checkbox" type="checkbox">\n' +
+'									<input id="use_background" name="use_background" class="menu-checkbox" type="checkbox">\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line" id="background_desc">\n' +

@@ -170,3 +170,23 @@ a {
 #facebox_overlay {
 	z-index: 302;
 }
+
+#fader {
+	position: absolute;
+	left: 0;
+	float: left;
+	width: 50px;
+	height: 100%;
+}
+#fader.day {
+	background: linear-gradient(to right, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 100%);
+}
+#fader.night {
+	background: linear-gradient(to right, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 100%);
+}
+#fader.cloud.up {
+	background: linear-gradient(to right, rgba(253, 252, 255, 1) 30%, rgba(243, 248, 253, 0) 100%);
+}
+#fader.cloud.down {
+	background: linear-gradient(to right, rgba(213, 234, 251, 1) 30%, rgba(213, 234, 251, 0) 100%);
+}
