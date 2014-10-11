@@ -34,12 +34,6 @@ if (isTopic) {
 	links_containers = document.querySelectorAll('.c2 small');
 }
 
-//console.log(isTopic);
-//console.log(forum);
-//console.log(god_name);
-//console.log(topics);
-//console.log(links_containers);
-
 // add links
 for (var i = 0, len = links_containers.length; i < len; i++) {
 	topic = isTopic ? location.pathname.match(/\d+/)[0]
@@ -58,10 +52,8 @@ function follow(e) {
 		posts = isTopic ? +document.querySelector('.subtitle').textContent.match(/\d+/)[0]
 						: +this.parentElement.parentElement.nextElementSibling.textContent,
 		topics = JSON.parse(storage.get(forum));
-	//console.log(forum + ' topics was', JSON.stringify(topics));
 	topics[topic] = posts;
 	storage.set(forum, JSON.stringify(topics));
-	//console.log(forum + ' topics is', JSON.stringify(topics));
 	this.style.display = 'none';
 	this.parentElement.querySelector('.unfollow').style.display = 'inline';
 }
@@ -76,10 +68,8 @@ function unfollow(e) {
 	var topic = isTopic ? location.pathname.match(/\d+/)[0]
 						: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
 		topics = JSON.parse(storage.get(forum));
-	//console.log(forum + ' topics was', JSON.stringify(topics));
 	delete topics[topic];
 	storage.set(forum, JSON.stringify(topics));
-	//console.log(forum + ' topics is', JSON.stringify(topics));
 	this.style.display = 'none';
 	this.parentElement.querySelector('.follow').style.display = 'inline';
 }
