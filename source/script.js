@@ -1406,7 +1406,6 @@ var ui_improver = {
 				this.setSelectionRange(pos + 1, pos + 1);
 			}
 		}).addClass('improved');
-
 	},
 
 	checkButtonsVisibility: function() {
@@ -1436,8 +1435,9 @@ var ui_improver = {
 	improveWindowWidthChangeAndNewElementsInsertionRelatedStuff: function() {
 		if (ui_storage.get('Option:useBackground')) {
 			//background offset
-			if (ui_storage.get('Option:useBackground') == 'cloud')
+			if (ui_storage.get('Option:useBackground') == 'cloud') {
 				$('body').css('background-position', ($('#fader').offset().left ? ($('#fader').offset().left - 163.75) : 0) + 'px 0');
+			}
 			//body widening
 			$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
 		}
@@ -1454,15 +1454,21 @@ var ui_improver = {
 					break;
 				}
 			}
-			for (i = $('.frDockCell').length%row_capacity; i < $('.frDockCell').length; i+=row_capacity)
+			for (i = $('.frDockCell').length % row_capacity; i < $('.frDockCell').length; i += row_capacity) {
 				$('.frDockCell').eq(i).css('clear', 'right');
+			}
+			/// TODO: повесить на .dockfr_close.div_link эту же функцию
 		}
 		
 		//padding for page settings link
-		var padding_bottom = $('.frDockCell:last').length ? Math.floor($('.frDockCell:last').position().top/26.3 + 0.5)*$('.frDockCell').height() : 0;
+		var padding_bottom = $('.frDockCell:last').length ? Math.floor($('.frDockCell:last').position().top/26.3 + 0.5)*$('.frDockCell').height() : 0,
+			isBottom = window.scrollY >= window.scrollMaxY - 10;
 		padding_bottom = Math.floor(padding_bottom*10)/10 + 40;
 		padding_bottom = (padding_bottom < 0) ? 0 : padding_bottom + 'px';
 		$('.reset_layout').css('padding-bottom', padding_bottom);
+		if (isBottom) {
+			window.scrollTo(0, window.scrollMaxY);
+		}
 		
 		//settings dialod
 		if (!ui_utils.isAlreadyImproved($('#facebox'))) {
