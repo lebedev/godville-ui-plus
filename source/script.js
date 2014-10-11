@@ -22,7 +22,7 @@ var ui_data = {
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
 			ui_storage.set('Forum1', '{}');
-			ui_storage.set('Forum2', '{"2812": ' + ui_storage.get('posts') + '}');
+			ui_storage.set('Forum2', '{"2812": 539}');
 			ui_storage.set('Forum3', '{}');
 			ui_storage.set('Forum4', '{}');
 			ui_storage.set('Forum5', '{}');
@@ -696,7 +696,14 @@ var ui_informer = {
 	clear_title: function() {
 		var pm = $('.fr_new_badge_pos:visible').text();
 		pm = pm ? '[' + pm + '] ' : '';
-		document.title = pm + this.title;
+
+		var fi = 0;
+		for (var topic in ui_storage.get('ForumInformers')) {
+			fi++;
+		}
+		fi = fi ? '[f]' : '';
+
+		document.title = pm + fi + this.title;
 		$('link[rel="shortcut icon"]').remove();
 		$('head').append('<link rel="shortcut icon" href="images/favicon.ico" />');
 	},
