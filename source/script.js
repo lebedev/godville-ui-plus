@@ -20,15 +20,16 @@ var ui_data = {
 		localStorage.setItem('GM_CurrentUser', this.god_name);
 		
 		// init forum data
-		//if (!ui_storage.get('Forum1')) {
-			ui_storage.set('Forum1', '{"371": 50374}');
-			ui_storage.set('Forum2', '{"2812": 530, "2235": 8543}');
+		if (!ui_storage.get('Forum1')) {
+			ui_storage.set('Forum1', '{}');
+			ui_storage.set('Forum2', '{"2812": ' + ui_storage.get('posts') + '}');
 			ui_storage.set('Forum3', '{}');
-			ui_storage.set('Forum4', '{"1049": 7000}');
+			ui_storage.set('Forum4', '{}');
 			ui_storage.set('Forum5', '{}');
 			ui_storage.set('Forum6', '{}');
 			ui_storage.set('ForumInformers', '{}');
-		//}
+			localStorage.removeItem('GM_' + this.god_name + ':posts');
+		}
 
 		// get monsters of the day
 		$('<div>', {id:"motd"}).insertAfter($('#menu_bar')).hide();
@@ -36,7 +37,7 @@ var ui_data = {
 			ui_improver.monstersOfTheDay = new RegExp($('#motd a:eq(0)').text() + '|' + $('#motd a:eq(1)').text());
 			$('#motd').remove();
 		});
-	},
+	}/*,
 
 // gets add-on's page and check it's version
 	checkLastVersion: function() {
@@ -50,7 +51,7 @@ var ui_data = {
 					ui_informer.update('new posts', true);
 				}
 			}	
-			//var data, timer = 0;
+			//var data, timer = 0;*/
 			//this.lastVersion = response.match(/Текущая версия[^<]*<[^<]*<[^<]*/)[0].replace(/[^>]*>[^>]*>/, '');
 			/*var r = new RegExp('<[^>]*>Ссылка на скачивание Godville UI\\+ для ' + GM_browser);
 			var link = response.match(r)[0].replace(/^([^\"]*\")/, '').replace(/(".*)$/, '');
@@ -92,12 +93,12 @@ var ui_data = {
 				ui_informer.update('new version', false);
 				ui_informer.update('new version', timer != 0); //timer == 0 as false, timer != 0 as true
 				ui_menu_bar.append('<div>' + data + '</div>');
-			}, timer);*/
+			}, timer);
 		})
 		.error(function() {
 			ui_menu_bar.append('<span>Не удалось получить количество постов. Попробуйте обновить страницу.</span>');
 		});
-	}
+	}*/
 };
 
 // ------------------------
@@ -225,9 +226,9 @@ var ui_menu_bar = {
 		if (ui_storage.get('uiMenuVisible')) this.bar.show();
 		this.content = $('.hint_bar_content', this.bar);
 		this.append('<div style="text-align: left;">Если что-то работает не так, как должно, — ' +
-						(GM_browser == 'Firefox' ? 'загляните в веб-консоль (Ctrl+Shift+K), а также в консоль ошибок (Ctrl+Shift+J)'
-												 : 'обновите страницу и проверьте консоль (Ctrl+Shift+J) на наличие ошибок') +
-						'. Если обновление страницы и дымовые сигналы не помогли, напишите об этом в ' + 
+						(GM_browser == 'Firefox' ? 'загляните в веб-консоль (Ctrl+Shift+K), а также в консоль ошибок (Ctrl+Shift+J).'
+												 : 'обновите страницу и проверьте консоль (Ctrl+Shift+J) на наличие ошибок.') +
+						'Если обновление страницы и дымовые сигналы не помогли, напишите об этом в ' + 
 						'<a href="skype:angly_cat">скайп</a>,' + 
 						' богу <a href="http://godville.net/gods/Бэдлак" title="Откроется в новом окне" target="about:blank">Бэдлак</a>' + 
 						' или в <a href="https://godville.net/forums/show_topic/2812" title="Откроется в новой вкладке" target="about:blank">данную тему на форуме</a>.</div>');
@@ -243,7 +244,7 @@ var ui_menu_bar = {
 			this.append($('<span>, </span>'));
 			this.append(this.getDumpButton('forum', 'Forum'));
 		} else this.append('<br>');
-		ui_data.checkLastVersion();
+		//ui_data.checkLastVersion();
 		$('.hint_bar_close', this.bar).append(this.getToggleButton('закрыть'));
 		$('#menu_bar').after(this.bar);
 		$('#menu_bar ul').append('<li> | </li>')
@@ -608,7 +609,7 @@ var ui_informer = {
 		//title saver
 		this.title = document.title;
 		// container
-		this.container = $('<div id="informer_bar" style="position: fixed; top: 0; z-index: 301;"/>');
+		this.container = $('<div id="informer_bar" />');
 		$('#main_wrapper').prepend(this.container);
 		// load and draw labels
 		this.load();
@@ -656,11 +657,10 @@ var ui_informer = {
 	},
 	
 	create_label: function(flag) {
-		var $label = $('<div>' + flag + '</div>')
-			.click(function() {
-						 ui_informer.hide(flag);
-						 return false;
-					});
+		var $label = $('<div>' + flag + '</div>').click(function() {
+			ui_informer.hide(flag);
+			return false;
+		});
 		this.container.append($label);
 	},
 	
@@ -723,7 +723,10 @@ var ui_informer = {
 // ------------------------------------
 var ui_forum = {
 	init: function() {
-		console.log('Forum watcher will be initialized here.');
+		this.container = $('<div id="forum_informer_bar" />');
+		$('body').prepend(this.container);
+		this.check();
+		setInterval(this.check.bind(this), 300000);
 	},
 	check: function() {
 		for (var forum_no = 1; forum_no <= 6; forum_no++) {
@@ -738,6 +741,35 @@ var ui_forum = {
 			}
 		}
 	},
+	process: function(forum_no) {
+		var informers = JSON.parse(ui_storage.get('ForumInformers')),
+			topics = JSON.parse(ui_storage.get('Forum' + forum_no));
+		for (var topic in topics) {
+			if (informers[topic]) {
+				this.set_informer(topic, informers[topic], topics[topic]);
+			}
+		}
+	},
+	set_informer: function(topic_no, topic_data, posts_count) {
+		var informer = $('#topic' + topic_no)[0];
+		if (!informer) {
+			var $informer = $('<a id="topic' + topic_no + '"><span /><div class="fr_new_badge" /></a>').click(function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				var informers = JSON.parse(ui_storage.get('ForumInformers'));
+				delete informers[this.id.match(/\d+/)[0]];
+				ui_storage.set('ForumInformers', JSON.stringify(informers));
+				this.parentElement.removeChild(this);
+			});
+			this.container.append($informer);
+			informer = $informer[0];
+		}
+		var page = Math.floor((posts_count - topic_data.diff)/25) + 1;
+		informer.href = '/forums/show_topic/' + topic_no + '?page=' + page;
+		informer.style = 'padding-right: ' + (16 + String(topic_data.diff).length*6) + 'px;';
+		informer.getElementsByTagName('span')[0].textContent = topic_data.name;
+		informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
+	},
 	get: function(forum_no, topics) {
 		var xhr = new XMLHttpRequest();
 		xhr.forum_no = forum_no;
@@ -745,6 +777,7 @@ var ui_forum = {
 		xhr.onreadystatechange = ensureReadiness;
 
 		function ensureReadiness() {
+			try {
 			if (xhr.readyState < 4 || xhr.status !== 200) {
 				return;
 			}
@@ -754,22 +787,36 @@ var ui_forum = {
 					informers = JSON.parse(ui_storage.get('ForumInformers'));
 				for (i = 0, len = xhr.topics.length; i < len; i++) {
 					temp = xhr.responseText.match(RegExp("show_topic\\/" + xhr.topics[i] + "[^>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + xhr.topics[i]));
-					if (temp && (diff = +temp[2] - forum[xhr.topics[i]])) {
+					if (temp) {
+						diff = +temp[2] - forum[xhr.topics[i]];
+					}
+					if (diff) {
 						forum[xhr.topics[i]] = +temp[2];
-						if (!informers[xhr.topics[i]]) {
-							//create
-							informers[xhr.topics[i]] = {diff: diff, name: temp[1]};
+						if (temp[3] != ui_data.god_name) {
+							if (!informers[xhr.topics[i]]) {
+								//create
+								informers[xhr.topics[i]] = {diff: diff, name: temp[1]};
+							} else {
+								//update
+								old_diff = informers[xhr.topics[i]].diff;
+								delete informers[xhr.topics[i]];
+								informers[xhr.topics[i]] = {diff: old_diff + diff, name: temp[1]};
+							}
 						} else {
-							//update
-							old_diff = informers[xhr.topics[i]].diff;
 							delete informers[xhr.topics[i]];
-							informers[xhr.topics[i]] = {diff: old_diff + diff, name: temp[1]};
 						}
 					}
 				}
-				ui_storage.set('Forum' + xhr.forum_no, JSON.stringify(forum));
 				ui_storage.set('ForumInformers', JSON.stringify(informers));
+				ui_storage.set('Forum' + xhr.forum_no, JSON.stringify(forum));
+				ui_forum.process(xhr.forum_no);
 			}
+			} catch (error) {
+			GM_log(error);
+			if (GM_browser == "Firefox") {
+				GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
+			}
+		}
 		}
 
 		xhr.open('GET', '/forums/show/' + forum_no, true);
@@ -813,8 +860,9 @@ var ui_improver = {
 			this.isFirstTime = false;
 		} catch (error) {
 			GM_log(error);
-			if (GM_browser == "Firefox")
+			if (GM_browser == "Firefox") {
 				GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
+			}
 		} finally {
 			ui_improver.improveInProcess = false;
 		}
@@ -1550,6 +1598,7 @@ var ui_improver = {
 // Main code
 var starter = setInterval(function() {
 	if ($('#m_info').length || $('#stats').length) {
+		try {
 		var start = new Date();
 		clearInterval(starter);
 		ui_data.init();
@@ -1564,6 +1613,13 @@ var starter = setInterval(function() {
 		ui_forum.init();
 		var finish = new Date();
 		GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
+		} catch (error) {
+			GM_log(error);
+			if (GM_browser == "Firefox") {
+				GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
+			}
+		}
+
 	}
 }, 200);
 

@@ -128,12 +128,12 @@ body {
 
 #informer_bar {
 	display: block;
-	position: absolute;
+	position: fixed;
 	top: 0px;
 	right: 0px;
+	z-index: 301;
 	pointer-events: none;
 }
-
 #informer_bar div {
 	float: right;
 	margin: 0.4em 0.4em 0 0;
@@ -143,6 +143,52 @@ body {
 	border-radius: 2px;
 	cursor: pointer;
 	pointer-events: auto;
+}
+
+#forum_informer_bar {
+	display: block;
+	top: 0px;
+	left: 0px;
+	z-index: 301;
+	pointer-events: none;
+	position: fixed;
+}
+#forum_informer_bar a {
+	float: left;
+	margin: 0.4em 0 0 0.4em;
+	padding: 0.1em 0.5em;
+	background: #99D9EA;
+	border: 1px solid #00A2E8;
+	border-radius: 6px 10.5px 10.5px 6px;
+	pointer-events: auto;
+	clear: both;
+	position: relative;
+	height: 21px;
+	width: 132px;
+	min-width: 132px;
+	box-sizing: padding-box;
+}
+#forum_informer_bar a,
+#forum_informer_bar a:hover,
+#forum_informer_bar a:visited,
+#forum_informer_bar a:active {
+	color: #3F48CC;
+	text-decoration: none;
+}
+#forum_informer_bar a:hover {
+	width: auto;
+}
+#forum_informer_bar .fr_new_badge {
+	top: 2px;
+	right: 2px;
+}
+
+#forum_informer_bar span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
 }
 
 .msgDockWrapper {
