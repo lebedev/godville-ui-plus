@@ -1,33 +1,27 @@
 var loader = {
 
 contentLoad: function(event) {
-	var doc = event.originalTarget,
-		path = doc.location.pathname;
+	var doc = event.originalTarget;
 	if (doc.location.href.match(/^https?:\/\/godville.net/)) {
-		var windowStats = new WeakMap();
-		if (path.match(/^\/superhero/)) {
-			if (!windowStats.get(doc)) {
-				windowStats.set(doc,'scriptsLoaded');
-				loader.createScript(doc, 'chrome://godvilleui/content/phrases.js');
-				loader.createScript(doc, 'chrome://godvilleui/content/gm_func.js');
-				loader.createScript(doc, 'chrome://godvilleui/content/script.js');
-			}
+		var windowStats = new WeakMap(),
+			path = doc.location.pathname;
+		if (path.match(/^\/superhero/) && !windowStats.get(doc)) {
+			windowStats.set(doc,'scriptsLoaded');
+			loader.createScript(doc, 'chrome://godvilleui/content/phrases.js');
+			loader.createScript(doc, 'chrome://godvilleui/content/gm_func.js');
+			loader.createScript(doc, 'chrome://godvilleui/content/script.js');
 		}
-		if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-			if (!windowStats.get(doc)) {
-				windowStats.set(doc,'scriptsLoaded');
-				loader.createScript(doc, 'chrome://godvilleui/content/jquery-2.1.0.min.js');
-				loader.createScript(doc, 'chrome://godvilleui/content/phrases.js');
-				loader.createScript(doc, 'chrome://godvilleui/content/gm_func.js');
-				loader.createScript(doc, 'chrome://godvilleui/content/options-page.js');
-				setTimeout(function(){loader.createScript(doc, 'chrome://godvilleui/content/options.js');}, 1000);
-			}
+		if (path.match(/^\/user\/(?:profile|rk_success)/) && !windowStats.get(doc)) {
+			windowStats.set(doc,'scriptsLoaded');
+			loader.createScript(doc, 'chrome://godvilleui/content/jquery-2.1.0.min.js');
+			loader.createScript(doc, 'chrome://godvilleui/content/phrases.js');
+			loader.createScript(doc, 'chrome://godvilleui/content/gm_func.js');
+			loader.createScript(doc, 'chrome://godvilleui/content/options-page.js');
+			setTimeout(function(){loader.createScript(doc, 'chrome://godvilleui/content/options.js');}, 1000);
 		}
-		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-			if (!windowStats.get(doc)) {
-				windowStats.set(doc,'scriptsLoaded');
-				loader.createScript(doc, 'chrome://godvilleui/content/forum.js');
-			}
+		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/) && !windowStats.get(doc)) {
+			windowStats.set(doc,'scriptsLoaded');
+			loader.createScript(doc, 'chrome://godvilleui/content/forum.js');
 		}
 	}
 },
