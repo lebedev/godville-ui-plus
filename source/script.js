@@ -28,7 +28,13 @@ var ui_data = {
 			ui_storage.set('Forum5', '{}');
 			ui_storage.set('Forum6', '{}');
 			ui_storage.set('ForumInformers', '{}');
+
+			// clear old data
 			localStorage.removeItem('GM_' + this.god_name + ':posts');
+			localStorage.removeItem('GM_Options:User');
+			var informer_flags = JSON.parse(ui_storage.get('informer_flags'));
+			delete informer_flags['new posts'];
+			ui_storage.set('informer_flags', JSON.stringify(informer_flags));
 		}
 
 		// get monsters of the day
@@ -230,8 +236,8 @@ var ui_menu_bar = {
 												 : 'обновите страницу и проверьте консоль (Ctrl+Shift+J) на наличие ошибок.') +
 						'Если обновление страницы и дымовые сигналы не помогли, напишите об этом в ' + 
 						'<a href="skype:angly_cat">скайп</a>,' + 
-						' богу <a href="http://godville.net/gods/Бэдлак" title="Откроется в новом окне" target="about:blank">Бэдлак</a>' + 
-						' или в <a href="https://godville.net/forums/show_topic/2812" title="Откроется в новой вкладке" target="about:blank">данную тему на форуме</a>.</div>');
+						' богу <a href="/gods/Бэдлак" title="Откроется в новом окне" target="about:blank">Бэдлак</a>' +
+						' или в <a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="about:blank">данную тему на форуме</a>.</div>');
 		if (ui_utils.isDeveloper()) {
 			this.append($('<span>dump: </span>'));
 			this.append(this.getDumpButton('all'));
@@ -299,7 +305,7 @@ var ui_storage = {
 // dumps all values related to current god_name
 	dump: function(selector) {
 		var lines = [];
-		var r = new RegExp('^GM_' + ui_data.god_name + ':' + (selector === null ? '' : selector));
+		var r = new RegExp('^GM_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
 		for (var i = 0; i < localStorage.length; i++) {
 			if (localStorage.key(i).match(r)) {
 				lines.push(localStorage.key(i) + " = " + localStorage[localStorage.key(i)]);
@@ -698,7 +704,7 @@ var ui_informer = {
 		pm = pm ? '[' + pm + '] ' : '';
 
 		var fi = 0;
-		for (var topic in ui_storage.get('ForumInformers')) {
+		for (var topic in JSON.parse(ui_storage.get('ForumInformers'))) {
 			fi++;
 		}
 		fi = fi ? '[f]' : '';
