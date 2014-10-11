@@ -16,8 +16,8 @@ var storage = {
 var follow_links, isFollowed, links_containers, temp, topic, unfollow_links,
 	isTopic = location.pathname.match(/topic/) !== null,
 	forum_topics = 'Forum' + (isTopic ? document.querySelector('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
-											  : location.pathname.match(/forums\/show\/(\d+)/)[1]),
-	god_name = localStorage.getItem('GM_CurrentUser', god_name),
+									  : location.pathname.match(/forums\/show\/(\d+)/)[1]),
+	god_name = localStorage.getItem('GM_CurrentUser'),
 	topics = JSON.parse(storage.get(forum_topics));
 
 if (isTopic) {
