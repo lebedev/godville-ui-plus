@@ -131,29 +131,27 @@ body {
 	position: absolute;
 	top: 0px;
 	right: 0px;
+	pointer-events: none;
 }
 
 #informer_bar div {
 	float: right;
 	margin: 0.4em 0.4em 0 0;
 	padding: 0.1em 0.5em;
-	background: Beige;
+	background: beige;
 	border: 1px solid orange;
 	border-radius: 2px;
 	cursor: pointer;
+	pointer-events: auto;
 }
 
-/*.msgDockWrapper {
-	z-index: 301;
+.msgDockWrapper {
+	pointer-events: none;
 }
 
-.msgDock {
-	z-index: 301;
+.msgDockWrapper * {
+	pointer-events: auto;
 }
-
-.msgDock.frbutton_pressed {
-	z-index: 302;
-}*/
 
 a {
 	cursor: pointer;
