@@ -563,7 +563,7 @@ var ui_logger = {
 		if (ui_data.isArena && !ui_data.isMap) {
 			this.watchStatsValue('Hero_HP', 'h:hp', 'Здоровье героя', 'hp');
 			this.watchStatsValue('Enemy_HP', 'e:hp', 'Здоровье соперника', 'death');
-			this.watchStatsValue('Hero_Alls_HP', 'a:hp', 'Здоровье союзников', 'brick');
+			this.watchStatsValue('Hero_Alls_HP', 'a:hp', 'Здоровье союзников', 'battery');
 			this.watchStatsValue('Hero_Inv', 'h:inv', 'Инвентарь', 'inv');
 			this.watchStatsValue('Hero_Gold', 'h:gld', 'Золото', 'gold'); 
 			this.watchStatsValue('Hero_Battery', 'h:bt', 'Заряды', 'battery');
