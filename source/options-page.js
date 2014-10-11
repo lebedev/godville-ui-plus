@@ -146,7 +146,6 @@ return '<p>\n' +
 '							<div class="new_line">\n' +
 '								<div class="g_desc">позволяет выбрать отображаемые информеры</div>\n' +
 '								<div class="g_desc" id="informers">\n' +
-'								<input class="informer-checkbox" id="new_posts" name="new_posts" type="checkbox"><label for="new_posts">новые сообщения в теме плагина</label><br>\n' +
 '								<input class="informer-checkbox" id="full_prana" name="full_prana" type="checkbox"><label for="full_prana">полная прана</label><br>\n' +
 '								<input class="informer-checkbox" id="much_gold" name="much_gold" type="checkbox"><label for="much_gold">много золота</label><br>\n' +
 '								<input class="informer-checkbox" id="dead" name="dead" type="checkbox"><label for="dead">смерть</label><br>\n' +
