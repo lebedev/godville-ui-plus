@@ -20,14 +20,15 @@ var ui_data = {
 		localStorage.setItem('GM_CurrentUser', this.god_name);
 		
 		// init forum data
-		/*if (!ui_storage.get('Forum1')) {
-			ui_storage.set('Forum1', '{}');
-			ui_storage.set('Forum2', '{"2812": 0}');
+		//if (!ui_storage.get('Forum1')) {
+			ui_storage.set('Forum1', '{"371": 50374}');
+			ui_storage.set('Forum2', '{"2812": 530, "2235": 8543}');
 			ui_storage.set('Forum3', '{}');
-			ui_storage.set('Forum4', '{}');
+			ui_storage.set('Forum4', '{"1049": 7000}');
 			ui_storage.set('Forum5', '{}');
 			ui_storage.set('Forum6', '{}');
-		}*/
+			ui_storage.set('ForumInformers', '{}');
+		//}
 
 		// get monsters of the day
 		$('<div>', {id:"motd"}).insertAfter($('#menu_bar')).hide();
@@ -239,6 +240,8 @@ var ui_menu_bar = {
 			this.append(this.getDumpButton('stats', 'Stats'));
 			this.append($('<span>, </span>'));
 			this.append(this.getDumpButton('logger', 'Logger'));
+			this.append($('<span>, </span>'));
+			this.append(this.getDumpButton('forum', 'Forum'));
 		} else this.append('<br>');
 		ui_data.checkLastVersion();
 		$('.hint_bar_close', this.bar).append(this.getToggleButton('закрыть'));
@@ -711,6 +714,66 @@ var ui_informer = {
 		document.title = sep + ' ' + arr.join('! ') + ' ' + sep;
 		$('link[rel="shortcut icon"]').remove();
 		$('head').append('<link rel="shortcut icon" href=' + favicon + ' />');		
+	}
+};
+
+// ------------------------------------
+// Информер для форума
+// * показывает попапы
+// ------------------------------------
+var ui_forum = {
+	init: function() {
+		console.log('Forum watcher will be initialized here.');
+	},
+	check: function() {
+		for (var forum_no = 1; forum_no <= 6; forum_no++) {
+			var current_forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
+				topics = [];
+			for (var topic in current_forum) {
+				topics.push(topic);
+			}
+			if (topics.length) {
+				// to prevent simultaneous ForumInformers access
+				setTimeout(this.get.bind(this, forum_no, topics), 500*forum_no);
+			}
+		}
+	},
+	get: function(forum_no, topics) {
+		var xhr = new XMLHttpRequest();
+		xhr.forum_no = forum_no;
+		xhr.topics = topics;
+		xhr.onreadystatechange = ensureReadiness;
+
+		function ensureReadiness() {
+			if (xhr.readyState < 4 || xhr.status !== 200) {
+				return;
+			}
+			if (xhr.readyState === 4) {
+				var i, diff, temp, old_diff,
+					forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
+					informers = JSON.parse(ui_storage.get('ForumInformers'));
+				for (i = 0, len = xhr.topics.length; i < len; i++) {
+					temp = xhr.responseText.match(RegExp("show_topic\\/" + xhr.topics[i] + "[^>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + xhr.topics[i]));
+					if (temp && (diff = +temp[2] - forum[xhr.topics[i]])) {
+						forum[xhr.topics[i]] = +temp[2];
+						if (!informers[xhr.topics[i]]) {
+							//create
+							informers[xhr.topics[i]] = {diff: diff, name: temp[1]};
+						} else {
+							//update
+							old_diff = informers[xhr.topics[i]].diff;
+							delete informers[xhr.topics[i]];
+							informers[xhr.topics[i]] = {diff: old_diff + diff, name: temp[1]};
+						}
+					}
+				}
+				ui_storage.set('Forum' + xhr.forum_no, JSON.stringify(forum));
+				ui_storage.set('ForumInformers', JSON.stringify(informers));
+			}
+		}
+
+		xhr.open('GET', '/forums/show/' + forum_no, true);
+		xhr.send('');
 	}
 };
 
@@ -1498,6 +1561,7 @@ var starter = setInterval(function() {
 		ui_menu_bar.create();
 		ui_informer.init();
 		ui_improver.improve();
+		ui_forum.init();
 		var finish = new Date();
 		GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
 	}
