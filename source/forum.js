@@ -15,10 +15,10 @@ var storage = {
 
 var follow_links, isFollowed, links_containers, temp, topic, unfollow_links,
 	isTopic = location.pathname.match(/topic/) !== null,
-	forum = 'Forum' + (isTopic ? document.querySelector('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
-							   : location.pathname.match(/forums\/show\/(\d+)/)[1]),
+	forum_topics = 'Forum' + (isTopic ? document.querySelector('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
+											  : location.pathname.match(/forums\/show\/(\d+)/)[1]),
 	god_name = localStorage.getItem('GM_CurrentUser', god_name),
-	topics = JSON.parse(storage.get(forum));
+	topics = JSON.parse(storage.get(forum_topics));
 
 if (isTopic) {
 	links_containers = document.querySelectorAll('#topic_mod');
@@ -51,9 +51,9 @@ function follow(e) {
 						: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
 		posts = isTopic ? +document.querySelector('.subtitle').textContent.match(/\d+/)[0]
 						: +this.parentElement.parentElement.nextElementSibling.textContent,
-		topics = JSON.parse(storage.get(forum));
+		topics = JSON.parse(storage.get(forum_topics));
 	topics[topic] = posts;
-	storage.set(forum, JSON.stringify(topics));
+	storage.set(forum_topics, JSON.stringify(topics));
 	this.style.display = 'none';
 	this.parentElement.querySelector('.unfollow').style.display = 'inline';
 }
@@ -67,9 +67,9 @@ function unfollow(e) {
 	e.preventDefault();
 	var topic = isTopic ? location.pathname.match(/\d+/)[0]
 						: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-		topics = JSON.parse(storage.get(forum));
+		topics = JSON.parse(storage.get(forum_topics));
 	delete topics[topic];
-	storage.set(forum, JSON.stringify(topics));
+	storage.set(forum_topics, JSON.stringify(topics));
 	this.style.display = 'none';
 	this.parentElement.querySelector('.follow').style.display = 'inline';
 }
