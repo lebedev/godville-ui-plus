@@ -32,6 +32,17 @@
 			"https://godville.net/user/profile*",
 			"https://godville.net/user/rk_success*"
 		]
+	},
+	{
+		"js": [
+			"forum.js"
+		],
+		"matches": [
+			"http://godville.net/forums/show/*",
+			"http://godville.net/forums/show_topic/*",
+			"https://godville.net/forums/show/*",
+			"https://godville.net/forums/show_topic/*"
+		]
 	}],
 	
 	"icons": {
