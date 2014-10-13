@@ -1065,7 +1065,10 @@ var ui_improver = {
 				}
 			}
 			//hide_charge_button
-			$('#cntrl .hch_link')[0].style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : ''; 
+			var charge_button = $('#cntrl .hch_link')[0];
+			if (charge_button) {
+				charge_button.style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
+			}
 		}
 		
 		// Save stats
