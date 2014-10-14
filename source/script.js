@@ -850,7 +850,7 @@ var ui_improver = {
 	Shovel: false,
 	isFirstTime: true,
 	voiceSubmitted: false,
-	monstersOfTheDay: '',
+	monstersOfTheDay: null,
 	trophyList: [],
 	hucksterNews: '',
 	improve: function() {
