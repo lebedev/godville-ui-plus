@@ -803,21 +803,21 @@ var ui_forum = {
 					temp = xhr.responseText.match(RegExp("show_topic\\/" + xhr.topics[i] + "[^>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + xhr.topics[i]));
 					if (temp) {
 						diff = +temp[2] - forum[xhr.topics[i]];
-					}
-					if (diff) {
-						forum[xhr.topics[i]] = +temp[2];
-						if (temp[3] != ui_data.god_name) {
-							if (!informers[xhr.topics[i]]) {
-								//create
-								informers[xhr.topics[i]] = {diff: diff, name: temp[1]};
+						if (diff) {
+							forum[xhr.topics[i]] = +temp[2];
+							if (temp[3] != ui_data.god_name) {
+								if (!informers[xhr.topics[i]]) {
+									//create
+									informers[xhr.topics[i]] = {diff: diff, name: temp[1].replace(/&quot;/g, '"')};
+								} else {
+									//update
+									old_diff = informers[xhr.topics[i]].diff;
+									delete informers[xhr.topics[i]];
+									informers[xhr.topics[i]] = {diff: old_diff + diff, name: temp[1].replace(/&quot;/g, '"')};
+								}
 							} else {
-								//update
-								old_diff = informers[xhr.topics[i]].diff;
 								delete informers[xhr.topics[i]];
-								informers[xhr.topics[i]] = {diff: old_diff + diff, name: temp[1]};
 							}
-						} else {
-							delete informers[xhr.topics[i]];
 						}
 					}
 				}
