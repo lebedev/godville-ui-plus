@@ -163,10 +163,10 @@ body {
 	pointer-events: auto;
 	clear: both;
 	position: relative;
-	height: 21px;
+	height: 23px;
 	width: 132px;
 	min-width: 132px;
-	box-sizing: padding-box;
+	box-sizing: border-box;
 }
 #forum_informer_bar a,
 #forum_informer_bar a:hover,

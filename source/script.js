@@ -786,7 +786,7 @@ var ui_forum = {
 		}
 		var page = Math.floor((posts_count - topic_data.diff)/25) + 1;
 		informer.href = '/forums/show_topic/' + topic_no + '?page=' + page;
-		informer.style = 'padding-right: ' + (16 + String(topic_data.diff).length*6) + 'px;';
+		informer.style.paddingRight = (16 + String(topic_data.diff).length*6) + 'px';
 		informer.getElementsByTagName('span')[0].textContent = topic_data.name;
 		informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
 	},
