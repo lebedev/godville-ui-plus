@@ -767,13 +767,19 @@ var ui_forum = {
 		var informer = $('#topic' + topic_no)[0];
 		if (!informer) {
 			var $informer = $('<a id="topic' + topic_no + '"><span /><div class="fr_new_badge" /></a>').click(function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				var informers = JSON.parse(ui_storage.get('ForumInformers'));
-				delete informers[this.id.match(/\d+/)[0]];
-				ui_storage.set('ForumInformers', JSON.stringify(informers));
-				this.parentElement.removeChild(this);
-				$(document).trigger("DOMNodeInserted");
+				if (e.which == 1) {
+					e.preventDefault();
+				}
+			}).bind('mouseup', function(e) {
+				if (e.which == 1 || e.which == 2) {
+					var informers = JSON.parse(ui_storage.get('ForumInformers'));
+					delete informers[this.id.match(/\d+/)[0]];
+					ui_storage.set('ForumInformers', JSON.stringify(informers));
+					$(document).trigger("DOMNodeInserted");
+					$(this).slideToggle("fast", function() {
+						this.parentElement.removeChild(this);
+					});
+				}
 			});
 			this.container.append($informer);
 			informer = $informer[0];
