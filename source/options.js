@@ -71,11 +71,11 @@ function loadOptions() {
 		$j('#freeze_voice_button_desc').slideToggle("slow");
 	});
 	$j('#check_all').click(function() {
-		$j('.item-informer').attr('checked', true);
+		$j('.item-informer').prop('checked', true);
 		return false;
 	});
 	$j('#uncheck_all').click(function() {
-		$j('.item-informer').attr('checked', false);
+		$j('.item-informer').prop('checked', false);
 		return false;
 	});
 	$j('#disable_voice_generators').click(function() {
@@ -206,7 +206,7 @@ function save_options(form) {
 		} else storage.set('Option:freezeVoiceButton', '');
 
 		if (!$j('#forbidden_informers:checked').length) {
-			$j('.informer-checkbox').attr('checked', true);
+			$j('.informer-checkbox').prop('checked', true);
 		}
 		document.getElementById('smelt!').checked = $j('#smelter:checked').length;
 		document.getElementById('transform!').checked = $j('#transformer:checked').length;
@@ -259,9 +259,9 @@ function restore_options() {
 	if ($j('#relocate_duel_buttons:checked').length) {
 		$j('#relocate_duel_buttons_desc').hide();
 		var buttons = storage.get('Option:relocateDuelButtons');
-		if (buttons.match('arena')) $j('#relocate_arena').attr('checked', true);
-		if (buttons.match('chf')) $j('#relocate_chf').attr('checked', true);
-		if (buttons.match('cvs')) $j('#relocate_cvs').attr('checked', true);
+		if (buttons.match('arena')) $j('#relocate_arena').prop('checked', true);
+		if (buttons.match('chf')) $j('#relocate_chf').prop('checked', true);
+		if (buttons.match('cvs')) $j('#relocate_cvs').prop('checked', true);
 	} else {
 		$j('#relocate_duel_buttons_choice').hide();
 	}
@@ -277,8 +277,8 @@ function restore_options() {
 	if ($j('#freeze_voice_button:checked').length) {
 		$j('#freeze_voice_button_desc').hide();
 		var cases = storage.get('Option:freezeVoiceButton');
-		if (cases.match('after_voice')) $j('#freeze_after_voice').attr('checked', true);
-		if (cases.match('when_empty')) $j('#freeze_when_empty').attr('checked', true);
+		if (cases.match('after_voice')) $j('#freeze_after_voice').prop('checked', true);
+		if (cases.match('when_empty')) $j('#freeze_when_empty').prop('checked', true);
 	} else {
 		$j('#freeze_voice_button_choice').hide();
 	}
@@ -290,7 +290,7 @@ function restore_options() {
 				$j('.informer-checkbox')[i].checked = true;
 		}
 	} else {
-		$j('.informer-checkbox').attr('checked', true);
+		$j('.informer-checkbox').prop('checked', true);
 		$j('#informers').hide();
 	}
 	if ($j('#disable_voice_generators:checked').length) {
