@@ -113,6 +113,15 @@ module.exports = function(grunt) {
           ]
         }
       }
+    },
+    watch: {
+      scripts: {
+        files: 'source/**/*',
+        tasks: 'debug',
+        options: {
+          spawn: false,
+        }
+      }
     }
   });
 
@@ -120,6 +129,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-prompt');
 
@@ -184,6 +194,6 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('default', ['debug']);
+  grunt.registerTask('default', ['debug', 'watch']);
 
 };

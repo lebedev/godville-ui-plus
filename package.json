@@ -10,6 +10,7 @@
     "grunt-contrib-compress": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-jshint": "*",
+    "grunt-contrib-watch": "*",
     "grunt-exec": "*",
     "grunt-prompt": "*",
     "es6-symbol": "*"
