@@ -773,6 +773,7 @@ var ui_forum = {
 				delete informers[this.id.match(/\d+/)[0]];
 				ui_storage.set('ForumInformers', JSON.stringify(informers));
 				this.parentElement.removeChild(this);
+				$(document).trigger("DOMNodeInserted");
 			});
 			this.container.append($informer);
 			informer = $informer[0];
