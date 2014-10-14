@@ -104,10 +104,6 @@ module.exports = function(grunt) {
                          +new_version[2] > +old_version[2] ||
                          +new_version[3] > +old_version[3];
                 }
-              },
-              filter: function(value) {
-                grunt.file.write('current_version', value);
-                return value;
               }
             }
           ]
@@ -159,6 +155,7 @@ module.exports = function(grunt) {
         'copy',
         'process_chrome',
         'process_firefox',
+        'update_version'
       ]);
     } else {
       grunt.fail.warn("The required files don't exist. Can't run in 'release' mode.");
@@ -192,6 +189,10 @@ module.exports = function(grunt) {
       'exec:sign',
       'exec:publish_firefox'
     ]);
+  });
+
+  grunt.task.registerTask('update_version', 'Updates version in current_version.', function() {
+    grunt.file.write('current_version', grunt.config('new_version'));
   });
 
   grunt.registerTask('default', ['debug', 'watch']);
