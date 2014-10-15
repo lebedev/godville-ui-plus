@@ -154,8 +154,7 @@ module.exports = function(grunt) {
         'prompt:copy',
         'copy',
         'process_chrome',
-        'process_firefox',
-        'update_version'
+        'process_firefox'
       ]);
     } else {
       grunt.fail.warn("The required files don't exist. Can't run in 'release' mode.");
@@ -187,6 +186,7 @@ module.exports = function(grunt) {
       'clean:firefox',
       'exec:update',
       'exec:sign',
+      'update_version',
       'exec:publish_firefox'
     ]);
   });
