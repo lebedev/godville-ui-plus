@@ -1663,11 +1663,11 @@ $('html').mousemove(function() {
 	}
 });
 
-// Shift+Enter → new line improvement by inline-script to bypass stupid Chrome restrictions
+// "Shift+Enter → new line" improvement by inline-script to bypass stupid Chrome restrictions
 var shiftEnterScript = document.createElement('script');
 shiftEnterScript.innerHTML =
 "var inlineChatImprove = function() {\n" +
-"	var keypresses, handlers, j, klen,\n" +
+"	var keypresses, handlers,\n" +
 "		$tas = $('.frInputArea textarea:not(.improved)');\n" +
 "	if ($tas.length) {\n" +
 "		var new_keypress = function(handlers) {\n" +
@@ -1679,10 +1679,10 @@ shiftEnterScript.innerHTML =
 "				}\n" +
 "			};\n" +
 "		};\n" +
-"		for (i = 0, len = $tas.length; i < len; i++) {\n" +
+"		for (var i = 0, len = $tas.length; i < len; i++) {\n" +
 "			keypresses = $._data($tas[i], 'events').keypress;\n" +
 "			handlers = [];\n" +
-"			for (j = 0, klen = keypresses.length; j < klen; j++) {\n" +
+"			for (var j = 0, klen = keypresses.length; j < klen; j++) {\n" +
 "				handlers.push(keypresses[j].handler);\n" +
 "			}\n" +
 "			$tas.eq(i).unbind('keypress').keypress(new_keypress(handlers));\n" +
