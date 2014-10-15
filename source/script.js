@@ -226,7 +226,7 @@ var ui_menu_bar = {
 // creates ui dialog	
 	create: function() {
 		this.bar = $('<div id="ui_menu_bar" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
-					 '<div class="hint_bar_capt"><b>Godville UI+ (v.' + ui_data.currentVersion + ')</b></div>' + 
+					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b></div>' + 
 					 '<div class="hint_bar_content" style="padding: 0.5em 0.8em;"></div>' + 
 					 '<div class="hint_bar_close"></div></div>');
 		if (ui_storage.get('uiMenuVisible')) this.bar.show();
@@ -1522,24 +1522,17 @@ var ui_improver = {
 	},
 	
 	improveChat: function() {
-		for (var i = 1; i < $('.fr_msg_l:not(.improved)').length; i++) {
-			$cur_msg = $('.fr_msg_l:not(.improved)').eq(i);
+		// links replace
+		var $msgs = $('.fr_msg_l:not(.improved)');
+		for (var i = 1, len = $msgs.length; i < len; i++) {
+			$cur_msg = $msgs.eq(i);
 			$('#fader').append($('.fr_msg_meta', $cur_msg)).append($('.fr_msg_delete', $cur_msg));
 			var text = $cur_msg.text();
 			$cur_msg.empty();
 			$cur_msg.append(text.replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t ]+)/g, '<a href="$1" target="_blank" title="Откроется в новой вкладке">$1</a>'));
 			$cur_msg.append($('#fader .fr_msg_meta')).append($('#fader .fr_msg_delete'));
 		}
-		$('.fr_msg_l:not(.improved)').addClass('improved');
-		
-		$('.frInputArea textarea:not(.improved)').keypress(function(event) {
-			if (event.which == 32 && event.ctrlKey) {
-				event.preventDefault();
-				var pos = this.selectionStart;
-				$(this).val($(this).val().substr(0, pos) + '\n' + $(this).val().substr(pos));
-				this.setSelectionRange(pos + 1, pos + 1);
-			}
-		}).addClass('improved');
+		$msgs.addClass('improved');
 	},
 
 	checkButtonsVisibility: function() {
@@ -1551,10 +1544,10 @@ var ui_improver = {
 		}
 		$('#merge_button,.inspect_button,.voice_generator').hide();
 		if (ui_storage.get('Stats:Prana') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
-			$('.voice_generator,.inspect_button').show();
+			$('.voice_generator, .inspect_button').show();
 			if (ui_improver.trophyList.length) $('#merge_button').show();
 			//if ($('.f_news').text() != 'Возвращается к заданию...')
-			if (!ui_data.isArena){
+			if (!ui_data.isArena) {
 				if ($('#hk_distance .l_capt').text() == 'Город' || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display != 'none') 
 					$('#hk_distance .voice_generator').hide();
 				//if (ui_storage.get('Stats:Prana') == 100) $('#control .voice_generator').hide();
@@ -1638,7 +1631,7 @@ var starter = setInterval(function() {
 		GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
 		} catch (error) {
 			GM_log(error);
-			if (GM_browser == "Firefox") {
+			if (GM_browser == 'Firefox') {
 				GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
 			}
 		}
@@ -1647,7 +1640,7 @@ var starter = setInterval(function() {
 }, 200);
 
 // Event and listeners
-$(document).bind("DOMNodeInserted", function() {
+$(document).bind('DOMNodeInserted', function() {
 	if(!ui_improver.improveInProcess){
 		ui_improver.improveInProcess = true;
 		setTimeout(function() {
@@ -1669,3 +1662,34 @@ $('html').mousemove(function() {
 		}, 500);
 	}
 });
+
+// Shift+Enter → new line improvement by inline-script to bypass stupid Chrome restrictions
+var shiftEnterScript = document.createElement('script');
+shiftEnterScript.innerHTML =
+"var inlineChatImprove = function() {\n" +
+"	var keypresses, handlers, j, klen,\n" +
+"		$tas = $('.frInputArea textarea:not(.improved)');\n" +
+"	if ($tas.length) {\n" +
+"		var new_keypress = function(handlers) {\n" +
+"			return function(e) {\n" +
+"				if (e.which == 13 && !e.shiftKey) {\n" +
+"					for (var i = 0, len = handlers.length; i < len; i++) {\n" +
+"						handlers[i](e);\n" +
+"					}\n" +
+"				}\n" +
+"			};\n" +
+"		};\n" +
+"		for (i = 0, len = $tas.length; i < len; i++) {\n" +
+"			keypresses = $._data($tas[i], 'events').keypress;\n" +
+"			handlers = [];\n" +
+"			for (j = 0, klen = keypresses.length; j < klen; j++) {\n" +
+"				handlers.push(keypresses[j].handler);\n" +
+"			}\n" +
+"			$tas.eq(i).unbind('keypress').keypress(new_keypress(handlers));\n" +
+"		}\n" +
+"		$tas.addClass('improved');\n" +
+"		new_keypress = null;\n" +
+"	}\n" +
+"}\n" +
+"$(document).bind('DOMNodeInserted', inlineChatImprove);";
+document.body.appendChild(shiftEnterScript);
