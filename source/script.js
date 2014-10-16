@@ -1690,6 +1690,6 @@ shiftEnterScript.innerHTML =
 "		$tas.addClass('improved');\n" +
 "		new_keypress = null;\n" +
 "	}\n" +
-"}\n" +
+"};\n" +
 "$(document).bind('DOMNodeInserted', inlineChatImprove);";
 document.body.appendChild(shiftEnterScript);
