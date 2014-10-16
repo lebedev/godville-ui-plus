@@ -90,7 +90,7 @@ body {
 #stats_log .monster { color: darkmagenta; }
 #stats_log .death { color: red; }
 #stats_log .brick { color: goldenrod; font-weight: bold; }
-#stats_log .wood { color: saddlebrown; }
+#stats_log .wood { color: saddlebrown; font-weight: bold; }
 #stats_log .battery { color: blue; }
 #stats_log .retirement { color: darkorange; }
 #stats_log {
