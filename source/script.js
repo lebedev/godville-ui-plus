@@ -33,8 +33,10 @@ var ui_data = {
 			localStorage.removeItem('GM_' + this.god_name + ':posts');
 			localStorage.removeItem('GM_Options:User');
 			var informer_flags = JSON.parse(ui_storage.get('informer_flags'));
-			delete informer_flags['new posts'];
-			ui_storage.set('informer_flags', JSON.stringify(informer_flags));
+			if (informer_flags) {
+				delete informer_flags['new posts'];
+				ui_storage.set('informer_flags', JSON.stringify(informer_flags));
+			}
 		}
 
 		// get monsters of the day
