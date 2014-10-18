@@ -1650,7 +1650,7 @@ $(document).bind('DOMNodeInserted', function() {
 			if (ui_data.isArena) {
 				ui_logger.update();
 			}
-		}, 0);
+		}, 50);
 	}
 });
 
