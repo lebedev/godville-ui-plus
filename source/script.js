@@ -1571,23 +1571,7 @@ var ui_improver = {
 			$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
 		}
 		
-		var i;
-		
-		//proper message tabs appearance
-		if ($('.frDockCell').length && $('.frDockCell:last').position().top !== 0) {
-			var row_capacity;
-			$('.frDockCell').css('clear', '');
-			for (i = 0; i < $('.frDockCell').length; i++) {
-				if ($('.frDockCell').eq(i).position().top !== 0) {
-					row_capacity = i;
-					break;
-				}
-			}
-			for (i = $('.frDockCell').length % row_capacity; i < $('.frDockCell').length; i += row_capacity) {
-				$('.frDockCell').eq(i).css('clear', 'right');
-			}
-			/// TODO: повесить на .dockfr_close.div_link эту же функцию
-		}
+		this.chatsFix();
 		
 		//padding for page settings link
 		var padding_bottom = $('.frDockCell:last').length ? Math.floor($('.frDockCell:last').position().top/26.3 + 0.5)*$('.frDockCell').height() : 0,
@@ -1605,11 +1589,55 @@ var ui_improver = {
 			$('#facebox').css('top', ($(window).height() - $('#facebox').height())/2 + 'px');
 		}
 	},
+
+	chatsFix: function() {
+		var cells = document.querySelectorAll('.frDockCell');
+		for (var i = 0, len = cells.length; i < len; i++) {
+			cells[i].classList.remove('left');
+			cells[i].style.zIndex = len - i;
+			if (cells[i].getBoundingClientRect().right < 350) {
+				cells[i].classList.add('left');
+			}
+		}
+	},
 		
 	add_css: function () {
 		if ($('#ui_css').length === 0) {
 			GM_addGlobalStyleURL('godville-ui.css', 'ui_css');
 		}
+	}
+};
+
+var ui_observers = {
+	init: function() {
+		for (var key in this) {
+			if (this[key].observer) {
+				this[key].interval = setInterval(this.start.bind(this[key]), 100);
+			}
+		}
+	},
+	start: function() {
+		var target = document.querySelector(this.target);
+		if (target) {
+			clearInterval(this.interval);
+			this.observer.observe(target, this.config);
+		}
+	},
+	chats: {
+		config: { childList: true },
+		interval: 0,
+		observer: new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.addedNodes.length) {
+					var newNode = mutation.addedNodes[0];
+					newNode.parentNode.appendChild(newNode);
+				}
+				if (mutation.addedNodes.length || mutation.removedNodes.length) {
+					ui_improver.chatsFix();
+				}
+			});
+		}),
+		target: '.chat_ph'
 	}
 };
 
@@ -1629,6 +1657,7 @@ var starter = setInterval(function() {
 		ui_informer.init();
 		ui_improver.improve();
 		ui_forum.init();
+		ui_observers.init();
 		var finish = new Date();
 		GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
 		} catch (error) {

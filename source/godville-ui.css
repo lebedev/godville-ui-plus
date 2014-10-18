@@ -10,11 +10,24 @@ body {
 .frInputArea textarea {
 	resize: vertical;
 }
+.frDockCell.left .frMsgBlock {
+	left: -1px;
+	right: auto;
+}
 
 .dockfr_close,
 .dockfr_ppage {
 	-moz-user-select: none;
 	-webkit-user-select: none;
+}
+
+.chat_ph,
+.msgDock.frDockCell {
+	transform: rotate(180deg);
+}
+
+.msgDock.frDockCell {
+	float: left;
 }
 
 .hint_bar_capt {
