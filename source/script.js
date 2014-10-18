@@ -22,7 +22,7 @@ var ui_data = {
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
 			ui_storage.set('Forum1', '{}');
-			ui_storage.set('Forum2', '{"2812": 539}');
+			ui_storage.set('Forum2', '{"2812": 0}');
 			ui_storage.set('Forum3', '{}');
 			ui_storage.set('Forum4', '{}');
 			ui_storage.set('Forum5', '{}');
