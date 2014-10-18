@@ -116,6 +116,7 @@ module.exports = function(grunt) {
         tasks: 'debug',
         options: {
           spawn: false,
+          atBegin: true
         }
       }
     }
@@ -195,6 +196,6 @@ module.exports = function(grunt) {
     grunt.file.write('current_version', grunt.config('new_version'));
   });
 
-  grunt.registerTask('default', ['debug', 'watch']);
+  grunt.registerTask('default', 'watch');
 
 };
