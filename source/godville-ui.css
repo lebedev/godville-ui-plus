@@ -11,6 +11,12 @@ body {
 	resize: vertical;
 }
 
+.dockfr_close,
+.dockfr_ppage {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
 .hint_bar_capt {
 	padding-bottom: 0.75em;
 }
