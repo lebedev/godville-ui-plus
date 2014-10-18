@@ -1628,11 +1628,11 @@ var ui_observers = {
 		interval: 0,
 		observer: new MutationObserver(function(mutations) {
 			mutations.forEach(function(mutation) {
-				if (mutation.addedNodes.length) {
+				if (mutation.addedNodes.length && !mutation.addedNodes[0].classList.contains('moved')) {
 					var newNode = mutation.addedNodes[0];
-					newNode.parentNode.appendChild(newNode);
-				}
-				if (mutation.addedNodes.length || mutation.removedNodes.length) {
+					mutation.target.appendChild(newNode);
+					newNode.classList.add('moved');
+				} else if (mutation.addedNodes.length || mutation.removedNodes.length) {
 					ui_improver.chatsFix();
 				}
 			});
