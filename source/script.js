@@ -236,7 +236,7 @@ var ui_menu_bar = {
 		this.append('<div style="text-align: left;">Если что-то работает не так, как должно, — ' +
 						(GM_browser == 'Firefox' ? 'загляните в веб-консоль (Ctrl+Shift+K), а также в консоль ошибок (Ctrl+Shift+J).'
 												 : 'обновите страницу и проверьте консоль (Ctrl+Shift+J) на наличие ошибок.') +
-						'Если обновление страницы и дымовые сигналы не помогли, напишите об этом в ' + 
+						' Если обновление страницы и дымовые сигналы не помогли, напишите об этом в ' + 
 						'<a href="skype:angly_cat">скайп</a>,' + 
 						' богу <a href="/gods/Бэдлак" title="Откроется в новом окне" target="about:blank">Бэдлак</a>' +
 						' или в <a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="about:blank">данную тему на форуме</a>.</div>');
@@ -1371,7 +1371,7 @@ var ui_improver = {
 		if (ui_data.isArena) return;
 		if (ui_utils.findLabel($('#pet'), 'Статус')[0].style.display!='none'){
 			if (!ui_utils.isAlreadyImproved($('#pet'))){
-				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge gu_new_badge_pos" style="display: block;">0</div>'));
+				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge gu_new_badge_pos">0</div>'));
 			} 
 			$('#pet_badge').text(ui_utils.findLabel($('#pet'), 'Статус').siblings('.l_val').text().replace(/[^0-9:]/g, ''));
 			if ($('#pet .block_content')[0].style.display == 'none') 
@@ -1393,7 +1393,7 @@ var ui_improver = {
 			seq += parseInt($('#eq_' + i + ' .eq_level').text()) || 0;
 		}
 		if (!ui_utils.isAlreadyImproved($('#equipment')))
-			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge gu_new_badge_pos" style="display: block;">0</div>'));
+			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge gu_new_badge_pos">0</div>'));
 		$('#equip_badge').text((seq / 7).toFixed(1));
 	},
 // ---------- Group HP --------------
@@ -1666,7 +1666,6 @@ var starter = setInterval(function() {
 				GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
 			}
 		}
-
 	}
 }, 200);
 
@@ -1694,33 +1693,11 @@ $('html').mousemove(function() {
 	}
 });
 
-// "Shift+Enter → new line" improvement by inline-script to bypass stupid Chrome restrictions
+// "Shift+Enter → new line" improvement by external-script to bypass stupid Chrome restrictions
 var shiftEnterScript = document.createElement('script');
-shiftEnterScript.innerHTML =
-"var inlineChatImprove = function() {\n" +
-"	var keypresses, handlers,\n" +
-"		$tas = $('.frInputArea textarea:not(.improved)');\n" +
-"	if ($tas.length) {\n" +
-"		var new_keypress = function(handlers) {\n" +
-"			return function(e) {\n" +
-"				if (e.which == 13 && !e.shiftKey) {\n" +
-"					for (var i = 0, len = handlers.length; i < len; i++) {\n" +
-"						handlers[i](e);\n" +
-"					}\n" +
-"				}\n" +
-"			};\n" +
-"		};\n" +
-"		for (var i = 0, len = $tas.length; i < len; i++) {\n" +
-"			keypresses = $._data($tas[i], 'events').keypress;\n" +
-"			handlers = [];\n" +
-"			for (var j = 0, klen = keypresses.length; j < klen; j++) {\n" +
-"				handlers.push(keypresses[j].handler);\n" +
-"			}\n" +
-"			$tas.eq(i).unbind('keypress').keypress(new_keypress(handlers));\n" +
-"		}\n" +
-"		$tas.addClass('improved');\n" +
-"		new_keypress = null;\n" +
-"	}\n" +
-"};\n" +
-"$(document).bind('DOMNodeInserted', inlineChatImprove);";
+shiftEnterScript.src = GM_getResource('shift_enter.js');
 document.body.appendChild(shiftEnterScript);
+
+var layingTimerScript = document.createElement('script');
+layingTimerScript.src = GM_getResource('laying_timer.js');
+document.body.appendChild(layingTimerScript);

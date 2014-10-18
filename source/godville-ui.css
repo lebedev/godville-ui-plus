@@ -258,3 +258,28 @@ a {
 #fader.cloud.down {
 	background: linear-gradient(to right, rgba(213, 234, 251, 1) 30%, rgba(213, 234, 251, 0) 100%);
 }
+
+#laying_timer {
+	top: 2px;
+	left: 60px;
+}
+#laying_timer.green {
+	border-color: darkgreen;
+	color: darkgreen;
+	background-color: lightgreen;
+}
+#laying_timer.grey {
+	border-color: grey;
+	color: grey;
+	background-color: lavender;
+}
+#laying_timer.red {
+	border-color: firebrick;
+	color: firebrick;
+	background-color: darksalmon;
+}
+#laying_timer.yellow {
+	border-color: orange;
+	color: orange;
+	background-color: floralwhite;
+}

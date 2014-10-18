@@ -54,6 +54,8 @@
 	
 	"web_accessible_resources": [
 		"godville-ui.css",
+		"shift_enter.js",
+		"laying_timer.js",
 		"images/background.jpg",
 		"images/shovel_blue_bright.gif",
 		"images/shovel_blue_dark.gif",
