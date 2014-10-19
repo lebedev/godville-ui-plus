@@ -299,10 +299,11 @@ function restore_options() {
 	}
 }
 
-var sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'heil', 'walk_s', 'walk_n', 'walk_w', 'walk_e'];
-var phrases = {heal : "Лечись", pray: "Молись", sacrifice : "Жертвуй", exp : "Опыт", dig : "Клад, золото", hit : "Бей",
+var sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'heil', 'inspect_prefix', 'merge_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'];
+var phrases = { heal : "Лечись", pray: "Молись", sacrifice : "Жертвуй", exp : "Опыт", dig : "Клад, золото", hit : "Бей",
 				do_task : "Задание", cancel_task : "Отмени задание", die : "Умри", town : "Домой", heil : "Восклицания", 
-				walk_s : "Север", walk_n : "Юг", walk_w : "Запад", walk_e : "Восток"};
+				inspect_prefix : "Вопросики", merge_prefix : "Крафт", walk_n : "Север", walk_s : "Юг", walk_w : "Запад",
+				walk_e : "Восток" };
 var def = "";
 var curr_sect = "";
 var ImproveInProcess = false;

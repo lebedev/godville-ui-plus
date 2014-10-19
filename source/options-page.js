@@ -202,6 +202,12 @@ return '<p>\n' +
 '								<!-- <a	id="l_die" href="#">Умри</a>-->\n' +
 '								<a id="l_town" href="#">В город</a>\n' +
 '								<a id="l_heil" href="#">Восклицание</a>\n' +
+'								<a id="l_inspect_prefix" href="#">Вопросики</a>\n' +
+'								<a id="l_merge_prefix" href="#">Крафт</a>\n' +
+'								<a id="l_walk_n" href="#">Север</a>\n' +
+'								<a id="l_walk_s" href="#">Юг</a>\n' +
+'								<a id="l_walk_w" href="#">Запад</a>\n' +
+'								<a id="l_walk_e" href="#">Восток</a>\n' +
 '								<div id="opt_change_words">\n' +
 '									<div class="new_line">\n' +
 '										<!--<label id="ta_name" class="l_capt" /></label>-->\n' +

@@ -375,7 +375,7 @@ var ui_words = {
 // gets words from phrases.js file and splits them into sections
 	init: function() {
 		this.base = getWords();
-		var sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'heil', 'walk_s', 'walk_n', 'walk_w', 'walk_e'];
+		var sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'heil', 'inspect_prefix', 'merge_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'];
 		for (var i = 0; i < sects.length; i++) {
 			var t = sects[i];
 			var text = ui_storage.get('phrases_' + t);
@@ -435,7 +435,7 @@ var ui_words = {
 				'Этот предмет превращает один или несколько жирных предметов из инвентаря героя в золотые кирпичи',
 				'Этот предмет отправляет героя в мини-квест',
 				'Этот предмет сочиняет о герое былину',
-				].indexOf(desc);
+			   ].indexOf(desc);
 	},
 	
 	isHealItem: function($obj) {
@@ -1058,8 +1058,8 @@ var ui_improver = {
 				var isContradictions = $('#map')[0].textContent.match('Противоречия');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Восток', (isContradictions ? 'walk_w' : 'walk_e'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Восток');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Запад', (isContradictions ? 'walk_e' : 'walk_w'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Запад');
-				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Юг', (isContradictions ? 'walk_s' : 'walk_n'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Юг');
-				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Север', (isContradictions ? 'walk_n' : 'walk_s'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Север');
+				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Юг', (isContradictions ? 'walk_n' : 'walk_s'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Юг');
+				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Север', (isContradictions ? 'walk_s' : 'walk_n'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Север');
 				if ($('#map')[0].textContent.match('Бессилия'))
 					$('#actions').hide();
 			} else {
@@ -1698,6 +1698,6 @@ var shiftEnterScript = document.createElement('script');
 shiftEnterScript.src = GM_getResource('shift_enter.js');
 document.body.appendChild(shiftEnterScript);
 
-var layingTimerScript = document.createElement('script');
+/*var layingTimerScript = document.createElement('script');
 layingTimerScript.src = GM_getResource('laying_timer.js');
-document.body.appendChild(layingTimerScript);
+document.body.appendChild(layingTimerScript);*/
