@@ -1697,7 +1697,7 @@ $('html').mousemove(function() {
 // "Shift+Enter → new line" improvement by external-script to bypass stupid Chrome restrictions
 var shiftEnterScript = document.createElement('script');
 shiftEnterScript.src = GM_getResource('shift_enter.js');
-document.body.appendChild(shiftEnterScript);
+document.head.appendChild(shiftEnterScript);
 
 /*var layingTimerScript = document.createElement('script');
 layingTimerScript.src = GM_getResource('laying_timer.js');
