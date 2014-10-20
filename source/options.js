@@ -298,18 +298,16 @@ function restore_options() {
 	}
 }
 
-var sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'heil', 'inspect_prefix', 'merge_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'];
-var phrases = { heal : "Лечись", pray: "Молись", sacrifice : "Жертвуй", exp : "Опыт", dig : "Клад, золото", hit : "Бей",
-				do_task : "Задание", cancel_task : "Отмени задание", die : "Умри", town : "Домой", heil : "Восклицания", 
-				inspect_prefix : "Вопросики", merge_prefix : "Крафт", walk_n : "Север", walk_s : "Юг", walk_w : "Запад",
-				walk_e : "Восток" };
-var def = "";
-var curr_sect = "";
-var ImproveInProcess = false;
-var god_name = $j('#opt_change_profile div:first div:first').text();
-	if (god_name !== "") localStorage.setItem("GM_CurrentUser", god_name);
-	else god_name = localStorage.getItem("GM_CurrentUser");
-var isDataRead = false;
+var def, curr_sect,
+	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'heil', 'inspect_prefix', 'merge_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
+	ImproveInProcess = false,
+	isDataRead = false,
+	god_name = $j('#opt_change_profile div:first div:first').text();
+if (god_name !== "") {
+	localStorage.setItem("GM_CurrentUser", god_name);
+} else {
+	god_name = localStorage.getItem("GM_CurrentUser");
+}
 updateMenu();
 if (location.hash === "#ui_options") {
 	loadOptions();

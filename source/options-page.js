@@ -201,6 +201,7 @@ return '<p>\n' +
 '								<a id="l_cancel_task">Отменить задание</a>\n' +
 '								<!-- <a	id="l_die" href="#">Умри</a>-->\n' +
 '								<a id="l_town" href="#">В город</a>\n' +
+'								<a id="l_defend" href="#">Защита</a>\n' +
 '								<a id="l_heil" href="#">Восклицание</a>\n' +
 '								<a id="l_inspect_prefix" href="#">Вопросики</a>\n' +
 '								<a id="l_merge_prefix" href="#">Крафт</a>\n' +

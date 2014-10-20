@@ -1064,6 +1064,7 @@ var ui_improver = {
 					$('#actions').hide();
 			} else {
 				if (ui_data.isArena) {
+					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'щитуй', 'defend', 'Попытаться заставить ' + ui_data.char_sex[0] + ' принять защитную стойку, поднять щит и отбить атаку противника');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'молись', 'pray', 'Попросить ' + ui_data.char_sex[0] + ' вознести молитву для пополнения праны');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'лечись', 'heal', 'Посоветовать ' + ui_data.char_sex[1] + ' подлечиться подручными средствами');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'бей', 'hit', 'Подсказать ' + ui_data.char_sex[1] + ' о возможности нанесения сильного удара вне очереди');
