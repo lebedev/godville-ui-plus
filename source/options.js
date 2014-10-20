@@ -21,11 +21,10 @@ function updateMenu() {
 	if (god_name === "") return;
 	ImproveInProcess = true;
 	if ($j('#ui_options').length === 0) {
-		$j('#profile_main p:first').append(' | <a id="ui_options" href="#">Настройки UI</a>');
+		$j('#profile_main p:first').append(' | <a id="ui_options" href="#ui_options">Настройки UI</a>');
 		//$j('#ui_options').click();
 		$j('#ui_options').click(function() {
 			loadOptions();
-			return false;
 		});
 	}
 	ImproveInProcess = false;
