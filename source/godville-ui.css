@@ -7,6 +7,16 @@ body {
 	min-height: 100%;
 }
 
+.line {
+	text-align: right;
+}
+.panth_line {
+	text-align: center;
+}
+.l_val {
+	float: none;
+}
+
 .frInputArea textarea {
 	resize: vertical;
 }
