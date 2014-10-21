@@ -808,7 +808,7 @@ var ui_forum = {
 					forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
 					informers = JSON.parse(ui_storage.get('ForumInformers'));
 				for (i = 0, len = xhr.topics.length; i < len; i++) {
-					temp = xhr.responseText.match(RegExp("show_topic\\/" + xhr.topics[i] + "[^>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + xhr.topics[i]));
+					temp = xhr.responseText.match(RegExp("show_topic\\/" + xhr.topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + xhr.topics[i]));
 					if (temp) {
 						diff = +temp[2] - forum[xhr.topics[i]];
 						if (diff) {
