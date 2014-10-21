@@ -191,8 +191,7 @@ body {
 	float: left;
 	margin: 0.4em 0 0 0.4em;
 	padding: 0.1em 0.5em;
-	background: #99D9EA;
-	border: 1px solid #00A2E8;
+	border: 1px solid;
 	border-radius: 6px 10.5px 10.5px 6px;
 	pointer-events: auto;
 	clear: both;
@@ -206,11 +205,44 @@ body {
 #forum_informer_bar a:hover,
 #forum_informer_bar a:visited,
 #forum_informer_bar a:active {
-	color: #3F48CC;
 	text-decoration: none;
 }
 #forum_informer_bar a:hover {
 	width: auto;
+}
+#forum_informer_bar.divine a {
+	background: #99D9EA;
+	border-color: #00A2E8;
+	color: #3F48CC;
+}
+#forum_informer_bar.nightly a {
+	background: #252525;
+	border-color: #555;
+	color: #999;
+}
+#forum_informer_bar.violet a {
+	background: #D29BD2;
+	border-color: #A349A3;
+	color: #808;
+}
+#forum_informer_bar.emerald a {
+	background: #9BD29B;
+	border-color: #49A349;
+	color: #080;
+}
+#forum_informer_bar.yellow a {
+	background: #D2D29B;
+	border-color: #A3A349;
+	color: #880;
+}
+#forum_informer_bar.classic a,
+#forum_informer_bar.retro a {
+	background: #D2D2D2;
+	border-color: #A3A3A3;
+	color: #555;
+}
+#forum_informer_bar.retro a {
+	border-radius: 0;
 }
 #forum_informer_bar .fr_new_badge {
 	top: 2px;

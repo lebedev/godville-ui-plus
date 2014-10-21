@@ -335,7 +335,7 @@ var ui_storage = {
 					key = localStorage.key(i);
 					if (key.match(r) && (!(key.match(settings) || key.match(stuff)) || key.match('undefined'))) idx_lst.push(key);
 				}
-				for(key in idx_lst) {
+				for (key in idx_lst) {
 					localStorage.removeItem(idx_lst[key]);
 				}
 				localStorage.setItem('GM_clean050613', 'true');
@@ -1482,13 +1482,14 @@ var ui_improver = {
 		}
 
 		if (localStorage.getItem('ui_s') != ui_storage.get('ui_s')) {
-			ui_improver.Shovel = false;
 			ui_storage.set('ui_s', localStorage.getItem('ui_s'));
+			ui_improver.Shovel = false;
 			if (ui_storage.get('ui_s') == 'th_nightly') {
 				$('#timeout_bar').addClass('night').removeClass('day');
 			} else {
 				$('#timeout_bar').addClass('day').removeClass('night');
 			}
+			ui_forum.container[0].className = ui_storage.get('ui_s').replace('th_', '');
 		}
 
 		if (ui_storage.get('Option:useBackground') == 'cloud') {
@@ -1656,8 +1657,8 @@ var starter = setInterval(function() {
 		ui_timeout_bar.create();
 		ui_menu_bar.create();
 		ui_informer.init();
-		ui_improver.improve();
 		ui_forum.init();
+		ui_improver.improve();
 		ui_observers.init();
 		var finish = new Date();
 		GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
