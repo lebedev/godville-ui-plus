@@ -199,7 +199,7 @@ return '<p>\n' +
 '								<a id="l_hit" href="#">Бей</a>\n' +
 '								<a id="l_do_task">Задание</a>\n' +
 '								<a id="l_cancel_task">Отменить задание</a>\n' +
-'								<!-- <a	id="l_die" href="#">Умри</a>-->\n' +
+'								<a id="l_die" href="#">Умри</a>\n' +
 '								<a id="l_town" href="#">В город</a>\n' +
 '								<a id="l_defend" href="#">Защита</a>\n' +
 '								<a id="l_heil" href="#">Восклицание</a>\n' +

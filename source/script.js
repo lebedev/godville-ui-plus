@@ -770,7 +770,7 @@ var ui_forum = {
 	set_informer: function(topic_no, topic_data, posts_count) {
 		var informer = $('#topic' + topic_no)[0];
 		if (!informer) {
-			var $informer = $('<a id="topic' + topic_no + '"><span /><div class="fr_new_badge" /></a>').click(function(e) {
+			var $informer = $('<a id="topic' + topic_no + '" target="_blank"><span /><div class="fr_new_badge" /></a>').click(function(e) {
 				if (e.which == 1) {
 					e.preventDefault();
 				}
@@ -1304,7 +1304,7 @@ var ui_improver = {
 			ui_utils.addSayPhraseAfterLabel($box, 'Золота', 'копай', 'dig', 'Указать ' + ui_data.char_sex[1] + ' место для копания клада или босса');
 			ui_utils.addSayPhraseAfterLabel($box, 'Задание', 'отмени', 'cancel_task', 'Убедить ' + ui_data.char_sex[0] + ' отменить текущее задание');
 			ui_utils.addSayPhraseAfterLabel($box, 'Задание', 'делай', 'do_task', 'Открыть ' + ui_data.char_sex[1] + ' секрет более эффективного выполнения задания');
-			//ui_utils.addSayPhraseAfterLabel($box, 'Смертей', 'умри', 'die');	
+			ui_utils.addSayPhraseAfterLabel($box, 'Смертей', 'умри', 'die');
 		}
 		if (!$('#hk_distance .voice_generator').length)
 			ui_utils.addSayPhraseAfterLabel($box, 'Столбов от столицы', $('#main_wrapper.page_wrapper_5c').length ? '回' : 'дом', 'town', 'Наставить ' + ui_data.char_sex[0] + ' на путь в ближайший город');
