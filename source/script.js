@@ -426,12 +426,14 @@ var ui_words = {
 				'Этот предмет может случайным образом повлиять на героя',
 				'Этот предмет ищет для героя босса',
 				'Этот предмет заводит герою случайного друга из числа активных героев',
+				'Активация этого предмета может преподнести герою приятный сюрприз',
 				'Активация инвайта увеличит счетчик доступных приглашений',
 				'Этот предмет полностью восстанавливает здоровье героя',
 				'Этот предмет добавляет заряд в прано-аккумулятор',
 				'Этот предмет на несколько минут отправляет героя в поиск соратников для битвы с ископаемым боссом',
 				'Этот предмет убивает атакующего героя монстра, либо пытается выплавить из золота героя золотой кирпич',
 				'Этот предмет телепортирует героя в случайный город',
+				'Этот предмет отправляет героя на арену',
 				'Этот предмет превращает один или несколько жирных предметов из инвентаря героя в золотые кирпичи',
 				'Этот предмет отправляет героя в мини-квест',
 				'Этот предмет сочиняет о герое былину',
@@ -926,10 +928,8 @@ var ui_improver = {
 				$('#inventory li:hidden').remove();
 			}, 1000);
 			var i,
-				flags = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'transformer', 'quest box', 'bylina box'],
+				flags = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box', 'bylina box'],
 				types = new Array(flags.length),
-				good_box = false,
-				to_arena_box = false,
 				bold_item = false;
 
 			for (i = 0; i < types.length; i++) {
@@ -950,14 +950,10 @@ var ui_improver = {
 					if (ui_words.canBeActivated($obj)) {
 						var desc = $('div.item_act_link_div *', $obj).attr('title').replace(/ \(.*/g, '');
 						var sect = ui_words.canBeActivatedItemType(desc);
-						if (sect != -1)
+						if (sect != -1) {
 							types[sect] = true;
-						else {
+						} else {
 							GM_log('Описание предмета ' + item_name + 'отсутствует в базе. Пожалуйста, скопируйте следующее описание предмета разработчику аддона:\n"' + desc + '"');
-							if (ui_words.isCategoryItem('good box', item_name))
-								good_box = true;
-							else if (ui_words.isCategoryItem('to arena box', item_name))
-								to_arena_box = true;
 						}
 					} else if (ui_words.isHealItem($obj)) {
 						if (!ui_utils.isAlreadyImproved($obj)) {
@@ -965,29 +961,31 @@ var ui_improver = {
 							$obj.addClass('heal_item');
 						}
 					} else {
-						if (ui_words.isBoldItem($obj))
+						if (ui_words.isBoldItem($obj)) {
 							bold_item = true;
-						else
+						} else {
 							ui_improver.trophyList.push(item_name);
-						if (!ui_utils.isAlreadyImproved($obj))
+						}
+						if (!ui_utils.isAlreadyImproved($obj)) {
 							$obj.append(ui_improver._createInspectButton(item_name));
+						}
 					}
 				}
 			});
-			
+
 			if (!ui_utils.isAlreadyImproved($('#inventory'))) {
 				this._createMergeButton().insertAfter($('#inventory ul'));
 				$('#inventory ul').css('text-align', 'left');
 				$('#inventory').css('text-align', 'center');
 			}
-			
+
 			ui_improver.trophyList.sort();
 			for (i = ui_improver.trophyList.length - 1; i >= 0; i--) {
 				if (!((ui_improver.trophyList[i - 1] && ui_improver.trophyList[i][0] == ui_improver.trophyList[i - 1][0]) || (ui_improver.trophyList[i + 1] && ui_improver.trophyList[i][0] == ui_improver.trophyList[i + 1][0]))) {
 					ui_improver.trophyList.splice(i, 1);
 				}
 			}
-			
+
 			for (i = 0; i < flags.length; i++) {
 				ui_informer.update(flags[i], types[i]);
 			}
@@ -995,17 +993,13 @@ var ui_improver = {
 			//ui_informer.update(flags[11], types[11] && !bold_item);
 			//ui_informer.update('transform!', types[11] && bold_item);
 			
-			ui_informer.update('good box', good_box);
-			
-			ui_informer.update('smelt!', types[9] && ui_storage.get('Stats:Gold') >= 3000);
-			ui_informer.update(flags[9], types[9] && ui_storage.get('Stats:Gold') < 3000);
-			
-			ui_informer.update('to arena box', to_arena_box);
-		
+			//ui_informer.update('smelt!', types[10] && ui_storage.get('Stats:Gold') >= 3000);
+			//ui_informer.update(flags[10], types[10] && ui_storage.get('Stats:Gold') < 3000);
+
 			this.inventoryChanged = false;
 		}
 		
-		if (!ui_data.isArena && ui_storage.get('Option:forbiddenInformers') && ui_storage.get('Option:forbiddenInformers').match('SMELT_TIME')) {
+		/*if (!ui_data.isArena && ui_storage.get('Option:forbiddenInformers') && ui_storage.get('Option:forbiddenInformers').match('SMELT_TIME')) {
 			if (ui_storage.get('Stats:Prana') == 100 &&
 				$('#hk_distance .l_capt').text() == 'Город' &&
 				$('#hk_health .p_val').width() == $('#hk_health .p_bar').width() &&
@@ -1029,7 +1023,7 @@ var ui_improver = {
 				$('#smelt_time')[0].pause();
 				$('#smelt_time').remove();
 			}
-		}
+		}*/
 	},
 
 	improveVoiceDialog: function() {
