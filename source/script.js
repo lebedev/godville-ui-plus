@@ -1037,6 +1037,8 @@ var ui_improver = {
 				} else if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
 					$('#voice_submit').attr('disabled', 'disabled');
 				}
+			}).on('click', '.gv_text.div_link', function() {
+				$('#god_phrase').change();
 			});
 		}
 		var $box = $('#cntrl');
