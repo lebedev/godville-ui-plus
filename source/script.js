@@ -1639,7 +1639,7 @@ var ui_observers = {
 
 // Main code
 var starter = setInterval(function() {
-	if ($('#m_info').length || $('#stats').length) {
+	if ($ && ($('#m_info').length || $('#stats').length)) {
 		try {
 		var start = new Date();
 		clearInterval(starter);
