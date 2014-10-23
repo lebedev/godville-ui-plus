@@ -375,7 +375,7 @@ var ui_words = {
 // gets words from phrases.js file and splits them into sections
 	init: function() {
 		this.base = getWords();
-		var sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'heil', 'inspect_prefix', 'merge_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'];
+		var sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'heil', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'];
 		for (var i = 0; i < sects.length; i++) {
 			var t = sects[i];
 			var text = ui_storage.get('phrases_' + t);
@@ -410,9 +410,9 @@ var ui_words = {
 	inspectPhrase: function(item_name) {
 		return this.longPhrase('inspect_prefix', item_name);
 	},
-// merge button phrase gen
-	mergePhrase: function(items) {
-		return this.longPhrase('merge_prefix', items);
+// craft button phrase gen
+	craftPhrase: function(items) {
+		return this.longPhrase('craft_prefix', items);
 	},
 
 // Checkers

@@ -204,7 +204,7 @@ return '<p>\n' +
 '								<a id="l_defend" href="#">Защита</a>\n' +
 '								<a id="l_heil" href="#">Восклицание</a>\n' +
 '								<a id="l_inspect_prefix" href="#">Вопросики</a>\n' +
-'								<a id="l_merge_prefix" href="#">Крафт</a>\n' +
+'								<a id="l_craft_prefix" href="#">Крафт</a>\n' +
 '								<a id="l_walk_n" href="#">Север</a>\n' +
 '								<a id="l_walk_s" href="#">Юг</a>\n' +
 '								<a id="l_walk_w" href="#">Запад</a>\n' +

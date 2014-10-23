@@ -299,7 +299,7 @@ function restore_options() {
 }
 
 var def, curr_sect,
-	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'heil', 'inspect_prefix', 'merge_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
+	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'heil', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
 	ImproveInProcess = false,
 	isDataRead = false,
 	god_name = $j('#opt_change_profile div:first div:first').text();
