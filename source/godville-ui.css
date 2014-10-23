@@ -29,7 +29,8 @@ body {
 }
 
 .dockfr_close,
-.dockfr_ppage {
+.dockfr_ppage,
+.craft_button {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
