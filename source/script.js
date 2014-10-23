@@ -449,7 +449,7 @@ var ui_words = {
 	},
 	
 	isBoldItem: function($obj) {
-		return $obj.css("font-weight") == 700;
+		return $obj.css("font-weight") == 700 || $obj.css("font-weight") == "bold";
 	},
 
 	_changeFirstLetter: function(text) {
