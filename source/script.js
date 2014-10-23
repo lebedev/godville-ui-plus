@@ -801,9 +801,9 @@ var ui_improver = {
 	voiceSubmitted: false,
 	monstersOfTheDay: null,
 	// trophy craft combinations
-	b_b: null,
-	b_r: null,
-	r_r: null,
+	b_b: [],
+	b_r: [],
+	r_r: [],
 	//hucksterNews: '',
 	improve: function() {
 		this.improveInProcess = true;
