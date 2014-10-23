@@ -11,9 +11,9 @@
                    em:name="Godville UI+"
                    em:version="$VERSION"
                    em:description="Godville.net UI improvements"
-                   em:icon64URL="chrome://godville-ui-plus/content/images/icon64.png"
+                   em:icon64URL="chrome://godville-ui-plus/content/icon64.png"
                    em:creator="Badluck"
-                   em:homepageURL="http://godville.net/gods/Бэдлак"
+                   em:homepageURL="http://godville.net/forums/show_topic/2812"
                    em:type="2"
                    em:updateURL="https://github.com/zeird/godville-ui-plus/raw/master/update.rdf"
                    em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCuSgo/y28qv71LGfEqKOxBA8nDh4F+EPfNsoG9NCc71OiNGNcG2vVFDShNXu0NRWeF6ooxwIiiEhdnN5X78acJwIPKIxx5RgbC5ris+fOTgmZWq+lbLxjJ8issefiknDDHKB5Di8IDBjEM9rw0RdSa3PDIKKL8gxrNY3ffxcI3FQIDAQAB">
