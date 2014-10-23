@@ -105,6 +105,10 @@ body {
 	color: green;
 }
 
+.craft_button {
+    padding: 0 0.2em;
+}
+
 #stats_log {
 	width: 90%;
 	overflow-x: hidden;

@@ -800,8 +800,11 @@ var ui_improver = {
 	isFirstTime: true,
 	voiceSubmitted: false,
 	monstersOfTheDay: null,
-	trophyList: [],
-	hucksterNews: '',
+	// trophy craft combinations
+	b_b: null,
+	b_r: null,
+	r_r: null,
+	//hucksterNews: '',
 	improve: function() {
 		this.improveInProcess = true;
 		try {
@@ -839,26 +842,15 @@ var ui_improver = {
 			});
 	},
 
-	_createMergeButton: function() {
-		return $('<a id="merge_button" title="Уговорить ' + ui_data.char_sex[0] + ' склеить два случайных предмета из инвентаря">Склеить что-нибудь</a>')
+	_createCraftButton: function(combo, combo_list, hint) {
+		return $('<a class="craft_button ' + combo_list + '" title="Уговорить ' + ui_data.char_sex[0] + ' скрафтить случайную комбинацию ' + hint + ' предметов из инвентаря">' + combo + '</a>')
 			.click(function() {
-				var rand = Math.floor(Math.random()*ui_improver.trophyList.length);
-				item_first = ui_improver.trophyList[rand];
-				var condition = ui_improver.trophyList[rand + 1] && ui_improver.trophyList[rand][0] == ui_improver.trophyList[rand + 1][0];
-				item_second = condition ? ui_improver.trophyList[rand + 1]
-										: ui_improver.trophyList[rand - 1];
-				ui_utils.sayToHero(ui_words.mergePhrase(item_first + ' и ' + item_second));
+				var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
+					items = ui_improver[combo_list][rand];
+				ui_utils.sayToHero(ui_words.craftPhrase(items));
 				return false;
 			});
 	},
-
-	/*_createWalkButton: function(walk) {
-		return $('<a	id="' + walk + '_button" title="Попросить ' + ui_data.char_sex[0] + ' повести команду на ' + walk + '">?</a>')
-			.click(function() {
-				ui_utils.sayToHero(ui_words.walkPhrase(walk));
-				return false;
-			});
-	},*/
 	
 	improveLoot: function() {
 		if (ui_data.isArena) return;
@@ -866,16 +858,18 @@ var ui_improver = {
 			setTimeout(function() {
 				$('#inventory li:hidden').remove();
 			}, 1000);
-			var i,
+			var i, j, len,
 				flags = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box', 'bylina box'],
 				types = new Array(flags.length),
-				bold_item = false;
+				bold_items = false;
 
-			for (i = 0; i < types.length; i++) {
+			for (i = 0, len = types.length; i < len; i++) {
 				types[i] = false;
 			}
 
-			ui_improver.trophyList = [];
+			var l, trophyList = [],
+				trophyBoldness = {},
+				forbiddenCraft = ui_storage.get('Option:forbiddenCraft');
 
 			// Parse items
 			$('#inventory ul li:visible').each(function(ind, obj) {
@@ -887,23 +881,37 @@ var ui_improver = {
 													.replace(/^\s + |\s + $/g, '');
 					// color items and add buttons
 					if (ui_words.canBeActivated($obj)) {
-						var desc = $('div.item_act_link_div *', $obj).attr('title').replace(/ \(.*/g, '');
-						var sect = ui_words.canBeActivatedItemType(desc);
+						var desc = $('div.item_act_link_div *', $obj).attr('title').replace(/ \(.*/g, ''),
+							sect = ui_words.canBeActivatedItemType(desc);
 						if (sect != -1) {
 							types[sect] = true;
 						} else {
 							GM_log('Описание предмета ' + item_name + 'отсутствует в базе. Пожалуйста, скопируйте следующее описание предмета разработчику аддона:\n"' + desc + '"');
 						}
+						if (!(forbiddenCraft && (forbiddenCraft.match('activatable') || (forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r'))))) {
+							trophyList.push(item_name);
+							trophyBoldness[item_name] = true;
+						}
 					} else if (ui_words.isHealItem($obj)) {
 						if (!ui_utils.isAlreadyImproved($obj)) {
-							$obj.css('color', 'green');
 							$obj.addClass('heal_item');
+						}
+						if (!(forbiddenCraft && (forbiddenCraft.match('heal') || (forbiddenCraft.match('b_r') && forbiddenCraft.match('r_r'))))) {
+							trophyList.push(item_name);
+							trophyBoldness[item_name] = false;
 						}
 					} else {
 						if (ui_words.isBoldItem($obj)) {
-							bold_item = true;
+							bold_items = true;
+							if (!(forbiddenCraft && forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r'))) {
+								trophyList.push(item_name);
+								trophyBoldness[item_name] = true;
+							}
 						} else {
-							ui_improver.trophyList.push(item_name);
+							if (!(forbiddenCraft && forbiddenCraft.match('b_r') && forbiddenCraft.match('r_r'))) {
+								trophyList.push(item_name);
+								trophyBoldness[item_name] = false;
+							}
 						}
 						if (!ui_utils.isAlreadyImproved($obj)) {
 							$obj.append(ui_improver._createInspectButton(item_name));
@@ -912,32 +920,54 @@ var ui_improver = {
 				}
 			});
 
-			if (!ui_utils.isAlreadyImproved($('#inventory'))) {
-				this._createMergeButton().insertAfter($('#inventory ul'));
-				$('#inventory ul').css('text-align', 'left');
-				$('#inventory').css('text-align', 'center');
-			}
-
-			ui_improver.trophyList.sort();
-			for (i = ui_improver.trophyList.length - 1; i >= 0; i--) {
-				if (!((ui_improver.trophyList[i - 1] && ui_improver.trophyList[i][0] == ui_improver.trophyList[i - 1][0]) || (ui_improver.trophyList[i + 1] && ui_improver.trophyList[i][0] == ui_improver.trophyList[i + 1][0]))) {
-					ui_improver.trophyList.splice(i, 1);
+			this.b_b = [];
+			this.b_r = [];
+			this.r_r = [];
+			if (trophyList.length) {
+				trophyList.sort();
+				for (i = 0, len = trophyList.length - 1; i < len; i++) {
+					for (j = i + 1; j < len + 1; j++) {
+						if (trophyList[i][0] == trophyList[j][0]) {
+							if (trophyBoldness[trophyList[i]] && trophyBoldness[trophyList[j]]) {
+								if (!(forbiddenCraft && forbiddenCraft.match('b_b'))) {
+									this.b_b.push(trophyList[i] + ' и ' + trophyList[j]);
+								}
+							} else if (!trophyBoldness[trophyList[i]] && !trophyBoldness[trophyList[j]]) {
+								if (!(forbiddenCraft && forbiddenCraft.match('r_r'))) {
+									this.r_r.push(trophyList[i] + ' и ' + trophyList[j]);
+								}
+							} else {
+								if (!(forbiddenCraft && forbiddenCraft.match('b_r'))) {
+									this.b_r.push(trophyList[i] + ' и ' + trophyList[j]);
+								}
+							}
+						} else {
+							break;
+						}
+					}
 				}
 			}
 
-			for (i = 0; i < flags.length; i++) {
+			if (!ui_utils.isAlreadyImproved($('#inventory'))) {
+				this._createCraftButton('нж+нж', 'r_r', 'нежирных').insertAfter($('#inventory ul'));
+				this._createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного').insertAfter($('#inventory ul'));
+				this._createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных').insertAfter($('#inventory ul'));
+				$('<span class="craft_button">Скрафти:</span>').insertAfter($('#inventory ul'));
+			}
+
+			for (i = 0, len = flags.length; i < len; i++) {
 				ui_informer.update(flags[i], types[i]);
 			}
-			// Не понял зачем это, пока отключаю так как не отключается информер
-			//ui_informer.update(flags[11], types[11] && !bold_item);
-			//ui_informer.update('transform!', types[11] && bold_item);
+
+			//ui_informer.update(flags[11], types[11] && !bold_items);
+			//ui_informer.update('transform!', types[11] && bold_items);
 			
 			//ui_informer.update('smelt!', types[10] && ui_storage.get('Stats:Gold') >= 3000);
 			//ui_informer.update(flags[10], types[10] && ui_storage.get('Stats:Gold') < 3000);
 
 			this.inventoryChanged = false;
 		}
-		
+
 		/*if (!ui_data.isArena && ui_storage.get('Option:forbiddenInformers') && ui_storage.get('Option:forbiddenInformers').match('SMELT_TIME')) {
 			if (ui_storage.get('Stats:Prana') == 100 &&
 				$('#hk_distance .l_capt').text() == 'Город' &&
@@ -1481,11 +1511,14 @@ var ui_improver = {
 			$('#pantheons .cvs_link_wrap').show();
 			$('#pantheons .arena_link_wrap').show();
 		}
-		$('#merge_button,.inspect_button,.voice_generator').hide();
+		$('.craft_button,.inspect_button,.voice_generator').hide();
 		if (ui_storage.get('Stats:Prana') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
 			$('.voice_generator, .inspect_button').show();
-			if (ui_improver.trophyList.length) $('#merge_button').show();
-			//if ($('.f_news').text() != 'Возвращается к заданию...')
+			if (ui_improver.b_b.length) $('.b_b').show();
+			if (ui_improver.b_r.length) $('.b_r').show();
+			if (ui_improver.r_r.length) $('.r_r').show();
+			if ($('.b_b:visible, .b_r:visible, .r_r:visible').length) $('span.craft_button').show();
+			//if ($('.f_news').text() != 'Возвращается к заданию...')fc
 			if (!ui_data.isArena) {
 				if ($('#hk_distance .l_capt').text() == 'Город' || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display != 'none') 
 					$('#hk_distance .voice_generator').hide();

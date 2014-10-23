@@ -50,6 +50,9 @@ function loadOptions() {
 	$j('#forbidden_informers').click(function() {
 		$j('#informers').slideToggle("slow");
 	});
+	$j('#forbidden_craft').click(function() {
+		$j('#craft_categories').slideToggle("slow");
+	});
 	$j('#relocate_duel_buttons').click(function() {
 		$j('#relocate_duel_buttons_desc').slideToggle("slow");
 		$j('#relocate_duel_buttons_choice').slideToggle("slow");
@@ -207,6 +210,9 @@ function save_options(form) {
 		if (!$j('#forbidden_informers:checked').length) {
 			$j('.informer-checkbox').prop('checked', true);
 		}
+		if (!$j('#forbidden_craft:checked').length) {
+			$j('.craft-checkbox').prop('checked', true);
+		}
 		document.getElementById('smelt!').checked = $j('#smelter:checked').length;
 		document.getElementById('transform!').checked = $j('#transformer:checked').length;
 		var forbiddenInformers = [];
@@ -215,6 +221,13 @@ function save_options(form) {
 				forbiddenInformers.push($j('.informer-checkbox')[i].id);
 		}
 		storage.set('Option:forbiddenInformers', forbiddenInformers.join());
+		var forbiddenCraft = [];
+		for (i = 0; i < $j('.craft-checkbox').length; i++) {
+			if (!$j('.craft-checkbox')[i].checked)
+				forbiddenCraft.push($j('.craft-checkbox')[i].id);
+		}
+		storage.set('Option:forbiddenCraft', forbiddenCraft.join());
+
 		$j('#gui_options_progress').fadeOut('slow');
 	}
 	ImproveInProcess = false;
@@ -291,6 +304,17 @@ function restore_options() {
 	} else {
 		$j('.informer-checkbox').prop('checked', true);
 		$j('#informers').hide();
+	}
+	var forbiddenCraft = storage.get('Option:forbiddenCraft');
+	if (forbiddenCraft) {
+		forbiddenCraft = forbiddenCraft.split(',');
+		for (i = 0; i < $j('.craft-checkbox').length; i++) {
+			if (forbiddenCraft.indexOf($j('.craft-checkbox')[i].id) === -1)
+				$j('.craft-checkbox')[i].checked = true;
+		}
+	} else {
+		$j('.craft-checkbox').prop('checked', true);
+		$j('#craft_categories').hide();
 	}
 	if ($j('#disable_voice_generators:checked').length) {
 		$j('#voice_menu').hide();

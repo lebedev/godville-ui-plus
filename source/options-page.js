@@ -124,6 +124,21 @@ return '<p>\n' +
 '									<label for="freeze_when_empty">при пустом гласе</label>\n' +
 '								</div>\n' +
 '							</div>\n' +
+'							<div class="new_line"><label class="l_capt" for="forbidden_craft">Выбрать разрешения для крафта</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="forbidden_craft" name="forbidden_craft" type="checkbox" class="menu-checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<div class="g_desc">позволяет запретить отдельные связки и категории предметов для крафта</div>\n' +
+'								<div class="g_desc" id="craft_categories">\n' +
+'									<input class="craft-checkbox" id="b_b" name="b_b" type="checkbox"><label for="b_b"><b>жирный</b> + <b>жирный</b></label><br>\n' +
+'									<input class="craft-checkbox" id="b_r" name="b_r" type="checkbox"><label for="b_r"><b>жирный</b> + нежирный</label><br>\n' +
+'									<input class="craft-checkbox" id="r_r" name="r_r" type="checkbox"><label for="r_r">нежирный + нежирный</label><br>\n' +
+'									<input class="craft-checkbox" id="activatable" name="activatable" type="checkbox"><label for="activatable">включая <b>активируемые</b></label><br>\n' +
+'									<input class="craft-checkbox" id="heal" name="heal" type="checkbox"><label for="heal">включая лечилки</label><br>\n' +
+'								</div>\n' +
+'							</div>\n' +
 '							<div class="new_line">\n' +
 '								<label class="l_capt" for="force_page_refresh">Принудительно обновлять страницу</label>\n' +
 '								<div class="field_content">\n' +
