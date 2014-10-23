@@ -186,6 +186,9 @@ body {
 	z-index: 301;
 	pointer-events: none;
 	position: fixed;
+	overflow: auto;
+	height: 100%;
+	direction: rtl;
 }
 #forum_informer_bar a {
 	float: left;
@@ -199,7 +202,10 @@ body {
 	height: 23px;
 	width: 132px;
 	min-width: 132px;
+	max-width: 500px;
 	box-sizing: border-box;
+	direction: ltr;
+	margin-right: 20px;
 }
 #forum_informer_bar a,
 #forum_informer_bar a:hover,
