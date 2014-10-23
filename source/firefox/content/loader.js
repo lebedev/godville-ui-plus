@@ -7,21 +7,21 @@ contentLoad: function(event) {
 			path = doc.location.pathname;
 		if (path.match(/^\/superhero/) && !windowStats.get(doc)) {
 			windowStats.set(doc,'scriptsLoaded');
-			loader.createScript(doc, 'chrome://godvilleui/content/phrases.js');
-			loader.createScript(doc, 'chrome://godvilleui/content/gm_func.js');
-			loader.createScript(doc, 'chrome://godvilleui/content/script.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/gm_func.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/script.js');
 		}
 		if (path.match(/^\/user\/(?:profile|rk_success)/) && !windowStats.get(doc)) {
 			windowStats.set(doc,'scriptsLoaded');
-			loader.createScript(doc, 'chrome://godvilleui/content/jquery-2.1.0.min.js');
-			loader.createScript(doc, 'chrome://godvilleui/content/phrases.js');
-			loader.createScript(doc, 'chrome://godvilleui/content/gm_func.js');
-			loader.createScript(doc, 'chrome://godvilleui/content/options-page.js');
-			setTimeout(function(){loader.createScript(doc, 'chrome://godvilleui/content/options.js');}, 1000);
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/jquery-2.1.0.min.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/gm_func.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/options-page.js');
+			setTimeout(function(){loader.createScript(doc, 'chrome://godville-ui-plus/content/options.js');}, 1000);
 		}
 		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/) && !windowStats.get(doc)) {
 			windowStats.set(doc,'scriptsLoaded');
-			loader.createScript(doc, 'chrome://godvilleui/content/forum.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/forum.js');
 		}
 	}
 },
@@ -31,7 +31,7 @@ createScript:function(doc, uri) {
 	var scr1 = doc.createElement('script');
 	scr1.type = 'text/javascript';
 	scr1.src = uri;
-	scr1.id = 'GodvilleUI';
+	scr1.id = 'godville-ui-plus';
 	head.appendChild(scr1);
 },
 };

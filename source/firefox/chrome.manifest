@@ -1,5 +1,5 @@
-content	godvilleui	content/
-content godvilleui  content/ contentaccessible=yes
-skin godvilleui classic/1.0 content/images/ 
-locale godvilleui ru-RU
-overlay	chrome://browser/content/browser.xul	chrome://godvilleui/content/loader-overlay.xul
+content	godville-ui-plus	content/
+content godville-ui-plus  content/ contentaccessible=yes
+skin godville-ui-plus classic/1.0 content/images/
+locale godville-ui-plus ru-RU
+overlay	chrome://browser/content/browser.xul	chrome://godville-ui-plus/content/loader-overlay.xul

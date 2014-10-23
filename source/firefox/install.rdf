@@ -11,7 +11,7 @@
                    em:name="Godville UI+"
                    em:version="$VERSION"
                    em:description="Godville.net UI improvements"
-                   em:icon64URL="chrome://godvilleui/content/images/icon64.png"
+                   em:icon64URL="chrome://godville-ui-plus/content/images/icon64.png"
                    em:creator="Badluck"
                    em:homepageURL="http://godville.net/gods/Бэдлак"
                    em:type="2"
