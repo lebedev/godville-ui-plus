@@ -16,6 +16,9 @@ body {
 .l_val {
 	float: none;
 }
+.l_capt {
+	margin-right: 0;
+}
 
 .frInputArea textarea {
 	resize: vertical;
@@ -88,12 +91,18 @@ body {
 	margin-left: 0.3em;
 }
 
-.l_capt {
-	margin-right: 0em;
-}
-
 #arena_say_box a {
 	margin-left: 1em;
+}
+
+#inventory {
+	text-align: center;
+}
+#inventory ul {
+	text-align: left;
+}
+#inventory .heal_item {
+	color: green;
 }
 
 #stats_log {

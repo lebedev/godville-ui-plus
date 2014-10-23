@@ -45,68 +45,7 @@ var ui_data = {
 			ui_improver.monstersOfTheDay = new RegExp($('#motd a:eq(0)').text() + '|' + $('#motd a:eq(1)').text());
 			$('#motd').remove();
 		});
-	}/*,
-
-// gets add-on's page and check it's version
-	checkLastVersion: function() {
-		$.get('forums/show_topic/2812', function(response) {
-			
-			if (ui_utils.isDeveloper() || ui_storage.get('Option:forbiddenInformers') !== null && !ui_storage.get('Option:forbiddenInformers').match('new_posts')) {
-				var posts = parseInt(response.match(/Сообщений\: \d+/)[0].match(/\d+/));
-				if (posts > ui_storage.get('posts')) {
-					ui_storage.set('posts', posts);
-					ui_informer.update('new posts', false);
-					ui_informer.update('new posts', true);
-				}
-			}	
-			//var data, timer = 0;*/
-			//this.lastVersion = response.match(/Текущая версия[^<]*<[^<]*<[^<]*/)[0].replace(/[^>]*>[^>]*>/, '');
-			/*var r = new RegExp('<[^>]*>Ссылка на скачивание Godville UI\\+ для ' + GM_browser);
-			var link = response.match(r)[0].replace(/^([^\"]*\")/, '').replace(/(".*)$/, '');
-			if (this.lastVersion == '') {
-				data = '<span>Не удалось узнать номер последней версии. Попробуйте обновить страницу.</span>';
-			} else if (this.lastVersion > ui_data.currentVersion) {
-				data = 'Найдена новая версия аддона (<b>' + ui_utils.escapeHTML(this.lastVersion) + '</b>). Обновление доступно по <a href="' +
-				link + '" title="Откроется в новой вкладке" target="about:blank">этой ссылке</a>.';
-				$('<div id="version_check" class="hint_bar" style="position: fixed; top: 40px; left: 0; right: 0; z-index: 301; display: none;"><div class="hint_bar_capt"><b>Godville UI+ version check</b></div><div class="hint_bar_content" style="padding: 0.5em;"></div></div>').insertAfter($('#menu_bar'));
-				$('#version_check').css('box-shadow', '2px 2px 15px #' + ((localStorage.getItem('ui_s') == 'th_nightly') ? 'ffffff' : '000000'));
-				$('#version_check .hint_bar_content').append(data);
-				$('#version_check').fadeToggle(1500, function() {
-					setTimeout(function() {
-						$('#version_check').fadeToggle(1500, function() {
-							$('#version_check').remove();
-						});
-					}, 5000);
-				});
-				timer = 8000;
-			} else if (this.lastVersion < ui_data.currentVersion) {
-				var phrases = ['И пусть весь мир подождет',
-								 'На шаг впереди',
-								 'Пробуешь все новенькое',
-								 'Никому не говори об этом',
-								 'Салют ловцам багов',
-								 'Ты избранный',
-								 'Глюки, глюки повсюду',
-								 'Это не баг, а фича',
-								 'Откуда ты взял эту',
-								 'H̴͜͟҉̸͔̠͚̖̟̾ͦ́̓ę͈̹͈̓̑̿͗ͥͯͩ͝͏͘͢ ̶͔̠ͦ͘̕͜c͇̠̮̃҉̵̕ö͚͖͙̺̘̖́͑ͪ̅͑̉̕҉̷m̨̟̣̺̓ͤͤe̦̭̳̪̠͔̺̕͞͏̧͡s͈̝͗͋̏͆̄̈́͝͏҉'
-								]
-				var mark = ['.', '.', '?', '...', '!', '.', '!', '.', '?', '.']
-				var random = Math.floor(Math.random()*(9 + (GM_browser == 'Firefox')));
-				data = 'Публичная версия: <b>' + ui_utils.escapeHTML(this.lastVersion) + '</b>. ' + phrases[random] + ', ' + ui_data.god_name + mark[random];
-			} else {
-				data = 'У вас установлена последняя версия.';
-			}	
-			setTimeout(function() {
-				ui_informer.update('new version', false);
-				ui_informer.update('new version', timer != 0); //timer == 0 as false, timer != 0 as true
-				ui_menu_bar.append('<div>' + data + '</div>');
-			}, timer);
-		})
-		.error(function() {
-			ui_menu_bar.append('<span>Не удалось получить количество постов. Попробуйте обновить страницу.</span>');
-		});
-	}*/
+	}
 };
 
 // ------------------------
@@ -233,7 +172,7 @@ var ui_menu_bar = {
 					 '<div class="hint_bar_close"></div></div>');
 		if (ui_storage.get('uiMenuVisible')) this.bar.show();
 		this.content = $('.hint_bar_content', this.bar);
-		this.append('<div style="text-align: left;">Если что-то работает не так, как должно, — ' +
+		this.append('<div style="text-align: center;">Если что-то работает не так, как должно, — ' +
 						(GM_browser == 'Firefox' ? 'загляните в веб-консоль (Ctrl+Shift+K), а также в консоль ошибок (Ctrl+Shift+J).'
 												 : 'обновите страницу и проверьте консоль (Ctrl+Shift+J) на наличие ошибок.') +
 						' Если обновление страницы и дымовые сигналы не помогли, напишите об этом в ' + 
@@ -251,8 +190,8 @@ var ui_menu_bar = {
 			this.append(this.getDumpButton('logger', 'Logger'));
 			this.append($('<span>, </span>'));
 			this.append(this.getDumpButton('forum', 'Forum'));
-		} else this.append('<br>');
-		//ui_data.checkLastVersion();
+			this.append('<br>');
+		}
 		$('.hint_bar_close', this.bar).append(this.getToggleButton('закрыть'));
 		$('#menu_bar').after(this.bar);
 		$('#menu_bar ul').append('<li> | </li>')
@@ -853,7 +792,7 @@ var ui_forum = {
 // ------------------------------------
 // -------- Hero Loot -----------------
 
-// Main button creater
+// Main button creator
 var ui_improver = {
 	inventoryChanged: true,
 	improveInProcess: true,

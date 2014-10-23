@@ -6,7 +6,7 @@ return '<p>\n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=invites\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">Приглашения</a> | \n' +
 '<a href="/user/profile/plogs">Подзарядки</a> | Настройки UI</p>\n' +
 '<div id="pant_spn">\n' +
-'	<img align="middle" alt="Spinner" border="0" id="spinner_prof" src="/images/spinner.gif?1277083719" style="vertical-align: bottom; display: none; ">\n' +
+'	<img align="middle" alt="Spinner" border="0" id="spinner_prof" src="/images/spinner.gif" style="vertical-align: bottom; display: none; ">\n' +
 '</div>\n' +
 '<div>\n' +
 '	<div id="central_block_my_page" style="width: 36%;">\n' +
@@ -118,10 +118,10 @@ return '<p>\n' +
 '							<div class="new_line">\n' +
 '								<div class="g_desc" id="freeze_voice_button_desc">замораживает кнопку гласа в некоторых случаях</div>\n' +
 '								<div class="g_desc" id="freeze_voice_button_choice">\n' +
-'										<input type="checkbox" name="freeze_after_voice" id="freeze_after_voice">\n' +
-'										<label for="freeze_after_voice">после отправки гласа на 20 секунд</label><br>\n' +
-'										<input type="checkbox" name="freeze_when_empty" id="freeze_when_empty">\n' +
-'										<label for="freeze_when_empty">при пустом гласе</label>\n' +
+'									<input type="checkbox" name="freeze_after_voice" id="freeze_after_voice">\n' +
+'									<label for="freeze_after_voice">после отправки гласа на 20 секунд</label><br>\n' +
+'									<input type="checkbox" name="freeze_when_empty" id="freeze_when_empty">\n' +
+'									<label for="freeze_when_empty">при пустом гласе</label>\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
@@ -146,31 +146,31 @@ return '<p>\n' +
 '							<div class="new_line">\n' +
 '								<div class="g_desc">позволяет выбрать отображаемые информеры</div>\n' +
 '								<div class="g_desc" id="informers">\n' +
-'								<input class="informer-checkbox" id="full_prana" name="full_prana" type="checkbox"><label for="full_prana">полная прана</label><br>\n' +
-'								<input class="informer-checkbox" id="much_gold" name="much_gold" type="checkbox"><label for="much_gold">много золота</label><br>\n' +
-'								<input class="informer-checkbox" id="dead" name="dead" type="checkbox"><label for="dead">смерть</label><br>\n' +
-'								<input class="informer-checkbox" id="pvp" name="pvp" type="checkbox"><label for="pvp">бой</label><br>\n' +
-'								<input class="informer-checkbox" id="monster_of_the_day" name="monster_of_the_day" type="checkbox"><label for="monster_of_the_day">монстр дня</label><br>\n' +
-'								<input class="informer-checkbox" id="monster_with_capabilities" name="monster_with_capabilities" type="checkbox"><label for="monster_with_capabilities">монстр со способностями</label><br>\n' +
-//'								<input class="informer-checkbox" id="SMELT_TIME" name="SMELT_TIME" type="checkbox"><label for="SMELT_TIME">ВРЕМЯ ПЛАВКИ КИРПИЧЕЙ (с назойливым звуковым оповещением)</label><br>\n' +
-'								<b>Активируемые предметы</b> (отметить <a id="check_all" style="cursor: pointer;">все</a> или <a id="uncheck_all" style="cursor: pointer;">ни один</a>):<br>\n' +
-'								<input class="item-informer informer-checkbox" id="bylina_box" name="bylina_box" type="checkbox"><label for="bylina_box">сочиняющие былину</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="invite" name="invite" type="checkbox"><label for="invite">инвайт на Годвилль</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="arena_box" name="arena_box" type="checkbox"><label for="arena_box">используемые на арене</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="aura_box" name="aura_box" type="checkbox"><label for="aura_box">наделяющие случайной аурой</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="black_box" name="black_box" type="checkbox"><label for="black_box">оказывающие случайный эффект</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="boss_box" name="boss_box" type="checkbox"><label for="boss_box">вызывающие сильного монстра</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="brick_box" name="brick_box" type="checkbox"><label for="brick_box">дарующие кирпич</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="friend_box" name="friend_box" type="checkbox"><label for="friend_box">заводяшие случайные знакомства</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="good_box" name="good_box" type="checkbox"><label for="good_box">делающие что-то хорошее</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="heal_box" name="heal_box" type="checkbox"><label for="heal_box">восстанавливающие здоровье</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="raidboss_box" name="raidboss_box" type="checkbox"><label for="raidboss_box">откапывающие рейд-босса</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="prana_box" name="prana_box" type="checkbox"><label for="prana_box">пакующие прану за полцены</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="quest_box" name="quest_box" type="checkbox"><label for="quest_box">выдающие мини-квест</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="smelter" name="smelter" type="checkbox"><input class="item-informer informer-checkbox" id="smelt!" name="smelt!" type="checkbox" style="display: none;"><label for="smelter">плавящие золото в кирпич</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="teleporter" name="teleporter" type="checkbox"><label for="teleporter">телепортирующие в город</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="to_arena_box" name="to_arena_box" type="checkbox"><label for="to_arena_box">отправляющие на арену</label><br>\n' +
-'								<input class="item-informer informer-checkbox" id="transformer" name="transformer" type="checkbox"><input class="item-informer informer-checkbox" id="transform!" name="transform!" type="checkbox" style="display: none;"><label for="transformer">меняющие <b>предметы</b> на кирпичи</label><br>\n' +
+'									<input class="informer-checkbox" id="full_prana" name="full_prana" type="checkbox"><label for="full_prana">полная прана</label><br>\n' +
+'									<input class="informer-checkbox" id="much_gold" name="much_gold" type="checkbox"><label for="much_gold">много золота</label><br>\n' +
+'									<input class="informer-checkbox" id="dead" name="dead" type="checkbox"><label for="dead">смерть</label><br>\n' +
+'									<input class="informer-checkbox" id="pvp" name="pvp" type="checkbox"><label for="pvp">бой</label><br>\n' +
+'									<input class="informer-checkbox" id="monster_of_the_day" name="monster_of_the_day" type="checkbox"><label for="monster_of_the_day">монстр дня</label><br>\n' +
+'									<input class="informer-checkbox" id="monster_with_capabilities" name="monster_with_capabilities" type="checkbox"><label for="monster_with_capabilities">монстр со способностями</label><br>\n' +
+//'									<input class="informer-checkbox" id="SMELT_TIME" name="SMELT_TIME" type="checkbox"><label for="SMELT_TIME">ВРЕМЯ ПЛАВКИ КИРПИЧЕЙ (с назойливым звуковым оповещением)</label><br>\n' +
+'									<b>Активируемые предметы</b> (отметить <a id="check_all" style="cursor: pointer;">все</a> или <a id="uncheck_all" style="cursor: pointer;">ни один</a>):<br>\n' +
+'									<input class="item-informer informer-checkbox" id="bylina_box" name="bylina_box" type="checkbox"><label for="bylina_box">сочиняющие былину</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="invite" name="invite" type="checkbox"><label for="invite">инвайт на Годвилль</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="arena_box" name="arena_box" type="checkbox"><label for="arena_box">используемые на арене</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="aura_box" name="aura_box" type="checkbox"><label for="aura_box">наделяющие случайной аурой</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="black_box" name="black_box" type="checkbox"><label for="black_box">оказывающие случайный эффект</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="boss_box" name="boss_box" type="checkbox"><label for="boss_box">вызывающие сильного монстра</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="brick_box" name="brick_box" type="checkbox"><label for="brick_box">дарующие кирпич</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="friend_box" name="friend_box" type="checkbox"><label for="friend_box">заводяшие случайные знакомства</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="good_box" name="good_box" type="checkbox"><label for="good_box">делающие что-то хорошее</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="heal_box" name="heal_box" type="checkbox"><label for="heal_box">восстанавливающие здоровье</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="raidboss_box" name="raidboss_box" type="checkbox"><label for="raidboss_box">откапывающие рейд-босса</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="prana_box" name="prana_box" type="checkbox"><label for="prana_box">пакующие прану за полцены</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="quest_box" name="quest_box" type="checkbox"><label for="quest_box">выдающие мини-квест</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="smelter" name="smelter" type="checkbox"><input class="item-informer informer-checkbox" id="smelt!" name="smelt!" type="checkbox" style="display: none;"><label for="smelter">плавящие золото в кирпич</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="teleporter" name="teleporter" type="checkbox"><label for="teleporter">телепортирующие в город</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="to_arena_box" name="to_arena_box" type="checkbox"><label for="to_arena_box">отправляющие на арену</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="transformer" name="transformer" type="checkbox"><input class="item-informer informer-checkbox" id="transform!" name="transform!" type="checkbox" style="display: none;"><label for="transformer">меняющие <b>предметы</b> на кирпичи</label><br>\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
