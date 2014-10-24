@@ -1,6 +1,6 @@
 var ui_data = {
 	currentVersion: '$VERSION',
-	developers: ['Neniu', 'Ryoko', 'Опытный Кролик', 'Бэдлак', 'Ui Developer', 'Шоп'],
+	developers: ['Neniu', 'Ryoko', 'Опытный Кролик', 'Бэдлак', 'Ui Developer', 'Шоп', 'Спандарамет'],
 // base variables initialization
 	init: function() {
 		this.isArena = ($('#m_info').length > 0);
@@ -109,6 +109,38 @@ var ui_utils = {
 						  .replace(/"/g, "&quot;")
 						  .replace(/</g, "&lt;")
 						  .replace(/>/g, "&gt;");
+	},
+	get: function(forum_no, success_callback, fail_callback) {
+		var xhr = new XMLHttpRequest();
+		xhr.forum_no = forum_no;
+		xhr.onreadystatechange = ensureReadiness;
+
+		function ensureReadiness() {
+			try {
+				if (xhr.readyState < 4) {
+					return;
+				}
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						if (success_callback) {
+							success_callback(xhr);
+						}
+					} else {
+						if (fail_callback) {
+							fail_callback(xhr);
+						}
+					}
+				}
+			} catch (error) {
+				GM_log(error);
+				if (GM_browser == "Firefox") {
+					GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
+				}
+			}
+		}
+
+		xhr.open('GET', '/forums/show/' + forum_no, true);
+		xhr.send('');
 	}
 };
 
@@ -144,9 +176,9 @@ var ui_timeout_bar = {
 };
 
 // ------------------------
-//		MENU BAR
+//		HELP DIALOG
 // ------------------------
-var ui_menu_bar = {
+var ui_help_dialog = {
 // appends element in ui dialog
 	append: function($append) {
 		this.content.append($append);
@@ -156,29 +188,41 @@ var ui_menu_bar = {
 		ui_storage.set('uiMenuVisible', !ui_storage.get('uiMenuVisible'));
 		var cloud = $('#fader.cloud').length;
 		if (cloud) {
-			$('#fader').removeClass('up down');
+			$('#fader').removeClass('up');
 		}
 		this.bar.slideToggle("slow", function() {
-			if (cloud) {
-				$('#fader').addClass(ui_storage.get('uiMenuVisible') ? 'down' : 'up');
+			if (cloud && !ui_storage.get('uiMenuVisible')) {
+				$('#fader').addClass('up');
 			}
 		});
 	},
 // creates ui dialog	
 	create: function() {
-		this.bar = $('<div id="ui_menu_bar" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
-					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b></div>' + 
+		this.bar = $('<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
+					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, если что-то пошло не так...</div>' + 
 					 '<div class="hint_bar_content" style="padding: 0.5em 0.8em;"></div>' + 
 					 '<div class="hint_bar_close"></div></div>');
 		if (ui_storage.get('uiMenuVisible')) this.bar.show();
 		this.content = $('.hint_bar_content', this.bar);
-		this.append('<div style="text-align: center;">Если что-то работает не так, как должно, — ' +
-						(GM_browser == 'Firefox' ? 'загляните в веб-консоль (Ctrl+Shift+K), а также в консоль ошибок (Ctrl+Shift+J).'
-												 : 'обновите страницу и проверьте консоль (Ctrl+Shift+J) на наличие ошибок.') +
-						' Если обновление страницы и дымовые сигналы не помогли, напишите об этом в ' + 
-						'<a href="skype:angly_cat">скайп</a>,' + 
-						' богу <a href="/gods/Бэдлак" title="Откроется в новом окне" target="about:blank">Бэдлак</a>' +
-						' или в <a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="about:blank">данную тему на форуме</a>.</div>');
+		this.append('<div style="text-align: left;"><div>Если что-то работает не так, как должно:</div>' +
+					'<ol>' +
+					'<li>Обновите страницу. Если баг повторяется - переходите к следующему шагу.</li>' +
+					'<li><div id="check_version" class="div_link" style="display: inline;">Нажмите сюда, чтоб проверить, последняя ли у вас версия дополнения.</div></li>' +
+					'<li class="update_required Chrome hidden">Откройте страницу настроек Хрома (2). <a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_1.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+					'<li class="update_required Chrome hidden">Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку "Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
+						'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+					'<li class="update_required Firefox hidden">Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). <a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_1.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+					'<li class="update_required Firefox hidden">Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4), подождите несколько секунд и согласитеcь на перезапуск браузера. ' +
+						'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+					'<li class="update_required Chrome Firefox hidden">Обратно к шагу 1.</li>' +
+					'<li class="console Chrome Firefox hidden">Если баг остался — проверьте, нет ли пойманного вами бага в <a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" target="_blank" title="Откроется в новой вкладке">этом списке</a>.</li>' +
+					'<li class="console Chrome Firefox hidden">Если его нет в списке — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GM_browser == 'Firefox' ? 'K' : 'J') + '</b>). ' +
+						'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GM_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+					'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке. И с этой информацией напишите ' +					
+						'богу <a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
+						'в его <a href="skype:angly_cat">скайп</a> ' +
+						'или в <a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">данную тему на форуме</a>.</li>' +
+					'</ol>');
 		if (ui_utils.isDeveloper()) {
 			this.append($('<span>dump: </span>'));
 			this.append(this.getDumpButton('all'));
@@ -197,10 +241,38 @@ var ui_menu_bar = {
 		$('#menu_bar ul').append('<li> | </li>')
 						 .append(this.getToggleButton('<strong>ui</strong>'))
 						 .append('<li> | </li><a href="user/profile#ui_options">настройки</a>');
+
+		$('#check_version').click(function() {
+			console.log('Godville UI+ log: Checking version number...');
+			this.textContent = "Получения номера последней версии дополнения...";
+			this.classList.remove('div_link');
+			ui_utils.get(2, function(xhr) {
+				var temp_cur = ui_data.currentVersion.split('.'),
+					last_version = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/)[1],
+					temp_last = last_version.split('.'),
+					isNewest = +temp_cur[0] >= +temp_last[0] &&
+							   +temp_cur[1] >= +temp_last[1] &&
+							   +temp_cur[2] >= +temp_last[2] &&
+							   +temp_cur[3] >= +temp_last[3];
+				console.log(last_version);
+				console.log(isNewest);
+				$('#check_version')[0].innerHTML = (isNewest ? 'У вас последняя версия.' : 'Последняя версия - <b>' + last_version + '</b>. Нужно обновить вручную.') + ' Переходите к следующему шагу.';
+				if (!isNewest) {
+					console.log(GM_browser);
+					$('#ui_help_dialog ol li.update_required.' + GM_browser).removeClass('hidden');
+				} else {
+					$('#ui_help_dialog ol li.console.' + GM_browser).removeClass('hidden');
+				}
+			}, function() {
+				$('#check_version')[0].innerHTML = 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 2, иначе к шагу 6.';
+				$('#ui_help_dialog ol li.' + GM_browser).removeClass('hidden');
+			});
+			return false;
+		});
 	},
 // gets toggle button
 	getToggleButton: function(text) {
-		return $('<a>' + text + '</a>').click(function() {ui_menu_bar.toggle(); return false;});
+		return $('<a>' + text + '</a>').click(function() {ui_help_dialog.toggle(); return false;});
 	},
 // gets fump button with a given label and selector
 	getDumpButton: function(label, selector) {
@@ -257,7 +329,14 @@ var ui_storage = {
 	},
 // resets saved options
 	clear: function() {
-		localStorage.setItem('GM_clean050613', 'false');
+		var key,
+			r = new RegExp('^GM_.*');
+		for (var i = 0; i < localStorage.length; i++) {
+			key = localStorage.key(i);
+			if (key.match(r)) {
+				localStorage.removeItem(key);
+			}
+		}
 		location.reload();
 		return "Storage cleared. Reloading...";
 	},
@@ -265,18 +344,6 @@ var ui_storage = {
 	clearStorage: function() {
 		if (localStorage.getItem('GM_clean050613') != 'true') {
 			try {
-				var key,
-					idx_lst = [],
-					r = new RegExp('^GM_.*'),
-					settings = new RegExp('^GM_[^:]+:Option:(?:forbiddenInformers|forcePageRefresh|freezeVoiceButton|relocateDuelButtons|useBackground|useHeil|useHeroName|useShortPhrases|hideChargeButton)'),
-					stuff = new RegExp('^GM_[^:]+:(phrases|Stats|Logger).*');
-				for (var i = 0; i < localStorage.length; i++) {
-					key = localStorage.key(i);
-					if (key.match(r) && (!(key.match(settings) || key.match(stuff)) || key.match('undefined'))) idx_lst.push(key);
-				}
-				for (key in idx_lst) {
-					localStorage.removeItem(idx_lst[key]);
-				}
 				localStorage.setItem('GM_clean050613', 'true');
 				this.set('uiMenuVisible', true);
 				$('<div id="first_run" class="hint_bar" style="position: fixed; top: 40px; left: 0; right: 0; z-index: 301; display: none; padding-bottom: 0.7em;">'+
@@ -689,11 +756,9 @@ var ui_forum = {
 			var current_forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
 				topics = [];
 			for (var topic in current_forum) {
-				topics.push(topic);
-			}
-			if (topics.length) {
 				// to prevent simultaneous ForumInformers access
-				setTimeout(this.get.bind(this, forum_no, topics), 500*forum_no);
+				setTimeout(ui_utils.get.bind(this, forum_no, this.parse), 500*forum_no);
+				break;
 			}
 		}
 	},
@@ -733,57 +798,39 @@ var ui_forum = {
 		informer.getElementsByTagName('span')[0].textContent = topic_data.name;
 		informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
 	},
-	get: function(forum_no, topics) {
-		var xhr = new XMLHttpRequest();
-		xhr.forum_no = forum_no;
-		xhr.topics = topics;
-		xhr.onreadystatechange = ensureReadiness;
-
-		function ensureReadiness() {
-			try {
-			if (xhr.readyState < 4 || xhr.status !== 200) {
-				return;
-			}
-			if (xhr.readyState === 4) {
-				var i, diff, temp, old_diff,
-					forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
-					informers = JSON.parse(ui_storage.get('ForumInformers'));
-				for (i = 0, len = xhr.topics.length; i < len; i++) {
-					temp = xhr.responseText.match(RegExp("show_topic\\/" + xhr.topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + xhr.topics[i]));
-					if (temp) {
-						diff = +temp[2] - forum[xhr.topics[i]];
-						if (diff) {
-							forum[xhr.topics[i]] = +temp[2];
-							if (temp[3] != ui_data.god_name) {
-								if (!informers[xhr.topics[i]]) {
-									//create
-									informers[xhr.topics[i]] = {diff: diff, name: temp[1].replace(/&quot;/g, '"')};
-								} else {
-									//update
-									old_diff = informers[xhr.topics[i]].diff;
-									delete informers[xhr.topics[i]];
-									informers[xhr.topics[i]] = {diff: old_diff + diff, name: temp[1].replace(/&quot;/g, '"')};
-								}
-							} else {
-								delete informers[xhr.topics[i]];
-							}
+	parse: function(xhr) {
+		var i, diff, temp, old_diff,
+			forum = JSON.parse(ui_storage.get('Forum' + xhr.forum_no)),
+			informers = JSON.parse(ui_storage.get('ForumInformers')),
+			topics = [];
+		for (var topic in forum) {
+			topics.push(topic);
+		}
+		for (i = 0, len = topics.length; i < len; i++) {
+			temp = xhr.responseText.match(RegExp("show_topic\\/" + topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topics[i]));
+			if (temp) {
+				diff = +temp[2] - forum[topics[i]];
+				if (diff) {
+					forum[topics[i]] = +temp[2];
+					if (temp[3] != ui_data.god_name) {
+						if (!informers[topics[i]]) {
+							//create
+							informers[topics[i]] = {diff: diff, name: temp[1].replace(/&quot;/g, '"')};
+						} else {
+							//update
+							old_diff = informers[topics[i]].diff;
+							delete informers[topics[i]];
+							informers[topics[i]] = {diff: old_diff + diff, name: temp[1].replace(/&quot;/g, '"')};
 						}
+					} else {
+						delete informers[topics[i]];
 					}
 				}
-				ui_storage.set('ForumInformers', JSON.stringify(informers));
-				ui_storage.set('Forum' + xhr.forum_no, JSON.stringify(forum));
-				ui_forum.process(xhr.forum_no);
-			}
-			} catch (error) {
-			GM_log(error);
-			if (GM_browser == "Firefox") {
-				GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
 			}
 		}
-		}
-
-		xhr.open('GET', '/forums/show/' + forum_no, true);
-		xhr.send('');
+		ui_storage.set('ForumInformers', JSON.stringify(informers));
+		ui_storage.set('Forum' + xhr.forum_no, JSON.stringify(forum));
+		ui_forum.process(xhr.forum_no);
 	}
 };
 
@@ -1624,7 +1671,7 @@ var starter = setInterval(function() {
 		ui_words.init();
 		ui_logger.create();
 		ui_timeout_bar.create();
-		ui_menu_bar.create();
+		ui_help_dialog.create();
 		ui_informer.init();
 		ui_forum.init();
 		ui_improver.improve();
