@@ -239,8 +239,8 @@ var ui_help_dialog = {
 		$('.hint_bar_close', this.bar).append(this.getToggleButton('закрыть'));
 		$('#menu_bar').after(this.bar);
 		$('#menu_bar ul').append('<li> | </li>')
-						 .append(this.getToggleButton('<strong>ui</strong>'))
-						 .append('<li> | </li><a href="user/profile#ui_options">настройки</a>');
+						 .append('<a href="user/profile#ui_options">настройки <strong>ui+</strong></a><li> | </li>')
+						 .append(this.getToggleButton('<strong>help</strong>'));
 
 		$('#check_version').click(function() {
 			console.log('Godville UI+ log: Checking version number...');
