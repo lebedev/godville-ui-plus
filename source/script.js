@@ -878,7 +878,7 @@ var ui_improver = {
 					var item_name = this.textContent.replace(/\?/, '')
 													.replace(/\(@\)/, '')
 													.replace(/\(\d + шт\)$/, '')
-													.replace(/^\s + |\s + $/g, '');
+													.replace(/^\s+|\s+$/g, '');
 					// color items and add buttons
 					if (ui_words.canBeActivated($obj)) {
 						var desc = $('div.item_act_link_div *', $obj).attr('title').replace(/ \(.*/g, ''),
