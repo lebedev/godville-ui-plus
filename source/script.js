@@ -890,7 +890,7 @@ var ui_improver = {
 	},
 
 	_createCraftButton: function(combo, combo_list, hint) {
-		return $('<a class="craft_button ' + combo_list + '" title="Уговорить ' + ui_data.char_sex[0] + ' скрафтить случайную комбинацию ' + hint + ' предметов из инвентаря">' + combo + '</a>')
+		return $('<a class="craft_button ' + combo_list + '" title="Уговорить ' + ui_data.char_sex[0] + ' склеить случайную комбинацию ' + hint + ' предметов из инвентаря">' + combo + '</a>')
 			.click(function() {
 				var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
 					items = ui_improver[combo_list][rand];
@@ -1000,7 +1000,7 @@ var ui_improver = {
 				this._createCraftButton('нж+нж', 'r_r', 'нежирных').insertAfter($('#inventory ul'));
 				this._createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного').insertAfter($('#inventory ul'));
 				this._createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных').insertAfter($('#inventory ul'));
-				$('<span class="craft_button">Скрафти:</span>').insertAfter($('#inventory ul'));
+				$('<span class="craft_button">Склей:</span>').insertAfter($('#inventory ul'));
 			}
 
 			for (i = 0, len = flags.length; i < len; i++) {
@@ -1077,7 +1077,7 @@ var ui_improver = {
 					$('#actions').hide();
 			} else {
 				if (ui_data.isArena) {
-					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'щитуй', 'defend', 'Попытаться заставить ' + ui_data.char_sex[0] + ' принять защитную стойку, поднять щит и отбить атаку противника');
+					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'отбивай', 'defend', 'Попытаться заставить ' + ui_data.char_sex[0] + ' принять защитную стойку, поднять щит и отбить атаку противника');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'молись', 'pray', 'Попросить ' + ui_data.char_sex[0] + ' вознести молитву для пополнения праны');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'лечись', 'heal', 'Посоветовать ' + ui_data.char_sex[1] + ' подлечиться подручными средствами');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'бей', 'hit', 'Подсказать ' + ui_data.char_sex[1] + ' о возможности нанесения сильного удара вне очереди');
