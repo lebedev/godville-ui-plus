@@ -1573,7 +1573,7 @@ var ui_improver = {
 		
 	add_css: function () {
 		if ($('#ui_css').length === 0) {
-			GM_addGlobalStyleURL('godville-ui.css', 'ui_css');
+			GM_addGlobalStyleURL('godville-ui-plus.css', 'ui_css');
 		}
 	}
 };

@@ -44,8 +44,19 @@ body {
 	float: left;
 }
 
+#ui_hint_bar {
+	font-size: 90%;
+	text-align: center;
+}
 .hint_bar_capt {
 	padding-bottom: 0.75em;
+}
+.hint_bar_content ol {
+    margin: 0;
+    padding: 0 0 0 20px;
+}
+.hint_bar_content ol li.hidden {
+	display: none;
 }
 
 .gu_new_badge_pos {
@@ -68,9 +79,10 @@ body {
 }
 
 .c_col .pbar .p_bar {
-	width: 99% !important;
+	width: 99%;
 	position: relative;
 	left: 0;
+	margin-left: 2px;
 }
 
 #menu_bar {
@@ -156,22 +168,6 @@ body {
 }
 #timeout_bar.night {
 	background: chartreuse;
-}
-
-
-#ui_menu_bar {
-	font-size: 90%;
-	text-align: center;
-}
-
-#ui_menu_bar li {
-	display: inline;
-	padding: 0 0.3em;
-}
-#ui_menu_bar ul {
-	list-style: none outside none;
-	margin: 0 0 0.7em 0;
-	padding: 0;
 }
 
 #informer_bar {
@@ -317,9 +313,9 @@ a {
 #fader.cloud.up {
 	background: linear-gradient(to right, rgba(253, 252, 255, 1) 30%, rgba(243, 248, 253, 0) 100%);
 }
-#fader.cloud.down {
+/*#fader.cloud.down {
 	background: linear-gradient(to right, rgba(213, 234, 251, 1) 30%, rgba(213, 234, 251, 0) 100%);
-}
+}*/
 
 #laying_timer {
 	top: 2px;

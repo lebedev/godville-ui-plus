@@ -53,7 +53,7 @@
 	},
 	
 	"web_accessible_resources": [
-		"godville-ui.css",
+		"godville-ui-plus.css",
 		"shift_enter.js",
 		"laying_timer.js",
 		"images/background.jpg",
