@@ -1447,8 +1447,8 @@ var ui_improver = {
 			});
 		}
 
-		if (localStorage.getItem('ui_s') != ui_storage.get('ui_s')) {
-			ui_storage.set('ui_s', localStorage.getItem('ui_s'));
+		if (localStorage.getItem('ui_s') !== ui_storage.get('ui_s')) {
+			ui_storage.set('ui_s', localStorage.getItem('ui_s') || 'th_classic');
 			ui_improver.Shovel = false;
 			if (ui_storage.get('ui_s') == 'th_nightly') {
 				$('#timeout_bar').addClass('night').removeClass('day');
