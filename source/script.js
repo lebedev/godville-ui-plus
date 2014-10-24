@@ -903,7 +903,8 @@ var ui_improver = {
 					} else {
 						if (ui_words.isBoldItem($obj)) {
 							bold_items = true;
-							if (!(forbiddenCraft && forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r'))) {
+							if (!(forbiddenCraft && forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r')) &&
+								!item_name.match('золотой кирпич') && !item_name.match(' босса ')) {
 								trophyList.push(item_name);
 								trophyBoldness[item_name] = true;
 							}
