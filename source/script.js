@@ -1323,7 +1323,7 @@ var ui_improver = {
 			ui_utils.addSayPhraseAfterLabel($box, 'Золота', 'копай', 'dig', 'Указать ' + ui_data.char_sex[1] + ' место для копания клада или босса');
 			ui_utils.addSayPhraseAfterLabel($box, 'Задание', 'отмени', 'cancel_task', 'Убедить ' + ui_data.char_sex[0] + ' отменить текущее задание');
 			ui_utils.addSayPhraseAfterLabel($box, 'Задание', 'делай', 'do_task', 'Открыть ' + ui_data.char_sex[1] + ' секрет более эффективного выполнения задания');
-			ui_utils.addSayPhraseAfterLabel($box, 'Смертей', 'умри', 'die');
+			ui_utils.addSayPhraseAfterLabel($box, 'Смертей', 'умри', 'die', 'Попросить ' + ui_data.char_sex[0] + ' увеличить на единичку счетчик смертей');
 		}
 		if (!$('#hk_distance .voice_generator').length)
 			ui_utils.addSayPhraseAfterLabel($box, 'Столбов от столицы', $('#main_wrapper.page_wrapper_5c').length ? '回' : 'дом', 'town', 'Наставить ' + ui_data.char_sex[0] + ' на путь в ближайший город');
