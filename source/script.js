@@ -52,6 +52,7 @@ var ui_data = {
 //		UTILS
 // ------------------------
 var ui_utils = {
+	hasShownErrorMessage: false,
 	isDeveloper: function () {
 		return ui_data.developers.indexOf(ui_data.god_name) >= 0;
 	},
@@ -1696,12 +1697,49 @@ var ui_observers = {
 	}
 };
 
-// Main code
-var starter = setInterval(function() {
-	if ($ && ($('#m_info').length || $('#stats').length)) {
-		try {
+var ui_trycatcher = {
+	replacer: function(object_name, method_name, method) {
+		return function() {
+			try {
+				return method.apply(this, arguments);
+			} catch (error) {
+				console.error('Godville UI+ error log:\n' +
+							  error.message + '\n' +
+							  '↑ ошибка произошла в объекте ' + object_name + ', методе ' + method_name + "().");
+				if (!ui_utils.hasShownErrorMessage) {
+					ui_utils.hasShownErrorMessage = true;
+					ui_utils.showMessage('error', {
+						title: 'Ошибка в Godville UI+!',
+						content: '<div>Произошла ошибка. Скопируйте следующую информацию и действуйте по инструции из окошка помощи:</div>' +
+								 '<div>Текст ошибки: <b>' + error.message + '</b>.</div>' +
+								 '<div>Место ошибки: объект <b>' + object_name + '</b>, метод <b>' + method_name + '()</b>.</div>',
+						callback: function() {
+							if (!ui_storage.get('helpDialogVisible')) {
+								ui_storage.set('helpDialogVisible', true);
+								ui_help_dialog.toggle();
+							}
+						}
+					});
+				}
+			}
+		};
+	},
+	process: function(object, object_name) {
+		var method_name, method;
+		for (method_name in object){
+			method = object[method_name];
+			if (typeof method == "function") {
+				object[method_name] = this.replacer(object_name, method_name, method);
+			}
+		}
+	}
+};
+
+var ui_starter = {
+	start: function() {
+		if ($ && ($('#m_info').length || $('#stats').length)) {
+			clearInterval(starterInt);
 			var start = new Date();
-			clearInterval(starter);
 			ui_data.init();
 			ui_improver.add_css();
 			ui_utils.inform();
@@ -1713,46 +1751,52 @@ var starter = setInterval(function() {
 			ui_forum.init();
 			ui_improver.improve();
 			ui_observers.init();
+			
+			// Event and listeners
+			$(document).bind('DOMNodeInserted', function() {
+				if(!ui_improver.improveInProcess){
+					ui_improver.improveInProcess = true;
+					setTimeout(function() {
+						ui_improver.improve();
+						if (ui_data.isArena) {
+							ui_logger.update();
+						}
+					}, 50);
+				}
+			});
+
+			$('html').mousemove(function() {
+				if (!ui_logger.Updating) {
+					ui_logger.Updating = true;
+					if (!ui_data.isArena)
+						ui_logger.update();
+					setTimeout(function() {
+						ui_logger.Updating = false;
+					}, 500);
+				}
+			});
+
+			// "Shift+Enter → new line" improvement by external-script to bypass stupid Chrome restrictions
+			var shiftEnterScript = document.createElement('script');
+			shiftEnterScript.src = GM_getResource('shift_enter.js');
+			document.head.appendChild(shiftEnterScript);
+
+			/*var layingTimerScript = document.createElement('script');
+			layingTimerScript.src = GM_getResource('laying_timer.js');
+			document.body.appendChild(layingTimerScript);*/
+
 			var finish = new Date();
 			GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
-		} catch (error) {
-			GM_log(error);
-			if (GM_browser == 'Firefox') {
-				GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
-			}
 		}
 	}
-}, 200);
+};
 
-// Event and listeners
-$(document).bind('DOMNodeInserted', function() {
-	if(!ui_improver.improveInProcess){
-		ui_improver.improveInProcess = true;
-		setTimeout(function() {
-			ui_improver.improve();
-			if (ui_data.isArena) {
-				ui_logger.update();
-			}
-		}, 50);
-	}
-});
-
-$('html').mousemove(function() {
-	if (!ui_logger.Updating) {
-		ui_logger.Updating = true;
-		if (!ui_data.isArena)
-			ui_logger.update();
-		setTimeout(function() {
-			ui_logger.Updating = false;
-		}, 500);
-	}
-});
-
-// "Shift+Enter → new line" improvement by external-script to bypass stupid Chrome restrictions
-var shiftEnterScript = document.createElement('script');
-shiftEnterScript.src = GM_getResource('shift_enter.js');
-document.head.appendChild(shiftEnterScript);
-
-/*var layingTimerScript = document.createElement('script');
-layingTimerScript.src = GM_getResource('laying_timer.js');
-document.body.appendChild(layingTimerScript);*/
+// Main code
+var objects = [ui_data, ui_utils, ui_timeout_bar, ui_help_dialog, ui_storage, ui_words,
+			   ui_stats, ui_logger, ui_informer, ui_forum, ui_improver, ui_observers, ui_starter],
+	object_names = ['ui_data', 'ui_utils', 'ui_timeout_bar', 'ui_help_dialog', 'ui_storage', 'ui_words',
+					'ui_stats', 'ui_logger', 'ui_informer', 'ui_forum', 'ui_improver', 'ui_observers', 'ui_starter'];
+for (var i = 0, len = objects.length; i < len; i++) {
+	ui_trycatcher.process(objects[i], object_names[i]);
+}
+var starterInt = setInterval(ui_starter.start, 200);
