@@ -18,7 +18,7 @@ var ui_data = {
 		this.char_sex = document.title.match('героиня') ? ['героиню', 'героине'] : ['героя', 'герою'];
 		ui_storage.set('ui_s', '');
 		localStorage.setItem('GM_CurrentUser', this.god_name);
-		
+
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
 			ui_storage.set('Forum1', '{}');
@@ -150,10 +150,12 @@ var ui_utils = {
 						'<div class="hint_bar_content">' + msg.content + '</div>'+
 						'<div class="hint_bar_close"><a id="' + id + '_close">закрыть</a></div>' +
 					 '</div>').insertAfter($('#menu_bar'));
-		$(id + '_close').click(function() {
-			$(id).fadeToggle(function() {
-				ui_storage.set('lastShownMessage', msg_no);
-				$(id).remove();
+		$('#' + id + '_close').click(function() {
+			$('#' + id).fadeToggle(function() {
+				$('#' + id).remove();
+				if (!isNaN(msg_no)) {
+					ui_storage.set('lastShownMessage', msg_no);
+				}
 			});
 			return false;
 		});
@@ -270,9 +272,11 @@ var ui_help_dialog = {
 							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
 						'<li class="update_required Chrome Firefox hidden">Обратно к шагу 1.</li>' +
 						'<li class="console Chrome Firefox hidden">Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.</li>' +
-						'<li class="console Chrome Firefox hidden">Если его нет в списке — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GM_browser == 'Firefox' ? 'K' : 'J') + '</b>). ' +
+						'<li class="console Chrome Firefox hidden">Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GM_browser == 'Firefox' ? 'K' : 'J') + '</b>). ' +
 							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GM_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-						'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке. И с этой информацией напишите Бэдлаку или в тему на форуме по ссылкам ниже.</li>' +
+						'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке ' +
+							'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GM_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
+						'И с этой информацией напишите Бэдлаку или в тему на форуме по ссылкам ниже.</li>' +
 						'</ol>' +
 						'<div>Полезные ссылки: ' +
 							'<a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
