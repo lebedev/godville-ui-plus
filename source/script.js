@@ -117,25 +117,18 @@ var ui_utils = {
 		xhr.onreadystatechange = ensureReadiness;
 
 		function ensureReadiness() {
-			try {
-				if (xhr.readyState < 4) {
-					return;
-				}
-				if (xhr.readyState === 4) {
-					if (xhr.status === 200) {
-						if (success_callback) {
-							success_callback(xhr);
-						}
-					} else {
-						if (fail_callback) {
-							fail_callback(xhr);
-						}
+			if (xhr.readyState < 4) {
+				return;
+			}
+			if (xhr.readyState === 4) {
+				if (xhr.status === 200) {
+					if (success_callback) {
+						success_callback(xhr);
 					}
-				}
-			} catch (error) {
-				GM_log(error);
-				if (GM_browser == "Firefox") {
-					GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
+				} else {
+					if (fail_callback) {
+						fail_callback(xhr);
+					}
 				}
 			}
 		}
@@ -894,30 +887,22 @@ var ui_improver = {
 	//hucksterNews: '',
 	improve: function() {
 		this.improveInProcess = true;
-		try {
-			ui_informer.update('pvp', ui_data.isArena);
-			this.improveStats();
-			this.improvePet();
-			this.improveLoot();
-			this.improveVoiceDialog();
-			this.improveNews();
-			this.improveEquip();
-			this.improvePantheons();
-			this.improveDiary();
-			this.improveMap();
-			this.improveInterface();
-			this.improveChat();
-			this.improveWindowWidthChangeAndNewElementsInsertionRelatedStuff();
-			this.checkButtonsVisibility();
-			this.isFirstTime = false;
-		} catch (error) {
-			GM_log(error);
-			if (GM_browser == "Firefox") {
-				GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
-			}
-		} finally {
-			ui_improver.improveInProcess = false;
-		}
+		ui_informer.update('pvp', ui_data.isArena);
+		this.improveStats();
+		this.improvePet();
+		this.improveLoot();
+		this.improveVoiceDialog();
+		this.improveNews();
+		this.improveEquip();
+		this.improvePantheons();
+		this.improveDiary();
+		this.improveMap();
+		this.improveInterface();
+		this.improveChat();
+		this.improveWindowWidthChangeAndNewElementsInsertionRelatedStuff();
+		this.checkButtonsVisibility();
+		this.isFirstTime = false;
+		ui_improver.improveInProcess = false;
 	},
 
 	_createInspectButton: function(item_name) {
