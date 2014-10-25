@@ -161,6 +161,9 @@ var ui_utils = {
 		$('.hint_bar_content', $msg).append(content);
 		$msg.css('box-shadow', '2px 2px 15px #' + ((localStorage.getItem('ui_s') == 'th_nightly') ? 'ffffff' : '000000'))
 			.fadeToggle(1500);
+	},
+	inform: function() {
+
 	}
 };
 
@@ -266,29 +269,36 @@ var ui_help_dialog = {
 			console.log('Godville UI+ log: Checking version number...');
 			this.textContent = "Получения номера последней версии дополнения...";
 			this.classList.remove('div_link');
-			ui_utils.get(2, function(xhr) {
-				var temp_cur = ui_data.currentVersion.split('.'),
-					last_version = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/)[1],
-					temp_last = last_version.split('.'),
-					isNewest = +temp_cur[0] >= +temp_last[0] &&
-							   +temp_cur[1] >= +temp_last[1] &&
-							   +temp_cur[2] >= +temp_last[2] &&
-							   +temp_cur[3] >= +temp_last[3];
-				console.log(last_version);
-				console.log(isNewest);
-				$('#check_version')[0].innerHTML = (isNewest ? 'У вас последняя версия.' : 'Последняя версия - <b>' + last_version + '</b>. Нужно обновить вручную.') + ' Переходите к следующему шагу.';
-				if (!isNewest) {
-					console.log(GM_browser);
-					$('#ui_help_dialog ol li.update_required.' + GM_browser).removeClass('hidden');
-				} else {
-					$('#ui_help_dialog ol li.console.' + GM_browser).removeClass('hidden');
-				}
-			}, function() {
-				$('#check_version')[0].innerHTML = 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 2, иначе к шагу 6.';
-				$('#ui_help_dialog ol li.' + GM_browser).removeClass('hidden');
-			});
+			ui_utils.get(2, ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
 			return false;
 		});
+	},
+	onXHRSuccess: function(xhr) {
+		console.log('azaza');
+		var match;
+		if ((match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/))) {
+			var temp_cur = ui_data.currentVersion.split('.'),
+				last_version = match[1],
+				temp_last = last_version.split('.'),
+				isNewest = +temp_cur[0] >= +temp_last[0] &&
+						   +temp_cur[1] >= +temp_last[1] &&
+						   +temp_cur[2] >= +temp_last[2] &&
+						   +temp_cur[3] >= +temp_last[3];
+			$('#check_version')[0].innerHTML = (isNewest ? 'У вас последняя версия.' : 'Последняя версия - <b>' + last_version + '</b>. Нужно обновить вручную.') + ' Переходите к следующему шагу.';
+			if (!isNewest) {
+				console.log(GM_browser);
+				$('#ui_help_dialog ol li.update_required.' + GM_browser).removeClass('hidden');
+			} else {
+				$('#ui_help_dialog ol li.console.' + GM_browser).removeClass('hidden');
+			}
+		} else {
+			this.onXHRFail();
+		}
+	},
+	onXHRFail: function() {
+		console.log('ololo');
+		$('#check_version')[0].innerHTML = 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 2, иначе к шагу 6.';
+		$('#ui_help_dialog ol li.' + GM_browser).removeClass('hidden');
 	},
 // gets toggle button
 	getToggleButton: function(text) {
@@ -1651,21 +1661,21 @@ var ui_observers = {
 var starter = setInterval(function() {
 	if ($ && ($('#m_info').length || $('#stats').length)) {
 		try {
-		var start = new Date();
-		clearInterval(starter);
-		ui_data.init();
-		//ui_utils.inform();
-		ui_improver.add_css();
-		ui_words.init();
-		ui_logger.create();
-		ui_timeout_bar.create();
-		ui_help_dialog.create();
-		ui_informer.init();
-		ui_forum.init();
-		ui_improver.improve();
-		ui_observers.init();
-		var finish = new Date();
-		GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
+			var start = new Date();
+			clearInterval(starter);
+			ui_data.init();
+			//ui_utils.inform();
+			ui_improver.add_css();
+			ui_words.init();
+			ui_logger.create();
+			ui_timeout_bar.create();
+			ui_help_dialog.create();
+			ui_informer.init();
+			ui_forum.init();
+			ui_improver.improve();
+			ui_observers.init();
+			var finish = new Date();
+			GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
 		} catch (error) {
 			GM_log(error);
 			if (GM_browser == 'Firefox') {
