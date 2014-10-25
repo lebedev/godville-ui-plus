@@ -227,25 +227,30 @@ var ui_help_dialog = {
 					 '<div class="hint_bar_close"></div></div>');
 		if (ui_storage.get('helpDialogVisible')) this.bar.show();
 		this.content = $('.hint_bar_content', this.bar);
-		this.append('<div style="text-align: left;"><div>Если что-то работает не так, как должно:</div>' +
-					'<ol>' +
-					'<li>Обновите страницу. Если баг повторяется - переходите к следующему шагу.</li>' +
-					'<li><div id="check_version" class="div_link" style="display: inline;">Нажмите сюда, чтоб проверить, последняя ли у вас версия дополнения.</div></li>' +
-					'<li class="update_required Chrome hidden">Откройте страницу настроек Хрома (2). <a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_1.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-					'<li class="update_required Chrome hidden">Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку "Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
-						'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-					'<li class="update_required Firefox hidden">Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). <a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_1.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-					'<li class="update_required Firefox hidden">Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4), подождите несколько секунд и согласитеcь на перезапуск браузера. ' +
-						'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-					'<li class="update_required Chrome Firefox hidden">Обратно к шагу 1.</li>' +
-					'<li class="console Chrome Firefox hidden">Если баг остался — проверьте, нет ли пойманного вами бага в <a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" target="_blank" title="Откроется в новой вкладке">этом списке</a>.</li>' +
-					'<li class="console Chrome Firefox hidden">Если его нет в списке — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GM_browser == 'Firefox' ? 'K' : 'J') + '</b>). ' +
-						'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GM_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-					'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке. И с этой информацией напишите ' +					
-						'богу <a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
-						'в его <a href="skype:angly_cat">скайп</a> ' +
-						'или в <a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">данную тему на форуме</a>.</li>' +
-					'</ol>');
+		this.append('<div style="text-align: left;">' +
+						'<div>Если что-то работает не так, как должно:</div>' +
+						'<ol>' +
+						'<li>Обновите страницу. Если баг повторяется - переходите к следующему шагу.</li>' +
+						'<li><div id="check_version" class="div_link" style="display: inline;">Нажмите сюда, чтоб проверить, последняя ли у вас версия дополнения.</div></li>' +
+						'<li class="update_required Chrome hidden">Откройте страницу настроек Хрома (2). <a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_1.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+						'<li class="update_required Chrome hidden">Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку "Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
+							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+						'<li class="update_required Firefox hidden">Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). <a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_1.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+						'<li class="update_required Firefox hidden">Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4), подождите несколько секунд и согласитеcь на перезапуск браузера. ' +
+							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+						'<li class="update_required Chrome Firefox hidden">Обратно к шагу 1.</li>' +
+						'<li class="console Chrome Firefox hidden">Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.</li>' +
+						'<li class="console Chrome Firefox hidden">Если его нет в списке — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GM_browser == 'Firefox' ? 'K' : 'J') + '</b>). ' +
+							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GM_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+						'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке. И с этой информацией напишите Бэдлаку или в тему на форуме по ссылкам ниже.</li>' +
+						'</ol>' +
+						'<div>Полезные ссылки: ' +
+							'<a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
+							'его <a href="skype:angly_cat">скайп</a>, ' +
+							'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" title="Откроется в новой вкладке" target="_blank">список багов</a>, ' +
+							'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
+							'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>.' +
+					'</div>');
 		if (ui_utils.isDeveloper()) {
 			this.append($('<span>dump: </span>'));
 			this.append(this.getDumpButton('all'));
