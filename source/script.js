@@ -142,29 +142,59 @@ var ui_utils = {
 		xhr.open('GET', '/forums/show/' + forum_no, true);
 		xhr.send('');
 	},
-	showMessage: function(msg_no, title) {
+	showMessage: function(msg_no, msg) {
 		ui_storage.set('helpDialogVisible', true);
-		var $msg = $('<div id="msg' + msg_no + '" class="hint_bar ui_msg">'+
-			'<div class="hint_bar_capt"><b>' + title + '</b></div>'+
-			'<div class="hint_bar_content"></div>'+
-			'<div class="hint_bar_close"><a onclick="$(\'#msg' + msg_no + '\').fadeToggle(function() {$(\'#msg' + msg_no + '\').remove();}); return false;">закрыть</a></div></div>'
-			 ).insertAfter($('#menu_bar'));
-		var fem = ui_storage.get('sex') == 'female' ? true : false;
-		var content = 'Приветствую ' +
-					'бог' + (fem ? 'иню' : 'а') + ', использующ' + (fem ? 'ую' : 'его') + ' аддон расширения интерфейса <b>Godville UI+</b>.<br>'+
-					'<div style="text-align: justify; margin: 0.2em 0 0.3em;">&emsp;<b>Опции</b> находятся в <b>профиле</b> героя, на вкладке <b>Настройки UI</b>. '+
-					'Информация о наличии новых версий аддона отображается в&nbsp;виде <i>всплывающего сообщения</i> (как это) и дублируется' +
-					' в <i>диалоговом окне</i> (под этим всплывающим сообщением), '+
-					'которое можно открыть/закрыть нажатием на кнопку <b>ui</b>, что чуть правее кнопки <i>выход</i> в верхнем меню.<br style="margin-bottom: 0.5em;">' +
-					'&emsp;Информер можно убрать щелчком мыши по нему (при этом заголовок перестанет мигать) до следующего срабатывания условий информера. Например, Если у вас было <i>больше трех тысяч золота</i> и вы нажали на информер, то он появится в следующий раз только после того, как золота станет меньше, а потом опять больше трех тысяч.</div>' + 
-					'Отображение <b>всех</b> информеров по-умолчанию <b>включено</b>. Возможно, вы захотите отключить информер <b>ВРЕМЕНИ ПЛАВКИ ПРЕДМЕТОВ</b>. Я предупредил.';
-		$('.hint_bar_content', $msg).append(content);
-		$msg.css('box-shadow', '2px 2px 15px #' + ((localStorage.getItem('ui_s') == 'th_nightly') ? 'ffffff' : '000000'))
-			.fadeToggle(1500);
+		var id = 'msg' + msg_no,
+			$msg = $('<div id="' + id + '" class="hint_bar ui_msg">'+
+						'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
+						'<div class="hint_bar_content">' + msg.content + '</div>'+
+						'<div class="hint_bar_close"><a id="' + id + '_close">закрыть</a></div>' +
+					 '</div>').insertAfter($('#menu_bar'));
+		$(id + '_close').click(function() {
+			$(id).fadeToggle(function() {
+				ui_storage.set('lastShownMessage', msg_no);
+				$(id).remove();
+			});
+			return false;
+		});
+		$msg.css('box-shadow', '2px 2px 15px #' + ((localStorage.getItem('ui_s') == 'th_nightly') ? 'ffffff' : '000000'));
+
+		setTimeout(function() {
+			$msg.fadeToggle(1500);
+			if (msg.callback) {
+				msg.callback();
+			}
+		}, 1000);
 	},
 	inform: function() {
+		var last_shown = (ui_storage.get('lastShownMessage') !== null) ? +ui_storage.get('lastShownMessage') : -1;
+		if (last_shown < this.messages.length) {
+			for (var i = last_shown + 1, len = this.messages.length; i < len; i++) {
+				this.showMessage(i, this.messages[i]);
+			}
+		}
+	},
+	messages: [
+		{
+			title: 'Приветственное сообщение <b>Godville UI+</b>',
+			content: '<div>Приветствую бог' + (document.title.match('её') ? 'иню' : 'а') + ', использующ' + (document.title.match('её') ? 'ую' : 'его') +
+					 ' расширения интерфейса <b>Godville UI+</b>.</div>'+
 
-	}
+					 '<div style="text-align: justify; margin: 0.2em 0 0.3em;">&emsp;Ознакомьтесь с настройками дополнения, если еще этого не сделали, ' +
+					 'в которые можно попасть, нажав на кнопку <b>настройки ui+</b> в верхнем меню или открыв вкладку <b>Настройки UI+</b> в <b>профиле</b> героя.<br>'+
+
+					 '&emsp;Если с каким-то функционалом дополнения не удалось интуитивно разобраться — прочтите <b>статью дополнения в богии</b> ' +
+					 'или задайте вопрос мне (богу <b>Бэдлак</b>) или в <b>теме дополнения на форуме</b>.<br>' +
+
+					 '&emsp;Инструкции на случай проблем можно прочесть в <i>диалоговом окне помощи</i> (оно сейчас открыто), которое открывается/закрывается ' +
+					 'по щелчку на кнопке <b style="text-decoration: underline;">help</b> в верхнем меню. Ссылки на все ранее упомянутое находятся там же.<br>' +
+
+					 '<div style="text-align: right;">Приятной игры!<br>~~Бэдлак</div>',
+			callback: function() {
+				ui_storage.set('helpDialogVisible', true);
+			}
+		}
+	]
 };
 
 // ------------------------
@@ -1669,8 +1699,8 @@ var starter = setInterval(function() {
 			var start = new Date();
 			clearInterval(starter);
 			ui_data.init();
-			//ui_utils.inform();
 			ui_improver.add_css();
+			ui_utils.inform();
 			ui_words.init();
 			ui_logger.create();
 			ui_timeout_bar.create();
