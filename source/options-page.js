@@ -4,7 +4,7 @@ return '<p>\n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=informers\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">Информеры</a> | \n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=gadgets\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">Клиенты и плагины</a> | \n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=invites\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">Приглашения</a> | \n' +
-'<a href="/user/profile/plogs">Подзарядки</a> | Настройки UI</p>\n' +
+'<a href="/user/profile/plogs">Подзарядки</a> | Настройки UI+</p>\n' +
 '<div id="pant_spn">\n' +
 '	<img align="middle" alt="Spinner" border="0" id="spinner_prof" src="/images/spinner.gif" style="vertical-align: bottom; display: none; ">\n' +
 '</div>\n' +
