@@ -44,7 +44,19 @@ body {
 	float: left;
 }
 
-#ui_hint_bar {
+.ui_msg {
+	position: fixed;
+	top: 40px;
+	left: 0;
+	right: 0;
+	z-index: 301;
+	display: none;
+	padding-bottom: 0.7em;
+}
+.ui_msg .hint_bar_content {
+	padding: 0 1em;
+}
+.hint_bar {
 	font-size: 90%;
 	text-align: center;
 }
@@ -52,16 +64,16 @@ body {
 	padding-bottom: 0.75em;
 }
 .hint_bar_content ol {
-    margin: 0;
-    padding: 0 0 0 20px;
+	margin: 0;
+	padding: 0 0 0 20px;
 }
 .hint_bar_content ol li.hidden {
 	display: none;
 }
 
 .gu_new_badge_pos {
-		right: 20px;
-		top: 2px;
+	right: 20px;
+	top: 2px;
 }
 
 #hero_block {
@@ -83,10 +95,6 @@ body {
 	position: relative;
 	left: 0;
 	margin-left: 2px;
-}
-
-#menu_bar {
-	padding-top: 1em;
 }
 
 .gp_label {
@@ -119,7 +127,7 @@ body {
 }
 
 .craft_button {
-    padding: 0 0.2em;
+	padding: 0 0.2em;
 }
 
 #stats_log {
@@ -266,11 +274,11 @@ body {
 }
 
 #forum_informer_bar span {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
 }
 
 .msgDockWrapper {

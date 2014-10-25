@@ -144,9 +144,9 @@ var ui_utils = {
 	},
 	showMessage: function(msg_no, title) {
 		ui_storage.set('helpDialogVisible', true);
-		var $msg = $('<div id="msg' + msg_no + '" class="hint_bar" style="position: fixed; top: 40px; left: 0; right: 0; z-index: 301; display: none; padding-bottom: 0.7em;">'+
+		var $msg = $('<div id="msg' + msg_no + '" class="hint_bar ui_msg">'+
 			'<div class="hint_bar_capt"><b>' + title + '</b></div>'+
-			'<div class="hint_bar_content" style="padding: 0 1em;"></div>'+
+			'<div class="hint_bar_content"></div>'+
 			'<div class="hint_bar_close"><a onclick="$(\'#msg' + msg_no + '\').fadeToggle(function() {$(\'#msg' + msg_no + '\').remove();}); return false;">закрыть</a></div></div>'
 			 ).insertAfter($('#menu_bar'));
 		var fem = ui_storage.get('sex') == 'female' ? true : false;
