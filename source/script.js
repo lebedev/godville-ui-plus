@@ -369,7 +369,6 @@ var ui_storage = {
 					GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
 			}
 		}
-		this.set('isStorage', true);
 	}
 };
 
@@ -856,7 +855,6 @@ var ui_improver = {
 		this.improveInProcess = true;
 		try {
 			ui_informer.update('pvp', ui_data.isArena);
-			if (!ui_storage.get('isStorage')) throw('No users data!');
 			this.improveStats();
 			this.improvePet();
 			this.improveLoot();
