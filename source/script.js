@@ -141,6 +141,26 @@ var ui_utils = {
 
 		xhr.open('GET', '/forums/show/' + forum_no, true);
 		xhr.send('');
+	},
+	showMessage: function(msg_no, title) {
+		ui_storage.set('helpDialogVisible', true);
+		var $msg = $('<div id="msg' + msg_no + '" class="hint_bar" style="position: fixed; top: 40px; left: 0; right: 0; z-index: 301; display: none; padding-bottom: 0.7em;">'+
+			'<div class="hint_bar_capt"><b>' + title + '</b></div>'+
+			'<div class="hint_bar_content" style="padding: 0 1em;"></div>'+
+			'<div class="hint_bar_close"><a onclick="$(\'#msg' + msg_no + '\').fadeToggle(function() {$(\'#msg' + msg_no + '\').remove();}); return false;">закрыть</a></div></div>'
+			 ).insertAfter($('#menu_bar'));
+		var fem = ui_storage.get('sex') == 'female' ? true : false;
+		var content = 'Приветствую ' +
+					'бог' + (fem ? 'иню' : 'а') + ', использующ' + (fem ? 'ую' : 'его') + ' аддон расширения интерфейса <b>Godville UI+</b>.<br>'+
+					'<div style="text-align: justify; margin: 0.2em 0 0.3em;">&emsp;<b>Опции</b> находятся в <b>профиле</b> героя, на вкладке <b>Настройки UI</b>. '+
+					'Информация о наличии новых версий аддона отображается в&nbsp;виде <i>всплывающего сообщения</i> (как это) и дублируется' +
+					' в <i>диалоговом окне</i> (под этим всплывающим сообщением), '+
+					'которое можно открыть/закрыть нажатием на кнопку <b>ui</b>, что чуть правее кнопки <i>выход</i> в верхнем меню.<br style="margin-bottom: 0.5em;">' +
+					'&emsp;Информер можно убрать щелчком мыши по нему (при этом заголовок перестанет мигать) до следующего срабатывания условий информера. Например, Если у вас было <i>больше трех тысяч золота</i> и вы нажали на информер, то он появится в следующий раз только после того, как золота станет меньше, а потом опять больше трех тысяч.</div>' + 
+					'Отображение <b>всех</b> информеров по-умолчанию <b>включено</b>. Возможно, вы захотите отключить информер <b>ВРЕМЕНИ ПЛАВКИ ПРЕДМЕТОВ</b>. Я предупредил.';
+		$('.hint_bar_content', $msg).append(content);
+		$msg.css('box-shadow', '2px 2px 15px #' + ((localStorage.getItem('ui_s') == 'th_nightly') ? 'ffffff' : '000000'))
+			.fadeToggle(1500);
 	}
 };
 
@@ -185,13 +205,13 @@ var ui_help_dialog = {
 	},
 // toggles ui dialog	
 	toggle: function(visible) {
-		ui_storage.set('uiMenuVisible', !ui_storage.get('uiMenuVisible'));
+		ui_storage.set('helpDialogVisible', !ui_storage.get('helpDialogVisible'));
 		var cloud = $('#fader.cloud').length;
 		if (cloud) {
 			$('#fader').removeClass('up');
 		}
 		this.bar.slideToggle("slow", function() {
-			if (cloud && !ui_storage.get('uiMenuVisible')) {
+			if (cloud && !ui_storage.get('helpDialogVisible')) {
 				$('#fader').addClass('up');
 			}
 		});
@@ -202,7 +222,7 @@ var ui_help_dialog = {
 					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, если что-то пошло не так...</div>' + 
 					 '<div class="hint_bar_content" style="padding: 0.5em 0.8em;"></div>' + 
 					 '<div class="hint_bar_close"></div></div>');
-		if (ui_storage.get('uiMenuVisible')) this.bar.show();
+		if (ui_storage.get('helpDialogVisible')) this.bar.show();
 		this.content = $('.hint_bar_content', this.bar);
 		this.append('<div style="text-align: left;"><div>Если что-то работает не так, как должно:</div>' +
 					'<ol>' +
@@ -339,36 +359,6 @@ var ui_storage = {
 		}
 		location.reload();
 		return "Storage cleared. Reloading...";
-	},
-// deletes all values related to current god_name
-	clearStorage: function() {
-		if (localStorage.getItem('GM_clean050613') != 'true') {
-			try {
-				localStorage.setItem('GM_clean050613', 'true');
-				this.set('uiMenuVisible', true);
-				$('<div id="first_run" class="hint_bar" style="position: fixed; top: 40px; left: 0; right: 0; z-index: 301; display: none; padding-bottom: 0.7em;">'+
-					'<div class="hint_bar_capt"><b>Godville UI+ first run message</b></div>'+
-					'<div class="hint_bar_content" style="padding: 0 1em;"></div>'+
-					'<div class="hint_bar_close"><a onclick="$(\'#first_run\').fadeToggle(function() {$(\'#first_run\').remove();}); return false;">закрыть</a></div></div>'
-					 ).insertAfter($('#menu_bar'));
-				var fem = ui_storage.get('sex') == 'female' ? true : false;
-				var data = 'Приветствую ' +
-							 'бог' + (fem ? 'иню' : 'а') + ', использующ' + (fem ? 'ую' : 'его') + ' аддон расширения интерфейса <b>Godville UI+</b>.<br>'+
-							 '<div style="text-align: justify; margin: 0.2em 0 0.3em;">&emsp;<b>Опции</b> находятся в <b>профиле</b> героя, на вкладке <b>Настройки UI</b>. '+
-							 'Информация о наличии новых версий аддона отображается в&nbsp;виде <i>всплывающего сообщения</i> (как это) и дублируется' +
-							 ' в <i>диалоговом окне</i> (под этим всплывающим сообщением), '+
-							 'которое можно открыть/закрыть нажатием на кнопку <b>ui</b>, что чуть правее кнопки <i>выход</i> в верхнем меню.<br style="margin-bottom: 0.5em;">' +
-							 '&emsp;Информер можно убрать щелчком мыши по нему (при этом заголовок перестанет мигать) до следующего срабатывания условий информера. Например, Если у вас было <i>больше трех тысяч золота</i> и вы нажали на информер, то он появится в следующий раз только после того, как золота станет меньше, а потом опять больше трех тысяч.</div>' + 
-							 'Отображение <b>всех</b> информеров по-умолчанию <b>включено</b>. Возможно, вы захотите отключить информер <b>ВРЕМЕНИ ПЛАВКИ ПРЕДМЕТОВ</b>. Я предупредил.';								 
-				$('#first_run').css('box-shadow', '2px 2px 15px #' + ((localStorage.getItem('ui_s') == 'th_nightly') ? 'ffffff' : '000000'));
-				$('#first_run .hint_bar_content').append(data);
-				$('#first_run').fadeToggle(1500);				
-			} catch(error) {
-				GM_log(error);
-				if (GM_browser == "Firefox")
-					GM_log('^happened at ' + error.lineNumber + ' line of ' + error.fileName);
-			}
-		}
 	}
 };
 
@@ -1506,7 +1496,7 @@ var ui_improver = {
 		if (ui_storage.get('Option:useBackground') == 'cloud') {
 			if (!$('#fader.cloud').length) {
 				$('body').css('background-image', 'url(' + GM_getResource("images/background.jpg") + ')');
-				if (ui_storage.get('uiMenuVisible')) {
+				if (ui_storage.get('helpDialogVisible')) {
 					$('#fader').addClass('down');
 				} else {
 					$('#fader').addClass('up');
@@ -1664,7 +1654,7 @@ var starter = setInterval(function() {
 		var start = new Date();
 		clearInterval(starter);
 		ui_data.init();
-		ui_storage.clearStorage();
+		//ui_utils.inform();
 		ui_improver.add_css();
 		ui_words.init();
 		ui_logger.create();
