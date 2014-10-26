@@ -121,7 +121,7 @@ var ui_utils = {
 		var a = document.createElement('a');
 		a.className = 'craft_button ' + combo_list;
 		a.title = 'Уговорить ' + ui_data.char_sex[0] + ' склеить случайную комбинацию ' + hint + ' предметов из инвентаря';
-		a.textContent = combo;
+		a.innerHTML = combo;
 		a.onclick = function() {
 			var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
 				items = ui_improver[combo_list][rand];
@@ -1050,9 +1050,9 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($('#inventory'))) {
 			var inv_content = document.querySelector('#inventory .block_content');
 			inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + ['Склей', 'Собери', 'Скрафти', 'Соедини', 'Сделай', 'Слепи'][Math.floor(Math.random()*6)] + ':</span>');
-			inv_content.insertBefore(ui_utils.createCraftButton('нж+нж', 'r_r', 'нежирных'), null);
-			inv_content.insertBefore(ui_utils.createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного'), null);
 			inv_content.insertBefore(ui_utils.createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных'), null);
+			inv_content.insertBefore(ui_utils.createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного'), null);
+			inv_content.insertBefore(ui_utils.createCraftButton('нж+нж', 'r_r', 'нежирных'), null);
 		}
 
 		//ui_informer.update(flag_names[11], flags[11] && !bold_items);
