@@ -1657,6 +1657,8 @@ var ui_observers = {
 				var newNode = mutation.addedNodes[0];
 				mutation.target.appendChild(newNode);
 				newNode.classList.add('moved');
+				var msgArea = newNode.querySelector('.frMsgArea');
+				msgArea.scrollTop = msgArea.scrollTopMax;
 			} else if (mutation.addedNodes.length || mutation.removedNodes.length) {
 				ui_improver.chatsFix();
 			}
