@@ -1674,19 +1674,12 @@ var ui_observers = {
 			attributeFilter: ['style']
 		},
 		func: function(mutation) {
-			if (mutation.target.tagName.toLowerCase() == 'li') {
-				if (mutation.type == "attributes") {
-					if (mutation.target.style.display == 'none') {
-						console.log('-item');
-						console.log(mutation);
-						mutation.target.parentNode.removeChild(mutation.target);
-						ui_improver.improveLoot();
-					}
-				} else if (mutation.addedNodes.length) {
-					console.log(mutation);
-					console.log('+item');
-					ui_improver.improveLoot();
-				}
+			if (mutation.target.tagName.toLowerCase() == 'li' && mutation.type == "attributes" && mutation.target.style.display == 'none') {
+				mutation.target.parentNode.removeChild(mutation.target);
+				ui_improver.improveLoot();
+			}
+			if (mutation.target.tagName.toLowerCase() == 'ul' && mutation.addedNodes.length) {
+				ui_improver.improveLoot();
 			}
 		},
 		target: '#inventory ul'
