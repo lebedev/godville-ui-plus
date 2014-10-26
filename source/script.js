@@ -888,6 +888,9 @@ var ui_improver = {
 	improve: function() {
 		this.improveInProcess = true;
 		ui_informer.update('pvp', ui_data.isArena);
+		if (this.isFirstTime) {
+			this.improveLoot();
+		}
 		this.improveStats();
 		this.improvePet();
 		this.improveVoiceDialog();
@@ -1023,7 +1026,7 @@ var ui_improver = {
 			this._createCraftButton('нж+нж', 'r_r', 'нежирных').insertAfter($('#inventory ul'));
 			this._createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного').insertAfter($('#inventory ul'));
 			this._createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных').insertAfter($('#inventory ul'));
-			$('<span class="craft_button">Склей:</span>').insertAfter($('#inventory ul'));
+			$('<span class="craft_button">' + ['Склей', 'Собери', 'Скрафти', 'Соедини', 'Сделай', 'Слепи'][Math.floor(Math.random()*6)] + ':</span>').insertAfter($('#inventory ul'));
 		}
 
 		for (i = 0, len = flag_names.length; i < len; i++) {
