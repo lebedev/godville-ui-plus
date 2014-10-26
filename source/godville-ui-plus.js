@@ -224,7 +224,7 @@ var ui_utils = {
 // ------------------------
 //		TIMEOUT BAR
 // ------------------------
-var ui_timeout_bar = {
+var ui_timeout = {
 	bar: null,
 	_tickInt: 0,
 	_ticksLeft: 0,
@@ -1068,7 +1068,7 @@ var ui_improver = {
 			if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty'))
 				$('#voice_submit').attr('disabled', 'disabled');
 			$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
-				if (!ui_data.isArena && $(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout_bar.bar.style.width))) {
+				if (!ui_data.isArena && $(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout.bar.style.width))) {
 					$('#voice_submit').removeAttr('disabled');
 				} else if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
 					$('#voice_submit').attr('disabled', 'disabled');
@@ -1491,7 +1491,7 @@ var ui_improver = {
 			if (newMessagesCount) {
 				if (ui_improver.voiceSubmitted) {
 					if (newMessagesCount >= 2)
-						ui_timeout_bar.start();
+						ui_timeout.start();
 					$('#god_phrase').change();
 					ui_improver.voiceSubmitted = false;
 				}
@@ -1747,7 +1747,7 @@ var ui_starter = {
 			ui_utils.inform();
 			ui_words.init();
 			ui_logger.create();
-			ui_timeout_bar.create();
+			ui_timeout.create();
 			ui_help_dialog.create();
 			ui_informer.init();
 			ui_forum.init();
@@ -1794,9 +1794,9 @@ var ui_starter = {
 };
 
 // Main code
-var objects = [ui_data, ui_utils, ui_timeout_bar, ui_help_dialog, ui_storage, ui_words,
+var objects = [ui_data, ui_utils, ui_timeout, ui_help_dialog, ui_storage, ui_words,
 			   ui_stats, ui_logger, ui_informer, ui_forum, ui_improver, ui_observers, ui_starter],
-	object_names = ['ui_data', 'ui_utils', 'ui_timeout_bar', 'ui_help_dialog', 'ui_storage', 'ui_words',
+	object_names = ['ui_data', 'ui_utils', 'ui_timeout', 'ui_help_dialog', 'ui_storage', 'ui_words',
 					'ui_stats', 'ui_logger', 'ui_informer', 'ui_forum', 'ui_improver', 'ui_observers', 'ui_starter'];
 for (var i = 0, len = objects.length; i < len; i++) {
 	ui_trycatcher.process(objects[i], object_names[i]);
