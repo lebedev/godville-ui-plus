@@ -1632,25 +1632,24 @@ var ui_observers = {
 	start: function(obj) {
 		var target = document.querySelector(obj.target);
 		if (target) {
-			clearInterval(obj.interval);
+			var observer = new MutationObserver(function(mutations) {
+				mutations.forEach(obj.func);
+			});
 			obj.observer.observe(target, obj.config);
 		}
 	},
 	chats: {
 		condition: true,
 		config: { childList: true },
-		interval: 0,
-		observer: new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutation) {
-				if (mutation.addedNodes.length && !mutation.addedNodes[0].classList.contains('moved')) {
-					var newNode = mutation.addedNodes[0];
-					mutation.target.appendChild(newNode);
-					newNode.classList.add('moved');
-				} else if (mutation.addedNodes.length || mutation.removedNodes.length) {
-					ui_improver.chatsFix();
-				}
-			});
-		}),
+		func: function(mutation) {
+			if (mutation.addedNodes.length && !mutation.addedNodes[0].classList.contains('moved')) {
+				var newNode = mutation.addedNodes[0];
+				mutation.target.appendChild(newNode);
+				newNode.classList.add('moved');
+			} else if (mutation.addedNodes.length || mutation.removedNodes.length) {
+				ui_improver.chatsFix();
+			}
+		},
 		target: '.chat_ph'
 	},
 	inventory: {
@@ -1661,23 +1660,20 @@ var ui_observers = {
 			subtree: true,
 			attributeFilter: ['style']
 		},
-		interval: 0,
-		observer: new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutation) {
-				if (mutation.target.tagName.toLowerCase() == 'li') {
-					if (mutation.type == "attributes") {
-						// Remove irrelevant items
-						var items = document.querySelectorAll('#inventory li');
-						for (i = 0, len = items.length; i < len; i++) {
-							if (items[i].style.display == 'none') {
-								items[i].paretNode.removeChild(items[i]);
-							}
+		func: function(mutation) {
+			if (mutation.target.tagName.toLowerCase() == 'li') {
+				if (mutation.type == "attributes") {
+					// Remove irrelevant items
+					var items = document.querySelectorAll('#inventory li');
+					for (i = 0, len = items.length; i < len; i++) {
+						if (items[i].style.display == 'none') {
+							items[i].paretNode.removeChild(items[i]);
 						}
 					}
-					ui_improver.improveLoot();
 				}
-			});
-		}),
+				ui_improver.improveLoot();
+			}
+		},
 		target: '#inventory ul'
 	}
 };
