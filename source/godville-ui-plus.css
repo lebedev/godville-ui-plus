@@ -91,7 +91,7 @@ body {
 }
 
 .c_col .pbar .p_bar {
-	width: 99%;
+	width: 99% !important; /* for 5 columns */
 	position: relative;
 	left: 0;
 	margin-left: 2px;
