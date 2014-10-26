@@ -1003,14 +1003,20 @@ var ui_improver = {
 							if (trophyBoldness[trophyList[i]] && trophyBoldness[trophyList[j]]) {
 								if (!(forbiddenCraft && forbiddenCraft.match('b_b'))) {
 									this.b_b.push(trophyList[i] + ' и ' + trophyList[j]);
+									this.b_b.push(trophyList[j] + ' и ' + trophyList[i]);
 								}
 							} else if (!trophyBoldness[trophyList[i]] && !trophyBoldness[trophyList[j]]) {
 								if (!(forbiddenCraft && forbiddenCraft.match('r_r'))) {
 									this.r_r.push(trophyList[i] + ' и ' + trophyList[j]);
+									this.r_r.push(trophyList[j] + ' и ' + trophyList[i]);
 								}
 							} else {
 								if (!(forbiddenCraft && forbiddenCraft.match('b_r'))) {
-									this.b_r.push(trophyList[i] + ' и ' + trophyList[j]);
+									if (trophyBoldness[trophyList[i]]) {
+										this.b_r.push(trophyList[i] + ' и ' + trophyList[j]);
+									} else {
+										this.b_r.push(trophyList[j] + ' и ' + trophyList[i]);
+									}
 								}
 							}
 						} else {
