@@ -221,31 +221,37 @@ var ui_utils = {
 //		TIMEOUT BAR
 // ------------------------
 var ui_timeout_bar = {
+	_bar: null,
+	_tickInt: 0,
+	_ticksLeft: 0,
+	_ticksTotal: 0,
 	_tick: function() {
-		var finishDate = new Date();
-		if (finishDate.getTime() - startDate.getTime() > timeout * 1000) {
-			clearInterval(tick);
-			if (!ui_data.isArena && !ui_storage.get('Option:freezeVoiceButton').match('when_empty') || $('#god_phrase').val())
-				$('#voice_submit').removeAttr('disabled');
+		if (this._ticksLeft === 0) {
+			clearInterval(this._tickInt);
+			if (!ui_data.isArena && !ui_storage.get('Option:freezeVoiceButton').match('when_empty') || document.querySelector('#god_phrase').value) {
+				document.querySelector('#voice_submit').removeAttribute('disabled');
+			}
+		} else {
+			this._bar.style.width = (100*this._ticksLeft--/this._ticksTotal).toFixed(3) + '%';
 		}
 	},
 // creates timeout bar element
 	create: function() {
-		this.elem = $('<div id="timeout_bar" class="' + (ui_storage.get('ui_s') == 'th_nightly' ? 'night' : 'day') + '"/>');
-		$('#menu_bar').after(this.elem);
+		this._bar = document.createElement('div');
+		this._bar.id = 'timeout_bar';
+		this._bar.className = (ui_storage.get('ui_s') == 'th_nightly' ? 'night' : 'day');
+		document.body.insertBefore(this._bar, document.body.firstChild);
 	},
 // starts timeout bar
 	start: function(timeout) {
 		timeout = timeout || 20;
-		$elem = this.elem;
-		$elem.stop();
-		$elem.css('width', '100%');
+		clearInterval(this._tickInt);
+		this._bar.style.width = '100%';
+		this._ticksLeft = this._ticksTotal = timeout*50; // 50 per second
 		if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice')) {
-			$('#voice_submit').attr('disabled', 'disabled');
-			var startDate = new Date();
-			var tick = setInterval(this._tick, 100);
+			document.querySelector('#voice_submit').setAttribute('disabled', 'disabled');
 		}
-		$elem.animate({width: '0%'}, timeout*1000, 'linear');
+		this._tickInt = setInterval(this._tick.bind(this), 20);
 	},
 };
 
