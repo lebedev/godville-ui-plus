@@ -302,10 +302,10 @@ var ui_help_dialog = {
 							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
 						'<li class="update_required Chrome Firefox hidden">Обратно к шагу 1.</li>' +
 						'<li class="console Chrome Firefox hidden">Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.</li>' +
-						'<li class="console Chrome Firefox hidden">Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GM_browser == 'Firefox' ? 'K' : 'J') + '</b>). ' +
-							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GM_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+						'<li class="console Chrome Firefox hidden">Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GUIp_browser == 'Firefox' ? 'K' : 'J') + '</b>). ' +
+							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
 						'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке ' +
-							'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GM_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
+							'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
 						'И с этой информацией напишите Бэдлаку или в тему на форуме по ссылкам ниже.</li>' +
 						'</ol>' +
 						'<div>Полезные ссылки: ' +
@@ -355,10 +355,10 @@ var ui_help_dialog = {
 						   +temp_cur[3] >= +temp_last[3];
 			$('#check_version')[0].innerHTML = (isNewest ? 'У вас последняя версия.' : 'Последняя версия - <b>' + last_version + '</b>. Нужно обновить вручную.') + ' Переходите к следующему шагу.';
 			if (!isNewest) {
-				console.log(GM_browser);
-				$('#ui_help_dialog ol li.update_required.' + GM_browser).removeClass('hidden');
+				console.log(GUIp_browser);
+				$('#ui_help_dialog ol li.update_required.' + GUIp_browser).removeClass('hidden');
 			} else {
-				$('#ui_help_dialog ol li.console.' + GM_browser).removeClass('hidden');
+				$('#ui_help_dialog ol li.console.' + GUIp_browser).removeClass('hidden');
 			}
 		} else {
 			this.onXHRFail();
@@ -367,7 +367,7 @@ var ui_help_dialog = {
 	onXHRFail: function() {
 		console.log('ololo');
 		$('#check_version')[0].innerHTML = 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 2, иначе к шагу 6.';
-		$('#ui_help_dialog ol li.' + GM_browser).removeClass('hidden');
+		$('#ui_help_dialog ol li.' + GUIp_browser).removeClass('hidden');
 	},
 // gets toggle button
 	getToggleButton: function(text) {
@@ -424,7 +424,7 @@ var ui_storage = {
 			}
 		}
 		lines.sort();
-		GM_log("Storage:\n" + lines.join("\n"));
+		console.info("Godville UI+ log: Storage:\n" + lines.join("\n"));
 	},
 // resets saved options
 	clear: function() {
@@ -1147,10 +1147,10 @@ var ui_improver = {
 					var now = new Date();
 					if (now.getTime() - ui_improver.lastNews.getTime() > 180000) {
 						if ($('.t_red').length) {
-							GM_log('RED ALERT! HARD RELOADING!');
+							console.warn('Godville UI+ log: RED ALERT! HARD RELOADING!');
 							location.reload();
 						}
-						GM_log('Soft reloading');
+						console.warn('Godville UI+ log: Soft reloading');
 						$('#d_refresh').click();
 					}
 				}
@@ -1366,7 +1366,7 @@ var ui_improver = {
 		//$('#hk_gold_we .l_val').text('где-то 20 монет');
 		if ($('#hk_gold_we .l_val').text().length > 16 - 2*$('#main_wrapper.page_wrapper_5c').length) {
 			if (!ui_improver.Shovel) {
-				var path = GM_getResource('images/shovel_');
+				var path = GUIp_getResource('images/shovel_');
 				var brightness = (ui_storage.get('ui_s') == 'th_nightly') ? 'dark' : 'bright';
 				digVoice.empty();
 				digVoice.append('<img id="red" src="' + path + 'red_' + brightness + '.gif" style="display: none; cursor: pointer; margin: auto;">' + 
@@ -1526,7 +1526,7 @@ var ui_improver = {
 
 		if (ui_storage.get('Option:useBackground') == 'cloud') {
 			if (!$('#fader.cloud').length) {
-				$('body').css('background-image', 'url(' + GM_getResource("images/background.jpg") + ')');
+				$('body').css('background-image', 'url(' + GUIp_getResource("images/background.jpg") + ')');
 				if (ui_storage.get('helpDialogVisible')) {
 					$('#fader').addClass('down');
 				} else {
@@ -1640,7 +1640,7 @@ var ui_improver = {
 		
 	add_css: function () {
 		if ($('#ui_css').length === 0) {
-			GM_addGlobalStyleURL('godville-ui-plus.css', 'ui_css');
+			GUIp_addGlobalStyleURL('godville-ui-plus.css', 'ui_css');
 		}
 	}
 };
@@ -1780,15 +1780,15 @@ var ui_starter = {
 
 			// "Shift+Enter → new line" improvement by external-script to bypass stupid Chrome restrictions
 			var shiftEnterScript = document.createElement('script');
-			shiftEnterScript.src = GM_getResource('shift_enter.js');
+			shiftEnterScript.src = GUIp_getResource('shift_enter.js');
 			document.head.appendChild(shiftEnterScript);
 
 			/*var layingTimerScript = document.createElement('script');
-			layingTimerScript.src = GM_getResource('laying_timer.js');
+			layingTimerScript.src = GUIp_getResource('laying_timer.js');
 			document.body.appendChild(layingTimerScript);*/
 
 			var finish = new Date();
-			GM_log('Godville UI+ initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
+			console.info('Godville UI+ log: Initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
 		}
 	}
 };

@@ -42,9 +42,9 @@ function loadOptions() {
 	restore_options();
 	$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css({'position' : 'relative', 'top' : '0.25em'});
 	$j('input:not(.menu-checkbox):not(.option-checkbox)[type=radio]').css({'position' : 'relative', 'top' : '0.25em'});
-	if (GM_browser === 'Firefox') {
+	if (GUIp_browser === 'Firefox') {
 		$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css('transform', 'scale(0.7)');
-	} else if (GM_browser === 'Chrome') {
+	} else if (GUIp_browser === 'Chrome') {
 		$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css('-webkit-transform', 'scale(0.69)');
 	}
 	$j('#forbidden_informers').click(function() {

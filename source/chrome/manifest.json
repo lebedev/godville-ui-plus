@@ -10,7 +10,7 @@
 		"js": [
 			"jquery-2.1.0.min.js",
 			"phrases.js",
-			"gm_func.js",
+			"guip_chrome.js",
 			"godville-ui-plus.js"
 		],
 		"matches": [
@@ -22,7 +22,7 @@
 		"js": [
 			"jquery-2.1.0.min.js",
 			"phrases.js",
-			"gm_func.js",
+			"guip_chrome.js",
 			"options-page.js",
 			"options.js"
 		],

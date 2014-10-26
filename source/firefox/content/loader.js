@@ -8,14 +8,14 @@ contentLoad: function(event) {
 		if (path.match(/^\/superhero/) && !windowStats.get(doc)) {
 			windowStats.set(doc,'scriptsLoaded');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases.js');
-			loader.createScript(doc, 'chrome://godville-ui-plus/content/gm_func.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/godville-ui-plus.js');
 		}
 		if (path.match(/^\/user\/(?:profile|rk_success)/) && !windowStats.get(doc)) {
 			windowStats.set(doc,'scriptsLoaded');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/jquery-2.1.0.min.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases.js');
-			loader.createScript(doc, 'chrome://godville-ui-plus/content/gm_func.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/options-page.js');
 			setTimeout(function(){loader.createScript(doc, 'chrome://godville-ui-plus/content/options.js');}, 1000);
 		}
