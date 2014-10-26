@@ -53,6 +53,7 @@ var ui_data = {
 // ------------------------
 var ui_utils = {
 	hasShownErrorMessage: false,
+	hasShownInfoMessage: false,
 	isDeveloper: function () {
 		return ui_data.developers.indexOf(ui_data.god_name) >= 0;
 	},
@@ -954,8 +955,12 @@ var ui_improver = {
 						sect = ui_words.canBeActivatedItemType(desc);
 					if (sect != -1) {
 						flags[sect] = true;
-					} else {
-						GM_log('Описание предмета ' + item_name + 'отсутствует в базе. Пожалуйста, скопируйте следующее описание предмета разработчику аддона:\n"' + desc + '"');
+					} else if (!ui_utils.hasShownInfoMessage) {
+						ui_utils.hasShownInfoMessage = true;
+						ui_utils.showMessage('info', {
+							title: 'Неизвестный тип предмета в Godville UI+!',
+							content: '<div>Дополнение обнаружило в вашем инвентаре неизвестную доселе категорию предмета. Пожалуйста, сообщите разработчику следующее описание: <b>"' + desc + '</b>"'
+						});
 					}
 					if (!(forbidden_craft && (forbidden_craft.match('activatable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r'))))) {
 						trophy_list.push(item_name);
@@ -1668,15 +1673,13 @@ var ui_observers = {
 			if (mutation.target.tagName.toLowerCase() == 'li') {
 				console.log(mutation);
 				if (mutation.type == "attributes") {
-					// Remove irrelevant items
-					var items = document.querySelectorAll('#inventory li');
-					for (i = 0, len = items.length; i < len; i++) {
-						if (items[i].style.display == 'none') {
-							items[i].paretNode.removeChild(items[i]);
-						}
+					if (mutation.target.style.display == 'none') {
+						mutation.target.parentNode.removeChild(mutation.target);
+						ui_improver.improveLoot();
 					}
+				} else {
+					ui_improver.improveLoot();
 				}
-				ui_improver.improveLoot();
 			}
 		},
 		target: '#inventory ul'
