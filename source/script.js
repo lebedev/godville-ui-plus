@@ -890,7 +890,6 @@ var ui_improver = {
 		ui_informer.update('pvp', ui_data.isArena);
 		this.improveStats();
 		this.improvePet();
-		this.improveLoot();
 		this.improveVoiceDialog();
 		this.improveNews();
 		this.improveEquip();
@@ -924,153 +923,119 @@ var ui_improver = {
 	},
 	
 	improveLoot: function() {
-		if (ui_data.isArena) return;
-		if (this.inventoryChanged) {
-			setTimeout(function() {
-				$('#inventory li:hidden').remove();
-			}, 1000);
-			var i, j, len,
-				flags = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box', 'bylina box'],
-				types = new Array(flags.length),
-				bold_items = false;
+		var i, j, len,
+			flags = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box', 'bylina box'],
+			types = new Array(flags.length),
+			bold_items = false;
 
-			for (i = 0, len = types.length; i < len; i++) {
-				types[i] = false;
-			}
+		for (i = 0, len = types.length; i < len; i++) {
+			types[i] = false;
+		}
 
-			var l, trophyList = [],
-				trophyBoldness = {},
-				forbiddenCraft = ui_storage.get('Option:forbiddenCraft');
+		var l, trophyList = [],
+			trophyBoldness = {},
+			forbiddenCraft = ui_storage.get('Option:forbiddenCraft');
 
-			// Parse items
-			$('#inventory ul li:visible').each(function(ind, obj) {
-				var $obj = $(obj);
-				if ($obj.css('overflow') == 'visible') {
-					var item_name = this.textContent.replace(/\?/, '')
-													.replace(/\(@\)/, '')
-													.replace(/\(\d + шт\)$/, '')
-													.replace(/^\s+|\s+$/g, '');
-					// color items and add buttons
-					if (ui_words.canBeActivated($obj)) {
-						var desc = $('div.item_act_link_div *', $obj).attr('title').replace(/ \(.*/g, ''),
-							sect = ui_words.canBeActivatedItemType(desc);
-						if (sect != -1) {
-							types[sect] = true;
-						} else {
-							GM_log('Описание предмета ' + item_name + 'отсутствует в базе. Пожалуйста, скопируйте следующее описание предмета разработчику аддона:\n"' + desc + '"');
-						}
-						if (!(forbiddenCraft && (forbiddenCraft.match('activatable') || (forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r'))))) {
+		// Parse items
+		$('#inventory ul li').each(function(ind, obj) {
+			var $obj = $(obj);
+			if ($obj.css('overflow') == 'visible') {
+				var item_name = this.textContent.replace(/\?/, '')
+												.replace(/\(@\)/, '')
+												.replace(/\(\d + шт\)$/, '')
+												.replace(/^\s+|\s+$/g, '');
+				// color items and add buttons
+				if (ui_words.canBeActivated($obj)) {
+					var desc = $('div.item_act_link_div *', $obj).attr('title').replace(/ \(.*/g, ''),
+						sect = ui_words.canBeActivatedItemType(desc);
+					if (sect != -1) {
+						types[sect] = true;
+					} else {
+						GM_log('Описание предмета ' + item_name + 'отсутствует в базе. Пожалуйста, скопируйте следующее описание предмета разработчику аддона:\n"' + desc + '"');
+					}
+					if (!(forbiddenCraft && (forbiddenCraft.match('activatable') || (forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r'))))) {
+						trophyList.push(item_name);
+						trophyBoldness[item_name] = true;
+					}
+				} else if (ui_words.isHealItem($obj)) {
+					if (!ui_utils.isAlreadyImproved($obj)) {
+						$obj.addClass('heal_item');
+					}
+					if (!(forbiddenCraft && (forbiddenCraft.match('heal') || (forbiddenCraft.match('b_r') && forbiddenCraft.match('r_r'))))) {
+						trophyList.push(item_name);
+						trophyBoldness[item_name] = false;
+					}
+				} else {
+					if (ui_words.isBoldItem($obj)) {
+						bold_items = true;
+						if (!(forbiddenCraft && forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r')) &&
+							!item_name.match('золотой кирпич') && !item_name.match(' босса ')) {
 							trophyList.push(item_name);
 							trophyBoldness[item_name] = true;
 						}
-					} else if (ui_words.isHealItem($obj)) {
-						if (!ui_utils.isAlreadyImproved($obj)) {
-							$obj.addClass('heal_item');
-						}
-						if (!(forbiddenCraft && (forbiddenCraft.match('heal') || (forbiddenCraft.match('b_r') && forbiddenCraft.match('r_r'))))) {
+					} else {
+						if (!(forbiddenCraft && forbiddenCraft.match('b_r') && forbiddenCraft.match('r_r'))) {
 							trophyList.push(item_name);
 							trophyBoldness[item_name] = false;
 						}
+					}
+					if (!ui_utils.isAlreadyImproved($obj)) {
+						$obj.append(ui_improver._createInspectButton(item_name));
+					}
+				}
+			}
+		});
+
+		this.b_b = [];
+		this.b_r = [];
+		this.r_r = [];
+		if (trophyList.length) {
+			trophyList.sort();
+			for (i = 0, len = trophyList.length - 1; i < len; i++) {
+				for (j = i + 1; j < len + 1; j++) {
+					if (trophyList[i][0] == trophyList[j][0]) {
+						if (trophyBoldness[trophyList[i]] && trophyBoldness[trophyList[j]]) {
+							if (!(forbiddenCraft && forbiddenCraft.match('b_b'))) {
+								this.b_b.push(trophyList[i] + ' и ' + trophyList[j]);
+								this.b_b.push(trophyList[j] + ' и ' + trophyList[i]);
+							}
+						} else if (!trophyBoldness[trophyList[i]] && !trophyBoldness[trophyList[j]]) {
+							if (!(forbiddenCraft && forbiddenCraft.match('r_r'))) {
+								this.r_r.push(trophyList[i] + ' и ' + trophyList[j]);
+								this.r_r.push(trophyList[j] + ' и ' + trophyList[i]);
+							}
+						} else {
+							if (!(forbiddenCraft && forbiddenCraft.match('b_r'))) {
+								if (trophyBoldness[trophyList[i]]) {
+									this.b_r.push(trophyList[i] + ' и ' + trophyList[j]);
+								} else {
+									this.b_r.push(trophyList[j] + ' и ' + trophyList[i]);
+								}
+							}
+						}
 					} else {
-						if (ui_words.isBoldItem($obj)) {
-							bold_items = true;
-							if (!(forbiddenCraft && forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r')) &&
-								!item_name.match('золотой кирпич') && !item_name.match(' босса ')) {
-								trophyList.push(item_name);
-								trophyBoldness[item_name] = true;
-							}
-						} else {
-							if (!(forbiddenCraft && forbiddenCraft.match('b_r') && forbiddenCraft.match('r_r'))) {
-								trophyList.push(item_name);
-								trophyBoldness[item_name] = false;
-							}
-						}
-						if (!ui_utils.isAlreadyImproved($obj)) {
-							$obj.append(ui_improver._createInspectButton(item_name));
-						}
-					}
-				}
-			});
-
-			this.b_b = [];
-			this.b_r = [];
-			this.r_r = [];
-			if (trophyList.length) {
-				trophyList.sort();
-				for (i = 0, len = trophyList.length - 1; i < len; i++) {
-					for (j = i + 1; j < len + 1; j++) {
-						if (trophyList[i][0] == trophyList[j][0]) {
-							if (trophyBoldness[trophyList[i]] && trophyBoldness[trophyList[j]]) {
-								if (!(forbiddenCraft && forbiddenCraft.match('b_b'))) {
-									this.b_b.push(trophyList[i] + ' и ' + trophyList[j]);
-									this.b_b.push(trophyList[j] + ' и ' + trophyList[i]);
-								}
-							} else if (!trophyBoldness[trophyList[i]] && !trophyBoldness[trophyList[j]]) {
-								if (!(forbiddenCraft && forbiddenCraft.match('r_r'))) {
-									this.r_r.push(trophyList[i] + ' и ' + trophyList[j]);
-									this.r_r.push(trophyList[j] + ' и ' + trophyList[i]);
-								}
-							} else {
-								if (!(forbiddenCraft && forbiddenCraft.match('b_r'))) {
-									if (trophyBoldness[trophyList[i]]) {
-										this.b_r.push(trophyList[i] + ' и ' + trophyList[j]);
-									} else {
-										this.b_r.push(trophyList[j] + ' и ' + trophyList[i]);
-									}
-								}
-							}
-						} else {
-							break;
-						}
+						break;
 					}
 				}
 			}
-
-			if (!ui_utils.isAlreadyImproved($('#inventory'))) {
-				this._createCraftButton('нж+нж', 'r_r', 'нежирных').insertAfter($('#inventory ul'));
-				this._createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного').insertAfter($('#inventory ul'));
-				this._createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных').insertAfter($('#inventory ul'));
-				$('<span class="craft_button">Склей:</span>').insertAfter($('#inventory ul'));
-			}
-
-			for (i = 0, len = flags.length; i < len; i++) {
-				ui_informer.update(flags[i], types[i]);
-			}
-
-			//ui_informer.update(flags[11], types[11] && !bold_items);
-			//ui_informer.update('transform!', types[11] && bold_items);
-			
-			//ui_informer.update('smelt!', types[10] && ui_storage.get('Stats:Gold') >= 3000);
-			//ui_informer.update(flags[10], types[10] && ui_storage.get('Stats:Gold') < 3000);
-
-			this.inventoryChanged = false;
 		}
 
-		/*if (!ui_data.isArena && ui_storage.get('Option:forbiddenInformers') && ui_storage.get('Option:forbiddenInformers').match('SMELT_TIME')) {
-			if (ui_storage.get('Stats:Prana') == 100 &&
-				$('#hk_distance .l_capt').text() == 'Город' &&
-				$('#hk_health .p_val').width() == $('#hk_health .p_bar').width() &&
-				 !$('#inventory ul li:not(.heal_item)').filter(function() {return $(this).css('overflow') == 'visible';}).length &&
-				ui_storage.get('Stats:Gold') > 3000) {
-				if (!ui_improver.hucksterNews.length) {
-					ui_improver.hucksterNews = "1" + $('.f_news.line').text();
-				} else if (ui_improver.hucksterNews[0] == '1' && !ui_improver.hucksterNews.match($('.f_news.line').text())) {
-					ui_improver.hucksterNews = "2" + $('.f_news.line').text();
-				} else if (ui_improver.hucksterNews[0] == '2' && !ui_improver.hucksterNews.match($('.f_news.line').text())) {
-					ui_improver.hucksterNews = '';
-				}
-			} else {
-				ui_improver.hucksterNews = '';
-			}
-			ui_informer.update('SMELT TIME', ui_improver.hucksterNews && ui_improver.hucksterNews[0] == "2");
-			if (ui_informer.flags['SMELT TIME'] === true && !$('#smelt_time').length) {
-				$('#fader').append('<audio loop preload="auto" id="smelt_time" src="arena.ogg"></audio>');
-				$('#smelt_time')[0].play();
-			} else if (ui_informer.flags['SMELT TIME'] !== true && $('#smelt_time').length) {
-				$('#smelt_time')[0].pause();
-				$('#smelt_time').remove();
-			}
-		}*/
+		if (!ui_utils.isAlreadyImproved($('#inventory'))) {
+			this._createCraftButton('нж+нж', 'r_r', 'нежирных').insertAfter($('#inventory ul'));
+			this._createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного').insertAfter($('#inventory ul'));
+			this._createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных').insertAfter($('#inventory ul'));
+			$('<span class="craft_button">Склей:</span>').insertAfter($('#inventory ul'));
+		}
+
+		for (i = 0, len = flags.length; i < len; i++) {
+			ui_informer.update(flags[i], types[i]);
+		}
+
+		//ui_informer.update(flags[11], types[11] && !bold_items);
+		//ui_informer.update('transform!', types[11] && bold_items);
+
+		//ui_informer.update('smelt!', types[10] && ui_storage.get('Stats:Gold') >= 3000);
+		//ui_informer.update(flags[10], types[10] && ui_storage.get('Stats:Gold') < 3000);
 	},
 
 	improveVoiceDialog: function() {
@@ -1659,19 +1624,20 @@ var ui_improver = {
 var ui_observers = {
 	init: function() {
 		for (var key in this) {
-			if (this[key].observer) {
-				this[key].interval = setInterval(this.start.bind(this[key]), 100);
+			if (this[key].observer && this[key].condition) {
+				this.start(this[key]);
 			}
 		}
 	},
-	start: function() {
-		var target = document.querySelector(this.target);
+	start: function(obj) {
+		var target = document.querySelector(obj.target);
 		if (target) {
-			clearInterval(this.interval);
-			this.observer.observe(target, this.config);
+			clearInterval(obj.interval);
+			obj.observer.observe(target, obj.config);
 		}
 	},
 	chats: {
+		condition: true,
 		config: { childList: true },
 		interval: 0,
 		observer: new MutationObserver(function(mutations) {
@@ -1686,6 +1652,33 @@ var ui_observers = {
 			});
 		}),
 		target: '.chat_ph'
+	},
+	inventory: {
+		condition: !ui_data.isArena,
+		config: {
+			childList: true,
+			attributes: true,
+			subtree: true,
+			attributeFilter: ['style']
+		},
+		interval: 0,
+		observer: new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.target.tagName.toLowerCase() == 'li') {
+					if (mutation.type == "attributes") {
+						// Remove irrelevant items
+						var items = document.querySelectorAll('#inventory li');
+						for (i = 0, len = items.length; i < len; i++) {
+							if (items[i].style.display == 'none') {
+								items[i].paretNode.removeChild(items[i]);
+							}
+						}
+					}
+					ui_improver.improveLoot();
+				}
+			});
+		}),
+		target: '#inventory ul'
 	}
 };
 
