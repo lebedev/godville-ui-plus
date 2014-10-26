@@ -1673,13 +1673,16 @@ var ui_observers = {
 		},
 		func: function(mutation) {
 			if (mutation.target.tagName.toLowerCase() == 'li') {
-				console.log(mutation);
 				if (mutation.type == "attributes") {
 					if (mutation.target.style.display == 'none') {
+						console.log('-item');
+						console.log(mutation);
 						mutation.target.parentNode.removeChild(mutation.target);
 						ui_improver.improveLoot();
 					}
-				} else {
+				} else if (mutation.addedNodes.length) {
+					console.log(mutation);
+					console.log('+item');
 					ui_improver.improveLoot();
 				}
 			}
