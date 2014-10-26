@@ -9,7 +9,7 @@ contentLoad: function(event) {
 			windowStats.set(doc,'scriptsLoaded');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/gm_func.js');
-			loader.createScript(doc, 'chrome://godville-ui-plus/content/script.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/godville-ui-plus.js');
 		}
 		if (path.match(/^\/user\/(?:profile|rk_success)/) && !windowStats.get(doc)) {
 			windowStats.set(doc,'scriptsLoaded');
@@ -28,11 +28,11 @@ contentLoad: function(event) {
 
 createScript:function(doc, uri) {
 	var head = doc.getElementsByTagName('head')[0];
-	var scr1 = doc.createElement('script');
-	scr1.type = 'text/javascript';
-	scr1.src = uri;
-	scr1.id = 'godville-ui-plus';
-	head.appendChild(scr1);
+	var scr = doc.createElement('script');
+	scr.type = 'text/javascript';
+	scr.src = uri;
+	scr.id = 'godville-ui-plus';
+	head.appendChild(scr);
 },
 };
 

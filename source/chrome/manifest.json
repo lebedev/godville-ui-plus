@@ -11,7 +11,7 @@
 			"jquery-2.1.0.min.js",
 			"phrases.js",
 			"gm_func.js",
-			"script.js"
+			"godville-ui-plus.js"
 		],
 		"matches": [
 			"http://godville.net/superhero*",

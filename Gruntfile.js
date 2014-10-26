@@ -25,8 +25,8 @@ module.exports = function(grunt) {
         files: [
           {expand: true, cwd: 'source/firefox', src: 'install.rdf', dest: '<%= compile_path %>/firefox/'},
           {expand: true, cwd: 'source/chrome', src: 'manifest.json', dest: '<%= compile_path %>/chrome/'},
-          {expand: true, cwd: 'source/', src: 'script.js', dest: '<%= compile_path %>/firefox/content'},
-          {expand: true, cwd: 'source/', src: 'script.js', dest: '<%= compile_path %>/chrome/'}
+          {expand: true, cwd: 'source/', src: 'godville-ui-plus.js', dest: '<%= compile_path %>/firefox/content'},
+          {expand: true, cwd: 'source/', src: 'godville-ui-plus.js', dest: '<%= compile_path %>/chrome/'}
         ]
       }
     },
