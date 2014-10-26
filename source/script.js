@@ -464,6 +464,7 @@ var ui_words = {
 				'Данный предмет можно активировать только во время дуэли',
 				'Этот предмет может случайным образом повлиять на героя',
 				'Этот предмет ищет для героя босса',
+				'Этот предмет сочиняет о герое былину',
 				'Этот предмет заводит герою случайного друга из числа активных героев',
 				'Активация этого предмета может преподнести герою приятный сюрприз',
 				'Активация инвайта увеличит счетчик доступных приглашений',
@@ -474,8 +475,7 @@ var ui_words = {
 				'Этот предмет телепортирует героя в случайный город',
 				'Этот предмет отправляет героя на арену',
 				'Этот предмет превращает один или несколько жирных предметов из инвентаря героя в золотые кирпичи',
-				'Этот предмет отправляет героя в мини-квест',
-				'Этот предмет сочиняет о герое былину',
+				'Этот предмет отправляет героя в мини-квест'
 			   ].indexOf(desc);
 	},
 	
@@ -924,7 +924,7 @@ var ui_improver = {
 	
 	improveLoot: function() {
 		var i, j, len,
-			flag_names = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box', 'bylina box'],
+			flag_names = ['aura box', 'arena box', 'black box', 'boss box', 'coolstory box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box'],
 			flags = new Array(flag_names.length),
 			bold_items = false,
 			trophy_list = [],
