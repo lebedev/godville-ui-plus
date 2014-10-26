@@ -479,16 +479,16 @@ var ui_words = {
 			   ].indexOf(desc);
 	},
 	
-	isHealItem: function($obj) {
-		return $obj.css("font-style") == "italic";
+	isHealItem: function(item) {
+		return item.style.fontStyle == "italic";
 	},
 
-	canBeActivated: function($obj) {
-		return $obj.text().match(/\(@\)/);
+	canBeActivated: function(item) {
+		return item.textContent.match(/\(@\)/);
 	},
 	
-	isBoldItem: function($obj) {
-		return $obj.css("font-weight") == 700 || $obj.css("font-weight") == "bold";
+	isBoldItem: function(item) {
+		return item.style.fontWeight == 700 || item.style.fontWeight == "bold";
 	},
 
 	_changeFirstLetter: function(text) {
@@ -926,7 +926,7 @@ var ui_improver = {
 	},
 	
 	improveLoot: function() {
-		var i, j, len,
+		var i, j, len, items = document.querySelectorAll('#inventory li'),
 			flag_names = ['aura box', 'arena box', 'black box', 'boss box', 'coolstory box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box'],
 			flags = new Array(flag_names.length),
 			bold_items = false,
@@ -939,17 +939,17 @@ var ui_improver = {
 		}
 
 		// Parse items
-		$('#inventory ul li').each(function(ind, obj) {
-			var $obj = $(obj);
-			if ($obj.css('overflow') == 'visible') {
-				var item_name = this.textContent.replace(/\?/, '')
-												.replace(/\(@\)/, '')
-												.replace(/\(\d + шт\)$/, '')
-												.replace(/^\s+|\s+$/g, '');
+		for (i = 0, len = items.length; i < len; i++) {
+			if (window.getComputedStyle(items[i]).overflow == 'visible') {
+				var item_name = items[i].textContent.replace(/\?/, '')
+													.replace(/\(@\)/, '')
+													.replace(/\(\d + шт\)$/, '')
+													.replace(/^\s+|\s+$/g, '');
 				// color items and add buttons
-				if (ui_words.canBeActivated($obj)) {
-					var desc = $('div.item_act_link_div *', $obj).attr('title').replace(/ \(.*/g, ''),
+				if (ui_words.canBeActivated(items[i])) {
+					var desc = items[i].querySelector('.item_act_link_div *').getAttribute('title').replace(/ \(.*/g, ''),
 						sect = ui_words.canBeActivatedItemType(desc);
+					console.log(desc, sect);
 					if (sect != -1) {
 						flags[sect] = true;
 					} else {
@@ -959,16 +959,16 @@ var ui_improver = {
 						trophy_list.push(item_name);
 						trophy_boldness[item_name] = true;
 					}
-				} else if (ui_words.isHealItem($obj)) {
-					if (!ui_utils.isAlreadyImproved($obj)) {
-						$obj.addClass('heal_item');
+				} else if (ui_words.isHealItem(items[i])) {
+					if (!ui_utils.isAlreadyImproved($(items[i]))) {
+						items[i].classList.add('heal_item');
 					}
 					if (!(forbidden_craft && (forbidden_craft.match('heal') || (forbidden_craft.match('b_r') && forbidden_craft.match('r_r'))))) {
 						trophy_list.push(item_name);
 						trophy_boldness[item_name] = false;
 					}
 				} else {
-					if (ui_words.isBoldItem($obj)) {
+					if (ui_words.isBoldItem(items[i])) {
 						bold_items = true;
 						if (!(forbidden_craft && forbidden_craft.match('b_b') && forbidden_craft.match('b_r')) &&
 							!item_name.match('золотой кирпич') && !item_name.match(' босса ')) {
@@ -981,12 +981,12 @@ var ui_improver = {
 							trophy_boldness[item_name] = false;
 						}
 					}
-					if (!ui_utils.isAlreadyImproved($obj)) {
-						$obj.append(ui_improver._createInspectButton(item_name));
+					if (!ui_utils.isAlreadyImproved($(items[i]))) {
+						$(items[i]).append(ui_improver._createInspectButton(item_name));
 					}
 				}
 			}
-		});
+		}
 
 		this.b_b = [];
 		this.b_r = [];
@@ -1664,6 +1664,7 @@ var ui_observers = {
 		},
 		func: function(mutation) {
 			if (mutation.target.tagName.toLowerCase() == 'li') {
+				console.log(mutation);
 				if (mutation.type == "attributes") {
 					// Remove irrelevant items
 					var items = document.querySelectorAll('#inventory li');
