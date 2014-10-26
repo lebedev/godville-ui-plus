@@ -924,17 +924,16 @@ var ui_improver = {
 	
 	improveLoot: function() {
 		var i, j, len,
-			flags = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box', 'bylina box'],
-			types = new Array(flags.length),
-			bold_items = false;
+			flag_names = ['aura box', 'arena box', 'black box', 'boss box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box', 'bylina box'],
+			flags = new Array(flag_names.length),
+			bold_items = false,
+			trophy_list = [],
+			trophy_boldness = {},
+			forbidden_craft = ui_storage.get('Option:forbidden_craft');
 
-		for (i = 0, len = types.length; i < len; i++) {
-			types[i] = false;
+		for (i = 0, len = flags.length; i < len; i++) {
+			flags[i] = false;
 		}
-
-		var l, trophyList = [],
-			trophyBoldness = {},
-			forbiddenCraft = ui_storage.get('Option:forbiddenCraft');
 
 		// Parse items
 		$('#inventory ul li').each(function(ind, obj) {
@@ -949,34 +948,34 @@ var ui_improver = {
 					var desc = $('div.item_act_link_div *', $obj).attr('title').replace(/ \(.*/g, ''),
 						sect = ui_words.canBeActivatedItemType(desc);
 					if (sect != -1) {
-						types[sect] = true;
+						flags[sect] = true;
 					} else {
 						GM_log('Описание предмета ' + item_name + 'отсутствует в базе. Пожалуйста, скопируйте следующее описание предмета разработчику аддона:\n"' + desc + '"');
 					}
-					if (!(forbiddenCraft && (forbiddenCraft.match('activatable') || (forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r'))))) {
-						trophyList.push(item_name);
-						trophyBoldness[item_name] = true;
+					if (!(forbidden_craft && (forbidden_craft.match('activatable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r'))))) {
+						trophy_list.push(item_name);
+						trophy_boldness[item_name] = true;
 					}
 				} else if (ui_words.isHealItem($obj)) {
 					if (!ui_utils.isAlreadyImproved($obj)) {
 						$obj.addClass('heal_item');
 					}
-					if (!(forbiddenCraft && (forbiddenCraft.match('heal') || (forbiddenCraft.match('b_r') && forbiddenCraft.match('r_r'))))) {
-						trophyList.push(item_name);
-						trophyBoldness[item_name] = false;
+					if (!(forbidden_craft && (forbidden_craft.match('heal') || (forbidden_craft.match('b_r') && forbidden_craft.match('r_r'))))) {
+						trophy_list.push(item_name);
+						trophy_boldness[item_name] = false;
 					}
 				} else {
 					if (ui_words.isBoldItem($obj)) {
 						bold_items = true;
-						if (!(forbiddenCraft && forbiddenCraft.match('b_b') && forbiddenCraft.match('b_r')) &&
+						if (!(forbidden_craft && forbidden_craft.match('b_b') && forbidden_craft.match('b_r')) &&
 							!item_name.match('золотой кирпич') && !item_name.match(' босса ')) {
-							trophyList.push(item_name);
-							trophyBoldness[item_name] = true;
+							trophy_list.push(item_name);
+							trophy_boldness[item_name] = true;
 						}
 					} else {
-						if (!(forbiddenCraft && forbiddenCraft.match('b_r') && forbiddenCraft.match('r_r'))) {
-							trophyList.push(item_name);
-							trophyBoldness[item_name] = false;
+						if (!(forbidden_craft && forbidden_craft.match('b_r') && forbidden_craft.match('r_r'))) {
+							trophy_list.push(item_name);
+							trophy_boldness[item_name] = false;
 						}
 					}
 					if (!ui_utils.isAlreadyImproved($obj)) {
@@ -989,27 +988,27 @@ var ui_improver = {
 		this.b_b = [];
 		this.b_r = [];
 		this.r_r = [];
-		if (trophyList.length) {
-			trophyList.sort();
-			for (i = 0, len = trophyList.length - 1; i < len; i++) {
+		if (trophy_list.length) {
+			trophy_list.sort();
+			for (i = 0, len = trophy_list.length - 1; i < len; i++) {
 				for (j = i + 1; j < len + 1; j++) {
-					if (trophyList[i][0] == trophyList[j][0]) {
-						if (trophyBoldness[trophyList[i]] && trophyBoldness[trophyList[j]]) {
-							if (!(forbiddenCraft && forbiddenCraft.match('b_b'))) {
-								this.b_b.push(trophyList[i] + ' и ' + trophyList[j]);
-								this.b_b.push(trophyList[j] + ' и ' + trophyList[i]);
+					if (trophy_list[i][0] == trophy_list[j][0]) {
+						if (trophy_boldness[trophy_list[i]] && trophy_boldness[trophy_list[j]]) {
+							if (!(forbidden_craft && forbidden_craft.match('b_b'))) {
+								this.b_b.push(trophy_list[i] + ' и ' + trophy_list[j]);
+								this.b_b.push(trophy_list[j] + ' и ' + trophy_list[i]);
 							}
-						} else if (!trophyBoldness[trophyList[i]] && !trophyBoldness[trophyList[j]]) {
-							if (!(forbiddenCraft && forbiddenCraft.match('r_r'))) {
-								this.r_r.push(trophyList[i] + ' и ' + trophyList[j]);
-								this.r_r.push(trophyList[j] + ' и ' + trophyList[i]);
+						} else if (!trophy_boldness[trophy_list[i]] && !trophy_boldness[trophy_list[j]]) {
+							if (!(forbidden_craft && forbidden_craft.match('r_r'))) {
+								this.r_r.push(trophy_list[i] + ' и ' + trophy_list[j]);
+								this.r_r.push(trophy_list[j] + ' и ' + trophy_list[i]);
 							}
 						} else {
-							if (!(forbiddenCraft && forbiddenCraft.match('b_r'))) {
-								if (trophyBoldness[trophyList[i]]) {
-									this.b_r.push(trophyList[i] + ' и ' + trophyList[j]);
+							if (!(forbidden_craft && forbidden_craft.match('b_r'))) {
+								if (trophy_boldness[trophy_list[i]]) {
+									this.b_r.push(trophy_list[i] + ' и ' + trophy_list[j]);
 								} else {
-									this.b_r.push(trophyList[j] + ' и ' + trophyList[i]);
+									this.b_r.push(trophy_list[j] + ' и ' + trophy_list[i]);
 								}
 							}
 						}
@@ -1027,15 +1026,15 @@ var ui_improver = {
 			$('<span class="craft_button">Склей:</span>').insertAfter($('#inventory ul'));
 		}
 
-		for (i = 0, len = flags.length; i < len; i++) {
-			ui_informer.update(flags[i], types[i]);
+		for (i = 0, len = flag_names.length; i < len; i++) {
+			ui_informer.update(flag_names[i], flags[i]);
 		}
 
-		//ui_informer.update(flags[11], types[11] && !bold_items);
-		//ui_informer.update('transform!', types[11] && bold_items);
+		//ui_informer.update(flag_names[11], flags[11] && !bold_items);
+		//ui_informer.update('transform!', flags[11] && bold_items);
 
-		//ui_informer.update('smelt!', types[10] && ui_storage.get('Stats:Gold') >= 3000);
-		//ui_informer.update(flags[10], types[10] && ui_storage.get('Stats:Gold') < 3000);
+		//ui_informer.update('smelt!', flags[10] && ui_storage.get('Stats:Gold') >= 3000);
+		//ui_informer.update(flag_names[10], flags[10] && ui_storage.get('Stats:Gold') < 3000);
 	},
 
 	improveVoiceDialog: function() {
