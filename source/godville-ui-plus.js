@@ -923,7 +923,7 @@ var ui_improver = {
 	improve: function() {
 		this.improveInProcess = true;
 		ui_informer.update('pvp', ui_data.isArena);
-		if (this.isFirstTime) {
+		if (this.isFirstTime && !ui_data.isArena) {
 			this.improveLoot();
 		}
 		this.improveStats();
@@ -1679,7 +1679,7 @@ var ui_observers = {
 		target: '.chat_ph'
 	},
 	inventory: {
-		condition: !ui_data.isArena,
+		condition: !ui_data.isArena && !ui_data.isMap,
 		config: {
 			childList: true,
 			attributes: true,
