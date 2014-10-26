@@ -104,6 +104,27 @@ var ui_utils = {
 		arr.splice(ind, 1);
 		return res;
 	},
+	createInspectButton: function(item_name) {
+		var a = document.createElement('a');
+		a.className = 'inspect_button';
+		a.title = 'Упросить ' + ui_data.char_sex[0] + ' ' + ['потрясти', 'исследовать', 'осмотреть'][Math.floor(Math.random()*3)] + ' ' + item_name;
+		a.textContent = '?';
+		a.onclick = function() {
+			ui_utils.sayToHero(ui_words.inspectPhrase(item_name));
+			return false;
+		};
+		return a;
+	},
+
+	createCraftButton: function(combo, combo_list, hint) {
+		return $('<a class="craft_button ' + combo_list + '" title="Уговорить ' + ui_data.char_sex[0] + ' склеить случайную комбинацию ' + hint + ' предметов из инвентаря">' + combo + '</a>')
+			.click(function() {
+				var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
+					items = ui_improver[combo_list][rand];
+				ui_utils.sayToHero(ui_words.craftPhrase(items));
+				return false;
+			});
+	},
 // Escapes HTML symbols
 	escapeHTML: function(str) {
 		return String(str).replace(/&/g, "&amp;")
@@ -906,24 +927,6 @@ var ui_improver = {
 		this.isFirstTime = false;
 		ui_improver.improveInProcess = false;
 	},
-
-	_createInspectButton: function(item_name) {
-		return $('<a class="inspect_button" style="margin-left:0.3em" title="Упросить ' + ui_data.char_sex[0] + ' потрясти ' + item_name + '">?</a>')
-			.click(function() {
-				ui_utils.sayToHero(ui_words.inspectPhrase(item_name));
-				return false;
-			});
-	},
-
-	_createCraftButton: function(combo, combo_list, hint) {
-		return $('<a class="craft_button ' + combo_list + '" title="Уговорить ' + ui_data.char_sex[0] + ' склеить случайную комбинацию ' + hint + ' предметов из инвентаря">' + combo + '</a>')
-			.click(function() {
-				var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
-					items = ui_improver[combo_list][rand];
-				ui_utils.sayToHero(ui_words.craftPhrase(items));
-				return false;
-			});
-	},
 	
 	improveLoot: function() {
 		var i, j, len, items = document.querySelectorAll('#inventory li'),
@@ -949,7 +952,6 @@ var ui_improver = {
 				if (ui_words.canBeActivated(items[i])) {
 					var desc = items[i].querySelector('.item_act_link_div *').getAttribute('title').replace(/ \(.*/g, ''),
 						sect = ui_words.canBeActivatedItemType(desc);
-					console.log(desc, sect);
 					if (sect != -1) {
 						flags[sect] = true;
 					} else {
@@ -982,7 +984,7 @@ var ui_improver = {
 						}
 					}
 					if (!ui_utils.isAlreadyImproved($(items[i]))) {
-						$(items[i]).append(ui_improver._createInspectButton(item_name));
+						items[i].insertBefore(ui_utils.createInspectButton(item_name), null);
 					}
 				}
 			}
@@ -1023,9 +1025,9 @@ var ui_improver = {
 		}
 
 		if (!ui_utils.isAlreadyImproved($('#inventory'))) {
-			this._createCraftButton('нж+нж', 'r_r', 'нежирных').insertAfter($('#inventory ul'));
-			this._createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного').insertAfter($('#inventory ul'));
-			this._createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных').insertAfter($('#inventory ul'));
+			ui_utils.createCraftButton('нж+нж', 'r_r', 'нежирных').insertAfter($('#inventory ul'));
+			ui_utils.createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного').insertAfter($('#inventory ul'));
+			ui_utils.createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных').insertAfter($('#inventory ul'));
 			$('<span class="craft_button">' + ['Склей', 'Собери', 'Скрафти', 'Соедини', 'Сделай', 'Слепи'][Math.floor(Math.random()*6)] + ':</span>').insertAfter($('#inventory ul'));
 		}
 
@@ -1626,7 +1628,7 @@ var ui_improver = {
 var ui_observers = {
 	init: function() {
 		for (var key in this) {
-			if (this[key].observer && this[key].condition) {
+			if (this[key].condition) {
 				this.start(this[key]);
 			}
 		}
@@ -1637,7 +1639,7 @@ var ui_observers = {
 			var observer = new MutationObserver(function(mutations) {
 				mutations.forEach(obj.func);
 			});
-			obj.observer.observe(target, obj.config);
+			observer.observe(target, obj.config);
 		}
 	},
 	chats: {

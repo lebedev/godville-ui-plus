@@ -293,6 +293,10 @@ a {
 	cursor: pointer;
 }
 
+a.inspect_button {
+	margin-left: 0.3em;
+}
+
 .dockfrname_w {
 	height: 100%
 }
