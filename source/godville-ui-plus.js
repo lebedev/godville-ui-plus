@@ -221,32 +221,33 @@ var ui_utils = {
 //		TIMEOUT BAR
 // ------------------------
 var ui_timeout_bar = {
-	_bar: null,
+	bar: null,
 	_tickInt: 0,
 	_ticksLeft: 0,
 	_ticksTotal: 0,
 	_tick: function() {
 		if (this._ticksLeft === 0) {
 			clearInterval(this._tickInt);
+			this.bar.style.width = 0;
 			if (!ui_data.isArena && !ui_storage.get('Option:freezeVoiceButton').match('when_empty') || document.querySelector('#god_phrase').value) {
 				document.querySelector('#voice_submit').removeAttribute('disabled');
 			}
 		} else {
-			this._bar.style.width = (100*this._ticksLeft--/this._ticksTotal).toFixed(3) + '%';
+			this.bar.style.width = (100*this._ticksLeft--/this._ticksTotal).toFixed(3) + '%';
 		}
 	},
 // creates timeout bar element
 	create: function() {
-		this._bar = document.createElement('div');
-		this._bar.id = 'timeout_bar';
-		this._bar.className = (ui_storage.get('ui_s') == 'th_nightly' ? 'night' : 'day');
-		document.body.insertBefore(this._bar, document.body.firstChild);
+		this.bar = document.createElement('div');
+		this.bar.id = 'timeout_bar';
+		this.bar.className = (ui_storage.get('ui_s') == 'th_nightly' ? 'night' : 'day');
+		document.body.insertBefore(this.bar, document.body.firstChild);
 	},
 // starts timeout bar
 	start: function(timeout) {
 		timeout = timeout || 20;
 		clearInterval(this._tickInt);
-		this._bar.style.width = '100%';
+		this.bar.style.width = '100%';
 		this._ticksLeft = this._ticksTotal = timeout*50; // 50 per second
 		if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice')) {
 			document.querySelector('#voice_submit').setAttribute('disabled', 'disabled');
@@ -1061,7 +1062,7 @@ var ui_improver = {
 			if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty'))
 				$('#voice_submit').attr('disabled', 'disabled');
 			$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
-				if (!ui_data.isArena && $(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && ui_timeout_bar.elem.width())) {
+				if (!ui_data.isArena && $(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout_bar.bar.style.width))) {
 					$('#voice_submit').removeAttr('disabled');
 				} else if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
 					$('#voice_submit').attr('disabled', 'disabled');
