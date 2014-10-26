@@ -118,13 +118,17 @@ var ui_utils = {
 	},
 
 	createCraftButton: function(combo, combo_list, hint) {
-		return $('<a class="craft_button ' + combo_list + '" title="Уговорить ' + ui_data.char_sex[0] + ' склеить случайную комбинацию ' + hint + ' предметов из инвентаря">' + combo + '</a>')
-			.click(function() {
-				var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
-					items = ui_improver[combo_list][rand];
-				ui_utils.sayToHero(ui_words.craftPhrase(items));
-				return false;
-			});
+		var a = document.createElement('a');
+		a.className = 'craft_button ' + combo_list;
+		a.title = 'Уговорить ' + ui_data.char_sex[0] + ' склеить случайную комбинацию ' + hint + ' предметов из инвентаря';
+		a.textContent = combo;
+		a.onclick = function() {
+			var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
+				items = ui_improver[combo_list][rand];
+			ui_utils.sayToHero(ui_words.craftPhrase(items));
+			return false;
+		};
+		return a;
 	},
 // Escapes HTML symbols
 	escapeHTML: function(str) {
@@ -1004,6 +1008,11 @@ var ui_improver = {
 			}
 		}
 
+		for (i = 0, len = flag_names.length; i < len; i++) {
+			ui_informer.update(flag_names[i], flags[i]);
+		}
+
+		// Склейка трофеев, формирование списков
 		this.b_b = [];
 		this.b_r = [];
 		this.r_r = [];
@@ -1039,14 +1048,11 @@ var ui_improver = {
 		}
 
 		if (!ui_utils.isAlreadyImproved($('#inventory'))) {
-			ui_utils.createCraftButton('нж+нж', 'r_r', 'нежирных').insertAfter($('#inventory ul'));
-			ui_utils.createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного').insertAfter($('#inventory ul'));
-			ui_utils.createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных').insertAfter($('#inventory ul'));
-			$('<span class="craft_button">' + ['Склей', 'Собери', 'Скрафти', 'Соедини', 'Сделай', 'Слепи'][Math.floor(Math.random()*6)] + ':</span>').insertAfter($('#inventory ul'));
-		}
-
-		for (i = 0, len = flag_names.length; i < len; i++) {
-			ui_informer.update(flag_names[i], flags[i]);
+			var inv_content = document.querySelector('#inventory .block_content');
+			inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + ['Склей', 'Собери', 'Скрафти', 'Соедини', 'Сделай', 'Слепи'][Math.floor(Math.random()*6)] + ':</span>');
+			inv_content.insertBefore(ui_utils.createCraftButton('нж+нж', 'r_r', 'нежирных'), null);
+			inv_content.insertBefore(ui_utils.createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного'), null);
+			inv_content.insertBefore(ui_utils.createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных'), null);
 		}
 
 		//ui_informer.update(flag_names[11], flags[11] && !bold_items);
