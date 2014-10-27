@@ -1687,7 +1687,8 @@ var ui_observers = {
 			attributeFilter: ['style']
 		},
 		func: function(mutation) {
-			if (mutation.target.tagName.toLowerCase() == 'li' && mutation.type == "attributes" && mutation.target.style.display == 'none') {
+			if (mutation.target.tagName.toLowerCase() == 'li' && mutation.type == "attributes" &&
+				mutation.target.style.display == 'none' && mutation.target.parentNode) {
 				mutation.target.parentNode.removeChild(mutation.target);
 				ui_improver.improveLoot();
 			}
