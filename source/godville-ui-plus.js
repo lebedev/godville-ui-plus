@@ -233,7 +233,7 @@ var ui_timeout = {
 		if (this._ticksLeft === 0) {
 			clearInterval(this._tickInt);
 			this.bar.style.width = 0;
-			if (!ui_data.isArena && !ui_storage.get('Option:freezeVoiceButton').match('when_empty') || document.querySelector('#god_phrase').value) {
+			if (!ui_data.isArena && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) || document.querySelector('#god_phrase').value) {
 				document.querySelector('#voice_submit').removeAttribute('disabled');
 			}
 		} else {
