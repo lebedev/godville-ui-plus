@@ -949,7 +949,7 @@ var ui_improver = {
 			bold_items = false,
 			trophy_list = [],
 			trophy_boldness = {},
-			forbidden_craft = ui_storage.get('Option:forbidden_craft');
+			forbidden_craft = ui_storage.get('Option:forbiddenCraft');
 
 		for (i = 0, len = flags.length; i < len; i++) {
 			flags[i] = false;
