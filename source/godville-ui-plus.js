@@ -1407,7 +1407,7 @@ var ui_improver = {
 		if (ui_data.isArena) return;
 		if (ui_utils.findLabel($('#pet'), 'Статус')[0].style.display!='none'){
 			if (!ui_utils.isAlreadyImproved($('#pet'))){
-				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge gu_new_badge_pos">0</div>'));
+				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 			} 
 			$('#pet_badge').text(ui_utils.findLabel($('#pet'), 'Статус').siblings('.l_val').text().replace(/[^0-9:]/g, ''));
 			if ($('#pet .block_content')[0].style.display == 'none') 
@@ -1429,7 +1429,7 @@ var ui_improver = {
 			seq += parseInt($('#eq_' + i + ' .eq_level').text()) || 0;
 		}
 		if (!ui_utils.isAlreadyImproved($('#equipment')))
-			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge gu_new_badge_pos">0</div>'));
+			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 		$('#equip_badge').text((seq / 7).toFixed(1));
 	},
 // ---------- Group HP --------------

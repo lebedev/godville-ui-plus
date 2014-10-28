@@ -71,9 +71,12 @@ body {
 	display: none;
 }
 
-.gu_new_badge_pos {
+.equip_badge_pos {
 	right: 20px;
 	top: 2px;
+}
+.page_wrapper_5c .equip_badge_pos {
+	right: 16px;
 }
 
 #hero_block {
