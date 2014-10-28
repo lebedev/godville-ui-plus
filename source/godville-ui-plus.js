@@ -287,15 +287,7 @@ var ui_help_dialog = {
 // toggles ui dialog	
 	toggle: function(visible) {
 		ui_storage.set('helpDialogVisible', !ui_storage.get('helpDialogVisible'));
-		var cloud = $('#fader.cloud').length;
-		if (cloud) {
-			$('#fader').removeClass('up');
-		}
-		this.bar.slideToggle("slow", function() {
-			if (cloud && !ui_storage.get('helpDialogVisible')) {
-				$('#fader').addClass('up');
-			}
-		});
+		this.bar.slideToggle("slow");
 	},
 // creates ui dialog	
 	create: function() {
@@ -609,7 +601,6 @@ var ui_logger = {
 	create: function() {
 		this.elem = $('<ul id="logger" style="mask: url(#fader_masking);"/>');
 		$('#menu_bar').after(this.elem);
-		this.elem.append('<div id="fader" />');
 		this.need_separator = false;
 	},
 
@@ -626,9 +617,6 @@ var ui_logger = {
 		this.elem.scrollLeft(10000); //Dirty fix		
 		while ($('#logger li').position().left + $('#logger li').width() < 0 || $('#logger li')[0].className == "separator") {
 			$('#logger li:first').remove();
-		}
-		if ($('#fader').position().left !== 0) {
-			$('#fader').css("left", parseFloat($('#fader').css("left").replace('px', '')) - $('#fader').position().left);
 		}
 	},
 
@@ -952,7 +940,6 @@ var ui_improver = {
 		this.improveMap();
 		this.improveInterface();
 		this.improveChat();
-		this.improveWindowWidthChangeAndNewElementsInsertionRelatedStuff();
 		this.checkButtonsVisibility();
 		this.isFirstTime = false;
 		ui_improver.improveInProcess = false;
@@ -1515,14 +1502,16 @@ var ui_improver = {
 		}
 	},
 	
-	improveInterface : function(){
+	improveInterface: function() {
 		if (this.isFirstTime) {
 			$('a[href=#]').removeAttr('href');
 			ui_storage.set('windowWidth', $(window).width());
 			$(window).resize(function() {
 				if ($(this).width() != ui_storage.get('windowWidth')) {
 					ui_storage.set('windowWidth', $(window).width());
-					ui_improver.improveWindowWidthChangeAndNewElementsInsertionRelatedStuff();
+					this.chatsFix();
+					//body widening???
+					$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
 				}
 			});
 		}
@@ -1539,14 +1528,8 @@ var ui_improver = {
 		}
 
 		if (ui_storage.get('Option:useBackground') == 'cloud') {
-			if (!$('#fader.cloud').length) {
+			if ($('body').css('background-image') !== 'url(' + GUIp_getResource("images/background.jpg") + ')') {
 				$('body').css('background-image', 'url(' + GUIp_getResource("images/background.jpg") + ')');
-				if (ui_storage.get('helpDialogVisible')) {
-					$('#fader').addClass('down');
-				} else {
-					$('#fader').addClass('up');
-				}
-				$('#fader').addClass('cloud').removeClass('day night');
 			}
 		} else if (ui_storage.get('Option:useBackground')) {
 			//Mini-hash to check if that is the same background
@@ -1559,30 +1542,29 @@ var ui_improver = {
 			if (hash != this.hash) {
 				this.hash = hash;
 				$('body').css('background-image', 'url(' + ui_utils.escapeHTML(str) + ')');
-				$('#fader').removeClass('cloud up down day night');
 			}
 		} else {
-			$('body').css('background-image', '');
-			if (ui_storage.get('ui_s') == 'th_nightly' && !$('#fader.night').length) {
-				$('#fader').addClass('night').removeClass('cloud up down day');
-			} else if (ui_storage.get('ui_s') != 'th_nightly' && !$('#fader.day').length) {
-				$('#fader').addClass('day').removeClass('cloud up down night');
+			if ($('body').css('background-image')) {
+				$('body').css('background-image', '');
 			}
 		}
 	},
 	
 	improveChat: function() {
 		// links replace
-		var $msgs = $('.fr_msg_l:not(.improved)');
+		var $cur_msg, $msgs = $('.fr_msg_l:not(.improved)'),
+			$temp = $('<div id="temp" />');
+		$('body').append($temp);
 		for (var i = 1, len = $msgs.length; i < len; i++) {
 			$cur_msg = $msgs.eq(i);
-			$('#fader').append($('.fr_msg_meta', $cur_msg)).append($('.fr_msg_delete', $cur_msg));
+			$temp.append($('.fr_msg_meta', $cur_msg)).append($('.fr_msg_delete', $cur_msg));
 			var text = $cur_msg.text();
 			$cur_msg.empty();
 			$cur_msg.append(text.replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t ]+)/g, '<a href="$1" target="_blank" title="Откроется в новой вкладке">$1</a>'));
-			$cur_msg.append($('#fader .fr_msg_meta')).append($('#fader .fr_msg_delete'));
+			$cur_msg.append($('.fr_msg_meta', $temp)).append($('.fr_msg_delete', $temp));
 		}
 		$msgs.addClass('improved');
+		$temp.remove();
 	},
 
 	checkButtonsVisibility: function() {
@@ -1611,35 +1593,6 @@ var ui_improver = {
 			if ($('#hk_health .p_val').width() == $('#hk_health .p_bar').width()) $('#hk_health .voice_generator').hide();
 		}
 	},
-	
-	improveWindowWidthChangeAndNewElementsInsertionRelatedStuff: function() {
-		if (ui_storage.get('Option:useBackground')) {
-			//background offset
-			if (ui_storage.get('Option:useBackground') == 'cloud') {
-				$('body').css('background-position', ($('#fader').offset().left ? ($('#fader').offset().left - 163.75) : 0) + 'px 0');
-			}
-			//body widening
-			$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
-		}
-		
-		this.chatsFix();
-		
-		//padding for page settings link
-		var padding_bottom = $('.frDockCell:last').length ? Math.floor($('.frDockCell:last').position().top/26.3 + 0.5)*$('.frDockCell').height() : 0,
-			isBottom = window.scrollY >= window.scrollMaxY - 10;
-		padding_bottom = Math.floor(padding_bottom*10)/10 + 40;
-		padding_bottom = (padding_bottom < 0) ? 0 : padding_bottom + 'px';
-		$('.reset_layout').css('padding-bottom', padding_bottom);
-		if (isBottom) {
-			window.scrollTo(0, window.scrollMaxY);
-		}
-		
-		//settings dialod
-		/*if (!ui_utils.isAlreadyImproved($('#facebox'))) {
-			$('#facebox').css('left', ($(window).width() - $('#facebox').width())/2 + 'px');
-			$('#facebox').css('top', ($(window).height() - $('#facebox').height())/2 + 'px');
-		}*/
-	},
 
 	chatsFix: function() {
 		var cells = document.querySelectorAll('.frDockCell');
@@ -1649,6 +1602,15 @@ var ui_improver = {
 			if (cells[i].getBoundingClientRect().right < 350) {
 				cells[i].classList.add('left');
 			}
+		}
+		//padding for page settings link
+		var padding_bottom = $('.frDockCell:last').length ? Math.floor($('.frDockCell:last').position().top/26.3 + 0.5)*$('.frDockCell').height() : 0,
+			isBottom = window.scrollY >= window.scrollMaxY - 10;
+		padding_bottom = Math.floor(padding_bottom*10)/10 + 40;
+		padding_bottom = (padding_bottom < 0) ? 0 : padding_bottom + 'px';
+		$('.reset_layout').css('padding-bottom', padding_bottom);
+		if (isBottom) {
+			window.scrollTo(0, window.scrollMaxY);
 		}
 	}
 };
@@ -1792,6 +1754,7 @@ var ui_starter = {
 			shiftEnterScript.src = GUIp_getResource('shift_enter.js');
 			document.head.appendChild(shiftEnterScript);
 
+			// svg for #logger fade-out in FF
 			document.body.insertAdjacentHTML('beforeend',
 				'<svg>' +
 					'<defs>' +
