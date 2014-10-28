@@ -1,4 +1,4 @@
-var $j = jQuery.noConflict();
+var $j;
 
 var storage = {
 	_get_key: function(key) {
@@ -17,7 +17,7 @@ var storage = {
 	}
 };
 
-function updateMenu() {
+function addMenu() {
 	if (god_name === "") return;
 	ImproveInProcess = true;
 	if ($j('#ui_options').length === 0) {
@@ -322,25 +322,31 @@ function restore_options() {
 	}
 }
 
-var def, curr_sect,
+var def, curr_sect, god_name,
 	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'heil', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
 	ImproveInProcess = false,
-	isDataRead = false,
-	god_name = $j('#opt_change_profile div:first div:first').text();
-if (god_name !== "") {
-	localStorage.setItem("GM_CurrentUser", god_name);
-} else {
-	god_name = localStorage.getItem("GM_CurrentUser");
-}
-updateMenu();
-if (location.hash === "#ui_options") {
-	loadOptions();
-}
+	isDataRead = false;
 
-// Event and Listeners
-document.addEventListener("DOMNodeInserted", function () {
-	if(!$j('#profile_main p:first').text().match('Настройки UI+'))
-		setTimeout(function() {
-			updateMenu();
-		}, 0);
-});
+var starterInt = setInterval(function() {
+	$j = jQuery.noConflict();
+	if ($j) {
+		clearInterval(starterInt);
+		god_name = $j('#opt_change_profile div:first div:first').text();
+		if (god_name !== "") {
+			localStorage.setItem("GM_CurrentUser", god_name);
+		} else {
+			god_name = localStorage.getItem("GM_CurrentUser");
+		}
+		addMenu();
+		if (location.hash === "#ui_options") {
+			loadOptions();
+		}
+		// Event and Listeners
+		document.addEventListener("DOMNodeInserted", function () {
+			if(!$j('#profile_main p:first').text().match('Настройки UI+'))
+				setTimeout(function() {
+					addMenu();
+				}, 0);
+		});
+	}
+}, 100);

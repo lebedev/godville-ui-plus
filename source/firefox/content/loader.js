@@ -17,7 +17,7 @@ contentLoad: function(event) {
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/options-page.js');
-			setTimeout(function(){loader.createScript(doc, 'chrome://godville-ui-plus/content/options.js');}, 1000);
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/options.js');
 		}
 		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/) && !windowStats.get(doc)) {
 			windowStats.set(doc,'scriptsLoaded');
