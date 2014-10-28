@@ -222,6 +222,12 @@ var ui_utils = {
 			callback: function() {
 				ui_storage.set('helpDialogVisible', true);
 			}
+		},
+		{
+			title: 'Новые опции',
+			content: '<div style="text-align: justify;">&emsp;В <a href="user/profile#ui_options" target="_blank" title="Откроется в новой вкладке">настройках</a> появилась пара новых опций: ' +
+			'можно отключить логгер, кнопку "умри" и изменить время таймаута после успешных гласов, которое сейчас составляет 30 сек.</div>'+
+					 '<div style="text-align: right;">Такие дела.<br>~~Бэдлак</div>'
 		}
 	]
 };

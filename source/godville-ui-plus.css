@@ -54,7 +54,7 @@ body {
 	padding-bottom: 0.7em;
 }
 .ui_msg .hint_bar_content {
-	padding: 0 1em;
+	padding: 0.5em 1em 0;
 }
 .hint_bar {
 	font-size: 90%;
