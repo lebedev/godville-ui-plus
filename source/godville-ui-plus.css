@@ -135,6 +135,7 @@ body {
 	overflow-x: hidden;
 	white-space: nowrap;
 	margin: auto;
+	-webkit-mask-image: linear-gradient(to left, black 94%, transparent 100%);
 }
 
 #logger li {
