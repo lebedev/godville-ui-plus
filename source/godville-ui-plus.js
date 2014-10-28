@@ -598,9 +598,10 @@ var ui_stats = {
 // ui_logger.watchLabelCounter -- следить за значением лабела
 var ui_logger = {
 	Updating: false,
+	bar: null,
 	create: function() {
-		this.elem = $('<ul id="logger" style="mask: url(#fader_masking);"/>');
-		$('#menu_bar').after(this.elem);
+		this.bar = $('<ul id="logger" style="mask: url(#fader_masking);"/>');
+		$('#menu_bar').after(this.bar);
 		this.need_separator = false;
 	},
 
@@ -608,13 +609,13 @@ var ui_logger = {
 		// append separator if needed
 		if (this.need_separator) {
 			this.need_separator = false;
-			if (this.elem.children().length > 0) {
-				this.elem.append('<li class="separator">|</li>');
+			if (this.bar.children().length > 0) {
+				this.bar.append('<li class="separator">|</li>');
 			}
 		}
 		// append string	
-		this.elem.append('<li class="' + klass + '" title="' + descr + '">' + str + '</li>');
-		this.elem.scrollLeft(10000); //Dirty fix		
+		this.bar.append('<li class="' + klass + '" title="' + descr + '">' + str + '</li>');
+		this.bar.scrollLeft(10000); //Dirty fix
 		while ($('#logger li').position().left + $('#logger li').width() < 0 || $('#logger li')[0].className == "separator") {
 			$('#logger li:first').remove();
 		}
@@ -645,7 +646,13 @@ var ui_logger = {
 	},
 
 	update: function() {
-		if (ui_data.isMap){
+		if (ui_storage.get('Option:disableLogger')) {
+			this.bar.hide();
+			return;
+		} else {
+			this.bar.show();
+		}
+		if (ui_data.isMap) {
 			this.watchStatsValue('Map_HP', 'hp', 'Здоровье героя', 'hp');
 			this.watchStatsValue('Map_Inv', 'inv', 'Инвентарь', 'inv');
 			this.watchStatsValue('Map_Gold', 'gld', 'Золото', 'gold'); 
@@ -1620,6 +1627,30 @@ var ui_improver = {
 		if (isBottom) {
 			window.scrollTo(0, window.scrollMaxY);
 		}
+	},
+
+	mouseMove: function() {
+		if (!ui_logger.Updating) {
+			ui_logger.Updating = true;
+			setTimeout(function() {
+				ui_logger.Updating = false;
+			}, 500);
+			ui_logger.update();
+		}
+	},
+
+	nodeInsertion: function() {
+		if(!ui_improver.improveInProcess) {
+			ui_improver.improveInProcess = true;
+			setTimeout(ui_improver.nodeInsertionDelay, 50);
+		}
+	},
+
+	nodeInsertionDelay: function() {
+		ui_improver.improve();
+		if (ui_data.isArena) {
+			ui_logger.update();
+		}
 	}
 };
 
@@ -1725,7 +1756,20 @@ var ui_starter = {
 			ui_utils.addCSS();
 			ui_utils.inform();
 			ui_words.init();
-			ui_logger.create();
+			if (!ui_storage.get('Option:disableLogger')) {
+				ui_logger.create();
+				$('html').mousemove(function() {
+					if (!ui_logger.Updating) {
+						ui_logger.Updating = true;
+						if (!ui_data.isArena) {
+							ui_logger.update();
+						}
+						setTimeout(function() {
+							ui_logger.Updating = false;
+						}, 500);
+					}
+				});
+			}
 			ui_timeout.create();
 			ui_help_dialog.create();
 			ui_informer.init();
@@ -1734,28 +1778,11 @@ var ui_starter = {
 			ui_observers.init();
 			
 			// Event and listeners
-			$(document).bind('DOMNodeInserted', function() {
-				if(!ui_improver.improveInProcess) {
-					ui_improver.improveInProcess = true;
-					setTimeout(function() {
-						ui_improver.improve();
-						if (ui_data.isArena) {
-							ui_logger.update();
-						}
-					}, 50);
-				}
-			});
+			$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion);
 
-			$('html').mousemove(function() {
-				if (!ui_logger.Updating) {
-					ui_logger.Updating = true;
-					if (!ui_data.isArena)
-						ui_logger.update();
-					setTimeout(function() {
-						ui_logger.Updating = false;
-					}, 500);
-				}
-			});
+			if (!ui_data.isArena) {
+				$('html').mousemove(ui_improver.mouseMove);
+			}
 
 			// "Shift+Enter → new line" improvement by external-script to bypass stupid Chrome restrictions
 			var shiftEnterScript = document.createElement('script');
