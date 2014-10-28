@@ -258,22 +258,24 @@ var ui_timeout = {
 		clearInterval(this._tickInt);
 		this.bar.style.transitionDuration = '';
 		this.bar.classList.remove('running');
-		setTimeout(function() {
-			var customTimeout = ui_storage.get('Option:customTimeout');
-			if (!isNaN(customTimeout)) {
-				ui_timeout.timeout = customTimeout;
-				ui_timeout.bar.style.transitionDuration = customTimeout + 's';
-			} else {
-				ui_timeout.timeout = 30;
-			}
-			ui_timeout.bar.classList.add('running');
-		}, 10);
+		setTimeout(this._delayedStart, 10);
 		this._finishtDate = Date.now() + this.timeout*1000;
 		this._tickInt = setInterval(this._tick.bind(this), 100);
 		if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice')) {
 			document.querySelector('#voice_submit').setAttribute('disabled', 'disabled');
 		}
 	},
+
+	_delayedStart: function() {
+		var customTimeout = ui_storage.get('Option:voiceTimeout');
+		if (!isNaN(customTimeout)) {
+			ui_timeout.timeout = customTimeout;
+			ui_timeout.bar.style.transitionDuration = customTimeout + 's';
+		} else {
+			ui_timeout.timeout = 30;
+		}
+		ui_timeout.bar.classList.add('running');
+	}
 };
 
 // ------------------------

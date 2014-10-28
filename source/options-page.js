@@ -109,6 +109,20 @@ return '<p>\n' +
 '									<span id="cb_status" style="margin-left: 0.5em; display: none;" />\n' +
 '								</div>\n' +
 '							</div>\n' +
+'							<div class="new_line"><label class="l_capt" for="voice_timeout">Выбрать продолжительность таймаута</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="voice_timeout" name="voice_timeout" class="menu-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line" id="voice_timeout_desc">\n' +
+'								<div class="g_desc">вместо стандартных 30 секунд</div>\n' +
+'							</div>\n' +
+'							<div class="new_line" id="voice_timeout_choice">\n' +
+'								<div class="g_desc">\n' +
+'									<label for="voice_timeout">введите число (секунд)</label>\n' +
+'									<input type="number" id="voice_timeout_value" style="width: 136px;"/>\n' +
+'								</div>\n' +
+'							</div>\n' +
 '							<div class="new_line">\n' +
 '								<label class="l_capt" for="hide_charge_button">Убрать кнопку Зарядить</label>\n' +
 '								<div class="field_content">\n' +

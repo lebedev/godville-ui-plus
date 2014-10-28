@@ -68,6 +68,10 @@ function loadOptions() {
 	$j('#custom_link').click(function() {
 		$j('#custom_background').click();
 	});
+	$j('#voice_timeout').click(function() {
+		$j('#voice_timeout_choice').slideToggle("slow");
+		$j('#voice_timeout_desc').slideToggle("slow");
+	});
 	$j('#freeze_voice_button').click(function() {
 		$j('#freeze_voice_button_choice').slideToggle("slow");
 		$j('#freeze_voice_button_desc').slideToggle("slow");
@@ -200,6 +204,18 @@ function save_options(form) {
 			storage.set('Option:useBackground', '');
 		}
 
+		if ($j('#voice_timeout:checked').length) {
+			var voice_timeout = $j('#voice_timeout_value').val();
+			if (!voice_timeout) {
+				storage.set('Option:voiceTimeout', voice_timeout);
+			} else {
+				$j('#voice_timeout_value').val('30');
+				$j('#voice_timeout_menu').click();
+			}
+		} else {
+			storage.set('Option:voiceTimeout', '');
+		}
+
 		if ($j('#freeze_voice_button:checked').length) {
 			var cases = [];
 			if ($j('#freeze_after_voice:checked').length) cases.push('after_voice');
@@ -285,6 +301,12 @@ function restore_options() {
 		}
 	} else {
 		$j('#background_choice').hide();
+	}
+	if ($j('#voice_timeout:checked').length) {
+		$j('#voice_timeout_desc').hide();
+		$j('#voice_timeout_value').val(storage.get('Option:voiceTimeout'));
+	} else {
+		$j('#voice_timeout_choice').hide();
 	}
 	if ($j('#freeze_voice_button:checked').length) {
 		$j('#freeze_voice_button_desc').hide();
