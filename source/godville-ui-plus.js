@@ -1582,6 +1582,9 @@ var ui_improver = {
 		$('.craft_button,.inspect_button,.voice_generator').hide();
 		if (ui_storage.get('Stats:Prana') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
 			$('.voice_generator, .inspect_button').show();
+			if (ui_storage.get('Option:disableDieButton')) {
+				$('#hk_death_count .voice_generator').hide();
+			}
 			if (ui_improver.b_b.length) $('.b_b').show();
 			if (ui_improver.b_r.length) $('.b_r').show();
 			if (ui_improver.r_r.length) $('.r_r').show();
