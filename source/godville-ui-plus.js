@@ -1764,20 +1764,7 @@ var ui_starter = {
 			ui_utils.addCSS();
 			ui_utils.inform();
 			ui_words.init();
-			if (!ui_storage.get('Option:disableLogger')) {
-				ui_logger.create();
-				$('html').mousemove(function() {
-					if (!ui_logger.Updating) {
-						ui_logger.Updating = true;
-						if (!ui_data.isArena) {
-							ui_logger.update();
-						}
-						setTimeout(function() {
-							ui_logger.Updating = false;
-						}, 500);
-					}
-				});
-			}
+			ui_logger.create();
 			ui_timeout.create();
 			ui_help_dialog.create();
 			ui_informer.init();
