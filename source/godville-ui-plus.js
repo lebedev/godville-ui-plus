@@ -783,7 +783,7 @@ var ui_informer = {
 	},
 
 	clear_title: function() {
-		var pm = $('.fr_new_badge_pos:visible').text();
+		var pm = +$('.fr_new_badge_pos:visible').text() + $('.msgDock .fr_new_msg').length;
 		pm = pm ? '[' + pm + '] ' : '';
 
 		var fi = 0;
@@ -1298,8 +1298,6 @@ var ui_improver = {
 			return parseInt(val.replace(/[^0-9]/g, '')) || 0;
 		};
 
-		if (this.isFirstTime)
-			$('#hk_clan .l_val').width(Math.floor(100 - 100*$('#hk_clan .l_capt').width() / (ui_data.isArena ? $('#m_info .block_content') : $('#stats .block_content')).width()) + '%');
 		if (ui_data.isMap) {
 			ui_stats.setFromLabelCounter('Map_HP', $('#m_info'), 'Здоровье');
 			ui_stats.setFromLabelCounter('Map_Gold', $('#m_info'), 'Золота', gold_parser);
@@ -1756,7 +1754,7 @@ var ui_starter = {
 			
 			// Event and listeners
 			$(document).bind('DOMNodeInserted', function() {
-				if(!ui_improver.improveInProcess){
+				if(!ui_improver.improveInProcess) {
 					ui_improver.improveInProcess = true;
 					setTimeout(function() {
 						ui_improver.improve();
