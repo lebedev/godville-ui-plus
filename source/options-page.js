@@ -50,6 +50,24 @@ return '<p>\n' +
 '								<div class="new_line">\n' +
 '									<div class="g_desc">использует одну фразу вместо нескольких</div>\n' +
 '								</div>\n' +
+'								<div class="new_line">\n' +
+'									<label class="l_capt" for="disable_die_button">Отключить кнопку "умри"</label>\n' +
+'									<div class="field_content">\n' +
+'										<input id="disable_die_button" name="disable_die_button" class="option-checkbox" type="checkbox">\n' +
+'									</div>\n' +
+'								</div>\n' +
+'								<div class="new_line">\n' +
+'									<div class="g_desc">для тех, кого она нервирует</div>\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<label class="l_capt" for="disable_logger">Отключить логгер</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="disable_logger" name="disable_logger" class="option-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<div class="g_desc">отключает бегущую строку с красивыми разноцветными циквирками</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
 '								<label class="l_capt" for="relocate_duel_buttons">Переместить дуэльные кнопки</label>\n' +
