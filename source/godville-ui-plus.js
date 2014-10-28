@@ -1121,6 +1121,24 @@ var ui_improver = {
 		ui_informer.update('full prana', $('#cntrl .p_val').width() == $('#cntrl .p_bar').width());
 	},
 
+	refresher: function() {
+		if (ui_storage.get('Option:forcePageRefresh')) {
+			if (!ui_improver.news.match($('.f_news.line').text()) || !ui_improver.news.match(ui_storage.get('Stats:HP'))) {
+				ui_improver.news = $('.f_news.line').text() + ui_storage.get('Stats:HP');
+				ui_improver.lastNews = new Date();
+			}
+			var now = new Date();
+			if (now.getTime() - ui_improver.lastNews.getTime() > 180000) {
+				if ($('.t_red').length) {
+					console.warn('Godville UI+ log: RED ALERT! HARD RELOADING!');
+					location.reload();
+				}
+				console.warn('Godville UI+ log: Soft reloading');
+				$('#d_refresh').click();
+			}
+		}
+	},
+
 // ----------- Вести с полей ----------------
 	improveNews: function() {
 		if (ui_data.isArena) return;
@@ -1141,23 +1159,7 @@ var ui_improver = {
 			this.news = $('.f_news.line').text() + ui_storage.get('Stats:HP');
 			this.lastNews = new Date();
 			
-			var refresher = setInterval (function() {
-				if (ui_storage.get('Option:forcePageRefresh')) {
-					if (!ui_improver.news.match($('.f_news.line').text()) || !ui_improver.news.match(ui_storage.get('Stats:HP'))) {
-						ui_improver.news = $('.f_news.line').text() + ui_storage.get('Stats:HP');
-						ui_improver.lastNews = new Date();
-					}
-					var now = new Date();
-					if (now.getTime() - ui_improver.lastNews.getTime() > 180000) {
-						if ($('.t_red').length) {
-							console.warn('Godville UI+ log: RED ALERT! HARD RELOADING!');
-							location.reload();
-						}
-						console.warn('Godville UI+ log: Soft reloading');
-						$('#d_refresh').click();
-					}
-				}
-			}, 60000);
+			var refresher = setInterval(this.refresher, 60000);
 		}
 	},
 
@@ -1501,19 +1503,22 @@ var ui_improver = {
 			}
 		}
 	},
-	
+
+	whenWindowResize: function() {
+		if ($(window).width() != ui_storage.get('windowWidth')) {
+			ui_storage.set('windowWidth', $(window).width());
+			this.chatsFix();
+			//body widening
+			$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
+		}
+	},
+
 	improveInterface: function() {
 		if (this.isFirstTime) {
 			$('a[href=#]').removeAttr('href');
 			ui_storage.set('windowWidth', $(window).width());
-			$(window).resize(function() {
-				if ($(this).width() != ui_storage.get('windowWidth')) {
-					ui_storage.set('windowWidth', $(window).width());
-					this.chatsFix();
-					//body widening???
-					$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
-				}
-			});
+			this.whenWindowResize();
+			$(window).resize(this.whenWindowResize.bind(this));
 		}
 
 		if (localStorage.getItem('ui_s') !== ui_storage.get('ui_s')) {
