@@ -231,18 +231,19 @@ var ui_utils = {
 // ------------------------
 var ui_timeout = {
 	bar: null,
+	timeout: 0,
+	_finishtDate: 0,
 	_tickInt: 0,
-	_ticksLeft: 0,
-	_ticksTotal: 0,
 	_tick: function() {
-		if (this._ticksLeft === 0) {
+		if (Date.now() > this._finishDate) {
 			clearInterval(this._tickInt);
-			this.bar.style.width = 0;
+			if (this.bar.style.transitionDuration) {
+				this.bar.style.transitionDuration = '';
+			}
+			this.bar.classList.remove('running');
 			if (!ui_data.isArena && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) || document.querySelector('#god_phrase').value) {
 				document.querySelector('#voice_submit').removeAttribute('disabled');
 			}
-		} else {
-			this.bar.style.width = (100*this._ticksLeft--/this._ticksTotal).toFixed(3) + '%';
 		}
 	},
 // creates timeout bar element
@@ -253,15 +254,25 @@ var ui_timeout = {
 		document.body.insertBefore(this.bar, document.body.firstChild);
 	},
 // starts timeout bar
-	start: function(timeout) {
-		timeout = timeout || 20;
+	start: function() {
 		clearInterval(this._tickInt);
-		this.bar.style.width = '100%';
-		this._ticksLeft = this._ticksTotal = timeout*50; // 50 per second
+		this.bar.style.transitionDuration = '';
+		this.bar.classList.remove('running');
+		setTimeout(function() {
+			var customTimeout = ui_storage.get('Option:customTimeout');
+			if (!isNaN(customTimeout)) {
+				ui_timeout.timeout = customTimeout;
+				ui_timeout.bar.style.transitionDuration = customTimeout + 's';
+			} else {
+				ui_timeout.timeout = 30;
+			}
+			ui_timeout.bar.classList.add('running');
+		}, 10);
+		this._finishtDate = Date.now() + this.timeout*1000;
+		this._tickInt = setInterval(this._tick.bind(this), 100);
 		if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice')) {
 			document.querySelector('#voice_submit').setAttribute('disabled', 'disabled');
 		}
-		this._tickInt = setInterval(this._tick.bind(this), 20);
 	},
 };
 
@@ -596,7 +607,7 @@ var ui_stats = {
 var ui_logger = {
 	Updating: false,
 	create: function() {
-		this.elem = $('<ul id="stats_log" />');
+		this.elem = $('<ul id="logger" style="mask: url(#fader_masking);"/>');
 		$('#menu_bar').after(this.elem);
 		this.elem.append('<div id="fader" />');
 		this.need_separator = false;
@@ -613,8 +624,8 @@ var ui_logger = {
 		// append string	
 		this.elem.append('<li class="' + klass + '" title="' + descr + '">' + str + '</li>');
 		this.elem.scrollLeft(10000); //Dirty fix		
-		while ($('#stats_log li').position().left + $('#stats_log li').width() < 0 || $('#stats_log li')[0].className == "separator") {
-			$('#stats_log li:first').remove();
+		while ($('#logger li').position().left + $('#logger li').width() < 0 || $('#logger li')[0].className == "separator") {
+			$('#logger li:first').remove();
 		}
 		if ($('#fader').position().left !== 0) {
 			$('#fader').css("left", parseFloat($('#fader').css("left").replace('px', '')) - $('#fader').position().left);
@@ -1624,10 +1635,10 @@ var ui_improver = {
 		}
 		
 		//settings dialod
-		if (!ui_utils.isAlreadyImproved($('#facebox'))) {
+		/*if (!ui_utils.isAlreadyImproved($('#facebox'))) {
 			$('#facebox').css('left', ($(window).width() - $('#facebox').width())/2 + 'px');
 			$('#facebox').css('top', ($(window).height() - $('#facebox').height())/2 + 'px');
-		}
+		}*/
 	},
 
 	chatsFix: function() {
@@ -1780,6 +1791,20 @@ var ui_starter = {
 			var shiftEnterScript = document.createElement('script');
 			shiftEnterScript.src = GUIp_getResource('shift_enter.js');
 			document.head.appendChild(shiftEnterScript);
+
+			document.body.insertAdjacentHTML('beforeend',
+				'<svg>' +
+					'<defs>' +
+						'<linearGradient id="gradient" x1="0" y1="0" x2 ="100%" y2="0">' +
+							'<stop stop-color="black" offset="0"></stop>' +
+							'<stop stop-color="white" offset="0.03"></stop>' +
+						'</linearGradient>' +
+						'<mask id="fader_masking" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">' +
+							'<rect x="0.03" width="0.97" height="1" fill="url(#gradient)" />' +
+						'</mask>' +
+					'</defs>' +
+				'</svg>'
+			);
 
 			/*var layingTimerScript = document.createElement('script');
 			layingTimerScript.src = GUIp_getResource('laying_timer.js');

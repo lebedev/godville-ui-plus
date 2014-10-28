@@ -130,52 +130,59 @@ body {
 	padding: 0 0.2em;
 }
 
-#stats_log {
+#logger {
 	width: 90%;
 	overflow-x: hidden;
 	white-space: nowrap;
 	margin: auto;
 }
 
-#stats_log li {
+#logger li {
 	display: inline;
 	list-item-style: none;
 	margin-left: 0.5em;
 }
 
-#stats_log .prana { color: #199bdc; }
-#stats_log .exp { color: #f9b436; }
-#stats_log .task { color: pink; }
-#stats_log .level { color: red; font-weight: bold; }
-#stats_log .inv { color: #882D17; }
-#stats_log .hp { color: green; }
-#stats_log .gold { color: #ffd700; }
-#stats_log .monster { color: darkmagenta; }
-#stats_log .death { color: red; }
-#stats_log .brick { color: goldenrod; font-weight: bold; }
-#stats_log .wood { color: saddlebrown; font-weight: bold; }
-#stats_log .battery { color: blue; }
-#stats_log .retirement { color: darkorange; }
-#stats_log {
+#logger .prana { color: #199bdc; }
+#logger .exp { color: #f9b436; }
+#logger .task { color: pink; }
+#logger .level { color: red; font-weight: bold; }
+#logger .inv { color: #882D17; }
+#logger .hp { color: green; }
+#logger .gold { color: #ffd700; }
+#logger .monster { color: darkmagenta; }
+#logger .death { color: red; }
+#logger .brick { color: goldenrod; font-weight: bold; }
+#logger .wood { color: saddlebrown; font-weight: bold; }
+#logger .battery { color: blue; }
+#logger .retirement { color: darkorange; }
+#logger {
 	display: block;
 	position: relative;
 }
 
 #timeout_bar {
 	height: 3px;
-	width: 0px;
+	width: 100%;
 	display: block;
 	position: fixed;
 	z-index: 302;
 	opacity: 0.75;
-	top: 0px;
+	top: -3px;
 	left: 0px;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }
 #timeout_bar.day {
 	background: dodgerblue;
 }
 #timeout_bar.night {
 	background: chartreuse;
+}
+#timeout_bar.running {
+	top: 0;
+	width: 0;
+	transition: width 30s linear;
 }
 
 #informer_bar {
