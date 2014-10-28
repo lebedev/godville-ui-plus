@@ -1799,7 +1799,7 @@ var ui_starter = {
 
 			// svg for #logger fade-out in FF
 			document.body.insertAdjacentHTML('beforeend',
-				'<svg style="display: none;">' +
+				'<svg id="fader">' +
 					'<defs>' +
 						'<linearGradient id="gradient" x1="0" y1="0" x2 ="100%" y2="0">' +
 							'<stop stop-color="black" offset="0"></stop>' +

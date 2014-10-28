@@ -344,3 +344,9 @@ a.inspect_button {
 	color: orange;
 	background-color: floralwhite;
 }
+
+#fader {
+	position: fixed;
+	top: 0;
+	left: -9999px;
+}
