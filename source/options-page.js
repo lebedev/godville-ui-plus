@@ -116,7 +116,7 @@ return '<p>\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
-'								<div class="g_desc">для тех кто не тратит деньги</div>\n' +
+'								<div class="g_desc">для тех, кто не тратит деньги</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
 '								<label class="l_capt" for="relocate_map">Поменять местами пульт и карту</label>\n' +
@@ -125,7 +125,7 @@ return '<p>\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
-'								<div class="g_desc">для подземелья</div>\n' +
+'								<div class="g_desc">в подземельях</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
 '								<label class="l_capt" for="freeze_voice_button">Замораживать кнопку гласа</label>\n' +
