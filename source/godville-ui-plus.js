@@ -137,6 +137,11 @@ var ui_utils = {
 						  .replace(/</g, "&lt;")
 						  .replace(/>/g, "&gt;");
 	},
+	addCSS: function () {
+		if ($('#ui_css').length === 0) {
+			GUIp_addGlobalStyleURL('godville-ui-plus.css', 'ui_css');
+		}
+	},
 	get: function(forum_no, success_callback, fail_callback) {
 		var xhr = new XMLHttpRequest();
 		xhr.forum_no = forum_no;
@@ -1636,12 +1641,6 @@ var ui_improver = {
 				cells[i].classList.add('left');
 			}
 		}
-	},
-		
-	add_css: function () {
-		if ($('#ui_css').length === 0) {
-			GUIp_addGlobalStyleURL('godville-ui-plus.css', 'ui_css');
-		}
 	}
 };
 
@@ -1744,7 +1743,7 @@ var ui_starter = {
 			clearInterval(starterInt);
 			var start = new Date();
 			ui_data.init();
-			ui_improver.add_css();
+			ui_utils.addCSS();
 			ui_utils.inform();
 			ui_words.init();
 			ui_logger.create();
