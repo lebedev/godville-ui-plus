@@ -342,7 +342,7 @@ var starterInt = setInterval(function() {
 			loadOptions();
 		}
 		// Event and Listeners
-		document.addEventListener("DOMNodeInserted", function () {
+		document.addEventListener("DOMNodeInserted", function() {
 			if(!$j('#profile_main p:first').text().match('Настройки UI+'))
 				setTimeout(function() {
 					addMenu();

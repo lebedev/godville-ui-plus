@@ -105,7 +105,7 @@ return '<p>\n' +
 '									<label for="custom_background">свой файлом</label>\n' +
 '									<input type="file" id="custom_file" style="width: 212px;"/><br>\n' +
 '									<label for="custom_background" style="margin: 0 0.3em 0 2.4em">или ссылкой </label>\n' +
-'									<input type="text" id="custom_link">\n' +
+'									<input type="text" id="custom_link" style="width: 136px;"/>\n' +
 '									<span id="cb_status" style="margin-left: 0.5em; display: none;" />\n' +
 '								</div>\n' +
 '							</div>\n' +
