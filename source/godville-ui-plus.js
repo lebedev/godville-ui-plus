@@ -1785,15 +1785,16 @@ var ui_starter = {
 			document.head.appendChild(shiftEnterScript);
 
 			// svg for #logger fade-out in FF
+			var is5c = document.getElementsByClassName('page_wrapper_5c').length;
 			document.body.insertAdjacentHTML('beforeend',
 				'<svg id="fader">' +
 					'<defs>' +
 						'<linearGradient id="gradient" x1="0" y1="0" x2 ="100%" y2="0">' +
 							'<stop stop-color="black" offset="0"></stop>' +
-							'<stop stop-color="white" offset="0.03"></stop>' +
+							'<stop stop-color="white" offset="0.0' + (is5c ? '2' : '3') + '"></stop>' +
 						'</linearGradient>' +
 						'<mask id="fader_masking" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">' +
-							'<rect x="0.03" width="0.97" height="1" fill="url(#gradient)" />' +
+							'<rect x="0.0' + (is5c ? '2' : '3') + '" width="0.9' + (is5c ? '8' : '7') + '" height="1" fill="url(#gradient)" />' +
 						'</mask>' +
 					'</defs>' +
 				'</svg>'

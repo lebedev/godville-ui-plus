@@ -140,6 +140,9 @@ body {
 	margin: auto;
 	-webkit-mask-image: linear-gradient(to left, black 94%, transparent 100%);
 }
+.page_wrapper_5c #logger {
+	-webkit-mask-image: linear-gradient(to left, black 96%, transparent 100%);
+}
 
 #logger li {
 	display: inline;
