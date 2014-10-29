@@ -899,7 +899,7 @@ var ui_forum = {
 				diff = +temp[2] - forum[topics[i]];
 				if (diff) {
 					forum[topics[i]] = +temp[2];
-					if (temp[3] != ui_data.god_name) {
+					if (temp[3] != ui_data.god_name && diff > 0) {
 						if (!informers[topics[i]]) {
 							//create
 							informers[topics[i]] = {diff: diff, name: temp[1].replace(/&quot;/g, '"')};
