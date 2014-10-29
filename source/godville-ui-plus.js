@@ -1531,7 +1531,7 @@ var ui_improver = {
 	improveInterface: function() {
 		if (this.isFirstTime) {
 			$('a[href=#]').removeAttr('href');
-			ui_storage.set('windowWidth', $(window).width());
+			ui_storage.set('windowWidth', '');
 			this.whenWindowResize();
 			$(window).resize(this.whenWindowResize.bind(this));
 		}
