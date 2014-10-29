@@ -206,11 +206,12 @@ function save_options(form) {
 
 		if ($j('#voice_timeout:checked').length) {
 			var voice_timeout = $j('#voice_timeout_value').val();
-			if (!voice_timeout) {
+			if (voice_timeout) {
 				storage.set('Option:voiceTimeout', voice_timeout);
 			} else {
 				$j('#voice_timeout_value').val('30');
-				$j('#voice_timeout_menu').click();
+				$j('#voice_timeout').click();
+				storage.set('Option:voiceTimeout', '');
 			}
 		} else {
 			storage.set('Option:voiceTimeout', '');
