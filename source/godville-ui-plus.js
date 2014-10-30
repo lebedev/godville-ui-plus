@@ -937,6 +937,14 @@ var ui_improver = {
 	// resresher
 	softRefreshInt: 0,
 	hardRefreshInt: 0,
+	softRefresh: function() {
+		console.info('Godville UI+ log: Soft reloading...');
+		document.getElementById('d_refresh').click();
+	},
+	hardRefresh: function() {
+		console.warn('Godville UI+ log: Hard reloading...');
+		location.reload();
+	},
 	improve: function() {
 		this.improveInProcess = true;
 		ui_informer.update('pvp', ui_data.isBattle);
@@ -1706,9 +1714,9 @@ var ui_observers = {
 			if (!(id && id.match(/logger|pet_badge|equip_badge/)) &&
 				!(cl && cl.match(/voice_generator|inspect_button|m_hover|craft_button/))) {
 				clearInterval(ui_improver.softRefreshInt);
-				ui_improver.softRefreshInt = setInterval($('#d_refresh').click, 9e4);
+				ui_improver.softRefreshInt = setInterval(ui_improver.softRefresh, (ui_data.isBattle || ui_data.isDungeon ? 5e3 : 9e4));
 				clearInterval(ui_improver.hardRefreshInt);
-				ui_improver.hardRefreshInt = setInterval(location.reload, 3e5);
+				ui_improver.hardRefreshInt = setInterval(ui_improver.hardRefresh, (ui_data.isBattle || ui_data.isDungeon ? 15e3 : 27e4));
 			}
 		},
 		target: '#main_wrapper'
