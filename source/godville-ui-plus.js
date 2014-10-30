@@ -4,8 +4,7 @@ var ui_data = {
 // base variables initialization
 	init: function() {
 		this.isBattle = ($('#m_info').length > 0);
-		this.isBoss = ($('#o_info .line').length > 0);
-		this.isMap = ($('#map .dml').length > 0);
+		this.isDungeon = ($('#map .dml').length > 0);
 		if (this.isBattle) {
 			this.god_name = $('#m_info .l_val')[0].textContent.replace('庙','').replace('畜','').replace('舟','');
 			this.char_name = $('#m_info .l_val')[1].textContent;
@@ -657,14 +656,14 @@ var ui_logger = {
 		} else {
 			this.bar.show();
 		}
-		if (ui_data.isMap) {
+		if (ui_data.isDungeon) {
 			this.watchStatsValue('Map_HP', 'hp', 'Здоровье героя', 'hp');
 			this.watchStatsValue('Map_Inv', 'inv', 'Инвентарь', 'inv');
 			this.watchStatsValue('Map_Gold', 'gld', 'Золото', 'gold'); 
 			this.watchStatsValue('Map_Battery', 'bt', 'Заряды', 'battery');
 			this.watchStatsValue('Map_Alls_HP', 'a:hp', 'Здоровье союзников', 'battery');
 		}
-		if (ui_data.isBattle && !ui_data.isMap) {
+		if (ui_data.isBattle && !ui_data.isDungeon) {
 			this.watchStatsValue('Hero_HP', 'h:hp', 'Здоровье героя', 'hp');
 			this.watchStatsValue('Enemy_HP', 'e:hp', 'Здоровье соперника', 'death');
 			this.watchStatsValue('Hero_Alls_HP', 'a:hp', 'Здоровье союзников', 'battery');
@@ -1098,7 +1097,7 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($box)) {
 			$('.gp_label').addClass('l_capt');
 			$('.gp_val').addClass('l_val');
-			if (ui_data.isMap){
+			if (ui_data.isDungeon){
 				if (ui_storage.get('Option:relocateMap')){
 					$('#map').insertBefore($('#m_control')); 
 					$('#m_control').appendTo($('#a_right_block'));
@@ -1155,7 +1154,7 @@ var ui_improver = {
 
 // ---------- Map --------------
 	improveMap: function() {
-		if (ui_data.isMap) {
+		if (ui_data.isDungeon) {
 			var i, j,
 				$box = $('#cntrl .voice_generator'),
 				$boxML = $('#map .dml'),
@@ -1288,7 +1287,7 @@ var ui_improver = {
 			return parseInt(val.replace(/[^0-9]/g, '')) || 0;
 		};
 
-		if (ui_data.isMap) {
+		if (ui_data.isDungeon) {
 			ui_stats.setFromLabelCounter('Map_HP', $('#m_info'), 'Здоровье');
 			ui_stats.setFromLabelCounter('Map_Gold', $('#m_info'), 'Золота', gold_parser);
 			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), 'Инвентарь');
@@ -1671,7 +1670,7 @@ var ui_observers = {
 		target: '.chat_ph'
 	},
 	inventory: {
-		condition: !ui_data.isBattle && !ui_data.isMap,
+		condition: !ui_data.isBattle && !ui_data.isDungeon,
 		config: {
 			childList: true,
 			attributes: true,
