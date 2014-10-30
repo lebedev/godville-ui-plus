@@ -3,10 +3,10 @@ var ui_data = {
 	developers: ['Neniu', 'Ryoko', 'Опытный Кролик', 'Бэдлак', 'Ui Developer', 'Шоп', 'Спандарамет'],
 // base variables initialization
 	init: function() {
-		this.isArena = ($('#m_info').length > 0);
+		this.isBattle = ($('#m_info').length > 0);
 		this.isBoss = ($('#o_info .line').length > 0);
 		this.isMap = ($('#map .dml').length > 0);
-		if (this.isArena) {
+		if (this.isBattle) {
 			this.god_name = $('#m_info .l_val')[0].textContent.replace('庙','').replace('畜','').replace('舟','');
 			this.char_name = $('#m_info .l_val')[1].textContent;
 		} else {
@@ -247,7 +247,7 @@ var ui_timeout = {
 				this.bar.style.transitionDuration = '';
 			}
 			this.bar.classList.remove('running');
-			if (!ui_data.isArena && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) || document.querySelector('#god_phrase').value) {
+			if (!ui_data.isBattle && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) || document.querySelector('#god_phrase').value) {
 				document.querySelector('#voice_submit').removeAttribute('disabled');
 			}
 		}
@@ -267,7 +267,7 @@ var ui_timeout = {
 		setTimeout(this._delayedStart, 10);
 		this._finishtDate = Date.now() + this.timeout*1000;
 		this._tickInt = setInterval(this._tick.bind(this), 100);
-		if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice')) {
+		if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice')) {
 			document.querySelector('#voice_submit').setAttribute('disabled', 'disabled');
 		}
 	},
@@ -664,7 +664,7 @@ var ui_logger = {
 			this.watchStatsValue('Map_Battery', 'bt', 'Заряды', 'battery');
 			this.watchStatsValue('Map_Alls_HP', 'a:hp', 'Здоровье союзников', 'battery');
 		}
-		if (ui_data.isArena && !ui_data.isMap) {
+		if (ui_data.isBattle && !ui_data.isMap) {
 			this.watchStatsValue('Hero_HP', 'h:hp', 'Здоровье героя', 'hp');
 			this.watchStatsValue('Enemy_HP', 'e:hp', 'Здоровье соперника', 'death');
 			this.watchStatsValue('Hero_Alls_HP', 'a:hp', 'Здоровье союзников', 'battery');
@@ -722,7 +722,7 @@ var ui_informer = {
 	},
 	// устанавливает или удаляет флаг
 	update: function(flag, value) {
-		if (value && (flag == 'pvp' || !ui_data.isArena) && !(ui_storage.get('Option:forbiddenInformers') &&
+		if (value && (flag == 'pvp' || !ui_data.isBattle) && !(ui_storage.get('Option:forbiddenInformers') &&
 			ui_storage.get('Option:forbiddenInformers').match(flag.replace(/= /g, '').replace(/> /g, '').replace(/ /g, '_')))) {
 			if (!(flag in this.flags)) {
 				this.flags[flag] = true;
@@ -940,8 +940,8 @@ var ui_improver = {
 	hardRefreshInt: 0,
 	improve: function() {
 		this.improveInProcess = true;
-		ui_informer.update('pvp', ui_data.isArena);
-		if (this.isFirstTime && !ui_data.isArena) {
+		ui_informer.update('pvp', ui_data.isBattle);
+		if (this.isFirstTime && !ui_data.isBattle) {
 			this.improveLoot();
 		}
 		this.improveStats();
@@ -1082,12 +1082,12 @@ var ui_improver = {
 	improveVoiceDialog: function() {
 		// Add links and show timeout bar after saying
 		if (this.isFirstTime) {
-			if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty'))
+			if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty'))
 				$('#voice_submit').attr('disabled', 'disabled');
 			$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
-				if (!ui_data.isArena && $(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout.bar.style.width))) {
+				if (!ui_data.isBattle && $(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout.bar.style.width))) {
 					$('#voice_submit').removeAttr('disabled');
-				} else if (!ui_data.isArena && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
+				} else if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
 					$('#voice_submit').attr('disabled', 'disabled');
 				}
 			}).on('click', '.gv_text.div_link', function() {
@@ -1112,7 +1112,7 @@ var ui_improver = {
 				if ($('#map')[0].textContent.match('Бессилия'))
 					$('#actions').hide();
 			} else {
-				if (ui_data.isArena) {
+				if (ui_data.isBattle) {
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'отбивай', 'defend', 'Попытаться заставить ' + ui_data.char_sex[0] + ' принять защитную стойку, поднять щит и отбить атаку противника');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'молись', 'pray', 'Попросить ' + ui_data.char_sex[0] + ' вознести молитву для пополнения праны');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'лечись', 'heal', 'Посоветовать ' + ui_data.char_sex[1] + ' подлечиться подручными средствами');
@@ -1137,7 +1137,7 @@ var ui_improver = {
 
 // ----------- Вести с полей ----------------
 	improveNews: function() {
-		if (ui_data.isArena) return;
+		if (ui_data.isBattle) return;
 		if (!ui_utils.isAlreadyImproved($('#news'))) {
 			ui_utils.addSayPhraseAfterLabel($('#news'), 'Противник', 'бей', 'hit', 'Подсказать ' + ui_data.char_sex[1] + ' о возможности нанесения сильного удара вне очереди');
 		}
@@ -1304,7 +1304,7 @@ var ui_improver = {
 			}
 			return;
 		}
-		if (ui_data.isArena) {
+		if (ui_data.isBattle) {
 			ui_stats.setFromLabelCounter('Hero_HP', $('#m_info'), 'Здоровье');
 			ui_stats.setFromLabelCounter('Hero_Gold', $('#m_info'), 'Золота', gold_parser);
 			ui_stats.setFromLabelCounter('Hero_Inv', $('#m_info'), 'Инвентарь');
@@ -1394,7 +1394,7 @@ var ui_improver = {
 	},
 // ---------- Pet --------------
 	improvePet: function() {
-		if (ui_data.isArena) return;
+		if (ui_data.isBattle) return;
 		if (ui_utils.findLabel($('#pet'), 'Статус')[0].style.display!='none'){
 			if (!ui_utils.isAlreadyImproved($('#pet'))){
 				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
@@ -1411,7 +1411,7 @@ var ui_improver = {
 	},
 // ---------- Equipment --------------
 	improveEquip: function() {
-		if (ui_data.isArena) return;
+		if (ui_data.isBattle) return;
 		// Save stats
 		var seq = 0;
 		for (var i = 7; i >= 1;) {
@@ -1435,7 +1435,7 @@ var ui_improver = {
 	},
 // ---------- Pantheons --------------	
 	improvePantheons: function() {
-		if (ui_data.isArena) return;
+		if (ui_data.isBattle) return;
 		if (ui_storage.get('Option:relocateDuelButtons') !== null && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
 			if (!$('#pantheons.arena_link_relocated').length) {
 				$('#pantheons').addClass('arena_link_relocated');
@@ -1475,7 +1475,7 @@ var ui_improver = {
 	},
 // ---------- Diary --------------		
 	improveDiary: function() {
-		if (ui_data.isArena) return;
+		if (ui_data.isBattle) return;
 		
 		if (this.isFirstTime) {
 			$('#diary .d_msg').addClass('parsed');
@@ -1580,7 +1580,7 @@ var ui_improver = {
 			if (ui_improver.r_r.length) $('.r_r').show();
 			if ($('.b_b:visible, .b_r:visible, .r_r:visible').length) $('span.craft_button').show();
 			//if ($('.f_news').text() != 'Возвращается к заданию...')fc
-			if (!ui_data.isArena) {
+			if (!ui_data.isBattle) {
 				if ($('#hk_distance .l_capt').text() == 'Город' || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display != 'none') 
 					$('#hk_distance .voice_generator').hide();
 				//if (ui_storage.get('Stats:Prana') == 100) $('#control .voice_generator').hide();
@@ -1631,7 +1631,7 @@ var ui_improver = {
 
 	nodeInsertionDelay: function() {
 		ui_improver.improve();
-		if (ui_data.isArena) {
+		if (ui_data.isBattle) {
 			ui_logger.update();
 		}
 	}
@@ -1671,7 +1671,7 @@ var ui_observers = {
 		target: '.chat_ph'
 	},
 	inventory: {
-		condition: !ui_data.isArena && !ui_data.isMap,
+		condition: !ui_data.isBattle && !ui_data.isMap,
 		config: {
 			childList: true,
 			attributes: true,
@@ -1774,7 +1774,7 @@ var ui_starter = {
 			// Event and listeners
 			$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion);
 
-			if (!ui_data.isArena) {
+			if (!ui_data.isBattle) {
 				$('html').mousemove(ui_improver.mouseMove);
 			}
 
