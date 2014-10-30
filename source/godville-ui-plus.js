@@ -359,7 +359,6 @@ var ui_help_dialog = {
 		});
 	},
 	onXHRSuccess: function(xhr) {
-		console.log('azaza');
 		var match;
 		if ((match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/))) {
 			var temp_cur = ui_data.currentVersion.split('.'),
@@ -371,7 +370,6 @@ var ui_help_dialog = {
 						   +temp_cur[3] >= +temp_last[3];
 			$('#check_version')[0].innerHTML = (isNewest ? 'У вас последняя версия.' : 'Последняя версия - <b>' + last_version + '</b>. Нужно обновить вручную.') + ' Переходите к следующему шагу.';
 			if (!isNewest) {
-				console.log(GUIp_browser);
 				$('#ui_help_dialog ol li.update_required.' + GUIp_browser).removeClass('hidden');
 			} else {
 				$('#ui_help_dialog ol li.console.' + GUIp_browser).removeClass('hidden');
@@ -381,7 +379,6 @@ var ui_help_dialog = {
 		}
 	},
 	onXHRFail: function() {
-		console.log('ololo');
 		$('#check_version')[0].innerHTML = 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 2, иначе к шагу 6.';
 		$('#ui_help_dialog ol li.' + GUIp_browser).removeClass('hidden');
 	},
@@ -938,7 +935,9 @@ var ui_improver = {
 	b_b: [],
 	b_r: [],
 	r_r: [],
-	//hucksterNews: '',
+	// resresher
+	softRefreshInt: 0,
+	hardRefreshInt: 0,
 	improve: function() {
 		this.improveInProcess = true;
 		ui_informer.update('pvp', ui_data.isArena);
@@ -1136,24 +1135,6 @@ var ui_improver = {
 		ui_informer.update('full prana', $('#cntrl .p_val').width() == $('#cntrl .p_bar').width());
 	},
 
-	refresher: function() {
-		if (ui_storage.get('Option:forcePageRefresh')) {
-			if (!ui_improver.news.match($('.f_news.line').text()) || !ui_improver.news.match(ui_storage.get('Stats:HP'))) {
-				ui_improver.news = $('.f_news.line').text() + ui_storage.get('Stats:HP');
-				ui_improver.lastNews = new Date();
-			}
-			var now = new Date();
-			if (now.getTime() - ui_improver.lastNews.getTime() > 180000) {
-				if ($('.t_red').length) {
-					console.warn('Godville UI+ log: RED ALERT! HARD RELOADING!');
-					location.reload();
-				}
-				console.warn('Godville UI+ log: Soft reloading');
-				$('#d_refresh').click();
-			}
-		}
-	},
-
 // ----------- Вести с полей ----------------
 	improveNews: function() {
 		if (ui_data.isArena) return;
@@ -1170,12 +1151,6 @@ var ui_improver = {
 		}
 		ui_informer.update('monster of the day', isMonsterOfTheDay);
 		ui_informer.update('monster with capabilities', isMonsterWithCapabilities);
-		if (this.isFirstTime) {
-			this.news = $('.f_news.line').text() + ui_storage.get('Stats:HP');
-			this.lastNews = new Date();
-			
-			var refresher = setInterval(this.refresher, 60000);
-		}
 	},
 
 // ---------- Map --------------
@@ -1714,6 +1689,30 @@ var ui_observers = {
 			}
 		},
 		target: '#inventory ul'
+	},
+	refresher: {
+		get condition() {
+			return ui_storage.get('Option:forcePageRefresh');
+		},
+		config: {
+			attributes: true,
+			characterData: true,
+			childList: true,
+			subtree: true
+		},
+		func: function(mutation) {
+			var tgt = mutation.target,
+				id = tgt.id,
+				cl = tgt.className;
+			if (!(id && id.match(/logger|pet_badge|equip_badge/)) &&
+				!(cl && cl.match(/voice_generator|inspect_button|m_hover|craft_button/))) {
+				clearInterval(ui_improver.softRefreshInt);
+				ui_improver.softRefreshInt = setInterval($('#d_refresh').click, 9e4);
+				clearInterval(ui_improver.hardRefreshInt);
+				ui_improver.hardRefreshInt = setInterval(location.reload, 3e5);
+			}
+		},
+		target: '#main_wrapper'
 	}
 };
 
