@@ -979,7 +979,7 @@ var ui_improver = {
 		// Parse items
 		for (i = 0, len = items.length; i < len; i++) {
 			if (window.getComputedStyle(items[i]).overflow == 'visible') {
-				var item_name = items[i].textContent.replace(/\?/, '')
+				var item_name = items[i].textContent.replace(/\?$/, '')
 													.replace(/\(@\)/, '')
 													.replace(/\(\d + шт\)$/, '')
 													.replace(/^\s+|\s+$/g, '');
