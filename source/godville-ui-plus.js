@@ -920,9 +920,6 @@ var ui_forum = {
 // ------------------------------------
 //	Improvements !!
 // ------------------------------------
-// -------- Hero Loot -----------------
-
-// Main button creator
 var ui_improver = {
 	inventoryChanged: true,
 	improveInProcess: true,

@@ -1,4 +1,4 @@
-var GUIp_browser='Chrome';
+var GUIp_browser = 'Chrome';
 GUIp_getResource = function(res) {
 	return chrome.extension.getURL(res);
 };
