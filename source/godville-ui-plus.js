@@ -167,7 +167,6 @@ var ui_utils = {
 		xhr.send('');
 	},
 	showMessage: function(msg_no, msg) {
-		ui_storage.set('helpDialogVisible', true);
 		var id = 'msg' + msg_no,
 			$msg = $('<div id="' + id + '" class="hint_bar ui_msg">'+
 						'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
@@ -186,10 +185,7 @@ var ui_utils = {
 		$msg.css('box-shadow', '2px 2px 15px #' + ((localStorage.getItem('ui_s') == 'th_nightly') ? 'ffffff' : '000000'));
 
 		setTimeout(function() {
-			$msg.fadeToggle(1500);
-			if (msg.callback) {
-				msg.callback();
-			}
+			$msg.fadeToggle(1500, msg.callback);
 		}, 1000);
 	},
 	inform: function() {
@@ -219,7 +215,9 @@ var ui_utils = {
 
 					 '<div style="text-align: right;">Приятной игры!<br>~~Бэдлак</div>',
 			callback: function() {
-				ui_storage.set('helpDialogVisible', true);
+				if (!ui_storage.get('helpDialogVisible')) {
+					ui_help_dialog.toggle();
+				}
 			}
 		},
 		{
@@ -1738,7 +1736,6 @@ var ui_trycatcher = {
 								 '<div>Место ошибки: объект <b>' + object_name + '</b>, метод <b>' + method_name + '()</b>.</div>',
 						callback: function() {
 							if (!ui_storage.get('helpDialogVisible')) {
-								ui_storage.set('helpDialogVisible', true);
 								ui_help_dialog.toggle();
 							}
 						}
