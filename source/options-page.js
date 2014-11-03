@@ -151,7 +151,7 @@ return '<p>\n' +
 '								<div class="g_desc" id="freeze_voice_button_desc">замораживает кнопку гласа в некоторых случаях</div>\n' +
 '								<div class="g_desc" id="freeze_voice_button_choice">\n' +
 '									<input type="checkbox" name="freeze_after_voice" id="freeze_after_voice">\n' +
-'									<label for="freeze_after_voice">после отправки гласа на 20 секунд</label><br>\n' +
+'									<label for="freeze_after_voice">после реакции на глас</label><br>\n' +
 '									<input type="checkbox" name="freeze_when_empty" id="freeze_when_empty">\n' +
 '									<label for="freeze_when_empty">при пустом гласе</label>\n' +
 '								</div>\n' +
