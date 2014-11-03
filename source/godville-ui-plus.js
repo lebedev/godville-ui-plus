@@ -911,6 +911,7 @@ var ui_improver = {
 	isFirstTime: true,
 	voiceSubmitted: false,
 	monstersOfTheDay: null,
+	friendsRegexp: null,
 	// trophy craft combinations
 	b_b: [],
 	b_r: [],
@@ -942,6 +943,9 @@ var ui_improver = {
 		this.improveMap();
 		this.improveInterface();
 		this.improveChat();
+		if (this.isFirstTime && ui_data.isDungeon) {
+			this.improveAllies();
+		}
 		this.checkButtonsVisibility();
 		this.isFirstTime = false;
 		ui_improver.improveInProcess = false;
@@ -1547,11 +1551,25 @@ var ui_improver = {
 	},
 	
 	improveChat: function() {
+		var i, len;
+
+		if (this.isFirstTime) {
+		//if (this.isFirstTime && ui_data.isDungeon) {
+			var $friends = document.querySelectorAll('.frline .frname'),
+				friends = [];
+			for (i = 0, len = $friends.length; i < len; i++) {
+				friends.push($friends[i].textContent);
+				//sessionStorage.setItem('friends')
+			}
+			this.friendsRegexp = new RegExp(friends.join('|'));
+			console.log(this.friendsRegexp);
+		}
+
 		// links replace
 		var $cur_msg, $msgs = $('.fr_msg_l:not(.improved)'),
 			$temp = $('<div id="temp" />');
 		$('body').append($temp);
-		for (var i = 1, len = $msgs.length; i < len; i++) {
+		for (i = 1, len = $msgs.length; i < len; i++) {
 			$cur_msg = $msgs.eq(i);
 			$temp.append($('.fr_msg_meta', $cur_msg)).append($('.fr_msg_delete', $cur_msg));
 			var text = $cur_msg.text();
@@ -1561,6 +1579,15 @@ var ui_improver = {
 		}
 		$msgs.addClass('improved');
 		$temp.remove();
+	},
+
+	improveAllies: function() {
+		var $allies = document.getElementsByClassName('opp_n');
+		/*for (var i = 0, len = $allies.length; i < len; i++) {//★
+			if ($allies[i].textContent.match(this.friendsRegexp)) {
+				//$allies[i].insertAdjacentHTML('beforeend', '<a title="Открыть чат  ''">★</a>');
+			}
+		}*/
 	},
 
 	checkButtonsVisibility: function() {
