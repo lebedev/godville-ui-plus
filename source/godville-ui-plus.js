@@ -503,32 +503,16 @@ var ui_words = {
 	isCategoryItem: function(cat, item_name) {
 		return this.base.items[cat].indexOf(item_name) >= 0;
 	},
-	
-	canBeActivatedItemType: function(desc) {
-		return ['Этот предмет наделяет героя случайной аурой',
-				'Данный предмет можно активировать только во время дуэли',
-				'Этот предмет может случайным образом повлиять на героя',
-				'Этот предмет ищет для героя босса',
-				'Этот предмет сочиняет о герое былину',
-				'Этот предмет заводит герою случайного друга из числа активных героев',
-				'Активация этого предмета может преподнести герою приятный сюрприз',
-				'Активация инвайта увеличит счетчик доступных приглашений',
-				'Этот предмет полностью восстанавливает здоровье героя',
-				'Этот предмет добавляет заряд в прано-аккумулятор',
-				'Этот предмет на несколько минут отправляет героя в поиск соратников для битвы с ископаемым боссом',
-				'Этот предмет убивает атакующего героя монстра, либо пытается выплавить из золота героя золотой кирпич',
-				'Этот предмет телепортирует героя в случайный город',
-				'Этот предмет отправляет героя на арену',
-				'Этот предмет превращает один или несколько жирных предметов из инвентаря героя в золотые кирпичи',
-				'Этот предмет отправляет героя в мини-квест'
-			   ].indexOf(desc);
+
+	usableItemType: function(desc) {
+		return this.base.usable_items.descriptions.indexOf(desc);
 	},
 	
 	isHealItem: function(item) {
 		return item.style.fontStyle == "italic";
 	},
 
-	canBeActivated: function(item) {
+	isUsableItem: function(item) {
 		return item.textContent.match(/\(@\)/);
 	},
 	
@@ -963,8 +947,7 @@ var ui_improver = {
 	
 	improveLoot: function() {
 		var i, j, len, items = document.querySelectorAll('#inventory li'),
-			flag_names = ['aura box', 'arena box', 'black box', 'boss box', 'coolstory box', 'friend box', 'good box', 'invite', 'heal box', 'prana box', 'raidboss box', 'smelter', 'teleporter', 'to arena box', 'transformer', 'quest box'],
-			flags = new Array(flag_names.length),
+			flags = new Array(ui_words.base.usable_items.types.length),
 			bold_items = false,
 			trophy_list = [],
 			trophy_boldness = {},
@@ -982,9 +965,9 @@ var ui_improver = {
 													.replace(/\(\d + шт\)$/, '')
 													.replace(/^\s+|\s+$/g, '');
 				// color items and add buttons
-				if (ui_words.canBeActivated(items[i])) {
+				if (ui_words.isUsableItem(items[i])) {
 					var desc = items[i].querySelector('.item_act_link_div *').getAttribute('title').replace(/ \(.*/g, ''),
-						sect = ui_words.canBeActivatedItemType(desc);
+						sect = ui_words.usableItemType(desc);
 					if (sect != -1) {
 						flags[sect] = true;
 					} else if (!ui_utils.hasShownInfoMessage) {
@@ -1027,8 +1010,8 @@ var ui_improver = {
 			}
 		}
 
-		for (i = 0, len = flag_names.length; i < len; i++) {
-			ui_informer.update(flag_names[i], flags[i]);
+		for (i = 0, len = flags.length; i < len; i++) {
+			ui_informer.update(ui_words.base.usable_items.types[i], flags[i]);
 		}
 
 		// Склейка трофеев, формирование списков
