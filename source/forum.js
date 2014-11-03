@@ -76,3 +76,9 @@ function unfollow(e) {
 for (var i = 0, len = unfollow_links.length; i < len; i++) {
 	unfollow_links[i].onclick = unfollow;
 }
+
+// scroll to a certain post #
+var guip_hash = location.hash.match(/#guip_(\d+)/);
+if (guip_hash) {
+	location.hash = document.getElementsByClassName('spacer')[+guip_hash[1]].id;
+}

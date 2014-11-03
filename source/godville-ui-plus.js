@@ -860,7 +860,7 @@ var ui_forum = {
 			informer = $informer[0];
 		}
 		var page = Math.floor((posts_count - topic_data.diff)/25) + 1;
-		informer.href = '/forums/show_topic/' + topic_no + '?page=' + page;
+		informer.href = '/forums/show_topic/' + topic_no + '?page=' + page + '#guip_' + (posts_count - topic_data.diff + 25 - page*25);
 		informer.style.paddingRight = (16 + String(topic_data.diff).length*6) + 'px';
 		informer.getElementsByTagName('span')[0].textContent = topic_data.name;
 		informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
