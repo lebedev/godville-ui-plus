@@ -353,3 +353,8 @@ a.inspect_button {
 	top: 0;
 	left: -9999px;
 }
+
+.d_line.boss .d_time,
+.d_line.boss .d_msg {
+	color: orange;
+}
