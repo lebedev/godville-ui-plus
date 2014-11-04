@@ -29,7 +29,7 @@
 				hours = Math.floor(24 - (Date.now() - lastLaying)/1000/60/60);
 				minutes = Math.floor(60 - (Date.now() - lastLaying)/1000/60%60);
 				if (hours < 0) {
-					$timer.textContent = '00:00';
+					$timer.textContent = '✓';
 					$timer.classList.add('green');
 					$timer.title = 'Сейчас можно сделать возложение без штрафов';
 				} else {
@@ -44,13 +44,13 @@
 				}
 			} else {
 				if (Math.floor((Date.now() - first)/1000/60/60) >= 24) {
-					$timer.textContent = '00:00';
+					$timer.textContent = '✓';
 					$timer.classList.add('green');
 					$timer.title = 'Сейчас можно сделать возложение без штрафов';
 				} else {
 					hours = Math.floor(24 - (Date.now() - first)/1000/60/60);
 					minutes = Math.floor(60 - (Date.now() - first)/1000/60%60);
-					$timer.textContent = '??:??';
+					$timer.textContent = '?';
 					$timer.classList.add('grey');
 					$timer.title = 'Нет информации о штрафах. Неопределенность разрешится после возложения или через ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 				}
