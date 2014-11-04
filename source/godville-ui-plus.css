@@ -385,3 +385,31 @@ body.nightly .ui_msg {
 body:not(.nightly) .ui_msg {
 	box-shadow: 2px 2px 15px #000;
 }
+
+#hk_gold_we .voice_generator:not(.shovel) {
+	background-size: 0 0;
+}
+#hk_gold_we .voice_generator.shovel {
+	font-size: 0;
+	line-height: 0;
+	height: 13px;
+	width: 13px;
+}
+#hk_gold_we .voice_generator.shovel.right {
+	margin: 4px 0 0 3px;
+}
+#hk_gold_we .voice_generator.shovel.left {
+	margin: 4px -4px 0 0;
+}
+body:not(.nightly) .shovel {
+	background-position: 0px 0px;
+}
+body:not(.nightly) .shovel:hover {
+	background-position: 13px 0px;
+}
+body.nightly .shovel {
+	background-position: 0px 13px;
+}
+body.nightly .shovel:hover {
+	background-position: 13px 13px;
+}

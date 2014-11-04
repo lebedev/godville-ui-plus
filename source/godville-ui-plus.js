@@ -908,7 +908,6 @@ var ui_forum = {
 var ui_improver = {
 	inventoryChanged: true,
 	improveInProcess: true,
-	Shovel: false,
 	isFirstTime: true,
 	voiceSubmitted: false,
 	monstersOfTheDay: null,
@@ -1347,40 +1346,30 @@ var ui_improver = {
 		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, 'Здоровье') === 0);
 
 		//Shovel pictogramm start
-		var digVoice = $('#hk_gold_we .voice_generator');
+		var $digVoice = $('#hk_gold_we .voice_generator');
 		//$('#hk_gold_we .l_val').text('где-то 20 монет');
-		if ($('#hk_gold_we .l_val').text().length > 16 - 2*$('#main_wrapper.page_wrapper_5c').length) {
-			if (!ui_improver.Shovel) {
-				var path = window.GUIp_getResource('images/shovel_');
-				var brightness = (ui_storage.get('ui_s') == 'th_nightly') ? 'dark' : 'bright';
-				digVoice.empty();
-				digVoice.append('<img id="red" src="' + path + 'red_' + brightness + '.gif" style="display: none; cursor: pointer; margin: auto;">' + 
-							 '<img id="blue" src="' + path + 'blue_' + brightness + '.gif" style="display: inline; cursor: pointer; margin: auto;">');
-				ui_improver.Shovel = 'blue';
+		if (this.isFirstTime) {
+			$digVoice.css('background-image', 'url(' + window.GUIp_getResource('images/shovel.png') + ')');
+		}
+		if ($('#hk_gold_we .l_val').text().length > 16 - 2*$('.page_wrapper_5c').length) {
+			if (!$digVoice[0].classList.contains('shovel')) {
+				$digVoice[0].classList.add('shovel');
 			}
-			if ($('#hk_gold_we .l_val').text().length > 20 - 2*$('#main_wrapper.page_wrapper_5c').length) {
-				digVoice.css('margin', "4px -4px 0 0");
+			if ($('#hk_gold_we .l_val').text().length > 20 - 3*$('.page_wrapper_5c').length) {
+				if (!$digVoice[0].classList.contains('left')) {
+					$digVoice[0].classList.add('left');
+					$digVoice[0].classList.remove('right');
+				}
 			} else {
-				digVoice.css('margin', "4px 0 0 3px");
+				if (!$digVoice[0].classList.contains('right')) {
+					$digVoice[0].classList.add('right');
+					$digVoice[0].classList.remove('left');
+				}
 			}
-			digVoice.hover(function() {
-				if (ui_improver.Shovel == 'blue') {
-					ui_improver.Shovel = 'red';
-					$('#red').show();
-					$('#blue').hide();
-				}
-			}, function() {
-				if (ui_improver.Shovel == 'red') {
-					ui_improver.Shovel = 'blue';
-					$('#red').hide();
-					$('#blue').show();
-				}
-			});
 		} else {
-			ui_improver.Shovel = false;
-			digVoice.empty();
-			digVoice.append('копай');
-			digVoice.css('margin', "");
+			if ($digVoice[0].classList.contains('shovel')) {
+				$digVoice[0].classList.remove('shovel');
+			}
 		}
 	//Shovel pictogramm end
 	},

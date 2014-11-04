@@ -57,10 +57,7 @@
 		"shift_enter.js",
 		"laying_timer.js",
 		"images/background.jpg",
-		"images/shovel_blue_bright.gif",
-		"images/shovel_blue_dark.gif",
-		"images/shovel_red_bright.gif",
-		"images/shovel_red_dark.gif"
+		"images/shovel.png"
 	]
 
 }
