@@ -328,34 +328,44 @@ a.inspect_button {
 	left: 60px;
 }
 body.nightly #laying_timer.green {
-	border-color: darkgreen;
-	color: darkgreen;
-	background-color: lightgreen;
+	border-color: #040;
+	color: #040;
+	background-color: green;
 }
 body:not(.nightly) #laying_timer.green {
 	border-color: darkgreen;
 	color: darkgreen;
 	background-color: lightgreen;
 }
-#laying_timer.grey {
+body.nightly #laying_timer.grey {
+	border-color: #444;
+	color: #444;
+	background-color: darkgrey;
+}
+body:not(.nightly) #laying_timer.grey {
 	border-color: grey;
 	color: grey;
 	background-color: lavender;
 }
-#laying_timer.red {
+body.nightly #laying_timer.red {
+	border-color: #400;
+	color: #400;
+	background-color: darkred;
+}
+body:not(.nightly) #laying_timer.red {
 	border-color: firebrick;
 	color: firebrick;
 	background-color: darksalmon;
 }
 body.nightly #laying_timer.yellow {
-	border-color: orange;
-	color: orange;
-	background-color: floralwhite;
+	border-color: darkgoldenrod;
+	color: darkgoldenrod;
+	background-color: goldenrod;
 }
 body:not(.nightly) #laying_timer.yellow {
-	border-color: orange;
-	color: orange;
-	background-color: floralwhite;
+	border-color: goldenrod;
+	color: goldenrod;
+	background-color: yellow;
 }
 
 #fader {
