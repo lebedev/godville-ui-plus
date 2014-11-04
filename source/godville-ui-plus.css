@@ -394,11 +394,9 @@ body:not(.nightly) .ui_msg {
 	line-height: 0;
 	height: 13px;
 	width: 13px;
-}
-#hk_gold_we .voice_generator.shovel.right {
 	margin: 4px 0 0 3px;
 }
-#hk_gold_we .voice_generator.shovel.left {
+#hk_gold_we .voice_generator.shovel.compact {
 	margin: 4px -4px 0 0;
 }
 body:not(.nightly) .shovel {

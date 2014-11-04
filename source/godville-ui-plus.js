@@ -1360,24 +1360,14 @@ var ui_improver = {
 			$digVoice.css('background-image', 'url(' + window.GUIp_getResource('images/shovel.png') + ')');
 		}
 		if ($('#hk_gold_we .l_val').text().length > 16 - 2*$('.page_wrapper_5c').length) {
-			if (!$digVoice[0].classList.contains('shovel')) {
-				$digVoice[0].classList.add('shovel');
-			}
+			$digVoice[0].classList.add('shovel');
 			if ($('#hk_gold_we .l_val').text().length > 20 - 3*$('.page_wrapper_5c').length) {
-				if (!$digVoice[0].classList.contains('left')) {
-					$digVoice[0].classList.add('left');
-					$digVoice[0].classList.remove('right');
-				}
+				$digVoice[0].classList.add('compact');
 			} else {
-				if (!$digVoice[0].classList.contains('right')) {
-					$digVoice[0].classList.add('right');
-					$digVoice[0].classList.remove('left');
-				}
+				$digVoice[0].classList.remove('compact');
 			}
 		} else {
-			if ($digVoice[0].classList.contains('shovel')) {
-				$digVoice[0].classList.remove('shovel');
-			}
+			$digVoice[0].classList.remove('shovel');
 		}
 	//Shovel pictogramm end
 	},
