@@ -182,7 +182,6 @@ var ui_utils = {
 			});
 			return false;
 		});
-		$msg.css('box-shadow', '2px 2px 15px #' + ((localStorage.getItem('ui_s') == 'th_nightly') ? 'ffffff' : '000000'));
 
 		setTimeout(function() {
 			$msg.fadeToggle(1500, msg.callback);
@@ -253,7 +252,6 @@ var ui_timeout = {
 	create: function() {
 		this.bar = document.createElement('div');
 		this.bar.id = 'timeout_bar';
-		this.bar.className = (ui_storage.get('ui_s') == 'th_nightly' ? 'night' : 'day');
 		document.body.insertBefore(this.bar, document.body.firstChild);
 	},
 // starts timeout bar
@@ -1519,12 +1517,7 @@ var ui_improver = {
 		if (localStorage.getItem('ui_s') !== ui_storage.get('ui_s')) {
 			ui_storage.set('ui_s', localStorage.getItem('ui_s') || 'th_classic');
 			ui_improver.Shovel = false;
-			if (ui_storage.get('ui_s') == 'th_nightly') {
-				$('#timeout_bar').addClass('night').removeClass('day');
-			} else {
-				$('#timeout_bar').addClass('day').removeClass('night');
-			}
-			ui_forum.container[0].className = ui_storage.get('ui_s').replace('th_', '');
+			document.body.className = ui_storage.get('ui_s').replace('th_', '');
 		}
 
 		if (ui_storage.get('Option:useBackground') == 'cloud') {

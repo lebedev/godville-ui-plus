@@ -180,11 +180,11 @@ body {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
-#timeout_bar.day {
-	background: dodgerblue;
-}
-#timeout_bar.night {
+body.nightly #timeout_bar {
 	background: chartreuse;
+}
+body:not(.nightly) #timeout_bar {
+	background: dodgerblue;
 }
 #timeout_bar.running {
 	top: 0;
@@ -248,38 +248,38 @@ body {
 #forum_informer_bar a:hover {
 	width: auto;
 }
-#forum_informer_bar.divine a {
+body.divine #forum_informer_bar a {
 	background: #99D9EA;
 	border-color: #00A2E8;
 	color: #3F48CC;
 }
-#forum_informer_bar.nightly a {
+body.nightly #forum_informer_bar a {
 	background: #252525;
 	border-color: #555;
 	color: #999;
 }
-#forum_informer_bar.violet a {
+body.violet #forum_informer_bar a {
 	background: #D29BD2;
 	border-color: #A349A3;
 	color: #808;
 }
-#forum_informer_bar.emerald a {
+body.emerald #forum_informer_bar a {
 	background: #9BD29B;
 	border-color: #49A349;
 	color: #080;
 }
-#forum_informer_bar.yellow a {
+body.yellow #forum_informer_bar a {
 	background: #F4E9AF;
 	border-color: #A3A349;
 	color: #880;
 }
-#forum_informer_bar.classic a,
-#forum_informer_bar.retro a {
+body.classic #forum_informer_bar a,
+body.retro #forum_informer_bar a {
 	background: #D2D2D2;
 	border-color: #A3A3A3;
 	color: #555;
 }
-#forum_informer_bar.retro a {
+body.retro #forum_informer_bar a {
 	border-radius: 0;
 }
 #forum_informer_bar .fr_new_badge {
@@ -327,7 +327,12 @@ a.inspect_button {
 	top: 2px;
 	left: 60px;
 }
-#laying_timer.green {
+body.nightly #laying_timer.green {
+	border-color: darkgreen;
+	color: darkgreen;
+	background-color: lightgreen;
+}
+body:not(.nightly) #laying_timer.green {
 	border-color: darkgreen;
 	color: darkgreen;
 	background-color: lightgreen;
@@ -342,7 +347,12 @@ a.inspect_button {
 	color: firebrick;
 	background-color: darksalmon;
 }
-#laying_timer.yellow {
+body.nightly #laying_timer.yellow {
+	border-color: orange;
+	color: orange;
+	background-color: floralwhite;
+}
+body:not(.nightly) #laying_timer.yellow {
 	border-color: orange;
 	color: orange;
 	background-color: floralwhite;
@@ -357,4 +367,11 @@ a.inspect_button {
 .d_line.boss .d_time,
 .d_line.boss .d_msg {
 	color: orange;
+}
+
+body.nightly .ui_msg {
+	box-shadow: 2px 2px 15px #fff;
+}
+body:not(.nightly) .ui_msg {
+	box-shadow: 2px 2px 15px #000;
 }
