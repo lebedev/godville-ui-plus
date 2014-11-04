@@ -1,3 +1,6 @@
+(function() {
+'use strict';
+
 var ui_data = {
 	currentVersion: '$VERSION',
 	developers: ['Neniu', 'Ryoko', 'Опытный Кролик', 'Бэдлак', 'Ui Developer', 'Шоп', 'Спандарамет'],
@@ -138,7 +141,7 @@ var ui_utils = {
 	},
 	addCSS: function () {
 		if ($('#ui_css').length === 0) {
-			GUIp_addGlobalStyleURL('godville-ui-plus.css', 'ui_css');
+			window.GUIp_addGlobalStyleURL('godville-ui-plus.css', 'ui_css');
 		}
 	},
 	get: function(forum_no, success_callback, fail_callback) {
@@ -872,7 +875,7 @@ var ui_forum = {
 			topics.push(topic);
 		}
 		for (i = 0, len = topics.length; i < len; i++) {
-			temp = xhr.responseText.match(RegExp("show_topic\\/" + topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topics[i]));
+			temp = xhr.responseText.match(new RegExp("show_topic\\/" + topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topics[i]));
 			if (temp) {
 				diff = +temp[2] - forum[topics[i]];
 				if (diff) {
@@ -1142,6 +1145,27 @@ var ui_improver = {
 		ui_informer.update('monster with capabilities', isMonsterWithCapabilities);
 	},
 
+			//	Функция итерации
+	MapIteration: function(MapThermo, iPointer, jPointer, step) {
+		step++;
+		for (var iStep = -1; iStep <= 1; iStep++) {
+			for (var jStep = -1; jStep <= 1; jStep++) {
+				if (iStep !== jStep && (iStep === 0 || jStep === 0)) {
+					var iNext = iPointer + iStep,
+						jNext = jPointer + jStep;
+					if (iNext >= 0 && iNext < kRow && jNext >= 0 && jNext < kColumn) {
+						if (MapThermo[iNext][jNext] != -1) {
+							if (MapThermo[iNext][jNext] > step || MapThermo[iNext][jNext] === 0) {
+								MapThermo[iNext][jNext] = step;
+								this.MapIteration(MapThermo, iNext, jNext, step);
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
 // ---------- Map --------------
 	improveMap: function() {
 		if (ui_data.isDungeon) {
@@ -1151,27 +1175,6 @@ var ui_improver = {
 				$boxMC = $('#map .dmc'),
 				kRow = $boxML.length,
 				kColumn = $boxML[0].textContent.length;
-
-			//	Функция итерации
-			var MapIteration = function (MapThermo, iPointer, jPointer, step) {
-				step++;
-				for (var iStep = -1; iStep <= 1; iStep++) {
-					for (var jStep = -1; jStep <= 1; jStep++) {
-						if (iStep !== jStep && (iStep === 0 || jStep === 0)) {
-							var iNext = iPointer + iStep,
-								jNext = jPointer + jStep;
-							if (iNext >= 0 && iNext < kRow && jNext >= 0 && jNext < kColumn) {
-								if (MapThermo[iNext][jNext] != -1) {
-									if (MapThermo[iNext][jNext] > step || MapThermo[iNext][jNext] === 0) {
-										MapThermo[iNext][jNext] = step;
-										MapIteration(MapThermo, iNext, jNext, step);
-									}
-								}
-							}
-						}
-					}
-				}
-			};
 
 			//	Гласы направления делаем невидимыми
 			for (i = 0; i < 4; i++){
@@ -1249,7 +1252,7 @@ var ui_improver = {
 								MapThermo[ik][jk] = ($boxML[ik].textContent[jk] == '#' || ((Math.abs(jk - sj) + Math.abs(ik - si)) > ThermoMaxStep)) ? -1 : 0;
 						} 
 						//	Запускаем итерацию
-						MapIteration(MapThermo, si, sj, 0);
+						this.MapIteration(MapThermo, si, sj, 0);
 						//	Метим возможный клад
 						for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++)
 							for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++)
@@ -1348,7 +1351,7 @@ var ui_improver = {
 		//$('#hk_gold_we .l_val').text('где-то 20 монет');
 		if ($('#hk_gold_we .l_val').text().length > 16 - 2*$('#main_wrapper.page_wrapper_5c').length) {
 			if (!ui_improver.Shovel) {
-				var path = GUIp_getResource('images/shovel_');
+				var path = window.GUIp_getResource('images/shovel_');
 				var brightness = (ui_storage.get('ui_s') == 'th_nightly') ? 'dark' : 'bright';
 				digVoice.empty();
 				digVoice.append('<img id="red" src="' + path + 'red_' + brightness + '.gif" style="display: none; cursor: pointer; margin: auto;">' + 
@@ -1521,8 +1524,8 @@ var ui_improver = {
 		}
 
 		if (ui_storage.get('Option:useBackground') == 'cloud') {
-			if ($('body').css('background-image') !== 'url(' + GUIp_getResource("images/background.jpg") + ')') {
-				$('body').css('background-image', 'url(' + GUIp_getResource("images/background.jpg") + ')');
+			if ($('body').css('background-image') !== 'url(' + window.GUIp_getResource("images/background.jpg") + ')') {
+				$('body').css('background-image', 'url(' + window.GUIp_getResource("images/background.jpg") + ')');
 			}
 		} else if (ui_storage.get('Option:useBackground')) {
 			//Mini-hash to check if that is the same background
@@ -1800,12 +1803,12 @@ var ui_starter = {
 
 			// "Shift+Enter → new line" improvement by external-script to bypass stupid Chrome restrictions
 			var shiftEnterScript = document.createElement('script');
-			shiftEnterScript.src = GUIp_getResource('shift_enter.js');
+			shiftEnterScript.src = window.GUIp_getResource('shift_enter.js');
 			document.head.appendChild(shiftEnterScript);
 
 			// Laying timer external script
 			var layingTimerScript = document.createElement('script');
-			layingTimerScript.src = GUIp_getResource('laying_timer.js');
+			layingTimerScript.src = window.GUIp_getResource('laying_timer.js');
 			document.body.appendChild(layingTimerScript);
 
 			// svg for #logger fade-out in FF
@@ -1839,3 +1842,5 @@ for (var i = 0, len = objects.length; i < len; i++) {
 	ui_trycatcher.process(objects[i], object_names[i]);
 }
 var starterInt = setInterval(ui_starter.start, 200);
+
+})();

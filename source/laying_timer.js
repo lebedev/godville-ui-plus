@@ -52,7 +52,7 @@
 					minutes = Math.floor(60 - (Date.now() - first)/1000/60%60);
 					$timer.textContent = '??:??';
 					$timer.classList.add('grey');
-					$timer.title = 'Нет информации о штрафах. Неопределенность разрешится через ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
+					$timer.title = 'Нет информации о штрафах. Неопределенность разрешится после возложения или через ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 					console.log(Math.floor((Date.now() - first)/3600000), Math.floor((Date.now() - first)/60000%60));
 				}
 			}
