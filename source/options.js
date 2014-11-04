@@ -14,6 +14,28 @@ var storage = {
 		if (val === 'true') return true;
 		else if (val === 'false') return false;
 		else return val;
+	},
+	importOptions: function(options_string) {
+		try {
+			var options = JSON.parse(options_string);
+			for (var key in options) {
+				this.set(key, options[key]);
+			}
+			alert('Настройки успешно импортированы');
+			location.reload();
+		} catch(e) {
+			alert('Некорректная строка настроек');
+		}
+	},
+	exportOptions: function() {
+		var options = {};
+		var r = new RegExp(this._get_key(''));
+		for (var i = 0; i < localStorage.length; i++) {
+			if (localStorage.key(i).match(r) && !localStorage.key(i).match(/Stats|Logger/)) {
+				options[localStorage.key(i).replace(r, '')] = localStorage[localStorage.key(i)];
+			}
+		}
+		return JSON.stringify(options);
 	}
 };
 
@@ -22,7 +44,6 @@ function addMenu() {
 	ImproveInProcess = true;
 	if ($j('#ui_options').length === 0) {
 		$j('#profile_main p:first').append(' | <a id="ui_options" href="#ui_options">Настройки UI+</a>');
-		//$j('#ui_options').click();
 		$j('#ui_options').click(function() {
 			loadOptions();
 		});
@@ -86,7 +107,7 @@ function loadOptions() {
 	});
 	$j('#disable_voice_generators').click(function() {
 		$j('#voice_menu').slideToggle("slow");
-		$j('#godvilleUI_words').slideToggle("slow");
+		$j('#GUIp_words').slideToggle("slow");
 	});
 	$j('<div>', {id:"temp"}).insertAfter($j('#profile_main')).hide();
 	if (storage.get('sex') === 'female') {
@@ -98,6 +119,16 @@ function loadOptions() {
 	$j(document).on('change keypress paste focus textInput input', '#ta_edit', function() {
 		$j(this).attr('rows', $j(this).val().split('\n').length || 1);
 	}).attr('rows', 1);
+
+	$j('#GUIp_import').click(function() {
+		var options_string = prompt('Импорт настроек');
+		if (options_string) {
+			storage.importOptions(options_string);
+		}
+	});
+	$j('#GUIp_export').click(function() {
+		prompt('Экспорт настроек', storage.exportOptions());
+	});
 
 	ImproveInProcess = false;
 }
@@ -341,7 +372,7 @@ function restore_options() {
 	}
 	if ($j('#disable_voice_generators:checked').length) {
 		$j('#voice_menu').hide();
-		$j('#godvilleUI_words').hide();
+		$j('#GUIp_words').hide();
 	}
 }
 

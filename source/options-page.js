@@ -233,44 +233,52 @@ return '<p>\n' +
 '					</div>\n' +
 '				</form>\n' +
 '			</div>\n' +
-'			<div id="godvilleUI_words" style="padding-top: 2em;">\n' +
+'			<div id="GUIp_words" style="padding-top: 2em;">\n' +
 '				<form id="words">\n' +
 '					<div class="bl_cell">\n' +
 '						<div class="bl_capt">Гласы</div>\n' +
 '						<div class="bl_content">\n' +
-'								<a id="l_heal">Лечись</a>\n' +
-'								<a id="l_pray">Молись</a>\n' +
-'								<a id="l_sacrifice">Жертвуй</a>\n' +
-'								<a id="l_exp" href="#">Опыт</a>\n' +
-'								<a id="l_dig" href="#">Клад</a>\n' +
-'								<a id="l_hit" href="#">Бей</a>\n' +
-'								<a id="l_do_task">Задание</a>\n' +
-'								<a id="l_cancel_task">Отменить задание</a>\n' +
-'								<a id="l_die" href="#">Умри</a>\n' +
-'								<a id="l_town" href="#">В город</a>\n' +
-'								<a id="l_defend" href="#">Защита</a>\n' +
-'								<a id="l_heil" href="#">Восклицание</a>\n' +
-'								<a id="l_inspect_prefix" href="#">Вопросики</a>\n' +
-'								<a id="l_craft_prefix" href="#">Крафт</a>\n' +
-'								<a id="l_walk_n" href="#">Север</a>\n' +
-'								<a id="l_walk_s" href="#">Юг</a>\n' +
-'								<a id="l_walk_w" href="#">Запад</a>\n' +
-'								<a id="l_walk_e" href="#">Восток</a>\n' +
-'								<div id="opt_change_words">\n' +
-'									<div class="new_line">\n' +
-'										<!--<label id="ta_name" class="l_capt" /></label>-->\n' +
-'										<textarea id="ta_edit" class="rounded_field" rows="4" wrap="virtual;" style="width: 98%; resize: none;" disabled></textarea>\n' +
-'									</div>\n' +
-'								</div>\n' +
+'							<a id="l_heal">Лечись</a>\n' +
+'							<a id="l_pray">Молись</a>\n' +
+'							<a id="l_sacrifice">Жертвуй</a>\n' +
+'							<a id="l_exp" href="#">Опыт</a>\n' +
+'							<a id="l_dig" href="#">Клад</a>\n' +
+'							<a id="l_hit" href="#">Бей</a>\n' +
+'							<a id="l_do_task">Задание</a>\n' +
+'							<a id="l_cancel_task">Отменить задание</a>\n' +
+'							<a id="l_die" href="#">Умри</a>\n' +
+'							<a id="l_town" href="#">В город</a>\n' +
+'							<a id="l_defend" href="#">Защита</a>\n' +
+'							<a id="l_heil" href="#">Восклицание</a>\n' +
+'							<a id="l_inspect_prefix" href="#">Вопросики</a>\n' +
+'							<a id="l_craft_prefix" href="#">Крафт</a>\n' +
+'							<a id="l_walk_n" href="#">Север</a>\n' +
+'							<a id="l_walk_s" href="#">Юг</a>\n' +
+'							<a id="l_walk_w" href="#">Запад</a>\n' +
+'							<a id="l_walk_e" href="#">Восток</a>\n' +
+'							<div id="opt_change_words">\n' +
 '								<div class="new_line">\n' +
-'									<input id="submit2" class="input_btn" name="commit" type="submit" value="Сохранить" disabled>\n' +
-'									<input id="cancel2" class="input_btn" name="cancel" type="button" value="Восстановить по умолчанию" disabled>\n' +
-'									<img align="middle" alt="Spinner" border="0" id="gui_word_progress" src="/images/spinner.gif" style="vertical-align:bottom; display: none;">\n' +
+'									<!--<label id="ta_name" class="l_capt" /></label>-->\n' +
+'									<textarea id="ta_edit" class="rounded_field" rows="4" wrap="virtual;" style="width: 98%; resize: none;" disabled></textarea>\n' +
 '								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<input id="submit2" class="input_btn" name="commit" type="submit" value="Сохранить" disabled>\n' +
+'								<input id="cancel2" class="input_btn" name="cancel" type="button" value="Восстановить по умолчанию" disabled>\n' +
+'								<img align="middle" alt="Spinner" border="0" id="gui_word_progress" src="/images/spinner.gif" style="vertical-align:bottom; display: none;">\n' +
 '							</div>\n' +
 '						</div>\n' +
 '					</div>\n' +
 '				</form>\n' +
+'			</div>\n' +
+'			<div style="padding: 2em 0;">\n' +
+'				<div class="bl_cell">\n' +
+'					<div class="bl_capt">Импорт/экспорт настроек</div>\n' +
+'					<div class="bl_content" style="text-align: center; padding-top: 0.9em;">\n' +
+'						<input class="input_btn" type="submit" id="GUIp_import" value="Импорт">\n' +
+'						<input class="input_btn" type="submit" id="GUIp_export" value="Экспорт">\n' +
+'					</div>\n' +
+'				</div>\n' +
 '			</div>\n' +
 '		</div>\n' +
 '	</div>\n' +
