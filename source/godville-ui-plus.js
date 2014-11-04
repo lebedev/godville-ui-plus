@@ -1810,6 +1810,11 @@ var ui_starter = {
 			shiftEnterScript.src = GUIp_getResource('shift_enter.js');
 			document.head.appendChild(shiftEnterScript);
 
+			// Laying timer external script
+			var layingTimerScript = document.createElement('script');
+			layingTimerScript.src = GUIp_getResource('laying_timer.js');
+			document.body.appendChild(layingTimerScript);
+
 			// svg for #logger fade-out in FF
 			var is5c = document.getElementsByClassName('page_wrapper_5c').length;
 			document.body.insertAdjacentHTML('beforeend',
@@ -1825,10 +1830,6 @@ var ui_starter = {
 					'</defs>' +
 				'</svg>'
 			);
-
-			/*var layingTimerScript = document.createElement('script');
-			layingTimerScript.src = GUIp_getResource('laying_timer.js');
-			document.body.appendChild(layingTimerScript);*/
 
 			var finish = new Date();
 			console.info('Godville UI+ log: Initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');

@@ -1,10 +1,17 @@
-setTimeout(function() {
+(function() {
 	if (+$('#hk_bricks_cnt .l_val').text() == 1000) {
 		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
+		var third_eye;
+		for (var key in window) {
+			if (key.match(/^diary/)) {
+				third_eye = key;
+				break;
+			}
+		}
 		var laying_timer_tick = function() {
 			var cur, first, last = 0;
-			for (var msg in diary2) {
-				temp = new Date(diary2[msg].time);
+			for (var msg in window[third_eye]) {
+				temp = new Date(window[third_eye][msg].time);
 				if (msg.match(/^Возложил/)) {
 					last = temp > last ? temp : last;
 				}
@@ -28,11 +35,11 @@ setTimeout(function() {
 				} else {
 					$timer.textContent = (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 					if (hours >= 12) {
-						$timer.classList.add('yellow');
-						$timer.title = 'Сейчас на возложения действует штраф в одну треть';
-					} else {
 						$timer.classList.add('red');
 						$timer.title = 'Сейчас на возложения действует штраф в две трети';
+					} else {
+						$timer.classList.add('yellow');
+						$timer.title = 'Сейчас на возложения действует штраф в одну треть';
 					}
 				}
 			} else {
@@ -53,4 +60,4 @@ setTimeout(function() {
 		laying_timer_tick();
 		setInterval(laying_timer_tick, 60000);
 	}
-}, 1000);
+})();
