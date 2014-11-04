@@ -349,7 +349,7 @@ var ui_help_dialog = {
 						 .append(this.getToggleButton('<strong>help</strong>'));
 
 		$('#check_version').click(function() {
-			console.log('Godville UI+ log: Checking version number...');
+			//console.log('Godville UI+ log: Checking version number...');
 			this.textContent = "Получения номера последней версии дополнения...";
 			this.classList.remove('div_link');
 			ui_utils.get(2, ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
@@ -1472,8 +1472,8 @@ var ui_improver = {
 		if (this.isFirstTime) {
 			var $msgs = document.querySelectorAll('#diary .d_msg:not(.parsed)');
 			for (i = 0, len = $msgs.length; i < len; i++) {
-				console.log($msgs[i].textContent);
-				console.log($msgs[i].textContent.match(ui_words.bossRegex));
+				//console.log($msgs[i].textContent);
+				//console.log($msgs[i].textContent.match(ui_words.bossRegex));
 				if ($msgs[i].textContent.match(ui_words.bossRegex)) {
 					$msgs[i].parentNode.classList.add('boss');
 				}
@@ -1490,8 +1490,8 @@ var ui_improver = {
 				}
 				for (i = 0; i < newMessagesCount; i++) {
 					$('#diary .d_msg').eq(i).addClass('parsed');
-					console.log($('#diary .d_msg').eq(i)[0].textContent);
-					console.log($('#diary .d_msg').eq(i)[0].textContent.match(ui_words.bossRegex));
+					//console.log($('#diary .d_msg').eq(i)[0].textContent);
+					//console.log($('#diary .d_msg').eq(i)[0].textContent.match(ui_words.bossRegex));
 					if ($('#diary .d_msg').eq(i)[0].textContent.match(ui_words.bossRegex)) {
 						$('#diary .d_msg').eq(i)[0].parentNode.addClass('boss');
 					}
@@ -1558,7 +1558,7 @@ var ui_improver = {
 				//sessionStorage.setItem('friends')
 			}
 			this.friendsRegexp = new RegExp(friends.join('|'));
-			console.log(this.friendsRegexp);
+			//console.log(this.friendsRegexp);
 		}
 
 		// links replace

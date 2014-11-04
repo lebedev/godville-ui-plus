@@ -9,11 +9,11 @@
 			}
 		}
 		var laying_timer_tick = function() {
-			var cur, first, last = 0;
+			var cur, first, lastLaying = 0;
 			for (var msg in window[third_eye]) {
 				temp = new Date(window[third_eye][msg].time);
 				if (msg.match(/^Возложил/)) {
-					last = temp > last ? temp : last;
+					lastLaying = temp > lastLaying ? temp : lastLaying;
 				}
 				if (!first || first > temp) {
 					first = temp;
@@ -25,9 +25,9 @@
 			$timer.classList.remove('red');
 			$timer.classList.remove('grey');
 			var hours, minutes;
-			if (last) {
-				hours = Math.floor(24 - (Date.now() - first)/1000/60/60);
-				minutes = Math.floor(60 - (Date.now() - first)/1000/60%60);
+			if (lastLaying) {
+				hours = Math.floor(24 - (Date.now() - lastLaying)/1000/60/60);
+				minutes = Math.floor(60 - (Date.now() - lastLaying)/1000/60%60);
 				if (hours < 0) {
 					$timer.textContent = '00:00';
 					$timer.classList.add('green');
@@ -53,7 +53,6 @@
 					$timer.textContent = '??:??';
 					$timer.classList.add('grey');
 					$timer.title = 'Нет информации о штрафах. Неопределенность разрешится после возложения или через ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
-					console.log(Math.floor((Date.now() - first)/3600000), Math.floor((Date.now() - first)/60000%60));
 				}
 			}
 		};
