@@ -144,12 +144,12 @@ var ui_utils = {
 			window.GUIp_addGlobalStyleURL('godville-ui-plus.css', 'ui_css');
 		}
 	},
-	get: function(forum_no, success_callback, fail_callback) {
+	getXHR: function(path, success_callback, fail_callback, extra_arg) {
 		var xhr = new XMLHttpRequest();
-		xhr.forum_no = forum_no;
-		xhr.onreadystatechange = ensureReadiness;
-
-		function ensureReadiness() {
+		if (extra_arg) {
+			xhr.extra_arg = extra_arg;
+		}
+		xhr.onreadystatechange = function() {
 			if (xhr.readyState < 4) {
 				return;
 			}
@@ -164,9 +164,9 @@ var ui_utils = {
 					}
 				}
 			}
-		}
+		};
 
-		xhr.open('GET', '/forums/show/' + forum_no, true);
+		xhr.open('GET', path, true);
 		xhr.send('');
 	},
 	showMessage: function(msg_no, msg) {
@@ -360,7 +360,7 @@ var ui_help_dialog = {
 			//console.log('Godville UI+ log: Checking version number...');
 			this.textContent = "Получения номера последней версии дополнения...";
 			this.classList.remove('div_link');
-			ui_utils.get(2, ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
+			ui_utils.getXHR('/forums/show/2', ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
 			return false;
 		});
 	},
@@ -833,7 +833,7 @@ var ui_forum = {
 				topics = [];
 			for (var topic in current_forum) {
 				// to prevent simultaneous ForumInformers access
-				setTimeout(ui_utils.get.bind(this, forum_no, this.parse), 500*forum_no);
+				setTimeout(ui_utils.getXHR.bind(this, '/forums/show/' + forum_no, this.parse, undefined, forum_no), 500*forum_no);
 				break;
 			}
 		}
@@ -876,7 +876,7 @@ var ui_forum = {
 	},
 	parse: function(xhr) {
 		var i, diff, temp, old_diff,
-			forum = JSON.parse(ui_storage.get('Forum' + xhr.forum_no)),
+			forum = JSON.parse(ui_storage.get('Forum' + xhr.extra_arg)),
 			informers = JSON.parse(ui_storage.get('ForumInformers')),
 			topics = [];
 		for (var topic in forum) {
@@ -905,8 +905,8 @@ var ui_forum = {
 			}
 		}
 		ui_storage.set('ForumInformers', JSON.stringify(informers));
-		ui_storage.set('Forum' + xhr.forum_no, JSON.stringify(forum));
-		ui_forum.process(xhr.forum_no);
+		ui_storage.set('Forum' + xhr.extra_arg, JSON.stringify(forum));
+		ui_forum.process(xhr.extra_arg);
 	}
 };
 
