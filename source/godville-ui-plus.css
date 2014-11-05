@@ -7,6 +7,16 @@ body {
 	min-height: 100%;
 }
 
+/* long god-name fix */
+#main_wrapper {
+	padding-top: 2.9em;
+}
+#menu_bar {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
 .line {
 	text-align: right;
 }
