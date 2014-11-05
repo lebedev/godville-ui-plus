@@ -1754,7 +1754,7 @@ var ui_observers = {
 			}
 		},
 		target: '#diary .d_content'
-	}
+	},
 	chronicles: {
 		condition: ui_data.isDungeon,
 		config: { childList: true },
