@@ -1503,6 +1503,7 @@ var ui_improver = {
 					chronicles[i].parentNode.addClass('boss');
 				}
 			}
+			ui_informer.update('close to boss', document.querySelectorAll('#m_fight_log .d_line.boss:nth-child(1)').length);
 		}
 	},
 
