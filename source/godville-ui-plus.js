@@ -1828,6 +1828,9 @@ var objects = [ui_data, ui_utils, ui_timeout, ui_help_dialog, ui_storage, ui_wor
 for (var i = 0, len = objects.length; i < len; i++) {
 	ui_trycatcher.process(objects[i], object_names[i]);
 }
+for (var observer in ui_observers) {
+	ui_trycatcher.process(ui_observers[observer], 'ui_observers.' + observer);
+}
 var starterInt = setInterval(ui_starter.start, 200);
 
 })();
