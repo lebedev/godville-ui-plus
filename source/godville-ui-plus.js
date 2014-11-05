@@ -554,8 +554,6 @@ var ui_words = {
 		}
 		return [];
 	},
-
-	bossRegex: /(?:чувствует внезапный зуд в седалищном нерве.|чует неладное.|утверждает, что за ними кто-то наблюдает.|Абсолютно ничто не указывает на то, что рядом злой босс.|В углу стоит гигантская когтеточка со следами регулярного использования.|Вдоль стены стоят надгробия с именами героев и сегодняшней датой.|Возникший из ниоткуда призрак нотариуса настойчиво уговаривает составить коллективное завещание.|Выскочивший навстречу героям гоблин дважды моргает светящимися глазами и скрывается в дальнем проходе.|Где-то рядом кто-то угрожающе шипит.|Где-то рядом стучат в стену и громко требуют перестать шуметь и дать выспаться.|Где-то рядом ходит кто-то большой и тяжёлый.|Герои слышат, как кто-то точит когти о стены пещеры.|До команды доносятся чавкающие звуки и долетают мясные ошмётки.|Дорогу героям перебегает чёрная кошка.|Из ближайшего выхода раздаётся утробное рычание.|Из всех точек нарисованной на полу пентаграммы опасность почему-то чувствуется именно в пятой.|Изгрызенный, исцарапанный и завязанный узлом флюгер недвусмысленно указывает на соседнюю клетку.|Кровавые ручейки струятся под ногами героев явно неспроста.|Крысы вокруг с шумом захлопывают норки.|Лёгкое дуновение ветерка приносит странный приторный запах и клоки тёмной шерсти.|Лежащий на столе медальон в форме волчьей головы странно вибрирует.|На полу чьим-то огромным когтем нацарапано «Сакровеща там». Корявая стрелка указывает на соседний проход.|На стене табличка «Осторожно, рядом злой босс».|Начинает играть тревожная музыка.|Неподалёку кто-то тяжело дышит.|Оружие приключенцев начинает светиться синим|Откуда-то доносится едва различимый шёпот: «Ближе… Ещё ближе…».|Откуда-то явственно попахивает проблемами.|Отчего-то героев бросает в холодный пот.|Пахнет жареным.|Подземные падальщики заметно оживляются при виде приключенцев.|Предчувствуя опасность, волшебные зубные коронки героев начинают громко стучать.|Рядом слышится хруст разгрызаемых то ли костей, то ли камней.|Слышится странное сопение.|Слышно, как за стенкой громко молчит босс.|Шестое чувство героев дает тревожный звоночек.)$/
 };
 
 // ------------------------
@@ -924,6 +922,8 @@ var ui_improver = {
 	b_b: [],
 	b_r: [],
 	r_r: [],
+	// boss warnings
+	bossWarningsRegExp: null,
 	// resresher
 	softRefreshInt: 0,
 	hardRefreshInt: 0,
@@ -938,8 +938,13 @@ var ui_improver = {
 	improve: function() {
 		this.improveInProcess = true;
 		ui_informer.update('pvp', ui_data.isBattle);
-		if (this.isFirstTime && !ui_data.isBattle) {
-			this.improveLoot();
+		if (this.isFirstTime) {
+			if (!ui_data.isBattle && !ui_data.isDungeon) {
+				this.improveLoot();
+			}
+			if (ui_data.isDungeon) {
+				this.getBossWarnings();
+			}
 		}
 		this.improveStats();
 		this.improvePet();
@@ -947,7 +952,6 @@ var ui_improver = {
 		this.improveNews();
 		this.improveEquip();
 		this.improvePantheons();
-		this.improveDiary();
 		this.improveMap();
 		this.improveInterface();
 		this.improveChat();
@@ -1459,29 +1463,44 @@ var ui_improver = {
 		if (this.isFirstTime) {
 			var $msgs = document.querySelectorAll('#diary .d_msg:not(.parsed)');
 			for (i = 0, len = $msgs.length; i < len; i++) {
-				//console.log($msgs[i].textContent);
-				//console.log($msgs[i].textContent.match(ui_words.bossRegex));
-				if ($msgs[i].textContent.match(ui_words.bossRegex)) {
-					$msgs[i].parentNode.classList.add('boss');
-				}
 				$msgs[i].classList.add('parsed');
 			}
 		} else {
-			var newMessagesCount = $('#diary .d_msg:not(.parsed)').length;
-			if (newMessagesCount) {
+			var newMessages = $('#diary .d_msg:not(.parsed)');
+			if (newMessages.length) {
 				if (ui_improver.voiceSubmitted) {
-					if (newMessagesCount >= 2)
+					if (newMessages.length >= 2)
 						ui_timeout.start();
 					$('#god_phrase').change();
 					ui_improver.voiceSubmitted = false;
 				}
-				for (i = 0; i < newMessagesCount; i++) {
-					$('#diary .d_msg').eq(i).addClass('parsed');
-					//console.log($('#diary .d_msg').eq(i)[0].textContent);
-					//console.log($('#diary .d_msg').eq(i)[0].textContent.match(ui_words.bossRegex));
-					if ($('#diary .d_msg').eq(i)[0].textContent.match(ui_words.bossRegex)) {
-						$('#diary .d_msg').eq(i)[0].parentNode.addClass('boss');
-					}
+				newMessages.addClass('parsed');
+			}
+		}
+	},
+
+	setBossWarnings: function(xhr) {
+		var bossWarnings = xhr.responseText.match(/<p>bossWarnings([\s\S]+?)<\/p>/)[1].replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
+		this.bossWarningsRegExp = new RegExp(bossWarnings);
+		ui_storage.set('bossWarnings', bossWarnings);
+		ui_storage.set('bossWarningsExpirationDate', Date.now() + 4*60*60*1000);
+		this.improveChronicles();
+	},
+	getBossWarnings: function() {
+		var bossWarningsExpirationDate = ui_storage.get('bossWarningsExpirationDate');
+		if (!bossWarningsExpirationDate || bossWarningsExpirationDate && Date.now() > bossWarningsExpirationDate) {
+			ui_utils.getXHR('/gods/Спандарамет', this.setBossWarnings.bind(this));
+		} else {
+			this.bossWarningsRegExp = new RegExp(ui_storage.get('bossWarnings'));
+			this.improveChronicles();
+		}
+	},
+	improveChronicles: function() {
+		if (this.bossWarningsRegExp) {
+			var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
+			for (var i = 0, len = chronicles.length; i < len; i++) {
+				if (chronicles[i].textContent.match(this.bossWarningsRegExp)) {
+					chronicles[i].parentNode.addClass('boss');
 				}
 			}
 		}
@@ -1724,6 +1743,26 @@ var ui_observers = {
 			}
 		},
 		target: '#main_wrapper'
+	},
+	diary: {
+		condition: !ui_data.isBattle && !ui_data.isDungeon,
+		config: { childList: true },
+		func: function(mutation) {
+			if (mutation.addedNodes.length) {
+				ui_improver.improveDiary();
+			}
+		},
+		target: '#diary .d_content'
+	}
+	chronicles: {
+		condition: ui_data.isDungeon,
+		config: { childList: true },
+		func: function(mutation) {
+			if (mutation.addedNodes.length) {
+				ui_improver.improveChronicles();
+			}
+		},
+		target: '#m_fight_log .d_content'
 	}
 };
 

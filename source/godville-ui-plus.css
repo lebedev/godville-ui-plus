@@ -333,6 +333,8 @@ a.inspect_button {
 	z-index: 302;
 }
 
+
+/* laying timer themes */
 #laying_timer {
 	top: 2px;
 	left: 60px;
@@ -378,17 +380,20 @@ body:not(.nightly) #laying_timer.yellow {
 	background-color: yellow;
 }
 
+/* fader svg moving away */
 #fader {
 	position: fixed;
 	top: 0;
 	left: -9999px;
 }
 
-.d_line.boss .d_time,
-.d_line.boss .d_msg {
+/* boss warnings */
+#m_fight_log .boss .d_time,
+#m_fight_log .boss .d_msg {
 	color: orange;
 }
 
+/* dialog box-shadows */
 body.nightly .ui_msg {
 	box-shadow: 2px 2px 15px #fff;
 }
@@ -396,6 +401,7 @@ body:not(.nightly) .ui_msg {
 	box-shadow: 2px 2px 15px #000;
 }
 
+/* shovel */
 #hk_gold_we .voice_generator:not(.shovel) {
 	background-size: 0 0;
 }
