@@ -12,7 +12,7 @@
 			var cur, first, lastLaying = 0;
 			for (var msg in window[third_eye]) {
 				temp = new Date(window[third_eye][msg].time);
-				if (msg.match(/^Возложил/)) {
+				if (msg.match(/^(?:Возложила? десять мешочков|Возложила? двадцать мешочков|Выставила? тридцать золотых столбиков)/)) {
 					lastLaying = temp > lastLaying ? temp : lastLaying;
 				}
 				if (!first || first > temp) {
