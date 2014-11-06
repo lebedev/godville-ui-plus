@@ -917,6 +917,7 @@ var ui_improver = {
 	voiceSubmitted: false,
 	monstersOfTheDay: null,
 	friendsRegexp: null,
+	windowResizeInt: 0,
 	// trophy craft combinations
 	b_b: [],
 	b_r: [],
@@ -1525,20 +1526,19 @@ var ui_improver = {
 	},
 
 	whenWindowResize: function() {
-		if ($(window).width() != ui_storage.get('windowWidth')) {
-			ui_storage.set('windowWidth', $(window).width());
-			this.chatsFix();
-			//body widening
-			$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
-		}
+		this.chatsFix();
+		//body widening
+		$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
 	},
 
 	improveInterface: function() {
 		if (this.isFirstTime) {
 			$('a[href=#]').removeAttr('href');
-			ui_storage.set('windowWidth', '');
 			this.whenWindowResize();
-			$(window).resize(this.whenWindowResize.bind(this));
+			$(window).resize((function() {
+				clearInterval(this.windowResizeInt);
+				this.windowResizeInt = setTimeout(this.whenWindowResize.bind(this), 250);
+			}).bind(this));
 		}
 
 		if (localStorage.getItem('ui_s') !== ui_storage.get('ui_s')) {
