@@ -112,11 +112,9 @@ if (guip_hash) {
 
 // formatting buttons
 var $reply_form = $id('post_body_editor');
-console.log($reply_form);
 if ($reply_form) {
 	window.GUIp_addGlobalStyleURL('forum.css', 'forum_css');
-	$reply_form.insertAdjacentHTML(
-		'afterbegin', 
+	var formatting_buttons =
 		'<a class="formatting button bold" title="Сделать полужирным">Ж</a>' +
 		'<a class="formatting button underline" title="Подчеркнуть">П</a>' +
 		'<a class="formatting button strike" title="Зачеркнуть">З</a>' +
@@ -124,49 +122,64 @@ if ($reply_form) {
 		'<blockquote class="formatting bq" title="Процитировать">bq.</blockquote>' +
 		'<pre class="formatting bc" title="Выделить"><code>bc.</code></pre>' +
 		'<a class="formatting button godname" title="Вставить ссылку на бога"></a>' +
-		'<a class="formatting button link" title="Вставить ссылку">a</a>'
-	);
-	var val, ss, se, pb = $id('post_body');
-	var basic_formatting = function(left, right, e) {
+		'<a class="formatting button link" title="Вставить ссылку">a</a>';
+	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
+	var val, ss, se;
+	var basic_formatting = function(left, right, editor, e) {
 		try {
-			val = pb.value;
-			ss = pb.selectionStart;
-			se = pb.selectionEnd;
+			val = editor.value;
+			ss = editor.selectionStart;
+			se = editor.selectionEnd;
 			while (ss < se && val[ss].match(/\s/)) {
 				ss++;
 			}
 			while (ss < se && val[se - 1].match(/\s/)) {
 				se--;
 			}
-			pb.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\s/) ? ' ' : '') + left + val.slice(ss, se) + right + (val && val [se] && !val[se].match(/\s/) ? ' ' : '') + val.slice(se);
+			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\s/) ? ' ' : '') + left + val.slice(ss, se) + right + (val && val [se] && !val[se].match(/\s/) ? ' ' : '') + val.slice(se);
 		} catch(error) {
 			console.error(error);
 		}
 	};
-	$c('formatting bold').onclick = basic_formatting.bind(this, '*', '*');
-	$c('formatting underline').onclick = basic_formatting.bind(this, '+', '+');
-	$c('formatting strike').onclick = basic_formatting.bind(this, '-', '-');
-	$c('formatting italic').onclick = basic_formatting.bind(this, '_', '_');
-	$c('formatting godname').onclick = basic_formatting.bind(this, '"', '":пс');
-	$c('formatting link').onclick = basic_formatting.bind(this, '"', '":');
-	var quote_formatting = function(quotation, e) {
+	var quote_formatting = function(quotation, editor, e) {
 		try {
-			val = pb.value;
-			ss = pb.selectionStart;
-			se = pb.selectionEnd;
+			val = editor.value;
+			ss = editor.selectionStart;
+			se = editor.selectionEnd;
 			while (ss < se && val[ss].match(/\s/)) {
 				ss++;
 			}
 			while (ss < se && val[se - 1].match(/\s/)) {
 				se--;
 			}
-			pb.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '')) + quotation + val.slice(ss, se) + (val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '')) + val.slice(se);
+			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '')) + quotation + val.slice(ss, se) + (val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '')) + val.slice(se);
 		} catch(error) {
 			console.error(error);
 		}
 	};
-	$c('formatting bq').onclick = quote_formatting.bind(this, 'bq. ');
-	$c('formatting bc').onclick = quote_formatting.bind(this, 'bc. ');
+	var set_click_actions = function(id, container) {
+		temp = '#' + id + ' .formatting.';
+		$q(temp + 'bold').onclick = basic_formatting.bind(this, '*', '*', container);
+		$q(temp + 'underline').onclick = basic_formatting.bind(this, '+', '+', container);
+		$q(temp + 'strike').onclick = basic_formatting.bind(this, '-', '-', container);
+		$q(temp + 'italic').onclick = basic_formatting.bind(this, '_', '_', container);
+		$q(temp + 'bq').onclick = quote_formatting.bind(this, 'bq. ', container);
+		$q(temp + 'bc').onclick = quote_formatting.bind(this, 'bc. ', container);
+		$q(temp + 'godname').onclick = basic_formatting.bind(this, '"', '":пс', container);
+		$q(temp + 'link').onclick = basic_formatting.bind(this, '"', '":', container);
+	};
+	set_click_actions('post_body_editor', $id('post_body'));
+	
+	var editFormObserver = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if ($id('edit_body_editor')) {
+				$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
+				set_click_actions('edit_body_editor', $id('edit_body'));
+				editFormObserver.disconnect();
+			}
+		});
+	});
+	editFormObserver.observe($id('content'), { childList: true, subtree: true });
 }
 
 } catch(e) {
