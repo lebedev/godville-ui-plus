@@ -65,7 +65,7 @@ for (i = 0, len = follow_links.length; i < len; i++) {
 
 // add click events to unfollow links
 unfollow_links = document.querySelectorAll('.unfollow');
-unfollow = function(e) {
+var unfollow = function(e) {
 	e.preventDefault();
 	var topic = isTopic ? location.pathname.match(/\d+/)[0]
 						: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
@@ -87,9 +87,16 @@ if (guip_hash) {
 
 // formatting buttons
 var $reply_form = document.getElementById('post_body_editor');
+console.log($reply_form);
 if ($reply_form) {
 	window.GUIp_addGlobalStyleURL('forum.css', 'forum_css');
-	//.insertAdjacentHTML('beforebegin', '<a>O</a>')
+	$reply_form.insertAdjacentHTML(
+		'beforebegin', 
+		'<a class="formatting bold" title="Сделать полужирным">Ж</a>' +
+		'<a class="formatting underline" title="Подчеркнуть">П</a>' +
+		'<a class="formatting strike" title="Зачеркнуть">З</a>' +
+		'<a class="formatting italic" title="Сделать курсивным">К</a>'
+	);
 }
 
 } catch(e) {
