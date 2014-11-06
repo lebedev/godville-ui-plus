@@ -858,7 +858,9 @@ var ui_forum = {
 					ui_storage.set('ForumInformers', JSON.stringify(informers));
 					$(document).trigger("DOMNodeInserted");
 					$(this).slideToggle("fast", function() {
-						this.parentElement.removeChild(this);
+						if (this.parentElement) {
+							this.parentElement.removeChild(this);
+						}
 					});
 				}
 			});
