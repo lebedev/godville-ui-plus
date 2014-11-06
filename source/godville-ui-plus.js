@@ -1741,9 +1741,7 @@ var ui_observers = {
 		target: '#inventory ul'
 	},
 	refresher: {
-		get condition() {
-			return false || ui_storage.get('Option:forcePageRefresh');
-		},
+		condition: true,
 		config: {
 			attributes: true,
 			characterData: true,
@@ -1757,9 +1755,11 @@ var ui_observers = {
 			if (!(id && id.match(/logger|pet_badge|equip_badge/)) &&
 				!(cl && cl.match(/voice_generator|inspect_button|m_hover|craft_button/))) {
 				clearInterval(ui_improver.softRefreshInt);
-				ui_improver.softRefreshInt = setInterval(ui_improver.softRefresh, (ui_data.isBattle || ui_data.isDungeon ? 5e3 : 9e4));
 				clearInterval(ui_improver.hardRefreshInt);
-				ui_improver.hardRefreshInt = setInterval(ui_improver.hardRefresh, (ui_data.isBattle || ui_data.isDungeon ? 15e3 : 27e4));
+				if (ui_storage.get('Option:forcePageRefresh')) {
+					ui_improver.softRefreshInt = setInterval(ui_improver.softRefresh, (ui_data.isBattle || ui_data.isDungeon ? 5e3 : 9e4));
+					ui_improver.hardRefreshInt = setInterval(ui_improver.hardRefresh, (ui_data.isBattle || ui_data.isDungeon ? 15e3 : 27e4));
+				}
 			}
 		},
 		target: '#main_wrapper'
