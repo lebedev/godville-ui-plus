@@ -1516,8 +1516,9 @@ var ui_improver = {
 			var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
 			for (var i = 0, len = chronicles.length; i < len; i++) {
 				if (chronicles[i].textContent.match(this.bossWarningsRegExp)) {
-					chronicles[i].parentNode.addClass('boss');
+					chronicles[i].parentNode.classList.add('boss');
 				}
+				chronicles[i].classList.add('parsed');
 			}
 			ui_informer.update('close to boss', document.querySelectorAll('#m_fight_log .d_line.boss:nth-child(1)').length);
 		}
@@ -1718,7 +1719,9 @@ var ui_observers = {
 		target: '.chat_ph'
 	},
 	inventory: {
-		condition: !ui_data.isBattle && !ui_data.isDungeon,
+		get condition() {
+			return !ui_data.isBattle && !ui_data.isDungeon;
+		},
 		config: {
 			childList: true,
 			attributes: true,
@@ -1739,7 +1742,7 @@ var ui_observers = {
 	},
 	refresher: {
 		get condition() {
-			return ui_storage.get('Option:forcePageRefresh');
+			return false || ui_storage.get('Option:forcePageRefresh');
 		},
 		config: {
 			attributes: true,
@@ -1762,7 +1765,9 @@ var ui_observers = {
 		target: '#main_wrapper'
 	},
 	diary: {
-		condition: !ui_data.isBattle && !ui_data.isDungeon,
+		get condition() {
+			return !ui_data.isBattle && !ui_data.isDungeon;
+		},
 		config: { childList: true },
 		func: function(mutation) {
 			if (mutation.addedNodes.length) {
@@ -1772,7 +1777,9 @@ var ui_observers = {
 		target: '#diary .d_content'
 	},
 	chronicles: {
-		condition: ui_data.isDungeon,
+		get condition() {
+			return ui_data.isDungeon;
+		},
 		config: { childList: true },
 		func: function(mutation) {
 			if (mutation.addedNodes.length) {
