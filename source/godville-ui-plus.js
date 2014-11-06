@@ -1834,9 +1834,11 @@ var ui_starter = {
 			document.head.appendChild(shiftEnterScript);
 
 			// Laying timer external script
-			var layingTimerScript = document.createElement('script');
-			layingTimerScript.src = window.GUIp_getResource('laying_timer.js');
-			document.body.appendChild(layingTimerScript);
+			if (!ui_data.isBattle && !ui_data.isDungeon) {
+				var layingTimerScript = document.createElement('script');
+				layingTimerScript.src = window.GUIp_getResource('laying_timer.js');
+				document.body.appendChild(layingTimerScript);
+			}
 
 			// svg for #logger fade-out in FF
 			var is5c = document.getElementsByClassName('page_wrapper_5c').length;

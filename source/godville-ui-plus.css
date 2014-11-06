@@ -369,15 +369,10 @@ body:not(.nightly) #laying_timer.red {
 	color: firebrick;
 	background-color: darksalmon;
 }
-body.nightly #laying_timer.yellow {
-	border-color: darkgoldenrod;
-	color: darkgoldenrod;
-	background-color: goldenrod;
-}
-body:not(.nightly) #laying_timer.yellow {
-	border-color: goldenrod;
-	color: goldenrod;
-	background-color: yellow;
+#laying_timer.yellow {
+	border-color: #df9900;
+	color: #af5900;
+	background-color: #fcedae;
 }
 
 /* fader svg moving away */
@@ -390,7 +385,7 @@ body:not(.nightly) #laying_timer.yellow {
 /* boss warnings */
 #m_fight_log .boss .d_time,
 #m_fight_log .boss .d_msg {
-	color: orange;
+	color: darkgoldenrod;
 }
 
 /* dialog box-shadows */
