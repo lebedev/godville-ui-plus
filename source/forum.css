@@ -1,3 +1,29 @@
-a {
+.formatting {
+	background-color: lightgray;
+	border: 2px solid gray;
+	border-radius: 3px;
+	color: gray;
 	cursor: pointer;
+	display: inline-block;
+	height: 18px;
+	line-height: 18px;
+	margin: -9px 5px 3px 0;
+	text-align: center;
+	text-decoration: none;
+	width: 18px;
+}
+.formatting:hover {
+	color: gray;
+}
+.formatting.bold {
+	font-weight: bold;
+}
+.formatting.underline {
+	text-decoration: underline;
+}
+.formatting.strike {
+	text-decoration: line-through;
+}
+.formatting.italic {
+	font-style: italic;
 }
