@@ -357,7 +357,6 @@ var ui_help_dialog = {
 						 .append(this.getToggleButton('<strong>help</strong>'));
 
 		$('#check_version').click(function() {
-			//console.log('Godville UI+ log: Checking version number...');
 			this.textContent = "Получения номера последней версии дополнения...";
 			this.classList.remove('div_link');
 			ui_utils.getXHR('/forums/show/2', ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
@@ -1208,14 +1207,18 @@ var ui_improver = {
 				j = $boxML[si].textContent.indexOf('@');
 				if (j != -1) { 
 					//	Проверяем куда можно пройти
-					if ($boxML[si-1].textContent[j] != '#' || isJumping && (si == 1 || si != 1 && $boxML[si-2].textContent[j] != '#'))
+					if ($boxML[si-1].textContent[j] != '#' || isJumping && (si == 1 || si != 1 && $boxML[si-2].textContent[j] != '#')) {
 						$box[0].style.visibility = '';	//	Север
-					if ($boxML[si+1].textContent[j] != '#' || isJumping && (si == kRow - 2 || si != kRow - 2 && $boxML[si+2].textContent[j] != '#'))
+					}
+					if ($boxML[si+1].textContent[j] != '#' || isJumping && (si == kRow - 2 || si != kRow - 2 && $boxML[si+2].textContent[j] != '#')) {
 						$box[1].style.visibility = '';	//	Юг
-					if ($boxML[si].textContent[j-1] != '#' || isJumping && $boxML[si].textContent[j-2] != '#')
+					}
+					if ($boxML[si].textContent[j-1] != '#' || isJumping && $boxML[si].textContent[j-2] != '#') {
 						$box[2].style.visibility = '';	//	Запад
-					if ($boxML[si].textContent[j+1] != '#' || isJumping && $boxML[si].textContent[j+2] != '#')
+					}
+					if ($boxML[si].textContent[j+1] != '#' || isJumping && $boxML[si].textContent[j+2] != '#') {
 						$box[3].style.visibility = '';	//	Восток
+					}
 				} 
 				//	Ищем указатели
 				for (var sj = 0; sj < kColumn; sj++) {
@@ -1224,23 +1227,27 @@ var ui_improver = {
 					if ('←→↓↑↙↘↖↗'.indexOf(Pointer) != - 1) {
 						MaxMap++;
 						$boxMC[si * kColumn + sj].style.color = 'green';
-						for (ik = 0; ik < kRow; ik++) 
+						for (ik = 0; ik < kRow; ik++) {
 							for (jk = 0; jk < kColumn; jk++) {
 								var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
 									jstep = parseInt((Math.abs(ik - si) - 1) / 5);
 								if ('←→'.indexOf(Pointer) != -1 && ik >= si - istep && ik <= si + istep ||
-										Pointer == '↓' && ik >= si + istep ||
-										Pointer == '↑' && ik <= si - istep ||
-										'↙↘'.indexOf(Pointer) != -1 && ik > si + istep ||
-										'↖↗'.indexOf(Pointer) != -1 && ik < si - istep)
+									Pointer == '↓' && ik >= si + istep ||
+									Pointer == '↑' && ik <= si - istep ||
+									'↙↘'.indexOf(Pointer) != -1 && ik > si + istep ||
+									'↖↗'.indexOf(Pointer) != -1 && ik < si - istep) {
 									if (Pointer == '→' && jk >= sj + jstep ||
-											Pointer == '←' && jk <= sj - jstep ||
-											'↓↑'.indexOf(Pointer) != -1 && jk >= sj - jstep && jk <= sj + jstep ||
-											'↘↗'.indexOf(Pointer) != -1 && jk > sj + jstep ||
-											'↙↖'.indexOf(Pointer) != -1 && jk < sj - jstep)
-										if (MapArray[ik][jk] >= 0)
+										Pointer == '←' && jk <= sj - jstep ||
+										'↓↑'.indexOf(Pointer) != -1 && jk >= sj - jstep && jk <= sj + jstep ||
+										'↘↗'.indexOf(Pointer) != -1 && jk > sj + jstep ||
+										'↙↖'.indexOf(Pointer) != -1 && jk < sj - jstep) {
+										if (MapArray[ik][jk] >= 0) {
 											MapArray[ik][jk]++;
+										}
+									}
+								}
 							}
+						}
 					}
 					if ('✺☀♨☁❄✵'.indexOf(Pointer) != -1) {
 						MaxMap++;
@@ -1259,28 +1266,37 @@ var ui_improver = {
 						var MapThermo = [];
 						for (ik = 0; ik < kRow; ik++) {
 							MapThermo[ik] = [];
-							for (jk = 0; jk < kColumn; jk++)
+							for (jk = 0; jk < kColumn; jk++) {
 								MapThermo[ik][jk] = ($boxML[ik].textContent[jk] == '#' || ((Math.abs(jk - sj) + Math.abs(ik - si)) > ThermoMaxStep)) ? -1 : 0;
+							}
 						} 
 						//	Запускаем итерацию
-						this.MapIteration(MapThermo, si, sj, 0);
+						this.MapIteration(MapThermo, si, sj, 0, kRow, kColumn);
 						//	Метим возможный клад
-						for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++)
-							for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++)
-								if (MapThermo[ik][jk] >= ThermoMinStep & MapThermo[ik][jk] <= ThermoMaxStep)
-									if (MapArray[ik][jk] >= 0)
+						for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++) {
+							for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++) {
+								if (MapThermo[ik][jk] >= ThermoMinStep & MapThermo[ik][jk] <= ThermoMaxStep) {
+									if (MapArray[ik][jk] >= 0) {
 										MapArray[ik][jk]++;
+									}
+								}
+							}
+						}
 					}
 					// На будущее
 					// ↻ ↺ ↬ ↫   
 				}
 			}
 			//	Отрисовываем возможный клад 
-			if (MaxMap !== 0)
-				for (i = 0; i < kRow; i++)
-					for (j = 0; j < kColumn; j++)
-						if (MapArray[i][j] == MaxMap)
+			if (MaxMap !== 0) {
+				for (i = 0; i < kRow; i++) {
+					for (j = 0; j < kColumn; j++) {
+						if (MapArray[i][j] == MaxMap) {
 							$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] == '@') ? 'blue' : 'red';
+						}
+					}
+				}
+			}
 		}
 	},
 
