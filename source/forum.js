@@ -1,4 +1,6 @@
-//console.log('Forum script prototype');
+(function() {
+'use strict';
+try {
 
 var storage = {
 	_get_key: function(key) {
@@ -13,7 +15,7 @@ var storage = {
 	}
 };
 
-var follow_links, isFollowed, links_containers, temp, topic, unfollow_links,
+var i, len, follow_links, isFollowed, links_containers, temp, topic, unfollow_links,
 	isTopic = location.pathname.match(/topic/) !== null,
 	forum_topics = 'Forum' + (isTopic ? document.querySelector('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
 									  : location.pathname.match(/forums\/show\/(\d+)/)[1]),
@@ -25,7 +27,7 @@ if (isTopic) {
 } else {
 	// add missing <small> elements
 	temp = document.querySelectorAll('.c2');
-	for (var i = 0, len = temp.length; i < len; i++) {
+	for (i = 0, len = temp.length; i < len; i++) {
 		if (!temp[i].querySelector('small')) {
 			temp[i].insertAdjacentHTML('beforeend', '<small />');
 		}
@@ -35,7 +37,7 @@ if (isTopic) {
 }
 
 // add links
-for (var i = 0, len = links_containers.length; i < len; i++) {
+for (i = 0, len = links_containers.length; i < len; i++) {
 	topic = isTopic ? location.pathname.match(/\d+/)[0]
 					: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
 	isFollowed = topics[topic] !== undefined;
@@ -45,7 +47,7 @@ for (var i = 0, len = links_containers.length; i < len; i++) {
 
 // add click events to follow links
 follow_links = document.querySelectorAll('.follow');
-function follow(e) {
+var follow = function(e) {
 	e.preventDefault();
 	var topic = isTopic ? location.pathname.match(/\d+/)[0]
 						: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
@@ -56,14 +58,14 @@ function follow(e) {
 	storage.set(forum_topics, JSON.stringify(topics));
 	this.style.display = 'none';
 	this.parentElement.querySelector('.unfollow').style.display = 'inline';
-}
-for (var i = 0, len = follow_links.length; i < len; i++) {
+};
+for (i = 0, len = follow_links.length; i < len; i++) {
 	follow_links[i].onclick = follow;
 }
 
 // add click events to unfollow links
 unfollow_links = document.querySelectorAll('.unfollow');
-function unfollow(e) {
+unfollow = function(e) {
 	e.preventDefault();
 	var topic = isTopic ? location.pathname.match(/\d+/)[0]
 						: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
@@ -72,8 +74,8 @@ function unfollow(e) {
 	storage.set(forum_topics, JSON.stringify(topics));
 	this.style.display = 'none';
 	this.parentElement.querySelector('.follow').style.display = 'inline';
-}
-for (var i = 0, len = unfollow_links.length; i < len; i++) {
+};
+for (i = 0, len = unfollow_links.length; i < len; i++) {
 	unfollow_links[i].onclick = unfollow;
 }
 
@@ -89,3 +91,8 @@ if ($reply_form) {
 	window.GUIp_addGlobalStyleURL('forum.css', 'forum_css');
 	//.insertAdjacentHTML('beforebegin', '<a>O</a>')
 }
+
+} catch(e) {
+	console.log(e);
+}
+})();
