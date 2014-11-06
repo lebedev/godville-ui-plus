@@ -1156,7 +1156,7 @@ var ui_improver = {
 	},
 
 			//	Функция итерации
-	MapIteration: function(MapThermo, iPointer, jPointer, step) {
+	MapIteration: function(MapThermo, iPointer, jPointer, step, kRow, kColumn) {
 		step++;
 		for (var iStep = -1; iStep <= 1; iStep++) {
 			for (var jStep = -1; jStep <= 1; jStep++) {
@@ -1167,7 +1167,7 @@ var ui_improver = {
 						if (MapThermo[iNext][jNext] != -1) {
 							if (MapThermo[iNext][jNext] > step || MapThermo[iNext][jNext] === 0) {
 								MapThermo[iNext][jNext] = step;
-								this.MapIteration(MapThermo, iNext, jNext, step);
+								this.MapIteration(MapThermo, iNext, jNext, step, kRow, kColumn);
 							}
 						}
 					}
