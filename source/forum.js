@@ -82,3 +82,10 @@ var guip_hash = location.hash.match(/#guip_(\d+)/);
 if (guip_hash) {
 	location.hash = document.getElementsByClassName('spacer')[+guip_hash[1]].id;
 }
+
+// formatting buttons
+var $reply_form = document.getElementById('post_body_editor');
+if ($reply_form) {
+	window.GUIp_addGlobalStyleURL('forum.css', 'forum_css');
+	//.insertAdjacentHTML('beforebegin', '<a>O</a>')
+}

@@ -35,6 +35,7 @@
 	},
 	{
 		"js": [
+			"guip_chrome.js",
 			"forum.js"
 		],
 		"matches": [
@@ -54,6 +55,7 @@
 	
 	"web_accessible_resources": [
 		"godville-ui-plus.css",
+		"forum.css",
 		"shift_enter.js",
 		"laying_timer.js",
 		"images/background.jpg",

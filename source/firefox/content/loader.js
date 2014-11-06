@@ -21,6 +21,7 @@ contentLoad: function(event) {
 		}
 		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/) && !windowStats.get(doc)) {
 			windowStats.set(doc,'scriptsLoaded');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/forum.js');
 		}
 	}
