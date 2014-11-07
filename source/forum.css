@@ -43,3 +43,7 @@
 	color: #199bdc;
 	text-decoration: underline;
 }
+.formatting.br,
+.formatting.br:hover {
+	color: darkviolet;
+}

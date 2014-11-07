@@ -122,7 +122,10 @@ if ($reply_form) {
 		'<blockquote class="formatting bq" title="Процитировать">bq.</blockquote>' +
 		'<pre class="formatting bc" title="Выделить"><code>bc.</code></pre>' +
 		'<a class="formatting button godname" title="Вставить ссылку на бога"></a>' +
-		'<a class="formatting button link" title="Вставить ссылку">a</a>';
+		'<a class="formatting button link" title="Вставить ссылку">a</a>' +
+		'<a class="formatting button ul" title="Оформить как неупорядоченный список">•</a>' +
+		'<a class="formatting button ol" title="Оформить как упорядоченный список">1.</a>' +
+		'<a class="formatting button br" title="Вставить перенос на новую строку">\\n</a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
 	var val, ss, se;
 	var basic_formatting = function(left, right, editor, e) {
@@ -146,13 +149,26 @@ if ($reply_form) {
 			val = editor.value;
 			ss = editor.selectionStart;
 			se = editor.selectionEnd;
-			while (ss < se && val[ss].match(/\s/)) {
-				ss++;
-			}
-			while (ss < se && val[se - 1].match(/\s/)) {
-				se--;
-			}
 			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '')) + quotation + val.slice(ss, se) + (val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '')) + val.slice(se);
+		} catch(error) {
+			console.error(error);
+		}
+	};
+	var list_formatting = function(list_marker, editor, e) {
+		try {
+			val = editor.value;
+			ss = editor.selectionStart;
+			se = editor.selectionEnd;
+			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '') + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + (val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '')) + val.slice(se);
+		} catch(error) {
+			console.error(error);
+		}
+	};
+	var paste_br = function(editor, e) {
+		try {
+			val = editor.value;
+			var pos = editor.selectionDirection == 'backward' ? editor.selectionStart : editor.selectionEnd;
+			editor.value = val.slice(0, pos) + "<br>" + val.slice(pos);
 		} catch(error) {
 			console.error(error);
 		}
@@ -167,6 +183,9 @@ if ($reply_form) {
 		$q(temp + 'bc').onclick = quote_formatting.bind(this, 'bc. ', container);
 		$q(temp + 'godname').onclick = basic_formatting.bind(this, '"', '":пс', container);
 		$q(temp + 'link').onclick = basic_formatting.bind(this, '"', '":', container);
+		$q(temp + 'ul').onclick = list_formatting.bind(this, '*', container);
+		$q(temp + 'ol').onclick = list_formatting.bind(this, '#', container);
+		$q(temp + 'br').onclick = paste_br.bind(this, container);
 	};
 	set_click_actions('post_body_editor', $id('post_body'));
 	
