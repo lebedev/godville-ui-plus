@@ -1536,6 +1536,8 @@ var ui_improver = {
 
 			// informer
 			ui_informer.update('close to boss', document.querySelectorAll('#m_fight_log .d_line.boss_warning:nth-child(1)').length);
+
+			this.colorBossWarningsOnMap();
 		}
 	},
 
@@ -1543,12 +1545,12 @@ var ui_improver = {
 		// map cells painting
 		var direction, x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
 			y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
-			chronicles = document.querySelectorAll('.d_line');
+			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)');
 		for (var i = 0, len = chronicles.length; i < len; i++) {
-			if (chronicles[i].classList.contains('boss_warning')) {
+			if (chronicles[i].parentNode.classList.contains('boss_warning')) {
 				document.querySelectorAll('#map .dml')[y].children[x].classList.add('boss_warning');
 			}
-			direction = chronicles[i].querySelector('.d_msg').textContent.match(/(север|восток|юг|запад). /);
+			direction = chronicles[i].textContent.match(/на (север|восток|юг|запад)/);
 			if (direction) {
 				switch(direction[1]) {
 				case 'север': y++; break;
