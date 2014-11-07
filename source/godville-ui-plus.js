@@ -237,7 +237,14 @@ var ui_utils = {
 					 '<br>&emsp;Экспортируйте свои настройки, чтоб импортировать их после следующего обновления, если хотите сохранить их, кастомные гласы и подписки на форуме.</div>'+
 					 '<div style="text-align: right;">Увы, иначе никак.<br>~~Бэдлак</div>'
 		}
-	]
+	],
+	getNodeIndex: function(node) {
+		var i = 0;
+		while ((node = node.previousElementSibling)) {
+			i++;
+		}
+		return i;
+	}
 };
 
 // ------------------------
