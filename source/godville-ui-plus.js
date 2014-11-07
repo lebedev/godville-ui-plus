@@ -1524,14 +1524,36 @@ var ui_improver = {
 	},
 	improveChronicles: function() {
 		if (this.bossWarningsRegExp) {
-			var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
-			for (var i = 0, len = chronicles.length; i < len; i++) {
+			// chronicles painting
+			var i, len, chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
+			for (i = 0, len = chronicles.length; i < len; i++) {
 				if (chronicles[i].textContent.match(this.bossWarningsRegExp)) {
-					chronicles[i].parentNode.classList.add('boss');
+					chronicles[i].parentNode.classList.add('boss_warning');
 				}
 				chronicles[i].classList.add('parsed');
 			}
-			ui_informer.update('close to boss', document.querySelectorAll('#m_fight_log .d_line.boss:nth-child(1)').length);
+
+			// informer
+			ui_informer.update('close to boss', document.querySelectorAll('#m_fight_log .d_line.boss_warning:nth-child(1)').length);
+
+			// map cells painting
+			var direction, x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
+				y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode);
+				chronicles = document.querySelectorAll('.d_line');
+			for (i = 0, len = chronicles.length; i < len; i++) {
+				if (chronicles[i].classList.contains('boss_warning')) {
+					document.querySelectorAll('#map .dml')[y].children[x].classList.add('boss_warning');
+				}
+				direction = chronicles[i].querySelector('.d_msg').textContent.match(/(север|восток|юг|запад). /);
+				if (direction) {
+					switch(direction[1]) {
+					case 'север': y++; break;
+					case 'восток': x--; break;
+					case 'юг': y--; break;
+					case 'запад': x++; break;
+					}
+				}
+			}
 		}
 	},
 
