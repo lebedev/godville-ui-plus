@@ -990,7 +990,7 @@ var ui_improver = {
 			if (getComputedStyle(items[i]).overflow == 'visible') {
 				var item_name = items[i].textContent.replace(/\?$/, '')
 													.replace(/\(@\)/, '')
-													.replace(/\(\d + шт\)$/, '')
+													.replace(/\(\d+ шт\)$/, '')
 													.replace(/^\s+|\s+$/g, '');
 				// color items and add buttons
 				if (ui_words.isUsableItem(items[i])) {
