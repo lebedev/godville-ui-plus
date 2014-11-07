@@ -1535,23 +1535,25 @@ var ui_improver = {
 
 			// informer
 			ui_informer.update('close to boss', document.querySelectorAll('#m_fight_log .d_line.boss_warning:nth-child(1)').length);
+		}
+	},
 
-			// map cells painting
-			var direction, x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
-				y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode);
-				chronicles = document.querySelectorAll('.d_line');
-			for (i = 0, len = chronicles.length; i < len; i++) {
-				if (chronicles[i].classList.contains('boss_warning')) {
-					document.querySelectorAll('#map .dml')[y].children[x].classList.add('boss_warning');
-				}
-				direction = chronicles[i].querySelector('.d_msg').textContent.match(/(север|восток|юг|запад). /);
-				if (direction) {
-					switch(direction[1]) {
-					case 'север': y++; break;
-					case 'восток': x--; break;
-					case 'юг': y--; break;
-					case 'запад': x++; break;
-					}
+	colorBossWarningsOnMap: function() {
+		// map cells painting
+		var direction, x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
+			y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
+			chronicles = document.querySelectorAll('.d_line');
+		for (var i = 0, len = chronicles.length; i < len; i++) {
+			if (chronicles[i].classList.contains('boss_warning')) {
+				document.querySelectorAll('#map .dml')[y].children[x].classList.add('boss_warning');
+			}
+			direction = chronicles[i].querySelector('.d_msg').textContent.match(/(север|восток|юг|запад). /);
+			if (direction) {
+				switch(direction[1]) {
+				case 'север': y++; break;
+				case 'восток': x--; break;
+				case 'юг': y--; break;
+				case 'запад': x++; break;
 				}
 			}
 		}
@@ -1819,6 +1821,21 @@ var ui_observers = {
 			}
 		},
 		target: '#m_fight_log .d_content'
+	},
+	map_colorization: {
+		get condition() {
+			return ui_data.isDungeon;
+		},
+		config: {
+			childList: true,
+			subtree: true
+		},
+		func: function(mutation) {
+			if (mutation.addedNodes.length) {
+				ui_improver.colorBossWarningsOnMap();
+			}
+		},
+		target: '#map .block_content'
 	}
 };
 
