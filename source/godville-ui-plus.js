@@ -56,8 +56,9 @@ var ui_data = {
 var ui_utils = {
 	hasShownErrorMessage: false,
 	hasShownInfoMessage: false,
-	isDeveloper: function () {
-		return ui_data.developers.indexOf(ui_data.god_name) >= 0;
+	isDeveloper: function(godname) {
+		var name = godname || localStorage.getItem('GM_CurrentUser');
+		return ui_data.developers.indexOf(name) >= 0;
 	},
 // base phrase say algorythm
 	sayToHero: function(phrase) {
@@ -337,7 +338,7 @@ var ui_help_dialog = {
 							'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
 							'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>.' +
 					'</div>');
-		if (ui_utils.isDeveloper()) {
+		if (ui_utils.isDeveloper(ui_data.god_name)) {
 			this.append($('<span>dump: </span>'));
 			this.append(this.getDumpButton('all'));
 			this.append($('<span>, </span>'));
@@ -1899,5 +1900,23 @@ for (var observer in ui_observers) {
 	ui_trycatcher.process(ui_observers[observer], 'ui_observers.' + observer);
 }
 var starterInt = setInterval(ui_starter.start, 200);
+
+if (ui_utils.isDeveloper()) {
+	window.GUIp = {
+		data: ui_data,
+		utils: ui_utils,
+		timeout: ui_timeout,
+		help_dialog: ui_help_dialog,
+		storage: ui_storage,
+		words: ui_words,
+		stats: ui_stats,
+		logger: ui_logger,
+		informer: ui_informer,
+		forum: ui_forum,
+		improver: ui_improver,
+		observers: ui_observers,
+		starter: ui_starter
+	};
+}
 
 })();
