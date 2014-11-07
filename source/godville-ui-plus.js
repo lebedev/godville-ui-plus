@@ -928,6 +928,7 @@ var ui_improver = {
 	monstersOfTheDay: null,
 	friendsRegexp: null,
 	windowResizeInt: 0,
+	mapColorizationTmt: 0,
 	// trophy craft combinations
 	b_b: [],
 	b_r: [],
@@ -1832,7 +1833,8 @@ var ui_observers = {
 		},
 		func: function(mutation) {
 			if (mutation.addedNodes.length) {
-				ui_improver.colorBossWarningsOnMap();
+				clearTimeout(ui_improver.mapColorizationTmt);
+				ui_improver.mapColorizationTmt = setTimeout(ui_improver.colorBossWarningsOnMap, 50);
 			}
 		},
 		target: '#map .block_content'
