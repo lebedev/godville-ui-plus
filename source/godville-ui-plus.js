@@ -122,7 +122,7 @@ var ui_utils = {
 	createCraftButton: function(combo, combo_list, hint) {
 		var a = document.createElement('a');
 		a.className = 'craft_button ' + combo_list;
-		a.title = 'Уговорить ' + ui_data.char_sex[0] + ' склеить случайную комбинацию ' + hint + ' предметов из инвентаря';
+		a.title = 'Уговорить ' + ui_data.char_sex[0] + ' ' + ['склеить', 'собрать', 'скрафтить', 'соединить', 'сделать', 'слепить'][Math.floor(Math.random()*6)] + ' случайную комбинацию ' + hint + ' предметов из инвентаря';
 		a.innerHTML = combo;
 		a.onclick = function() {
 			var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
