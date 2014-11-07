@@ -384,7 +384,7 @@ var ui_help_dialog = {
 		}
 	},
 	onXHRFail: function() {
-		$('#check_version')[0].innerHTML = 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 2, иначе к шагу 6.';
+		$('#check_version')[0].textContent = 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 2, иначе к шагу 6.';
 		$('#ui_help_dialog ol li.' + GUIp_browser).removeClass('hidden');
 	},
 // gets toggle button
@@ -1596,7 +1596,7 @@ var ui_improver = {
 			$temp.append($('.fr_msg_meta', $cur_msg)).append($('.fr_msg_delete', $cur_msg));
 			var text = $cur_msg.text();
 			$cur_msg.empty();
-			$cur_msg.append(text.replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t ]+)/g, '<a href="$1" target="_blank" title="Откроется в новой вкладке">$1</a>'));
+			$cur_msg.append(ui_utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t ]+)/g, '<a href="$1" target="_blank" title="Откроется в новой вкладке">$1</a>'));
 			$cur_msg.append($('.fr_msg_meta', $temp)).append($('.fr_msg_delete', $temp));
 		}
 		$msgs.addClass('improved');
