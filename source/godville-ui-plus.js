@@ -3,7 +3,7 @@
 
 var ui_data = {
 	currentVersion: '$VERSION',
-	developers: ['Neniu', 'Ryoko', 'Опытный Кролик', 'Бэдлак', 'Ui Developer', 'Шоп', 'Спандарамет', 'Мультовод'],
+	developers: ['Neniu', 'Ryoko', 'Опытный Кролик', 'Бэдлак', 'Ui Developer', 'Шоп', 'Спандарамет', 'Мультовод', 'Апереткин', 'Лиира'],
 // base variables initialization
 	init: function() {
 		this.isBattle = ($('#m_info').length > 0);
@@ -1627,15 +1627,14 @@ var ui_improver = {
 	improveChat: function() {
 		var i, len;
 
-		if (this.isFirstTime) {
-		//if (this.isFirstTime && (ui_data.isBattle || ui_data.isDungeon)) {
+		// friends fetching
+		if (this.isFirstTime && (ui_data.isBattle || ui_data.isDungeon)) {
 			var $friends = document.querySelectorAll('.frline .frname'),
 				friends = [];
 			for (i = 0, len = $friends.length; i < len; i++) {
 				friends.push($friends[i].textContent);
 			}
 			this.friendsRegexp = new RegExp(friends.join('|'));
-			console.log(this.friendsRegexp);
 		}
 
 		// links replace
@@ -1883,20 +1882,27 @@ var ui_observers = {
 			if (mutation.addedNodes.length) {
 				if (ui_improver.currentAlly == ui_improver.currentAllyObserver) {
 					var god_name = mutation.target.querySelector('.l_val').textContent;
+					var dungeon_motto = mutation.target.querySelector('.h_motto').textContent.match(/\[[ОOБКK]\]/);
+					var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly];
+					if (dungeon_motto) {
+						hero_name.textContent = hero_name.textContent + ' ' + dungeon_motto[0];
+					}
 					if (god_name.match(ui_improver.friendsRegexp)) {
-						var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly];
 						hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="Открыть чат c богом/богиней ' + god_name + '">★</a>');
-						document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = ui_utils.openChatWith.bind(this, god_name);
+						document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = function(e) {
+							e.preventDefault();
+							e.stopPropagation();
+							ui_utils.openChatWith(god_name);
+						};
 					}
 					ui_improver.currentAlly += 1;
 					var match = mutation.target.id.match(/popover_opp_all(\d)/);
 					if (match) {
-						ui_observers.dungeon_allies_parse.observers[+match[1]].disconnect();
-						
+						ui_observers.dungeon_allies_parse.observers[ui_improver.currentAlly - 1].disconnect();
 					}
 					setTimeout(function() {
 						ui_improver.improveAllies();
-					}, 10);
+					}, 0);
 					
 				}
 			}
