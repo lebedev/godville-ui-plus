@@ -428,3 +428,8 @@ body.nightly .shovel {
 body.nightly .shovel:hover {
 	background-position: 13px 13px;
 }
+
+/* hide hidden popovers */
+.popover.hidden {
+	display: none !important;
+}

@@ -1654,15 +1654,27 @@ var ui_improver = {
 	},
 
 	improveAllies: function() {
-		var allies_buttons = document.querySelectorAll('#alls .opp_dropdown.popover-button');
+		var i, popover, allies_buttons = document.querySelectorAll('#alls .opp_dropdown.popover-button');
 		if (this.isFirstTime) {
 			this.alliesCount = allies_buttons.length;
+			for (i = 0; i < 5; i++) {
+				popover = document.getElementById('popover_opp_all' + i);
+				if (popover) {
+					popover.parentNode.parentNode.classList.add('hidden');
+				}
+			}
 		}
 		if (this.currentAlly < this.alliesCount) {
 			this.currentAllyObserver = this.currentAlly;
 			allies_buttons[this.currentAlly].click();
 		} else {
 			document.body.click();
+			for (i = 0; i < 5; i++) {
+				popover = document.getElementById('popover_opp_all' + i);
+				if (popover) {
+					popover.parentNode.parentNode.classList.add('hidden');
+				}
+			}
 		}
 	},
 
