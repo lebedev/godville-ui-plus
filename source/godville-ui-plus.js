@@ -353,7 +353,8 @@ var ui_help_dialog = {
 							'его <a href="skype:angly_cat">скайп</a>, ' +
 							'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" title="Откроется в новой вкладке" target="_blank">список багов</a>, ' +
 							'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
-							'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>.' +
+							'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
+							'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">Предвестник Боссов</a>.' +
 					'</div>');
 		if (ui_utils.isDeveloper(ui_data.god_name)) {
 			this.append($('<span>dump: </span>'));
