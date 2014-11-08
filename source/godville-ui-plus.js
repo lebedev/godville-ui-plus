@@ -3,7 +3,7 @@
 
 var ui_data = {
 	currentVersion: '$VERSION',
-	developers: ['Neniu', 'Ryoko', 'Опытный Кролик', 'Бэдлак', 'Ui Developer', 'Шоп', 'Спандарамет', 'Мультовод', 'Апереткин', 'Лиира'],
+	developers: ['Neniu', 'Ryoko', 'Опытный Кролик', 'Бэдлак', 'Ui Developer', 'Шоп', 'Спандарамет'],
 // base variables initialization
 	init: function() {
 		this.isBattle = ($('#m_info').length > 0);
