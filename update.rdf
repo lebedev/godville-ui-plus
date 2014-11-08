@@ -2,21 +2,21 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$WwhDQ2"
+  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAIwi+knmsgCiv3aGgAQigAPIXlFYk+/JQXaLEUSuruKzSHzwjfVCGrFlQDWsEQxbnZ72vM8Jyw+y6wN46TEEHOhP+PGrKiAanu5uhEUgwgTr0rxIeQ3kmrRp7ZIqowM7WhUX4DVUwyl5FMm42UIQk1uQ+TX0Er9fAYOY5oMEwCZS">
+    <em:updates RDF:resource="rdf:#$aPKff3"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$ePKff3"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="4.0"
                    em:maxVersion="36.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/raw/master/release/godville-ui-plus%40badluck.dicey.xpi"
-                   em:updateHash="sha1:75cf988554b14a1573a7437d5876f74560d9f31c" />
-  <RDF:Description RDF:about="rdf:#$TwhDQ2"
-                   em:version="0.11.68.46">
-    <em:targetApplication RDF:resource="rdf:#$WwhDQ2"/>
+                   em:updateHash="sha1:bb0a7129c248160c4ef6ca9f057bd836855612ce" />
+  <RDF:Description RDF:about="rdf:#$bPKff3"
+                   em:version="0.11.68.47">
+    <em:targetApplication RDF:resource="rdf:#$ePKff3"/>
   </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$SwhDQ2">
-    <RDF:li RDF:resource="rdf:#$TwhDQ2"/>
+  <RDF:Seq RDF:about="rdf:#$aPKff3">
+    <RDF:li RDF:resource="rdf:#$bPKff3"/>
   </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBADtfEUuFP1LkfZJUU0g1gK00XdxpSDsJqE645TYjGI+75z7s9iSEoXqg04oARKK2xJjV/mbYaEDORiXM6bmz4EcsBzPy0i+T8rkX88E6rkGrs2GUNp15sj30DV2GiDKRn/GtlIJUUNmOcY+OJ6o3m8ZDW9nqSpFFWvTxa6g8L2UG">
-    <em:updates RDF:resource="rdf:#$SwhDQ2"/>
-  </RDF:Description>
 </RDF:RDF>
