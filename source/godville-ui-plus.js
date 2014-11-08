@@ -1543,20 +1543,24 @@ var ui_improver = {
 
 	colorBossWarningsOnMap: function() {
 		// map cells painting
-		var direction, x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
+		var first_sentence, direction,
+			x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
 			y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
 			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)');
 		for (var i = 0, len = chronicles.length; i < len; i++) {
 			if (chronicles[i].parentNode.classList.contains('boss_warning')) {
 				document.querySelectorAll('#map .dml')[y].children[x].classList.add('boss_warning');
 			}
-			direction = chronicles[i].textContent.match(/на (север|восток|юг|запад)/);
-			if (direction) {
-				switch(direction[1]) {
-				case 'север': y++; break;
-				case 'восток': x--; break;
-				case 'юг': y--; break;
-				case 'запад': x++; break;
+			first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
+			if (first_sentence) {
+				direction = first_sentence[0].match(/на (север|восток|юг|запад)/);
+				if (direction) {
+					switch(direction[1]) {
+					case 'север': y++; break;
+					case 'восток': x--; break;
+					case 'юг': y--; break;
+					case 'запад': x++; break;
+					}
 				}
 			}
 		}
