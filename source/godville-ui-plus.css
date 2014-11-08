@@ -387,8 +387,11 @@ body:not(.nightly) #laying_timer.red {
 #m_fight_log .boss_warning .d_msg {
 	color: darkgoldenrod;
 }
-.dmc.boss_warning {
-    background-color: gold;
+body:not(.nightly) .dmc.boss_warning {
+	background-color: gold;
+}
+body.nightly .dmc.boss_warning {
+	background-color: goldenrod;
 }
 
 /* dialog box-shadows */
