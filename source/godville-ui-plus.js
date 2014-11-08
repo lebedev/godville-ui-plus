@@ -939,6 +939,9 @@ var ui_improver = {
 	friendsRegexp: null,
 	windowResizeInt: 0,
 	mapColorizationTmt: 0,
+	alliesCount: 0,
+	currentAlly: 0,
+	currentAllyObserver: 0,
 	// trophy craft combinations
 	b_b: [],
 	b_r: [],
@@ -976,7 +979,7 @@ var ui_improver = {
 		this.improveMap();
 		this.improveInterface();
 		this.improveChat();
-		if (this.isFirstTime && ui_data.isDungeon) {
+		if (this.isFirstTime && (ui_data.isBattle || ui_data.isDungeon)) {
 			this.improveAllies();
 		}
 		this.checkButtonsVisibility();
@@ -1625,15 +1628,14 @@ var ui_improver = {
 		var i, len;
 
 		if (this.isFirstTime) {
-		//if (this.isFirstTime && ui_data.isDungeon) {
+		//if (this.isFirstTime && (ui_data.isBattle || ui_data.isDungeon)) {
 			var $friends = document.querySelectorAll('.frline .frname'),
 				friends = [];
 			for (i = 0, len = $friends.length; i < len; i++) {
 				friends.push($friends[i].textContent);
-				//sessionStorage.setItem('friends')
 			}
 			this.friendsRegexp = new RegExp(friends.join('|'));
-			//console.log(this.friendsRegexp);
+			console.log(this.friendsRegexp);
 		}
 
 		// links replace
@@ -1653,8 +1655,19 @@ var ui_improver = {
 	},
 
 	improveAllies: function() {
-		var $allies = document.getElementsByClassName('opp_n');
-		/*for (var i = 0, len = $allies.length; i < len; i++) {//★
+		var allies_buttons = document.querySelectorAll('#alls .opp_dropdown.popover-button');
+		if (this.isFirstTime) {
+			this.alliesCount = allies_buttons.length;
+		}
+		if (this.currentAlly < this.alliesCount) {
+			//console.log('click');
+			this.currentAllyObserver = this.currentAlly;
+			allies_buttons[this.currentAlly].click();
+		} else {
+			document.body.click();
+		}
+		/*var $allies = document.getElementsByClassName('opp_n');
+		for (var i = 0, len = $allies.length; i < len; i++) {//★
 			if ($allies[i].textContent.match(this.friendsRegexp)) {
 				//$allies[i].insertAdjacentHTML('beforeend', '<a title="Открыть чат  ''">★</a>');
 			}
@@ -1744,13 +1757,17 @@ var ui_observers = {
 			}
 		}
 	},
+	process_mutations: function(obj_func, mutations) {
+		mutations.forEach(obj_func);
+	},
 	start: function(obj) {
-		var target = document.querySelector(obj.target);
-		if (target) {
-			var observer = new MutationObserver(function(mutations) {
-				mutations.forEach(obj.func);
-			});
-			observer.observe(target, obj.config);
+		for (var i = 0, len = obj.target.length; i < len; i++) {
+			var target = document.querySelector(obj.target[i]);
+			if (target) {
+				var observer = new MutationObserver(this.process_mutations.bind(this, obj.func));
+				observer.observe(target, obj.config);
+				obj.observers.push(observer);
+			}
 		}
 	},
 	chats: {
@@ -1767,7 +1784,8 @@ var ui_observers = {
 				ui_improver.chatsFix();
 			}
 		},
-		target: '.chat_ph'
+		observers: [],
+		target: ['.chat_ph']
 	},
 	inventory: {
 		get condition() {
@@ -1789,7 +1807,8 @@ var ui_observers = {
 				ui_improver.improveLoot();
 			}
 		},
-		target: '#inventory ul'
+		observers: [],
+		target: ['#inventory ul']
 	},
 	refresher: {
 		condition: true,
@@ -1813,7 +1832,8 @@ var ui_observers = {
 				}
 			}
 		},
-		target: '#main_wrapper'
+		observers: [],
+		target: ['#main_wrapper']
 	},
 	diary: {
 		get condition() {
@@ -1825,7 +1845,8 @@ var ui_observers = {
 				ui_improver.improveDiary();
 			}
 		},
-		target: '#diary .d_content'
+		observers: [],
+		target: ['#diary .d_content']
 	},
 	chronicles: {
 		get condition() {
@@ -1837,7 +1858,8 @@ var ui_observers = {
 				ui_improver.improveChronicles();
 			}
 		},
-		target: '#m_fight_log .d_content'
+		observers: [],
+		target: ['#m_fight_log .d_content']
 	},
 	map_colorization: {
 		get condition() {
@@ -1853,7 +1875,45 @@ var ui_observers = {
 				ui_improver.mapColorizationTmt = setTimeout(ui_improver.colorBossWarningsOnMap, 50);
 			}
 		},
-		target: '#map .block_content'
+		observers: [],
+		target: ['#map .block_content']
+	},
+	dungeon_allies_parse: {
+		get condition() {
+			return ui_data.isBattle || ui_data.isDungeon;
+		},
+		config: {
+			childList: true,
+			subtree: true
+		},
+		func: function(mutation) {
+			if (mutation.addedNodes.length) {
+				if (ui_improver.currentAlly == ui_improver.currentAllyObserver) {
+					//console.log(ui_improver.currentAlly, ui_improver.currentAllyObserver, ui_improver.alliesCount);
+					var god_name = mutation.target.querySelector('.l_val').textContent;
+					//console.log(god_name);
+					//console.log();
+					if (god_name.match(ui_improver.friendsRegexp)) {
+						console.log(god_name, 'с героем/героиней ', document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly].textContent, ' является вашим другом');
+					} else {
+						console.log(god_name, 'с героем/героиней ', document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly].textContent, ' не является вашим другом');
+					}
+					ui_improver.currentAlly += 1;
+					var match = mutation.target.id.match(/popover_opp_all(\d)/);
+					//console.log(match);
+					if (match) {
+						ui_observers.dungeon_allies_parse.observers[+match[1]].disconnect();
+						
+					}
+					setTimeout(function() {
+						ui_improver.improveAllies();
+					}, 10);
+					
+				}
+			}
+		},
+		observers: [],
+		target: ['#popover_opp_all0', '#popover_opp_all1', '#popover_opp_all2', '#popover_opp_all3', '#popover_opp_all4']
 	}
 };
 
