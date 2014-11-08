@@ -1660,18 +1660,11 @@ var ui_improver = {
 			this.alliesCount = allies_buttons.length;
 		}
 		if (this.currentAlly < this.alliesCount) {
-			//console.log('click');
 			this.currentAllyObserver = this.currentAlly;
 			allies_buttons[this.currentAlly].click();
 		} else {
 			document.body.click();
 		}
-		/*var $allies = document.getElementsByClassName('opp_n');
-		for (var i = 0, len = $allies.length; i < len; i++) {//★
-			if ($allies[i].textContent.match(this.friendsRegexp)) {
-				//$allies[i].insertAdjacentHTML('beforeend', '<a title="Открыть чат  ''">★</a>');
-			}
-		}*/
 	},
 
 	checkButtonsVisibility: function() {
@@ -1889,18 +1882,14 @@ var ui_observers = {
 		func: function(mutation) {
 			if (mutation.addedNodes.length) {
 				if (ui_improver.currentAlly == ui_improver.currentAllyObserver) {
-					//console.log(ui_improver.currentAlly, ui_improver.currentAllyObserver, ui_improver.alliesCount);
 					var god_name = mutation.target.querySelector('.l_val').textContent;
-					//console.log(god_name);
-					//console.log();
 					if (god_name.match(ui_improver.friendsRegexp)) {
-						console.log(god_name, 'с героем/героиней ', document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly].textContent, ' является вашим другом');
-					} else {
-						console.log(god_name, 'с героем/героиней ', document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly].textContent, ' не является вашим другом');
+						var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly];
+						hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="Открыть чат c богом/богиней ' + god_name + '">★</a>');
+						document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = ui_utils.openChatWith.bind(this, god_name);
 					}
 					ui_improver.currentAlly += 1;
 					var match = mutation.target.id.match(/popover_opp_all(\d)/);
-					//console.log(match);
 					if (match) {
 						ui_observers.dungeon_allies_parse.observers[+match[1]].disconnect();
 						
