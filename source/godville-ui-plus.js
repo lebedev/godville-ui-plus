@@ -244,6 +244,16 @@ var ui_utils = {
 			i++;
 		}
 		return i;
+	},
+	openChatWith: function(friend) {
+		var current, friends = document.querySelectorAll('.msgDockPopupW .frline');
+		for (var i = 0, len = friends.length; i < len; i++) {
+			current = friends[i].querySelector('.frname');
+			if (current.textContent == friend) {
+				current.click();
+				break;
+			}
+		}
 	}
 };
 
