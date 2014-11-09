@@ -1557,7 +1557,7 @@ var ui_improver = {
 
 	colorBossWarningsOnMap: function() {
 		// map cells painting
-		var first_sentence, direction,
+		var first_sentence, direction, step,
 			x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
 			y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
 			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)');
@@ -1568,12 +1568,13 @@ var ui_improver = {
 			first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 			if (first_sentence) {
 				direction = first_sentence[0].match(/на (север|восток|юг|запад)/);
+				step = first_sentence[0].match(/через клетку|два раза вне очереди|со всей дури прыгают|герои пролетают ячейку и приземляются далеко|герои летят/) ? 2 : 1;
 				if (direction) {
 					switch(direction[1]) {
-					case 'север': y++; break;
-					case 'восток': x--; break;
-					case 'юг': y--; break;
-					case 'запад': x++; break;
+					case 'север': y += step; break;
+					case 'восток': x -= step; break;
+					case 'юг': y -= step; break;
+					case 'запад': x += step; break;
 					}
 				}
 			}
