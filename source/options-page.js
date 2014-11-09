@@ -231,6 +231,15 @@ return '<p>\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
+'								<label class="l_capt" for="enable_debug_mode">Включить режим отладки</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="enable_debug_mode" name="enable_debug_mode" class="option-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<div class="g_desc">чисто девелоперская штучка</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
 '								<div id="options_GodvilleUI_general">\n' +
 '									<input class="input_btn" type="submit"\n' +
 '											 id="GodvilleUI_general"\n' +
