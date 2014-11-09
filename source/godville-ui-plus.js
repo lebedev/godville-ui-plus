@@ -1892,10 +1892,10 @@ var ui_observers = {
 			if (mutation.addedNodes.length) {
 				if (ui_improver.currentAlly == ui_improver.currentAllyObserver) {
 					var god_name = mutation.target.querySelector('.l_val').textContent;
-					var dungeon_motto = mutation.target.querySelector('.h_motto').textContent.match(/\[[ОOoОБбКKкk]\]/);
+					var dungeon_motto = mutation.target.querySelector('.h_motto').textContent.match(/\[[ОOoОБбКKкkMМм]\]/g);
 					var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly];
 					if (dungeon_motto) {
-						hero_name.textContent = hero_name.textContent + ' ' + dungeon_motto[0];
+						hero_name.textContent = hero_name.textContent + ' ' + dungeon_motto.join('');
 					}
 					if (god_name.match(ui_improver.friendsRegexp)) {
 						hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="Открыть чат c богом/богиней ' + god_name + '">★</a>');
