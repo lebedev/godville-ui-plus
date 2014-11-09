@@ -802,8 +802,21 @@ var ui_informer = {
 	},
 
 	clear_title: function() {
-		var pm = +$('.fr_new_badge_pos:visible').text() + $('.msgDock .fr_new_msg').length;
-		pm = pm ? '[' + pm + '] ' : '';
+		var pm = 0,
+			pm_badge = document.querySelector('.fr_new_badge_pos');
+		if (pm_badge.style.display != 'none') {
+			pm = +pm_badge.textContent;
+		}
+		var stars = document.querySelectorAll('.msgDock .fr_new_msg');
+		for (var i = 0, len = stars.length; i < len; i++) {
+			if (stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent != 'Гильдсовет') {
+				pm++;
+			}
+		}
+		pm = pm ? '[' + pm + ']' : '';
+
+		var gm = document.getElementsByClassName('gc_new_badge')[0].style.display != 'none';
+		gm = gm ? '[g]' : '';
 
 		var fi = 0;
 		for (var topic in JSON.parse(ui_storage.get('ForumInformers'))) {
@@ -811,9 +824,9 @@ var ui_informer = {
 		}
 		fi = fi ? '[f]' : '';
 
-		document.title = pm + fi + this.title;
-		$('link[rel="shortcut icon"]').remove();
-		$('head').append('<link rel="shortcut icon" href="images/favicon.ico" />');
+		document.title = pm + gm + fi + (pm || gm || fi ? ' ' : '') + this.title;
+		document.head.removeChild(document.querySelector('link[rel="shortcut icon"]'));
+		document.head.insertAdjacentHTML('beforeend', '<link rel="shortcut icon" href="images/favicon.ico" />');
 	},
 	
 	update_title: function(arr) {
