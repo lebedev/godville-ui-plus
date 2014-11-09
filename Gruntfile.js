@@ -81,7 +81,7 @@ module.exports = function(grunt) {
       all: ['Gruntfile.js', 'source/**/*.js']
     },
     prompt: {
-      copy: {
+      version: {
         options: {
           questions: [
             {
@@ -152,7 +152,7 @@ module.exports = function(grunt) {
       grunt.task.run([
         'jshint',
         'exec:sign',
-        'prompt:copy',
+        'prompt',
         'copy',
         'process_chrome',
         'process_firefox'
