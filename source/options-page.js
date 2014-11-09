@@ -180,6 +180,15 @@ return '<p>\n' +
 '							<div class="new_line">\n' +
 '								<div class="g_desc">при зависании страницы героя принудительно обновляет ее</div>\n' +
 '							</div>\n' +
+'							<div class="new_line">\n' +
+'								<label class="l_capt" for="disable_laying_timer">Оключить таймер возложений</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="disable_laying_timer" name="disable_laying_timer" class="option-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<div class="g_desc">для тех, кому он мозолит глаза</div>\n' +
+'							</div>\n' +
 '							<!--<div class="new_line"><label class="l_capt">Широкое окно</label>\n' +
 '								<div class="field_content">\n' +
 '									<input id="use_wide_screen" name="use_wide_screen" class="option-checkbox" type="checkbox">\n' +
