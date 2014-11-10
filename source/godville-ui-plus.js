@@ -1923,7 +1923,7 @@ var ui_observers = {
 					ui_improver.currentAlly += 1;
 					var match = mutation.target.id.match(/popover_opp_all(\d)/);
 					if (match) {
-						ui_observers.dungeon_allies_parse.observers[ui_improver.currentAlly - 1].disconnect();
+						ui_observers.allies_parse.observers[ui_improver.currentAlly - 1].disconnect();
 					}
 					setTimeout(function() {
 						ui_improver.improveAllies();
