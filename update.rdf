@@ -2,21 +2,21 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$s1T9V3"
-                   em:version="0.11.70.6">
-    <em:targetApplication RDF:resource="rdf:#$v1T9V3"/>
-  </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$r1T9V3">
-    <RDF:li RDF:resource="rdf:#$s1T9V3"/>
-  </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAIETstsGlyB2CTpeoIM5RD/kY9UNff0A0wvK2hoGbN+Fm5wAbTZkKGHfeJ+wo93uBF2CX1PmoqzrTiCxDtBK/YrrSG7EyaWJ3GPt5u3A6DuCOb5YBtGCqi7OApkhQeK7nG6vTmgB6XE5szxuMiyI8tCuJBhYoJ17uxVGMB4wTkKk">
-    <em:updates RDF:resource="rdf:#$r1T9V3"/>
-  </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$v1T9V3"
+  <RDF:Description RDF:about="rdf:#$RKmcc"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="4.0"
                    em:maxVersion="36.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/raw/master/release/godville-ui-plus%40badluck.dicey.xpi"
-                   em:updateHash="sha1:1f318e502e4a0e12cd29834f257acb0e6d8f8215" />
+                   em:updateHash="sha1:108dcc7d1281662023320fce140ec1ddd3e6633f" />
+  <RDF:Description RDF:about="rdf:#$OKmcc"
+                   em:version="0.11.70.7">
+    <em:targetApplication RDF:resource="rdf:#$RKmcc"/>
+  </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$NKmcc">
+    <RDF:li RDF:resource="rdf:#$OKmcc"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHwdUGBPC6bfNXRNgpXNwZ5me7Iiz4megA1XVg2dJTv2+wqLFDXPqGL9C7I9vq7sjrGLKQqFfRRTml2FAe3vJWO4iNltl4dmcsTcr0/D7DG95ooO5l2bvAOLEfzgU5Przxx9TliFXHpVQK9wsrfYT8DPhUgFxDO0m7YGPAmtKCk9">
+    <em:updates RDF:resource="rdf:#$NKmcc"/>
+  </RDF:Description>
 </RDF:RDF>
