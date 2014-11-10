@@ -1581,7 +1581,7 @@ var ui_improver = {
 				direction = first_sentence[0].match(/север|восток|юг|запад/i);
 				step = first_sentence[0].match(/через клетку|два раза вне очереди|со всей дури прыгают|герои пролетают ячейку и приземляются далеко|герои летят/) ? 2 : 1;
 				if (direction) {
-					switch(direction[1]) {
+					switch(direction[0]) {
 					case 'север': y += step; break;
 					case 'восток': x -= step; break;
 					case 'юг': y -= step; break;
