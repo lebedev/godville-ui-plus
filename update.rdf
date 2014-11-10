@@ -2,21 +2,21 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$mW+Fd2"
+  <RDF:Description RDF:about="rdf:#$N2rRw2"
+                   em:version="0.11.70.10">
+    <em:targetApplication RDF:resource="rdf:#$Q2rRw2"/>
+  </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$M2rRw2">
+    <RDF:li RDF:resource="rdf:#$N2rRw2"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAEWesIOeNzqSwuwwLMFN/lM9NaTu80elRpDfna+VvHGtwfvz3fHJt0A9xv+040vdhci9KeU8Y5/8mZpgzO2ikQddtKn6fj5qrfGFDqr3ZvZSlerjzPJ6mWPoRFUiNrxVVxJNmc5vp5mAfQUNuJ5SNYuttxvAERXZPzBJKd04RmtS">
+    <em:updates RDF:resource="rdf:#$M2rRw2"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$Q2rRw2"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="4.0"
                    em:maxVersion="36.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/raw/master/release/godville-ui-plus%40badluck.dicey.xpi"
-                   em:updateHash="sha1:e431f5643c2c5d0442b76ff701c6cd6aee976866" />
-  <RDF:Description RDF:about="rdf:#$jW+Fd2"
-                   em:version="0.11.70.9">
-    <em:targetApplication RDF:resource="rdf:#$mW+Fd2"/>
-  </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$iW+Fd2">
-    <RDF:li RDF:resource="rdf:#$jW+Fd2"/>
-  </RDF:Seq>
-  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBACJ11OBr+kgNpCPIKHfHKXkibV5UOMzyS73OHUYYIz1kkfuzEGIWR99MR1ar8GysvCKkXyeNSIR+vSsk/QBLA7ACJV9wP4xPlisPfZfOo3a3ZDv+QZHFZdDfZ21+EBr78Lbbr+4wpwuE6fGUzacOsXHGtK8/gCTqXP2YGl0Ye/Qx">
-    <em:updates RDF:resource="rdf:#$iW+Fd2"/>
-  </RDF:Description>
+                   em:updateHash="sha1:427535dd3f928d6aecaf4388331621b810de6d08" />
 </RDF:RDF>
