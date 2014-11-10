@@ -1892,7 +1892,7 @@ var ui_observers = {
 		observers: [],
 		target: ['#map .block_content']
 	},
-	dungeon_allies_parse: {
+	allies_parse: {
 		get condition() {
 			return ui_data.isBattle || ui_data.isDungeon;
 		},
@@ -1903,12 +1903,15 @@ var ui_observers = {
 		func: function(mutation) {
 			if (mutation.addedNodes.length) {
 				if (ui_improver.currentAlly == ui_improver.currentAllyObserver) {
-					var god_name = mutation.target.querySelector('.l_val').textContent;
-					var dungeon_motto = mutation.target.querySelector('.h_motto').textContent.match(/\[[^\]]+?\]/g);
-					var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly];
-					if (dungeon_motto) {
-						hero_name.textContent = hero_name.textContent + ' ' + dungeon_motto.join('');
+					var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly],
+						motto_field = mutation.target.querySelector('.h_motto');
+					if (motto_field) {
+						var special_motto = motto_field.textContent.match(/\[[^\]]+?\]/g);
+						if (special_motto) {
+							hero_name.textContent = hero_name.textContent + ' ' + dungeon_motto.join('');
+						}
 					}
+					var god_name = mutation.target.querySelector('.l_val').textContent;
 					if (god_name.match(ui_improver.friendsRegexp)) {
 						hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="Открыть чат c богом/богиней ' + god_name + '">★</a>');
 						document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = function(e) {
@@ -1925,7 +1928,6 @@ var ui_observers = {
 					setTimeout(function() {
 						ui_improver.improveAllies();
 					}, 0);
-					
 				}
 			}
 		},
