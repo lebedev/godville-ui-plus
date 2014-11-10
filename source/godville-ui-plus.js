@@ -1578,7 +1578,7 @@ var ui_improver = {
 			}
 			first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 			if (first_sentence) {
-				direction = first_sentence[0].match(/на (север|восток|юг|запад)/);
+				direction = first_sentence[0].match(/на (север|восток|юг|запад)/i);
 				step = first_sentence[0].match(/через клетку|два раза вне очереди|со всей дури прыгают|герои пролетают ячейку и приземляются далеко|герои летят/) ? 2 : 1;
 				if (direction) {
 					switch(direction[1]) {
