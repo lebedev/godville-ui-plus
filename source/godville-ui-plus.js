@@ -1908,7 +1908,7 @@ var ui_observers = {
 					if (motto_field) {
 						var special_motto = motto_field.textContent.match(/\[[^\]]+?\]/g);
 						if (special_motto) {
-							hero_name.textContent = hero_name.textContent + ' ' + dungeon_motto.join('');
+							hero_name.textContent = hero_name.textContent + ' ' + special_motto.join('');
 						}
 					}
 					var god_name = mutation.target.querySelector('.l_val').textContent;
