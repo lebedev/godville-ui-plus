@@ -69,7 +69,7 @@ var follow = function(e) {
 		e.preventDefault();
 		var topic = isTopic ? location.pathname.match(/\d+/)[0]
 							: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-			posts = isTopic ? +$('.subtitle').textContent.match(/\d+/)[0]
+			posts = isTopic ? +$c('subtitle').textContent.match(/\d+/)[0]
 							: +this.parentElement.parentElement.nextElementSibling.textContent,
 			topics = JSON.parse(storage.get(forum_topics));
 		topics[topic] = posts;
