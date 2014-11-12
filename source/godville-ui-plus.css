@@ -383,71 +383,137 @@ body:not(.nightly) #laying_timer.red {
 }
 
 /* dungeon phrases colorization */
-#m_fight_log .d_msg {
-	color: darkgoldenrod;
-}
-body:not(.nightly) .dmc.boss_warning {
-	background-color: gold;
-}
-body.nightly .dmc.boss_warning {
-	background-color: goldenrod;
-}
-
 body:not(.nightly) #m_fight_log .d_msg .bossWarnings {
-	color: red;
+	color: darkorange;
 }
 body.nightly #m_fight_log .d_msg .bossWarnings {
-	color: red;
+	/*color: ;*/
 }
 body:not(.nightly) #m_fight_log .d_msg .bossSlay {
-	color: red;
+	color: firebrick;
 }
 body.nightly #m_fight_log .d_msg .bossSlay {
-	color: red;
+	/*color: ;*/
 }
 body:not(.nightly) #m_fight_log .d_msg .smallPrayer {
-	color: red;
+	color: dodgerblue;
 }
 body.nightly #m_fight_log .d_msg .smallPrayer {
-	color: red;
+	/*color: ;*/
 }
 body:not(.nightly) #m_fight_log .d_msg .smallHealing {
-	color: red;
+	color: green;
 }
 body.nightly #m_fight_log .d_msg .smallHealing {
-	color: red;
+	/*color: ;*/
 }
 body:not(.nightly) #m_fight_log .d_msg .trophyLoss {
-	color: red;
+	color: saddlebrown;
 }
 body.nightly #m_fight_log .d_msg .trophyLoss {
-	color: red;
+	/*color: ;*/
 }
 body:not(.nightly) #m_fight_log .d_msg .moneyLoss {
-	color: red;
+	color: goldenrod;
 }
 body.nightly #m_fight_log .d_msg .moneyLoss {
-	color: red;
+	/*color: ;*/
 }
 body:not(.nightly) #m_fight_log .d_msg .lowDamage {
-	color: red;
+	color: #f55;
 }
 body.nightly #m_fight_log .d_msg .lowDamage {
-	color: red;
+	/*color: ;*/
 }
 body:not(.nightly) #m_fight_log .d_msg .midDamage {
-	color: red;
+	color: #f11;
 }
 body.nightly #m_fight_log .d_msg .midDamage {
-	color: red;
+	/*color: ;*/
 }
 body:not(.nightly) #m_fight_log .d_msg .moveLoss {
-	color: red;
+	color: grey;
 }
 body.nightly #m_fight_log .d_msg .moveLoss {
-	color: red;
+	/*color: ;*/
 }
 
+/* dungeon map colorization */
+body:not(.nightly) .dmc.bossWarnings {
+	background: darkorange;
+}
+body.nightly .dmc.bossWarnings {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.bossSlay {
+	background: firebrick;
+}
+body.nightly .dmc.bossSlay {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.smallPrayer {
+	background: dodgerblue;
+}
+body.nightly .dmc.smallPrayer {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.smallHealing {
+	background: green;
+}
+body.nightly .dmc.smallHealing {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.trophyLoss {
+	background: saddlebrown;
+}
+body.nightly .dmc.trophyLoss {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.moneyLoss {
+	background: goldenrod;
+}
+body.nightly .dmc.moneyLoss {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.lowDamage {
+	background: #f55;
+}
+body.nightly .dmc.lowDamage {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.midDamage {
+	background: #f11;
+}
+body.nightly .dmc.midDamage {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.moveLoss {
+	background: grey;
+}
+body.nightly .dmc.moveLoss {
+	/*background: ;*/
+}
+body:not(.nightly) .dmc.bossWarnings.smallPrayer {
+	background: linear-gradient(135deg, darkorange 0%, darkorange 50%, dodgerblue 50%, dodgerblue 100%);
+}
+body:not(.nightly) .dmc.bossWarnings.smallHealing {
+	background: linear-gradient(135deg, darkorange 0%, darkorange 50%, green 50%, green 100%);
+}
+body:not(.nightly) .dmc.bossWarnings.trophyLoss {
+	background: linear-gradient(135deg, darkorange 0%, darkorange 50%, saddlebrown 50%, saddlebrown 100%);
+}
+body:not(.nightly) .dmc.bossWarnings.moneyLoss {
+	background: linear-gradient(135deg, darkorange 0%, darkorange 50%, goldenrod 50%, goldenrod 100%);
+}
+body:not(.nightly) .dmc.bossWarnings.lowDamage {
+	background: linear-gradient(135deg, darkorange 0%, darkorange 50%, #f55 50%, #f55 100%);
+}
+body:not(.nightly) .dmc.bossWarnings.midDamage {
+	background: linear-gradient(135deg, darkorange 0%, darkorange 50%, #f11 50%, #f11 100%);
+}
+body:not(.nightly) .dmc.bossWarnings.moveLoss {
+	background: linear-gradient(135deg, darkorange 0%, darkorange 50%, grey 50%, grey 100%);
+}
 /* dialog box-shadows */
 body.nightly .ui_msg {
 	box-shadow: 2px 2px 15px #fff;
