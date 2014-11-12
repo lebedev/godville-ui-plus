@@ -1560,7 +1560,7 @@ var ui_improver = {
 			}
 
 			// informer
-			ui_informer.update('close to boss', document.querySelectorAll('#m_fight_log .d_line.boss_warning:nth-child(1)').length);
+			ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent == '▼' ? document.querySelectorAll('#m_fight_log .d_line.boss_warning:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.boss_warning:last-child').length);
 
 			this.colorBossWarningsOnMap();
 		}
@@ -1571,8 +1571,9 @@ var ui_improver = {
 		var first_sentence, direction, step,
 			x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
 			y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
-			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)');
-		for (var i = 0, len = chronicles.length; i < len; i++) {
+			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
+			ch_down = document.querySelector('.sort_ch').textContent == '▼';
+		for (var len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
 			if (chronicles[i].parentNode.classList.contains('boss_warning')) {
 				document.querySelectorAll('#map .dml')[y].children[x].classList.add('boss_warning');
 			}
