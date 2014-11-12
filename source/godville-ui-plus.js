@@ -1569,10 +1569,14 @@ var ui_improver = {
 	improveChronicles: function() {
 		if (this.bossWarningsRegExp) {
 			// chronicles painting
-			var i, len, chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
-			for (i = 0, len = chronicles.length; i < len; i++) {
-				if (chronicles[i].textContent.match(this.bossWarningsRegExp)) {
-					chronicles[i].parentNode.classList.add('boss_warning');
+			var match, split, chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
+			for (var i = 0, len = chronicles.length; i < len; i++) {
+				for (var j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
+					match = chronicles[i].innerHTML.match(this[this.dungeonPhrases[i] + 'RegExp']);
+					if (match) {
+						split = chronicles[i].innerHTML.split(match[0]);
+						chronicles[i].innerHTML = split[0] + '<span class="' + this.dungeonPhrases[i] + '">' + match[0] + "</span>" + split[1];
+					}
 				}
 				chronicles[i].classList.add('parsed');
 			}
