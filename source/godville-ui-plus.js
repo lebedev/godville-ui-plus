@@ -1533,7 +1533,7 @@ var ui_improver = {
 	},
 
 	setBossWarnings: function(xhr) {
-		var bossWarnings = xhr.responseText.match(/<p>bossWarnings([\s\S]+?)<\/p>/)[1].replace(/…/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
+		var bossWarnings = xhr.responseText.match(/<p>bossWarnings([\s\S]+?)<\/p>/)[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
 		this.bossWarningsRegExp = new RegExp(bossWarnings);
 		ui_storage.set('bossWarnings', bossWarnings);
 		ui_storage.set('bossWarningsExpirationDate', Date.now() + 4*60*60*1000);
