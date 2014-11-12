@@ -1584,11 +1584,11 @@ var ui_improver = {
 			// informer
 			ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent == '▼' ? document.querySelectorAll('#m_fight_log .d_line.boss_warning:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.boss_warning:last-child').length);
 
-			this.colorBossWarningsOnMap();
+			this.colorDungeonMap();
 		}
 	},
 
-	colorBossWarningsOnMap: function() {
+	colorDungeonMap: function() {
 		// map cells painting
 		var first_sentence, direction, step,
 			x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
@@ -1596,8 +1596,10 @@ var ui_improver = {
 			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
 			ch_down = document.querySelector('.sort_ch').textContent == '▼';
 		for (var len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
-			if (chronicles[i].parentNode.classList.contains('boss_warning')) {
-				document.querySelectorAll('#map .dml')[y].children[x].classList.add('boss_warning');
+			for (var j = 0, len2 = this.dungeonPhrases.length; j < len; j++) {
+				if (chronicles[i].getElementsByClassName(this.dungeonPhrases[i])) {
+					document.querySelectorAll('#map .dml')[y].children[x].classList.add(this.dungeonPhrases[i]);
+				}
 			}
 			first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 			if (first_sentence) {
@@ -1909,7 +1911,7 @@ var ui_observers = {
 		func: function(mutation) {
 			if (mutation.addedNodes.length) {
 				clearTimeout(ui_improver.mapColorizationTmt);
-				ui_improver.mapColorizationTmt = setTimeout(ui_improver.colorBossWarningsOnMap, 50);
+				ui_improver.mapColorizationTmt = setTimeout(ui_improver.colorDungeonMap, 50);
 			}
 		},
 		observers: [],

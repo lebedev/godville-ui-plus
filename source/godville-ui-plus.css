@@ -382,9 +382,8 @@ body:not(.nightly) #laying_timer.red {
 	left: -9999px;
 }
 
-/* boss warnings */
-#m_fight_log .boss_warning .d_time,
-#m_fight_log .boss_warning .d_msg {
+/* dungeon phrases colorization */
+#m_fight_log .d_msg {
 	color: darkgoldenrod;
 }
 body:not(.nightly) .dmc.boss_warning {
@@ -392,6 +391,61 @@ body:not(.nightly) .dmc.boss_warning {
 }
 body.nightly .dmc.boss_warning {
 	background-color: goldenrod;
+}
+
+body:not(.nightly) #m_fight_log .d_msg .bossWarnings {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .bossWarnings {
+	color: red;
+}
+body:not(.nightly) #m_fight_log .d_msg .bossSlay {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .bossSlay {
+	color: red;
+}
+body:not(.nightly) #m_fight_log .d_msg .smallPrayer {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .smallPrayer {
+	color: red;
+}
+body:not(.nightly) #m_fight_log .d_msg .smallHealing {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .smallHealing {
+	color: red;
+}
+body:not(.nightly) #m_fight_log .d_msg .trophyLoss {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .trophyLoss {
+	color: red;
+}
+body:not(.nightly) #m_fight_log .d_msg .moneyLoss {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .moneyLoss {
+	color: red;
+}
+body:not(.nightly) #m_fight_log .d_msg .lowDamage {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .lowDamage {
+	color: red;
+}
+body:not(.nightly) #m_fight_log .d_msg .midDamage {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .midDamage {
+	color: red;
+}
+body:not(.nightly) #m_fight_log .d_msg .moveLoss {
+	color: red;
+}
+body.nightly #m_fight_log .d_msg .moveLoss {
+	color: red;
 }
 
 /* dialog box-shadows */
