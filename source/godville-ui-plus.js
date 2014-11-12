@@ -344,15 +344,15 @@ var ui_help_dialog = {
 							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
 						'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке ' +
 							'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
-						'И с этой информацией напишите Бэдлаку или в тему на форуме по ссылкам ниже.</li>' +
+						'И с этой информацией напишите <b>Бэдлаку</b> или в тему на форуме по ссылкам ниже.</li>' +
 						'</ol>' +
 						'<div>Полезные ссылки: ' +
 							'<a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
 							'его <a href="skype:angly_cat">скайп</a>, ' +
-							'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" title="Откроется в новой вкладке" target="_blank">список багов</a>, ' +
+							'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" title="Откроется в новой вкладке" target="_blank">список багов и идей (aka "блокнотик")</a>, ' +
 							'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
 							'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
-							'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">Предвестник Боссов</a>.' +
+							'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.' +
 					'</div>');
 		if (ui_utils.isDebugMode) {
 			this.append($('<span>dump: </span>'));
