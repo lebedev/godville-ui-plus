@@ -121,13 +121,13 @@ function loadOptions() {
 	}).attr('rows', 1);
 
 	$j('#GUIp_import').click(function() {
-		var options_string = prompt('Импорт настроек');
+		var options_string = prompt('Импорт настроек\nВставьте сюда строку настроек');
 		if (options_string) {
 			storage.importOptions(options_string);
 		}
 	});
 	$j('#GUIp_export').click(function() {
-		prompt('Экспорт настроек', storage.exportOptions());
+		prompt('Экспорт настроек\nСкопируйте отсюда строку настроек', storage.exportOptions());
 	});
 
 	ImproveInProcess = false;
