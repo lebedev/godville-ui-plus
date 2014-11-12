@@ -958,8 +958,18 @@ var ui_improver = {
 	b_b: [],
 	b_r: [],
 	r_r: [],
-	// boss warnings
-	bossWarningsRegExp: null,
+	// dungeon phrases
+	dungeonPhrases: [
+		'bossWarnings',
+		'bossSlay',
+		'smallPrayer',
+		'smallHealing',
+		'trophyLoss',
+		'moneyLoss',
+		'lowDamage',
+		'midDamage',
+		'moveLoss'
+	],
 	// resresher
 	softRefreshInt: 0,
 	hardRefreshInt: 0,
@@ -979,7 +989,7 @@ var ui_improver = {
 				this.improveLoot();
 			}
 			if (ui_data.isDungeon) {
-				this.getBossWarnings();
+				this.getDungeonPhrases();
 			}
 		}
 		this.improveStats();
@@ -1536,19 +1546,23 @@ var ui_improver = {
 		}
 	},
 
-	setBossWarnings: function(xhr) {
-		var bossWarnings = xhr.responseText.match(/<p>bossWarnings([\s\S]+?)<\/p>/)[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
-		this.bossWarningsRegExp = new RegExp(bossWarnings);
-		ui_storage.set('bossWarnings', bossWarnings);
-		ui_storage.set('bossWarningsExpirationDate', Date.now() + 4*60*60*1000);
+	parseDungeonPhrases: function(xhr) {
+		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
+			temp = xhr.responseText.match(new RegExp('<p>' + this.dungeonPhrases[i] + '([\\s\\S]+?)<\/p>'))[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
+			this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(temp);
+			ui_storage.set('Dungeon:' + this.dungeonPhrases[i] + 'Phrases', temp);
+		}
+		ui_storage.set('Dungeon:phrasesExpirationDate', Date.now() + 4*60*60*1000);
 		this.improveChronicles();
 	},
-	getBossWarnings: function() {
-		var bossWarningsExpirationDate = ui_storage.get('bossWarningsExpirationDate');
-		if (!bossWarningsExpirationDate || bossWarningsExpirationDate && Date.now() > bossWarningsExpirationDate) {
-			ui_utils.getXHR('/gods/Спандарамет', this.setBossWarnings.bind(this));
+	getDungeonPhrases: function() {
+		var dungeonPhrasesExpirationDate = ui_storage.get('Dungeon:phrasesExpirationDate');
+		if (!dungeonPhrasesExpirationDate || dungeonPhrasesExpirationDate && Date.now() > dungeonPhrasesExpirationDate) {
+			ui_utils.getXHR('/gods/Спандарамет', this.parseDungeonPhrases.bind(this));
 		} else {
-			this.bossWarningsRegExp = new RegExp(ui_storage.get('bossWarnings'));
+			for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
+				this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(ui_storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
+			}
 			this.improveChronicles();
 		}
 	},
