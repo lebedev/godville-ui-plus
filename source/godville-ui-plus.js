@@ -644,7 +644,10 @@ var ui_logger = {
 				if (name === 'exp' && ui_storage.get('Logger:Level') !== $('#hk_level .l_val').text()) {
 					s = '→' + ui_stats.get(id);
 				} else if (name === 'tsk' && ui_storage.get('Stats:Task_Name') !== $('.q_name').text()) {
-					ui_storage.set('Stats:Task_Name', $('.q_name').text());
+					var quest_name = $('.q_name').text();
+					ui_storage.set('Stats:Task_Name', quest_name);
+					ui_informer.update('guild quest', quest_name.match(/членом гильдии/));
+					ui_informer.update('mini quest', quest_name.match(/\(мини\)/));
 					s = '→' + ui_stats.get(id);
 				} else {
 					s = diff;

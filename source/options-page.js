@@ -210,6 +210,8 @@ return '<p>\n' +
 '									<input class="informer-checkbox" id="monster_with_capabilities" name="monster_with_capabilities" type="checkbox"><label for="monster_with_capabilities">монстр со способностями</label><br>\n' +
 '									<input class="informer-checkbox" id="tamable_monster" name="tamable_monster" type="checkbox"><label for="tamable_monster">приручаемый монстр</label><br>\n' +
 '									<input class="informer-checkbox" id="close_to_boss" name="close_to_boss" type="checkbox"><label for="close_to_boss">близость к боссу в подземелье</label><br>\n' +
+'									<input class="informer-checkbox" id="guild_quest" name="guild_quest" type="checkbox"><label for="guild_quest">взятие квеста на смену гильдии</label><br>\n' +
+'									<input class="informer-checkbox" id="mini_quest" name="mini_quest" type="checkbox"><label for="mini_quest">взятие мини-квеста</label><br>\n' +
 //'									<input class="informer-checkbox" id="SMELT_TIME" name="SMELT_TIME" type="checkbox"><label for="SMELT_TIME">ВРЕМЯ ПЛАВКИ КИРПИЧЕЙ (с назойливым звуковым оповещением)</label><br>\n' +
 '									<b>Активируемые предметы</b> (отметить <a id="check_all" style="cursor: pointer;">все</a> или <a id="uncheck_all" style="cursor: pointer;">ни один</a>):<br>\n' +
 '									<input class="item-informer informer-checkbox" id="coolstory_box" name="coolstory_box" type="checkbox"><label for="coolstory_box">сочиняющие былину</label><br>\n' +
