@@ -968,7 +968,8 @@ var ui_improver = {
 		'moneyLoss',
 		'lowDamage',
 		'midDamage',
-		'moveLoss'
+		'moveLoss',
+		'springnessDungeon'
 	],
 	// resresher
 	softRefreshInt: 0,
@@ -1604,7 +1605,7 @@ var ui_improver = {
 			first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 			if (first_sentence) {
 				direction = first_sentence[0].match(/север|восток|юг|запад/i);
-				step = first_sentence[0].match(/через клетку|два раза вне очереди|со всей дури прыгают|герои пролетают ячейку и приземляются далеко|герои летят/) ? 2 : 1;
+				step = first_sentence[0].match(ui_improver.springnessDungeonRegExp) ? 2 : 1;
 				if (direction) {
 					switch(direction[0]) {
 					case 'север': y += step; break;
