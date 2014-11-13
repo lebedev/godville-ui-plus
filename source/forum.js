@@ -125,7 +125,10 @@ if ($reply_form) {
 		'<a class="formatting button link" title="Вставить ссылку">a</a>' +
 		'<a class="formatting button ul" title="Оформить как неупорядоченный список">•</a>' +
 		'<a class="formatting button ol" title="Оформить как упорядоченный список">1.</a>' +
-		'<a class="formatting button br" title="Вставить перенос на новую строку">\\n</a>';
+		'<a class="formatting button br" title="Вставить перенос на новую строку">\\n</a>' +
+		'<a class="formatting button sup" title="Сделать текст надстрочным">X<sup>2</sup></a>' +
+		'<a class="formatting button sub" title="Сделать текст подстрочным">X<sub>2</sub></a>' +
+		'<a class="formatting button monospace" title="Сделать текст моноширинным"><code>мш</code></a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
 	var val, ss, se;
 	var basic_formatting = function(left, right, editor, e) {
@@ -186,6 +189,9 @@ if ($reply_form) {
 		$q(temp + 'ul').onclick = list_formatting.bind(this, '*', container);
 		$q(temp + 'ol').onclick = list_formatting.bind(this, '#', container);
 		$q(temp + 'br').onclick = paste_br.bind(this, container);
+		$q(temp + 'sup').onclick = basic_formatting.bind(this, '^', '^', container);
+		$q(temp + 'sub').onclick = basic_formatting.bind(this, '~', '~', container);
+		$q(temp + 'monospace').onclick = basic_formatting.bind(this, '@', '@', container);
 	};
 	set_click_actions('post_body_editor', $id('post_body'));
 	
