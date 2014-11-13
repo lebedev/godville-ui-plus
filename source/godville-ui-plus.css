@@ -40,7 +40,8 @@ body {
 
 .dockfr_close,
 .dockfr_ppage,
-.craft_button {
+.craft_button,
+#informer_bar div {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
