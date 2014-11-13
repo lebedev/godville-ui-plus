@@ -644,10 +644,7 @@ var ui_logger = {
 				if (name === 'exp' && ui_storage.get('Logger:Level') !== $('#hk_level .l_val').text()) {
 					s = '→' + ui_stats.get(id);
 				} else if (name === 'tsk' && ui_storage.get('Stats:Task_Name') !== $('.q_name').text()) {
-					var quest_name = $('.q_name').text();
-					ui_storage.set('Stats:Task_Name', quest_name);
-					ui_informer.update('guild quest', quest_name.match(/членом гильдии/));
-					ui_informer.update('mini quest', quest_name.match(/\(мини\)/));
+					ui_storage.set('Stats:Task_Name', $('.q_name').text());
 					s = '→' + ui_stats.get(id);
 				} else {
 					s = diff;
@@ -1441,6 +1438,8 @@ var ui_improver = {
 			this.inventoryChanged = true;
 		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, 'Золота', gold_parser) >= (ui_stats.get('Brick') > 1000 ? 10000 : 3000));
 		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, 'Здоровье') === 0);
+		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии/));
+		ui_informer.update('mini quest', $('.q_name').text().match(/\(мини\)/));
 
 		//Shovel pictogramm start
 		var $digVoice = $('#hk_gold_we .voice_generator');
