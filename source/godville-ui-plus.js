@@ -792,7 +792,7 @@ var ui_informer = {
 		// если есть чё, показать или вернуть стандартный заголовок
 		if (to_show.length > 0) {
 			this.update_title(to_show);
-			this.tref = setTimeout(function() {ui_informer.tick.call(ui_informer);}, 700);
+			this.tref = setTimeout(ui_informer.tick, 700);
 		} else {
 			this.clear_title();
 			this.tref = undefined;
@@ -802,7 +802,7 @@ var ui_informer = {
 	clear_title: function() {
 		var pm = 0,
 			pm_badge = document.querySelector('.fr_new_badge_pos');
-		if (pm_badge.style.display != 'none') {
+		if (pm_badge && pm_badge.style.display != 'none') {
 			pm = +pm_badge.textContent;
 		}
 		var stars = document.querySelectorAll('.msgDock .fr_new_msg');
@@ -1567,15 +1567,15 @@ var ui_improver = {
 		}
 	},
 	improveChronicles: function() {
-		if (this.bossWarningsRegExp) {
+		if (ui_improver.bossWarningsRegExp) {
 			// chronicles painting
 			var match, split, chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
 			for (var i = 0, len = chronicles.length; i < len; i++) {
-				for (var j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
-					match = chronicles[i].innerHTML.match(this[this.dungeonPhrases[i] + 'RegExp']);
+				for (var j = 0, len2 = ui_improver.dungeonPhrases.length; j < len2; j++) {
+					match = chronicles[i].innerHTML.match(ui_improver[ui_improver.dungeonPhrases[j] + 'RegExp']);
 					if (match) {
 						split = chronicles[i].innerHTML.split(match[0]);
-						chronicles[i].innerHTML = split[0] + '<span class="' + this.dungeonPhrases[i] + '">' + match[0] + "</span>" + split[1];
+						chronicles[i].innerHTML = split[0] + '<span class="' + ui_improver.dungeonPhrases[j] + '">' + match[0] + "</span>" + split[1];
 					}
 				}
 				chronicles[i].classList.add('parsed');
@@ -1596,9 +1596,9 @@ var ui_improver = {
 			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
 			ch_down = document.querySelector('.sort_ch').textContent == '▼';
 		for (var len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
-			for (var j = 0, len2 = this.dungeonPhrases.length; j < len; j++) {
-				if (chronicles[i].getElementsByClassName(this.dungeonPhrases[i])) {
-					document.querySelectorAll('#map .dml')[y].children[x].classList.add(this.dungeonPhrases[i]);
+			for (var j = 0, len2 = ui_improver.dungeonPhrases.length; j < len2; j++) {
+				if (chronicles[i].getElementsByClassName(ui_improver.dungeonPhrases[j]).length) {
+					document.querySelectorAll('#map .dml')[y].children[x].classList.add(ui_improver.dungeonPhrases[j]);
 				}
 			}
 			first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
