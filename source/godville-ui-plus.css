@@ -397,99 +397,99 @@ body:not(.nightly) #laying_timer.red {
 /* dungeon map colorization */
 /* not nightly theme */
 body:not(.nightly) .dmc.bossWarnings {
-	background: #edb338;
+	background: #ffce09;
 }
 body:not(.nightly) .dmc.bossSlay {
-	background: #ff9900;
+	background: #fa8700;
 }
 body:not(.nightly) .dmc.smallPrayer {
-	background: #b5d2e5;
+	background: #c5e0f3;
 }
 body:not(.nightly) .dmc.smallHealing {
-	background: #aeeab5;
+	background: #b9edbe;
 }
 body:not(.nightly) .dmc.trophyLoss,
 body:not(.nightly) .dmc.moneyLoss {
-	background: #dad7b4;
+	background: #dee0c0;
 }
 body:not(.nightly) .dmc.lowDamage {
-	background: #e5acad;
+	background: #e7afaf;
 }
 body:not(.nightly) .dmc.midDamage {
-	background: #d7595b;
+	background: #cb555b;
 }
 body:not(.nightly) .dmc.moveLoss {
-	background: #c0c0c0;
+	background: #aaaaaa;
 }
 body:not(.nightly) .dmc.bossWarnings.smallPrayer {
-	background: linear-gradient(135deg, #edb338 0%, #edb338 50%, #b5d2e5 50%, #b5d2e5 100%);
+	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #c5e0f3 50%, #c5e0f3 100%);
 }
 body:not(.nightly) .dmc.bossWarnings.smallHealing {
-	background: linear-gradient(135deg, #edb338 0%, #edb338 50%, #aeeab5 50%, #aeeab5 100%);
+	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #b9edbe 50%, #b9edbe 100%);
 }
 body:not(.nightly) .dmc.bossWarnings.trophyLoss,
 body:not(.nightly) .dmc.bossWarnings.moneyLoss {
-	background: linear-gradient(135deg, #edb338 0%, #edb338 50%, #dad7b4 50%, #dad7b4 100%);
+	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #dee0c0 50%, #dee0c0 100%);
 }
 body:not(.nightly) .dmc.bossWarnings.lowDamage {
-	background: linear-gradient(135deg, #edb338 0%, #edb338 50%, #e5acad 50%, #e5acad 100%);
+	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #e7afaf 50%, #e7afaf 100%);
 }
 body:not(.nightly) .dmc.bossWarnings.midDamage {
-	background: linear-gradient(135deg, #edb338 0%, #edb338 50%, #d7595b 50%, #d7595b 100%);
+	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #cb555b 50%, #cb555b 100%);
 }
 body:not(.nightly) .dmc.bossWarnings.moveLoss {
-	background: linear-gradient(135deg, #edb338 0%, #edb338 50%, #c0c0c0 50%, #c0c0c0 100%);
+	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #aaaaaa 50%, #aaaaaa 100%);
 }
 /* nightly theme */
 body.nightly .dmc.bossWarnings {
-	background: #915700;
+	background: #d3ae00;
 }
 body.nightly .dmc.bossSlay {
-	background: #a33d00;
+	background: #ff9f07;
 }
 
 body.nightly .dmc.smallPrayer {
-	background: #597689;
+	background: #2d546f;
 }
 
 body.nightly .dmc.smallHealing {
-	background: #528e59;
+	background: #2f6c37;
 }
 
 body.nightly .dmc.trophyLoss,
 body.nightly .dmc.moneyLoss {
-	background: #7e7b58;
+	background: #6c6d4e;
 }
 
 body.nightly .dmc.lowDamage {
-	background: #895051;
+	background: #8b5d5d;
 }
 
 body.nightly .dmc.midDamage {
-	background: #7b0000;
+	background: #9d1515;
 }
 
 body.nightly .dmc.moveLoss {
-	background: #4a4a4a;
+	background: #5c5c5c;
 }
 body.nightly .dmc.bossWarnings.smallPrayer {
-	background: linear-gradient(135deg, #915700 0%, #915700 50%, #597689 50%, #597689 100%);
+	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2d546f 50%, #2d546f 100%);
 }
 body.nightly .dmc.bossWarnings.smallHealing {
-	background: linear-gradient(135deg, #915700 0%, #915700 50%, #528e59 50%, #528e59 100%);
+	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2f6c37 50%, #2f6c37 100%);
 }
 body.nightly .dmc.bossWarnings.trophyLoss,
 body.nightly .dmc.bossWarnings.moneyLoss {
-	background: linear-gradient(135deg, #915700 0%, #915700 50%, #7e7b58 50%, #7e7b58 100%);
+	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #6c6d4e 50%, #6c6d4e 100%);
 }
 body.nightly .dmc.bossWarnings.lowDamage {
-	background: linear-gradient(135deg, #915700 0%, #915700 50%, #895051 50%, #895051 100%);
+	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #8b5d5d 50%, #8b5d5d 100%);
 }
 body.nightly .dmc.bossWarnings.midDamage {
-	background: linear-gradient(135deg, #915700 0%, #915700 50%, #7b0000 50%, #7b0000 100%);
+	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #9d1515 50%, #9d1515 100%);
 }
 body.nightly .dmc.bossWarnings.moveLoss {
-	background: linear-gradient(135deg, #915700 0%, #915700 50%, #4a4a4a 50%, #4a4a4a 100%);
+	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
 
 /* dialog box-shadows */
