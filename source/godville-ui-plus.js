@@ -742,8 +742,9 @@ var ui_informer = {
 				this.save();
 			}
 		}
-		if (!this.tref)
+		if (!this.tref) {
 			this.tick();
+		}
 	},
 	// убирает оповещение о событии
 	hide: function(flag) {
@@ -792,7 +793,7 @@ var ui_informer = {
 		// если есть чё, показать или вернуть стандартный заголовок
 		if (to_show.length > 0) {
 			this.update_title(to_show);
-			this.tref = setTimeout(ui_informer.tick, 700);
+			this.tref = setTimeout(this.tick.bind(this), 700);
 		} else {
 			this.clear_title();
 			this.tref = undefined;
