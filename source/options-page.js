@@ -208,7 +208,7 @@ return '<p>\n' +
 '									<input class="informer-checkbox" id="pvp" name="pvp" type="checkbox"><label for="pvp">бой</label><br>\n' +
 '									<input class="informer-checkbox" id="monster_of_the_day" name="monster_of_the_day" type="checkbox"><label for="monster_of_the_day">монстр дня</label><br>\n' +
 '									<input class="informer-checkbox" id="monster_with_capabilities" name="monster_with_capabilities" type="checkbox"><label for="monster_with_capabilities">монстр со способностями</label><br>\n' +
-'									<input class="informer-checkbox" id="monster_pet" name="monster_pet" type="checkbox"><label for="monster_pet">приручаемый монстр</label><br>\n' +
+'									<input class="informer-checkbox" id="tamable_monster" name="tamable_monster" type="checkbox"><label for="tamable_monster">приручаемый монстр</label><br>\n' +
 '									<input class="informer-checkbox" id="close_to_boss" name="close_to_boss" type="checkbox"><label for="close_to_boss">близость к боссу в подземелье</label><br>\n' +
 //'									<input class="informer-checkbox" id="SMELT_TIME" name="SMELT_TIME" type="checkbox"><label for="SMELT_TIME">ВРЕМЯ ПЛАВКИ КИРПИЧЕЙ (с назойливым звуковым оповещением)</label><br>\n' +
 '									<b>Активируемые предметы</b> (отметить <a id="check_all" style="cursor: pointer;">все</a> или <a id="uncheck_all" style="cursor: pointer;">ни один</a>):<br>\n' +
