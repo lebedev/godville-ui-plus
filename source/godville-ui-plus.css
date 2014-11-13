@@ -274,6 +274,11 @@ body.violet #forum_informer_bar a {
 	border-color: #A349A3;
 	color: #808;
 }
+body.pink #forum_informer_bar a {
+	background: #f9f;
+	border-color: #a0a;
+	color: #a0a;
+}
 body.emerald #forum_informer_bar a {
 	background: #9BD29B;
 	border-color: #49A349;
@@ -525,4 +530,12 @@ body.nightly .shovel:hover {
 /* hide hidden popovers */
 .popover.hidden {
 	display: none !important;
+}
+
+/* map legend */
+.guip_legend {
+	margin-bottom: 10px;
+}
+.guip_legend .dmc {
+	margin-right: 5px;
 }

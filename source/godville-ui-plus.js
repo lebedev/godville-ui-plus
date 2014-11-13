@@ -1232,6 +1232,19 @@ var ui_improver = {
 // ---------- Map --------------
 	improveMap: function() {
 		if (ui_data.isDungeon) {
+			if (this.isFirstTime) {
+				document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
+					'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - близость к боссу</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - босс</div></div>' +
+					'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - слабая молилка</div></div>' +
+					'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - слабая лечилка</div></div>' +
+					'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ловушка: золото или трофеи</div></div>' +
+					'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ловушка: слабый урон</div></div>' +
+					'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ловушка: сильный урон</div></div>' +
+					'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ловушка: пропуск хода</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - близость к боссу и ловушка</div></div>'
+				);
+			}
 			var i, j,
 				$box = $('#cntrl .voice_generator'),
 				$boxML = $('#map .dml'),
