@@ -1197,7 +1197,7 @@ var ui_improver = {
 		}
 		var isMonsterOfTheDay = false;
 		var isMonsterWithCapabilities = false;
-		var isMonsterPet = false;
+		var isTamableMonster = false;
 		// Если герой дерется с монстром
 		if ($('#news .line')[0].style.display != 'none') {
 			var currentMonster = $('#news .l_val').text();
