@@ -113,7 +113,7 @@ if (guip_hash) {
 // formatting buttons
 var $reply_form = $id('post_body_editor');
 if ($reply_form) {
-	window.GUIp_addGlobalStyleURL('forum.css', 'forum_css');
+	window.GUIp_addGlobalStyleURL(window.GUIp_getResource('forum.css'), 'forum_css');
 	var formatting_buttons =
 		'<a class="formatting button bold" title="Сделать полужирным">Ж</a>' +
 		'<a class="formatting button underline" title="Подчеркнуть">П</a>' +

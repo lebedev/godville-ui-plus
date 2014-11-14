@@ -273,7 +273,7 @@ return '<p>\n' +
 '					</div>\n' +
 '				</form>\n' +
 '			</div>\n' +
-'			<div id="GUIp_words" style="padding-top: 2em;">\n' +
+'			<div id="GUIp_words" style="margin-top: 2em;">\n' +
 '				<form id="words">\n' +
 '					<div class="bl_cell">\n' +
 '						<div class="bl_capt">Гласы</div>\n' +
@@ -311,7 +311,7 @@ return '<p>\n' +
 '					</div>\n' +
 '				</form>\n' +
 '			</div>\n' +
-'			<div style="padding: 2em 0;">\n' +
+'			<div style="margin: 2em 0;">\n' +
 '				<div class="bl_cell">\n' +
 '					<div class="bl_capt">Импорт/экспорт настроек</div>\n' +
 '					<div class="bl_content" style="text-align: center; padding-top: 0.9em;">\n' +

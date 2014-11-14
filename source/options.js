@@ -1,3 +1,6 @@
+(function() {
+'use strict';
+
 var $j;
 
 var storage = {
@@ -277,6 +280,8 @@ function save_options(form) {
 		storage.set('Option:forbiddenCraft', forbiddenCraft.join());
 
 		$j('#gui_options_progress').fadeOut('slow');
+
+		set_theme_and_background();
 	}
 	ImproveInProcess = false;
 }
@@ -376,6 +381,29 @@ function restore_options() {
 	}
 }
 
+function improve_blocks() {
+	var blocks = document.querySelectorAll('.bl_cell:not(.block), #pant_tbl:not(.block)');
+	for (var i = 0, len = blocks.length; i < len; i++) {
+		blocks[i].classList.add('block');
+	}
+}
+
+function set_theme_and_background() {
+	var ui_s_css = document.getElementById('ui_s_css');
+	if (ui_s_css) {
+		ui_s_css.parentNode.removeChild(ui_s_css);
+	}
+	window.GUIp_addGlobalStyleURL('/stylesheets/' + storage.get('ui_s') + '.css', 'ui_s_css');
+	var background = storage.get('Option:useBackground');
+	if (background) {
+		if (background == 'cloud') {
+			document.body.style.backgroundImage = 'url(' + window.GUIp_getResource('images/background.jpg') + ')';
+		} else {
+			document.body.style.backgroundImage =  'url(' + background + ')';
+		}
+	}
+}
+
 var def, curr_sect, god_name,
 	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'heil', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
 	ImproveInProcess = false,
@@ -395,12 +423,17 @@ var starterInt = setInterval(function() {
 		if (location.hash === "#ui_options") {
 			loadOptions();
 		}
+		window.GUIp_addGlobalStyleURL(window.GUIp_getResource('options.css'), 'options_css');
+		set_theme_and_background();
+		improve_blocks();
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
-			if(!$j('#profile_main p:first').text().match('Настройки UI+'))
-				setTimeout(function() {
-					addMenu();
-				}, 0);
+			if (!$j('#profile_main p:first').text().match('Настройки UI+')) {
+				addMenu();
+			}
+			improve_blocks();
 		});
 	}
 }, 100);
+
+})();

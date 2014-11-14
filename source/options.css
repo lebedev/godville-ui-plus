@@ -1,0 +1,16 @@
+html {
+	height: 100%;
+}
+
+body {
+    margin-bottom: -2em;
+    min-height: 100%;
+    overflow: auto;
+    padding-bottom: 2em;
+}
+
+#central_block_my_page,
+.bl_capt,
+th {
+	background: none;
+}
