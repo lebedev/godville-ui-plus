@@ -1271,18 +1271,18 @@ var ui_improver = {
 			for (var si = 0; si < kRow; si++) {
 				//	Ищем где мы находимся
 				j = $boxML[si].textContent.indexOf('@');
-				if (j != -1) { 
+				if (j != -1 && (document.querySelector('.sort_ch').textContent == '▼' ? !document.querySelectorAll('#m_fight_log .d_line.moveLoss:nth-child(1)').length : !document.querySelectorAll('#m_fight_log .d_line.moveLoss:last-child').length)) {
 					//	Проверяем куда можно пройти
-					if ($boxML[si-1].textContent[j] != '#' || isJumping && (si == 1 || si != 1 && $boxML[si-2].textContent[j] != '#')) {
+					if ($boxML[si-1].textContent[j] != '#' || isJumping && (si == 1 || si != 1 && $boxML[si - 2].textContent[j] != '#')) {
 						$box[0].style.visibility = '';	//	Север
 					}
-					if ($boxML[si+1].textContent[j] != '#' || isJumping && (si == kRow - 2 || si != kRow - 2 && $boxML[si+2].textContent[j] != '#')) {
+					if ($boxML[si+1].textContent[j] != '#' || isJumping && (si == kRow - 2 || si != kRow - 2 && $boxML[si + 2].textContent[j] != '#')) {
 						$box[1].style.visibility = '';	//	Юг
 					}
-					if ($boxML[si].textContent[j-1] != '#' || isJumping && $boxML[si].textContent[j-2] != '#') {
+					if ($boxML[si].textContent[j - 1] != '#' || isJumping && $boxML[si].textContent[j - 2] != '#') {
 						$box[2].style.visibility = '';	//	Запад
 					}
-					if ($boxML[si].textContent[j+1] != '#' || isJumping && $boxML[si].textContent[j+2] != '#') {
+					if ($boxML[si].textContent[j + 1] != '#' || isJumping && $boxML[si].textContent[j + 2] != '#') {
 						$box[3].style.visibility = '';	//	Восток
 					}
 				} 
