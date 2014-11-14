@@ -2049,6 +2049,13 @@ var ui_starter = {
 				document.body.appendChild(layingTimerScript);
 			}
 
+			// Disable sound external script
+			if (ui_storage.get('Option:disablePmSound')) {
+				var disableSoundScript = document.createElement('script');
+				disableSoundScript.src = window.GUIp_getResource('disable_sound.js');
+				document.body.appendChild(disableSoundScript);
+			}
+
 			// svg for #logger fade-out in FF
 			var is5c = document.getElementsByClassName('page_wrapper_5c').length;
 			document.body.insertAdjacentHTML('beforeend',

@@ -234,6 +234,15 @@ return '<p>\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
+'								<label class="l_capt" for="disable_pm_sound">Выключить звук личных сообщений</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="disable_pm_sound" name="disable_pm_sound" class="option-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<div class="g_desc">для тех, кому "дзынь" бьет по ушам</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
 '								<label class="l_capt" for="enable_debug_mode">Включить режим отладки</label>\n' +
 '								<div class="field_content">\n' +
 '									<input id="enable_debug_mode" name="enable_debug_mode" class="option-checkbox" type="checkbox">\n' +
