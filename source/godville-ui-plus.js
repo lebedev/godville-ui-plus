@@ -1597,7 +1597,7 @@ var ui_improver = {
 			}
 
 			// informer
-			ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent == '▼' ? document.querySelectorAll('#m_fight_log .d_line.boss_warning:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.boss_warning:last-child').length);
+			ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent == '▼' ? document.querySelectorAll('#m_fight_log .d_line.bossWarnings:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.bossWarnings:last-child').length);
 
 			this.colorDungeonMap();
 		}
