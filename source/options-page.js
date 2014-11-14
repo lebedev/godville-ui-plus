@@ -243,6 +243,15 @@ return '<p>\n' +
 '								<div class="g_desc">для тех, кому "дзынь" бьет по ушам</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
+'								<label class="l_capt" for="disable_arena_sound">Выключить звук арены</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="disable_arena_sound" name="disable_arena_sound" class="option-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<div class="g_desc">арены, тренировки, босса, подземелья</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
 '								<label class="l_capt" for="enable_debug_mode">Включить режим отладки</label>\n' +
 '								<div class="field_content">\n' +
 '									<input id="enable_debug_mode" name="enable_debug_mode" class="option-checkbox" type="checkbox">\n' +

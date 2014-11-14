@@ -2049,11 +2049,18 @@ var ui_starter = {
 				document.body.appendChild(layingTimerScript);
 			}
 
-			// Disable sound external script
+			// Disable PM sound external script
 			if (ui_storage.get('Option:disablePmSound')) {
-				var disableSoundScript = document.createElement('script');
-				disableSoundScript.src = window.GUIp_getResource('disable_sound.js');
-				document.body.appendChild(disableSoundScript);
+				var disablePmSoundScript = document.createElement('script');
+				disablePmSoundScript.src = window.GUIp_getResource('disable_pm_sound.js');
+				document.body.appendChild(disablePmSoundScript);
+			}
+
+			// Disable arena sound external script
+			if (ui_storage.get('Option:disableArenaSound')) {
+				var disableArenaSoundScript = document.createElement('script');
+				disableArenaSoundScript.src = window.GUIp_getResource('disable_pm_sound.js');
+				document.body.appendChild(disableArenaSoundScript);
 			}
 
 			// svg for #logger fade-out in FF
