@@ -13,7 +13,7 @@ contentLoad: function(event) {
 		}
 		if (path.match(/^\/user\/(?:profile|rk_success)/) && !windowStats.get(doc)) {
 			windowStats.set(doc, 'scriptsLoaded');
-			loader.createScript(doc, 'chrome://godville-ui-plus/content/jquery-2.1.0.min.js');
+			loader.createScript(doc, '//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/options-page.js');

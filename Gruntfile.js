@@ -5,14 +5,14 @@ module.exports = function(grunt) {
     copy: {
       chrome: {
         files: [
-          {expand: true, flatten: true, src: ['source/chrome/*', 'source/*', 'vendor/jquery-2.1.0.min.js'], dest: '<%= compile_path %>/chrome', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome', filter: 'isFile'},
           {expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome'}
         ]
       },
       firefox: {
         files: [
           {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
-          {expand: true, flatten: true, src: ['source/*', 'vendor/jquery-2.1.0.min.js'], dest: '<%= compile_path %>/firefox/content', filter: 'isFile'},
+          {expand: true, flatten: true, src: 'source/*', dest: '<%= compile_path %>/firefox/content', filter: 'isFile'},
           {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content'}
         ]
       },
