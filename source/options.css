@@ -14,3 +14,6 @@ body {
 th {
 	background: none;
 }
+#voice_menu {
+	width: 100%;
+}
