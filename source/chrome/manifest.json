@@ -8,37 +8,15 @@
 	"permissions": ["http://godville.net/", "https://godville.net/"],
 	"content_scripts": [{
 		"js": [
-			"jquery-2.1.0.min.js",
-			"phrases.js",
-			"guip_chrome.js",
-			"godville-ui-plus.js"
+			"loader.js"
 		],
 		"matches": [
 			"http://godville.net/superhero*",
-			"https://godville.net/superhero*"
-		]
-	},
-	{
-		"js": [
-			"jquery-2.1.0.min.js",
-			"phrases.js",
-			"guip_chrome.js",
-			"options-page.js",
-			"options.js"
-		],
-		"matches": [
+			"https://godville.net/superhero*",
 			"http://godville.net/user/profile*",
 			"http://godville.net/user/rk_success*",
 			"https://godville.net/user/profile*",
-			"https://godville.net/user/rk_success*"
-		]
-	},
-	{
-		"js": [
-			"guip_chrome.js",
-			"forum.js"
-		],
-		"matches": [
+			"https://godville.net/user/rk_success*",
 			"http://godville.net/forums/show/*",
 			"http://godville.net/forums/show_topic/*",
 			"https://godville.net/forums/show/*",
@@ -57,6 +35,12 @@
 		"godville-ui-plus.css",
 		"forum.css",
 		"options.css",
+		"godville-ui-plus.js",
+		"guip_chrome.js",
+		"phrases.js",
+		"options-page.js",
+		"options.js",
+		"forum.js",
 		"shift_enter.js",
 		"laying_timer.js",
 		"disable_pm_sound.js",
