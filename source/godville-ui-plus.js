@@ -1023,7 +1023,7 @@ var ui_improver = {
 		}
 		this.checkButtonsVisibility();
 		this.isFirstTime = false;
-		ui_improver.improveInProcess = false;
+		this.improveInProcess = false;
 	},
 	
 	improveLoot: function() {
@@ -1186,7 +1186,7 @@ var ui_improver = {
 				} else {
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'жертвуй', 'sacrifice', 'Послать ' + ui_data.char_sex[1] + ' требование кровавой или золотой жертвы для внушительного пополнения праны');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'молись', 'pray', 'Попросить ' + ui_data.char_sex[0] + ' вознести молитву для пополнения праны');
-					$('#voice_submit').click(function () {ui_improver.voiceSubmitted = true;});
+					$('#voice_submit').click(function() {ui_improver.voiceSubmitted = true;});
 				}
 			}
 			//hide_charge_button
@@ -1213,7 +1213,7 @@ var ui_improver = {
 		// Если герой дерется с монстром
 		if ($('#news .line')[0].style.display != 'none') {
 			var currentMonster = $('#news .l_val').text();
-			isMonsterOfTheDay = ui_improver.monstersOfTheDay && currentMonster.match(ui_improver.monstersOfTheDay);
+			isMonsterOfTheDay = this.monstersOfTheDay && currentMonster.match(this.monstersOfTheDay);
 			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий/);
 			isTamableMonster = currentMonster.match(/администратор годвилля|альфа-кентавр|аристокрот|бармаглот|биоволк|бурундук-шатун|быкинг|василиск прекрасный|ведмедь|вездекот|вхламинго|гипноманул|гидравлиск|дракошка|дьяволк|ездовой академик|ерундук|ехиднорог|загрызаяц|злось|йети подземелья|каннский лев|карликовый дракон|котопёс|ломокотив|многоногий сундук|мозговой слизень|наномедвед|неверморж|огнегривый лев|огнелис|песочный сфинкс|пожираф|потолковый лампожуй|почеширский кот|пухозаврик|саблекрыс|саблепузый тигр|семиногий единорог|серверный олень|сиамский ковродёр|слонопотам|субтигр|троянский конь|ультралис|хатуль мадан|хомячок-берсеркер|хохмяк|хрюкотательный зелюк|хтонический шушпанчик|ядрёнорог/i);
 		}
@@ -1567,11 +1567,11 @@ var ui_improver = {
 		} else {
 			var newMessages = $('#diary .d_msg:not(.parsed)');
 			if (newMessages.length) {
-				if (ui_improver.voiceSubmitted) {
+				if (this.voiceSubmitted) {
 					if (newMessages.length >= 2)
 						ui_timeout.start();
 					$('#god_phrase').change();
-					ui_improver.voiceSubmitted = false;
+					this.voiceSubmitted = false;
 				}
 				newMessages.addClass('parsed');
 			}
@@ -1614,29 +1614,28 @@ var ui_improver = {
 				direction = matches[i].match(/^.*?[\.!\?](?:\s|$)/)[0].match(/север|восток|юг|запад/i);
 				if (direction) {
 					entry.direction = direction[0];
-					console.log(direction[0]);
 				}
-				for (var j = 0, len2 = ui_improver.dungeonPhrases.length; j < len2; j++) {
-					if (matches[i].match(ui_improver[ui_improver.dungeonPhrases[j] + 'RegExp'])) {
+				for (var j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
+					if (matches[i].match(this[this.dungeonPhrases[j] + 'RegExp'])) {
 						if (!entry.classList) {
 							entry.classList = [];
 						}
-						entry.classList.push(ui_improver.dungeonPhrases[j]);
-						console.log(ui_improver.dungeonPhrases[j]);
+						entry.classList.push(this.dungeonPhrases[j]);
 					}
 				}
-				ui_improver.old_chronicles.push(entry);
+				this.old_chronicles.push(entry);
+				this.colorDungeonMap();
 			}
 		}
 	},
 	improveChronicles: function() {
-		if (ui_improver.bossWarningsRegExp) {
+		if (this.bossWarningsRegExp) {
 			// chronicles painting
 			var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
 			for (var i = 0, len = chronicles.length; i < len; i++) {
-				for (var j = 0, len2 = ui_improver.dungeonPhrases.length; j < len2; j++) {
-					if (chronicles[i].textContent.match(ui_improver[ui_improver.dungeonPhrases[j] + 'RegExp'])) {
-						chronicles[i].parentNode.classList.add(ui_improver.dungeonPhrases[j]);
+				for (var j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
+					if (chronicles[i].textContent.match(this[this.dungeonPhrases[j] + 'RegExp'])) {
+						chronicles[i].parentNode.classList.add(this.dungeonPhrases[j]);
 					}
 				}
 				chronicles[i].classList.add('parsed');
@@ -1648,8 +1647,7 @@ var ui_improver = {
 			this.colorDungeonMap();
 		}
 		if (this.isFirstTime) {
-			console.log('log_no', window.so.state.stats.perm_link.value);
-			ui_utils.getXHR('/duels/log/' + window.so.state.stats.perm_link.value, this.parseChronicles);
+			ui_utils.getXHR('/duels/log/' + window.so.state.stats.perm_link.value, this.parseChronicles.bind(this));
 		}
 	},
 
@@ -1661,15 +1659,15 @@ var ui_improver = {
 			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
 			ch_down = document.querySelector('.sort_ch').textContent == '▼';
 		for (len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
-			for (j = 0, len2 = ui_improver.dungeonPhrases.length; j < len2; j++) {
-				if (chronicles[i].parentNode.classList.contains(ui_improver.dungeonPhrases[j])) {
-					document.querySelectorAll('#map .dml')[y].children[x].classList.add(ui_improver.dungeonPhrases[j]);
+			for (j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
+				if (chronicles[i].parentNode.classList.contains(this.dungeonPhrases[j])) {
+					document.querySelectorAll('#map .dml')[y].children[x].classList.add(this.dungeonPhrases[j]);
 				}
 			}
 			first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 			if (first_sentence) {
 				direction = first_sentence[0].match(/север|восток|юг|запад/i);
-				step = first_sentence[0].match(ui_improver.springnessDungeonRegExp) ? 2 : 1;
+				step = first_sentence[0].match(this.springnessDungeonRegExp) ? 2 : 1;
 				if (direction) {
 					switch(direction[0]) {
 					case 'север': y += step; break;
@@ -1680,16 +1678,16 @@ var ui_improver = {
 				}
 			}
 		}
-		if (ui_improver.old_chronicles && ui_improver.old_chronicles.length) {
-			console.log(ui_improver.old_chronicles);
-			for (i = ui_improver.old_chronicles.length - 1; i >= 0; i--) {
-				if (ui_improver.old_chronicles[i].classList) {
-					for (j = 0, len2 = ui_improver.old_chronicles[i].classList.length; j < len2; j++) {	
-						document.querySelectorAll('#map .dml')[y].children[x].classList.add(ui_improver.old_chronicles[i].classList[j]);
+		if (this.old_chronicles && this.old_chronicles.length) {
+			console.log(this.old_chronicles);
+			for (i = this.old_chronicles.length - 1; i >= 0; i--) {
+				if (this.old_chronicles[i].classList) {
+					for (j = 0, len2 = this.old_chronicles[i].classList.length; j < len2; j++) {	
+						document.querySelectorAll('#map .dml')[y].children[x].classList.add(this.old_chronicles[i].classList[j]);
 					}
 				}
-				direction = ui_improver.old_chronicles[i].direction;
-				step = ui_improver.old_chronicles[i].classList && ui_improver.old_chronicles[i].classList.indexOf('springnessDungeon') >= 0 ? 2 : 1;
+				direction = this.old_chronicles[i].direction;
+				step = this.old_chronicles[i].classList && this.old_chronicles[i].classList.indexOf('springnessDungeon') >= 0 ? 2 : 1;
 				if (direction) {
 					switch(direction) {
 					case 'север': y += step; break;
@@ -1720,7 +1718,7 @@ var ui_improver = {
 
 		if (localStorage.getItem('ui_s') !== ui_storage.get('ui_s')) {
 			ui_storage.set('ui_s', localStorage.getItem('ui_s') || 'th_classic');
-			ui_improver.Shovel = false;
+			this.Shovel = false;
 			document.body.className = ui_storage.get('ui_s').replace('th_', '');
 		}
 
@@ -1811,9 +1809,9 @@ var ui_improver = {
 			if (ui_storage.get('Option:disableDieButton')) {
 				$('#hk_death_count .voice_generator').hide();
 			}
-			if (ui_improver.b_b.length) $('.b_b').show();
-			if (ui_improver.b_r.length) $('.b_r').show();
-			if (ui_improver.r_r.length) $('.r_r').show();
+			if (this.b_b.length) $('.b_b').show();
+			if (this.b_r.length) $('.b_r').show();
+			if (this.r_r.length) $('.r_r').show();
 			if ($('.b_b:visible, .b_r:visible, .r_r:visible').length) $('span.craft_button').show();
 			//if ($('.f_news').text() != 'Возвращается к заданию...')fc
 			if (!ui_data.isBattle) {
@@ -1996,7 +1994,7 @@ var ui_observers = {
 		func: function(mutation) {
 			if (mutation.addedNodes.length) {
 				clearTimeout(ui_improver.mapColorizationTmt);
-				ui_improver.mapColorizationTmt = setTimeout(ui_improver.colorDungeonMap, 50);
+				ui_improver.mapColorizationTmt = setTimeout(ui_improver.colorDungeonMap.bind(ui_improver), 50);
 			}
 		},
 		observers: [],
@@ -2035,9 +2033,7 @@ var ui_observers = {
 					if (match) {
 						ui_observers.allies_parse.observers[ui_improver.currentAlly - 1].disconnect();
 					}
-					setTimeout(function() {
-						ui_improver.improveAllies();
-					}, 0);
+					setTimeout(ui_improver.improveAllies.bind(ui_improver), 0);
 				}
 			}
 		},
@@ -2101,10 +2097,11 @@ var ui_starter = {
 			ui_informer.init();
 			ui_forum.init();
 			ui_improver.improve();
+			ui_laying_timer.init();
 			ui_observers.init();
 			
 			// Event and listeners
-			$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion);
+			$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
 
 			if (!ui_data.isBattle) {
 				$('html').mousemove(ui_improver.mouseMove);
