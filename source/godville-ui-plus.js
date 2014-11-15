@@ -1890,18 +1890,34 @@ var ui_laying_timer = {
 		}
 	},
 	tick: function() {
-		console.log('tick');
-		console.log(this.third_eye);
-		var temp, cur, first, lastLaying = 0;
+		var temp, cur, latest, earliest, lastLaying = 0,
+			latestFromStorage = ui_storage.get('thirdEyeLatestEntry') && new Date(ui_storage.get('thirdEyeLatestEntry')),
+			earliestFromStorage = ui_storage.get('thirdEyeEarliestEntry') && new Date(ui_storage.get('thirdEyeEarliestEntry')),
+			lastLayingFromStorage = ui_storage.get('thirdEyeLastLayingEntry') && new Date(ui_storage.get('thirdEyeLastLayingEntry'));
 		for (var msg in window[this.third_eye]) {
 			temp = new Date(window[this.third_eye][msg].time);
 			if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков)/)) {
 				lastLaying = temp > lastLaying ? temp : lastLaying;
 			}
-			if (!first || first > temp) {
-				first = temp;
+			if (!latest || latest < temp) {
+				latest = temp;
+			}
+			if (!earliest || earliest > temp) {
+				earliest = temp;
 			}
 		}
+		if (latestFromStorage < earliest) {
+			earliest = earliestFromStorage;
+			if (lastLaying) {
+				ui_storage.set('thirdEyeLastLayingEntry', lastLaying);
+			} else {
+				lastLaying = lastLayingFromStorage;
+			}
+		} else {
+			ui_storage.set('thirdEyeEarliestEntry', earliest);
+			ui_storage.set('thirdEyeLastLayingEntry', lastLaying);
+		}
+		ui_storage.set('thirdEyeLatestEntry', latest);
 		var $timer = document.querySelector('#laying_timer');
 		$timer.classList.remove('green');
 		$timer.classList.remove('yellow');
@@ -1926,13 +1942,13 @@ var ui_laying_timer = {
 				}
 			}
 		} else {
-			if (Math.floor((Date.now() - first)/1000/60/60) >= 24) {
+			if (Math.floor((Date.now() - latest)/1000/60/60) >= 24) {
 				$timer.textContent = '✓';
 				$timer.classList.add('green');
 				$timer.title = 'Сейчас можно сделать возложение без штрафов';
 			} else {
-				hours = Math.floor(24 - (Date.now() - first)/1000/60/60);
-				minutes = Math.floor(60 - (Date.now() - first)/1000/60%60);
+				hours = Math.floor(24 - (Date.now() - earliest)/1000/60/60);
+				minutes = Math.floor(60 - (Date.now() - earliest)/1000/60%60);
 				$timer.textContent = '?';
 				$timer.classList.add('grey');
 				$timer.title = 'Нет информации о штрафах. Неопределенность разрешится после возложения или через ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
