@@ -1220,7 +1220,18 @@ var ui_improver = {
 			var currentMonster = $('#news .l_val').text();
 			isMonsterOfTheDay = this.monstersOfTheDay && currentMonster.match(this.monstersOfTheDay);
 			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий/);
-			isTamableMonster = currentMonster.match(/администратор годвилля|альфа-кентавр|аристокрот|бармаглот|биоволк|бурундук-шатун|быкинг|василиск прекрасный|ведмедь|вездекот|вхламинго|гипноманул|гидравлиск|дракошка|дьяволк|ездовой академик|ерундук|ехиднорог|загрызаяц|злось|йети подземелья|каннский лев|карликовый дракон|котопёс|ломокотив|многоногий сундук|мозговой слизень|наномедвед|неверморж|огнегривый лев|огнелис|песочный сфинкс|пожираф|потолковый лампожуй|почеширский кот|пухозаврик|саблекрыс|саблепузый тигр|семиногий единорог|серверный олень|сиамский ковродёр|слонопотам|субтигр|троянский конь|ультралис|хатуль мадан|хомячок-берсеркер|хохмяк|хрюкотательный зелюк|хтонический шушпанчик|ядрёнорог/i);
+
+			// Если у героя нет питомца
+			if (!window.so.state.pet.pet_name) {
+				var pet, hero_level = ui_stats.get('Level');
+				for (var i = 0; i < ui_words.base.pets.length; i++) {
+					pet = ui_words.base.pets[i];
+					if (currentMonster.toLowerCase().indexOf(pet.name) >= 0 && (!pet.min_level || hero_level >= pet.min_level) && (!pet.max_level || hero_level <= pet.max_level)) {
+						isTamableMonster = true;
+						break;
+					}
+				}
+			}
 		}
 
 		ui_informer.update('monster of the day', isMonsterOfTheDay);
