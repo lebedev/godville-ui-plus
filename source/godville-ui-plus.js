@@ -1702,7 +1702,7 @@ var ui_improver = {
 			for (i = 0, len = $friends.length; i < len; i++) {
 				friends.push($friends[i].textContent);
 			}
-			this.friendsRegexp = new RegExp(friends.join('|'));
+			this.friendsRegexp = new RegExp('^(?:' + friends.join('|') + ')$');
 		}
 
 		// links replace
