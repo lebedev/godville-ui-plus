@@ -5,7 +5,7 @@ GUIp_getResource = function(res) {
 GUIp_addGlobalStyleURL = function(url, id) {
 	var sel = document.createElement('link');
 	sel.setAttribute('type', 'text/css');
-	sel.setAttribute('href', uri);
+	sel.setAttribute('href', url);
 	sel.setAttribute('media', 'screen');
 	sel.setAttribute('rel', 'stylesheet');
 	sel.setAttribute('id', id);
