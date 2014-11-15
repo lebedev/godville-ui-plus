@@ -1599,14 +1599,17 @@ var ui_improver = {
 		}
 	},
 	parseChronicles: function(xhr) {
-		var last = document.querySelector('.sort_ch').textContent == '▼' ? document.querySelectorAll('#m_fight_log .d_line:last-child .d_msg').textContent : document.querySelectorAll('#m_fight_log .d_line:nth-child(1) .d_msg').textContent;
-		console.log('last', last);
-		ui_improver.old_chronicles = [];
+		var last;
+		if (document.querySelector('.sort_ch').textContent == '▼') {
+			var temp = document.querySelectorAll('#m_fight_log .d_line .d_msg:not(.m_infl)');
+			last = temp[temp.length - 1].textContent;
+		} else {
+			last = document.querySelector('#m_fight_log .d_line .d_msg:not(.m_infl)')[0].textContent;
+		}
+		this.old_chronicles = [];
 		var direction, entry, matches = xhr.responseText.match(/<div class="text_content ">[\s\S]+?<\/div>/g);
-		console.log('number of entries', matches.length);
 		for (var i = 0, len = matches.length; i < len; i++) {
 			matches[i] = matches[i].replace('<div class="text_content ">', '').replace('</div>', '').trim();
-			console.log(matches[i]);
 			if (matches[i] == last) {
 				break;
 			} else {
