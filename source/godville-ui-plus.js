@@ -1598,6 +1598,37 @@ var ui_improver = {
 			this.improveChronicles();
 		}
 	},
+	parseChronicles: function(xhr) {
+		var last = document.querySelector('.sort_ch').textContent == '▼' ? document.querySelectorAll('#m_fight_log .d_line:last-child .d_msg').textContent : document.querySelectorAll('#m_fight_log .d_line:nth-child(1) .d_msg').textContent;
+		console.log('last', last);
+		ui_improver.old_chronicles = [];
+		var direction, entry, matches = xhr.responseText.match(/<div class="text_content ">[\s\S]+?<\/div>/g);
+		console.log('number of entries', matches.length);
+		for (var i = 0, len = matches.length; i < len; i++) {
+			matches[i] = matches[i].replace('<div class="text_content ">', '').replace('</div>', '').trim();
+			console.log(matches[i]);
+			if (matches[i] == last) {
+				break;
+			} else {
+				entry = {};
+				direction = matches[i].match(/^.*?[\.!\?](?:\s|$)/)[0].match(/север|восток|юг|запад/i);
+				if (direction) {
+					entry.direction = direction[0];
+					console.log(direction[0]);
+				}
+				for (var j = 0, len2 = ui_improver.dungeonPhrases.length; j < len2; j++) {
+					if (matches[i].match(ui_improver[ui_improver.dungeonPhrases[j] + 'RegExp'])) {
+						if (!entry.classList) {
+							entry.classList = [];
+						}
+						entry.classList.push(ui_improver.dungeonPhrases[j]);
+						console.log(ui_improver.dungeonPhrases[j]);
+					}
+				}
+				ui_improver.old_chronicles.push(entry);
+			}
+		}
+	},
 	improveChronicles: function() {
 		if (ui_improver.bossWarningsRegExp) {
 			// chronicles painting
@@ -1616,17 +1647,21 @@ var ui_improver = {
 
 			this.colorDungeonMap();
 		}
+		if (this.isFirstTime) {
+			console.log('log_no', window.so.state.stats.perm_link.value);
+			ui_utils.getXHR('/duels/log/' + window.so.state.stats.perm_link.value, this.parseChronicles);
+		}
 	},
 
 	colorDungeonMap: function() {
 		// map cells painting
-		var first_sentence, direction, step,
+		var first_sentence, direction, step, i, len, j, len2,
 			x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
 			y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
 			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
 			ch_down = document.querySelector('.sort_ch').textContent == '▼';
-		for (var len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
-			for (var j = 0, len2 = ui_improver.dungeonPhrases.length; j < len2; j++) {
+		for (len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
+			for (j = 0, len2 = ui_improver.dungeonPhrases.length; j < len2; j++) {
 				if (chronicles[i].parentNode.classList.contains(ui_improver.dungeonPhrases[j])) {
 					document.querySelectorAll('#map .dml')[y].children[x].classList.add(ui_improver.dungeonPhrases[j]);
 				}
@@ -1637,6 +1672,26 @@ var ui_improver = {
 				step = first_sentence[0].match(ui_improver.springnessDungeonRegExp) ? 2 : 1;
 				if (direction) {
 					switch(direction[0]) {
+					case 'север': y += step; break;
+					case 'восток': x -= step; break;
+					case 'юг': y -= step; break;
+					case 'запад': x += step; break;
+					}
+				}
+			}
+		}
+		if (ui_improver.old_chronicles && ui_improver.old_chronicles.length) {
+			console.log(ui_improver.old_chronicles);
+			for (i = ui_improver.old_chronicles.length - 1; i >= 0; i--) {
+				if (ui_improver.old_chronicles[i].classList) {
+					for (j = 0, len2 = ui_improver.old_chronicles[i].classList.length; j < len2; j++) {	
+						document.querySelectorAll('#map .dml')[y].children[x].classList.add(ui_improver.old_chronicles[i].classList[j]);
+					}
+				}
+				direction = ui_improver.old_chronicles[i].direction;
+				step = ui_improver.old_chronicles[i].classList && ui_improver.old_chronicles[i].classList.indexOf('springnessDungeon') >= 0 ? 2 : 1;
+				if (direction) {
+					switch(direction) {
 					case 'север': y += step; break;
 					case 'восток': x -= step; break;
 					case 'юг': y -= step; break;
