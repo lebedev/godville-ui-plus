@@ -21,7 +21,7 @@ var $q = function(sel) {
 
 var storage = {
 	_get_key: function(key) {
-		return "GM_" + god_name + ':' + key;
+		return "GUIp_" + god_name + ':' + key;
 	},
 	set: function(id, value) {
 		localStorage.setItem(this._get_key(id), value);
@@ -36,7 +36,7 @@ var i, len, follow_links, isFollowed, links_containers, temp, topic, unfollow_li
 	isTopic = location.pathname.match(/topic/) !== null,
 	forum_topics = 'Forum' + (isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
 									  : location.pathname.match(/forums\/show\/(\d+)/)[1]),
-	god_name = localStorage.getItem('GM_CurrentUser'),
+	god_name = localStorage.getItem('GUIp_CurrentUser'),
 	topics = JSON.parse(storage.get(forum_topics));
 
 if (isTopic) {
