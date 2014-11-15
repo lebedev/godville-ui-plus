@@ -18,7 +18,7 @@ var ui_data = {
 		ui_storage.set('sex', document.title.match('героиня') ? 'female' : 'male');
 		this.char_sex = document.title.match('героиня') ? ['героиню', 'героине'] : ['героя', 'герою'];
 		ui_storage.set('ui_s', '');
-		localStorage.setItem('GM_CurrentUser', this.god_name);
+		localStorage.setItem('GUIp_CurrentUser', this.god_name);
 
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
@@ -31,8 +31,8 @@ var ui_data = {
 			ui_storage.set('ForumInformers', '{}');
 
 			// clear old data
-			localStorage.removeItem('GM_' + this.god_name + ':posts');
-			localStorage.removeItem('GM_Options:User');
+			localStorage.removeItem('GUIp_' + this.god_name + ':posts');
+			localStorage.removeItem('GUIp_Options:User');
 			var informer_flags = JSON.parse(ui_storage.get('informer_flags'));
 			if (informer_flags) {
 				delete informer_flags['new posts'];
@@ -419,7 +419,7 @@ var ui_help_dialog = {
 // ------------------------
 var ui_storage = {
 	get_key: function(key) {
-		return "GM_" + ui_data.god_name + ':' + key;
+		return "GUIp_" + ui_data.god_name + ':' + key;
 	},
 // stores a value
 	set: function(id, value) {
@@ -452,7 +452,7 @@ var ui_storage = {
 // dumps all values related to current god_name
 	dump: function(selector) {
 		var lines = [];
-		var r = new RegExp('^GM_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
+		var r = new RegExp('^GUIp_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
 		for (var i = 0; i < localStorage.length; i++) {
 			if (localStorage.key(i).match(r)) {
 				lines.push(localStorage.key(i) + " = " + localStorage[localStorage.key(i)]);
@@ -464,7 +464,7 @@ var ui_storage = {
 // resets saved options
 	clear: function() {
 		var key,
-			r = new RegExp('^GM_.*');
+			r = new RegExp('^GUIp_.*');
 		for (var i = 0; i < localStorage.length; i++) {
 			key = localStorage.key(i);
 			if (key.match(r)) {
@@ -473,6 +473,21 @@ var ui_storage = {
 		}
 		location.reload();
 		return "Storage cleared. Reloading...";
+	},
+	migrate: function() {
+		if (!localStorage.getItem('GUIp_migrated')) {
+			var i, len, lines = [];
+			for (i = 0, len = localStorage.length; i < len; i++) {
+				if (localStorage.key(i).match(/^GM_/)) {
+					lines.push(localStorage.key(i));
+				}
+			}
+			for (i = 0, len = lines.length; i < len; i++) {
+				localStorage.setItem(lines[i].replace(/^GM_/, 'GUIp_'), localStorage[lines[i]]);
+				localStorage.removeItem(lines[i]);
+			}
+			localStorage.setItem('GUIp_migrated', '151114');
+		}
 	}
 };
 
@@ -2018,6 +2033,9 @@ var ui_starter = {
 		if ($ && ($('#m_info').length || $('#stats').length)) {
 			clearInterval(starterInt);
 			var start = new Date();
+			// migration from GUIp_ to GUIp_
+			ui_storage.migrate();
+
 			ui_data.init();
 			ui_utils.addCSS();
 			ui_utils.inform();
