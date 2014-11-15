@@ -2059,7 +2059,7 @@ var ui_starter = {
 			// Disable arena sound external script
 			if (ui_storage.get('Option:disableArenaSound')) {
 				var disableArenaSoundScript = document.createElement('script');
-				disableArenaSoundScript.src = window.GUIp_getResource('disable_pm_sound.js');
+				disableArenaSoundScript.src = window.GUIp_getResource('disable_arena_sound.js');
 				document.body.appendChild(disableArenaSoundScript);
 			}
 
