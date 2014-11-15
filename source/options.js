@@ -401,6 +401,8 @@ function set_theme_and_background() {
 		} else {
 			document.body.style.backgroundImage =  'url(' + background + ')';
 		}
+	} else {
+		document.body.style.backgroundImage = '';
 	}
 }
 
@@ -410,8 +412,8 @@ var def, curr_sect, god_name,
 	isDataRead = false;
 
 var starterInt = setInterval(function() {
-	$j = jQuery.noConflict();
-	if ($j) {
+	if (jQuery) {
+		$j = jQuery.noConflict();
 		clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
 		if (god_name !== "") {
@@ -429,7 +431,7 @@ var starterInt = setInterval(function() {
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
 			if (!$j('#profile_main p:first').text().match('Настройки UI+')) {
-				addMenu();
+				setTimeout(addMenu, 0);
 			}
 			improve_blocks();
 		});
