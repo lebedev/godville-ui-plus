@@ -191,15 +191,16 @@ var ui_utils = {
 	},
 	inform: function() {
 		var last_shown = (ui_storage.get('lastShownMessage') !== null) ? +ui_storage.get('lastShownMessage') : -1;
-		if (last_shown < this.messages.length) {
-			for (var i = last_shown + 1, len = this.messages.length; i < len; i++) {
-				this.showMessage(i, this.messages[i]);
+		for (var i = 0, len = this.messages.length; i < len; i++) {
+			if (this.messages[i].msg_no > last_shown) {
+				this.showMessage(this.messages[i].msg_no, this.messages[i]);
 			}
 		}
 	},
 	messages: [
 		{
-			title: 'Приветственное сообщение <b>Godville UI+</b>',
+			msg_no: 0,
+			title: 'Приветственное сообщение Godville UI+',
 			content: '<div>Приветствую бог' + (document.title.match('её') ? 'иню' : 'а') + ', использующ' + (document.title.match('её') ? 'ую' : 'его') +
 					 ' дополнение <b>Godville UI+</b>.</div>'+
 
@@ -222,19 +223,23 @@ var ui_utils = {
 			}
 		},
 		{
-			title: 'Новые опции',
-			content: '<div style="text-align: justify;">&emsp;В <a href="user/profile#ui_options" target="_blank" title="Откроется в новой вкладке">настройках</a> появилась пара новых опций: ' +
-					 'можно отключить логгер, кнопку "умри" и изменить время таймаута после успешных гласов, которое сейчас составляет 30 сек.</div>'+
-					 '<div style="text-align: right;">Такие дела.<br>~~Бэдлак</div>'
-		},
-		{
-			title: 'Очистка и импорт/экспорт настроек',
-			content: '<div style="text-align: justify;">&emsp;При следующем обновлении дополнения (~15 ноября) все настройки, кастомные гласы и подписки на форуме будут удалены. ' +
-					 'Это нужно для реализации продвинутого таймера возложений и других штук. ' +
-					 '<br>&emsp;Однако, в самом низу <a href="user/profile#ui_options" target="_blank" title="Откроется в новой вкладке">настроек</a> появились кнопки импорта/экспорта. ' +
-					 '<br>&emsp;Экспортируйте свои настройки, чтоб импортировать их после следующего обновления, если хотите сохранить их, кастомные гласы и подписки на форуме.</div>'+
-					 '<div style="text-align: right;">Увы, иначе никак.<br>~~Бэдлак</div>'
+			msg_no: 3,
+			title: 'Godville UI+: Новые фичи',
+			content: '<div style="text-align: justify;">' +
+					 '<ul style="padding-left: 1em; margin: 0;">' +
+						'<li>Теперь после обновления страницы в подземелье будут краситься и старые клетки.</li>' +
+						'<li>Таймеру возложения добавлена память, так что для активных игроков "время неопределенности" должно быть сведено к минимуму (требует проверки).</li>' +
+						'<li>Починены опции выключения звука.</li>' +
+					 '</ul>' +
+					 '</div>'+
+					 '<div style="text-align: right;">На сегодня всё.<br>~~Бэдлак</div>'
 		}
+		/*{
+			msg_no: 4, // 1..3 are used
+			title: '<b>Godville UI+</b>: Заголовок',
+			content: '<div style="text-align: justify;">&emsp;Текст.</div>'+
+					 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
+		}*/
 	],
 	getNodeIndex: function(node) {
 		var i = 0;

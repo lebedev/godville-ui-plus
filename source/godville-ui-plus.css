@@ -81,6 +81,9 @@ body {
 .hint_bar_content ol li.hidden {
 	display: none;
 }
+body.nightly .ui_msg {
+	color: #999;
+}
 
 .equip_badge_pos {
 	right: 20px;
