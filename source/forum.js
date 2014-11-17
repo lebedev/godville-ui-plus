@@ -197,10 +197,9 @@ if ($reply_form) {
 	
 	var editFormObserver = new MutationObserver(function(mutations) {
 		mutations.forEach(function(mutation) {
-			if ($id('edit_body_editor')) {
+			if ($id('edit_body_editor') && !$q('#edit_body_editor .formatting.button.bold')) {
 				$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
 				set_click_actions('edit_body_editor', $id('edit_body'));
-				editFormObserver.disconnect();
 			}
 		});
 	});
