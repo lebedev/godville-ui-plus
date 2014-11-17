@@ -1921,7 +1921,7 @@ var ui_laying_timer = {
 				earliest = temp;
 			}
 		}
-		if (latestFromStorage < earliest) {
+		if (latestFromStorage >= earliest) {
 			earliest = earliestFromStorage;
 			if (lastLaying) {
 				ui_storage.set('thirdEyeLastLayingEntry', lastLaying);
@@ -1957,7 +1957,7 @@ var ui_laying_timer = {
 				}
 			}
 		} else {
-			if (Math.floor((Date.now() - latest)/1000/60/60) >= 24) {
+			if (Math.floor((Date.now() - earliest)/1000/60/60) >= 24) {
 				$timer.textContent = '✓';
 				$timer.classList.add('green');
 				$timer.title = 'Сейчас можно сделать возложение без штрафов';
