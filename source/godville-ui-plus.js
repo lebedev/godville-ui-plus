@@ -1643,7 +1643,6 @@ var ui_improver = {
 					}
 				}
 				this.old_chronicles.push(entry);
-				this.colorDungeonMap();
 			}
 		}
 	},
