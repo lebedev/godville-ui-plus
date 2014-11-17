@@ -172,13 +172,13 @@ return '<p>\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
-'								<label class="l_capt" for="force_page_refresh">Принудительно обновлять страницу</label>\n' +
+'								<label class="l_capt" for="disable_page_refresh">Выключить автообновление страницы</label>\n' +
 '								<div class="field_content">\n' +
-'									<input id="force_page_refresh" name="force_page_refresh" class="option-checkbox" type="checkbox">\n' +
+'									<input id="disable_page_refresh" name="disable_page_refresh" class="option-checkbox" type="checkbox">\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
-'								<div class="g_desc">при зависании страницы героя принудительно обновляет ее</div>\n' +
+'								<div class="g_desc">при зависанииях страницы героя, одобрено демиургами</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
 '								<label class="l_capt" for="disable_laying_timer">Оключить таймер возложений</label>\n' +
