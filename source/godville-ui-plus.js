@@ -1222,12 +1222,12 @@ var ui_improver = {
 			isMonsterOfTheDay = this.monstersOfTheDay && currentMonster.match(this.monstersOfTheDay);
 			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий/);
 
-			// Если у героя нет питомца
-			if (!window.so.state.pet.pet_name) {
+			if (!window.so.state.has_pet) {
+				var hasArk = parseInt(window.so.state.stats.wood.value) >= 100;
 				var pet, hero_level = ui_stats.get('Level');
 				for (var i = 0; i < ui_words.base.pets.length; i++) {
 					pet = ui_words.base.pets[i];
-					if (currentMonster.toLowerCase().indexOf(pet.name) >= 0 && (!pet.min_level || hero_level >= pet.min_level) && (!pet.max_level || hero_level <= pet.max_level)) {
+					if (currentMonster.toLowerCase().indexOf(pet.name) >= 0 && hero_level >= pet.min_level && hero_level <= (pet.min_level + (hasArk ? 28 : 14))) {
 						isTamableMonster = true;
 						break;
 					}
