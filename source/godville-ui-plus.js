@@ -720,6 +720,7 @@ var ui_logger = {
 		this.watchStatsValue('Equip6', 'eq6', 'Ноги', 'equip');
 		this.watchStatsValue('Equip7', 'eq7', 'Талисман', 'equip');
 		this.watchStatsValue('Death', 'death', 'Смерти');
+		this.watchStatsValue('Pet_Level', 'pet_level', 'Уровень питомца', 'monster');
 		this.need_separator = true;
 	}
 };
@@ -1509,7 +1510,10 @@ var ui_improver = {
 				$('#pet_badge').hide();
 			}
 		}
+		// bruise informer
 		ui_informer.update('pet is bruised', window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value);
+
+		ui_stats.setFromLabelCounter('Pet_Level', $('#pet'), 'Уровень');
 	},
 // ---------- Equipment --------------
 	improveEquip: function() {
