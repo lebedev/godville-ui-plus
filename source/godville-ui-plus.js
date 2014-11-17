@@ -1304,10 +1304,10 @@ var ui_improver = {
 				j = $boxML[si].textContent.indexOf('@');
 				if (j != -1 && (document.querySelector('.sort_ch').textContent == '▼' ? !document.querySelectorAll('#m_fight_log .d_line.moveLoss:nth-child(1)').length : !document.querySelectorAll('#m_fight_log .d_line.moveLoss:last-child').length)) {
 					//	Проверяем куда можно пройти
-					if ($boxML[si-1].textContent[j] != '#' || isJumping && (si == 1 || si != 1 && $boxML[si - 2].textContent[j] != '#')) {
+					if ($boxML[si - 1].textContent[j] != '#' || isJumping && (si == 1 || si != 1 && $boxML[si - 2].textContent[j] != '#')) {
 						$box[0].style.visibility = '';	//	Север
 					}
-					if ($boxML[si+1].textContent[j] != '#' || isJumping && (si == kRow - 2 || si != kRow - 2 && $boxML[si + 2].textContent[j] != '#')) {
+					if ($boxML[si + 1].textContent[j] != '#' || isJumping && (si == kRow - 2 || si != kRow - 2 && $boxML[si + 2].textContent[j] != '#')) {
 						$box[1].style.visibility = '';	//	Юг
 					}
 					if ($boxML[si].textContent[j - 1] != '#' || isJumping && $boxML[si].textContent[j - 2] != '#') {
@@ -1493,19 +1493,23 @@ var ui_improver = {
 // ---------- Pet --------------
 	improvePet: function() {
 		if (ui_data.isBattle) return;
-		if (ui_utils.findLabel($('#pet'), 'Статус')[0].style.display!='none'){
-			if (!ui_utils.isAlreadyImproved($('#pet'))){
+		if (window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value) {
+			if (!ui_utils.isAlreadyImproved($('#pet'))) {
 				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 			} 
 			$('#pet_badge').text(ui_utils.findLabel($('#pet'), 'Статус').siblings('.l_val').text().replace(/[^0-9:]/g, ''));
-			if ($('#pet .block_content')[0].style.display == 'none') 
+			if ($('#pet .block_content')[0].style.display == 'none') {
 				$('#pet_badge').show(); 
-			else 
+			}
+			else {
 				$('#pet_badge').hide();
+			}
+		} else {
+			if ($('#pet_badge').length == 1) {
+				$('#pet_badge').hide();
+			}
 		}
-		else
-			if ($('#pet_badge').length == 1) 
-				$('#pet_badge').hide();
+		ui_informer.update('pet is bruised', window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value);
 	},
 // ---------- Equipment --------------
 	improveEquip: function() {
