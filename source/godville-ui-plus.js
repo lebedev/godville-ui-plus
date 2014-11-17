@@ -1903,7 +1903,6 @@ var ui_improver = {
 
 var ui_laying_timer = {
 	init: function() {
-		// Laying timer external script
 		if (+$('#hk_bricks_cnt .l_val').text() == 1000 && !ui_data.isBattle && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
 			document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
 			for (var key in window) {
@@ -1942,7 +1941,7 @@ var ui_laying_timer = {
 			}
 		} else {
 			ui_storage.set('thirdEyeEarliestEntry', earliest);
-			ui_storage.set('thirdEyeLastLayingEntry', lastLaying);
+			ui_storage.set('thirdEyeLastLayingEntry', lastLaying ? lastLaying : '');
 		}
 		ui_storage.set('thirdEyeLatestEntry', latest);
 		var $timer = document.querySelector('#laying_timer');
@@ -2269,7 +2268,8 @@ var ui_starter = {
 					forum: ui_forum,
 					improver: ui_improver,
 					observers: ui_observers,
-					starter: ui_starter
+					starter: ui_starter,
+					laying_timer: ui_laying_timer
 				};
 			}
 
