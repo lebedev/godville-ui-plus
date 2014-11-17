@@ -1009,6 +1009,7 @@ var ui_improver = {
 		ui_informer.update('pvp', ui_data.isBattle && !ui_data.isDungeon);
 		if (this.isFirstTime) {
 			if (!ui_data.isBattle && !ui_data.isDungeon) {
+				this.improveDiary();
 				this.improveLoot();
 			}
 			if (ui_data.isDungeon) {
@@ -1596,7 +1597,7 @@ var ui_improver = {
 			var newMessages = $('#diary .d_msg:not(.parsed)');
 			if (newMessages.length) {
 				if (this.voiceSubmitted) {
-					if (newMessages.length >= 2)
+					if (newMessages.length - document.querySelectorAll('#diary .d_msg:not(.parsed) .vote_links_b').length >= 2)
 						ui_timeout.start();
 					$('#god_phrase').change();
 					this.voiceSubmitted = false;
