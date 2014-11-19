@@ -504,12 +504,10 @@ var ui_words = {
 // gets words from phrases.js file and splits them into sections
 	init: function() {
 		this.base = getWords();
-		var sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'heil', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'];
-		for (var i = 0; i < sects.length; i++) {
-			var t = sects[i];
-			var text = ui_storage.get('phrases_' + t);
+		for (var sect in this.base.phrases) {
+			var text = ui_storage.get('phrases_' + sect);
 			if (text && text !== "") {
-				this.base.phrases[t] = text.split("||");
+				this.base.phrases[sect] = text.split("||");
 			}
 		}
 	},
