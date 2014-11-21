@@ -1084,7 +1084,8 @@ var ui_improver = {
 							trophy_boldness[item_name] = true;
 						}
 					} else {
-						if (!(forbidden_craft && forbidden_craft.match('b_r') && forbidden_craft.match('r_r'))) {
+						if (!(forbidden_craft && forbidden_craft.match('b_r') && forbidden_craft.match('r_r')) &&
+							!item_name.match('пушистого триббла')) {
 							trophy_list.push(item_name);
 							trophy_boldness[item_name] = false;
 						}
