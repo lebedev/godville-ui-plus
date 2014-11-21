@@ -178,10 +178,10 @@ return '<p>\n' +
 '								</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
-'								<div class="g_desc">при зависанииях страницы героя, одобрено демиургами</div>\n' +
+'								<div class="g_desc">при зависаниях страницы героя, одобрено демиургами</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
-'								<label class="l_capt" for="disable_laying_timer">Оключить таймер возложений</label>\n' +
+'								<label class="l_capt" for="disable_laying_timer">Отключить таймер возложений</label>\n' +
 '								<div class="field_content">\n' +
 '									<input id="disable_laying_timer" name="disable_laying_timer" class="option-checkbox" type="checkbox">\n' +
 '								</div>\n' +
