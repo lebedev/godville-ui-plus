@@ -1474,8 +1474,8 @@ var ui_improver = {
 			this.inventoryChanged = true;
 		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, 'Золота', gold_parser) >= (ui_stats.get('Brick') > 1000 ? 10000 : 3000));
 		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, 'Здоровье') === 0);
-		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии/));
-		ui_informer.update('mini quest', $('.q_name').text().match(/\(мини\)/));
+		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии/) && !$('.q_name').text().match(/\(отменено\)/));
+		ui_informer.update('mini quest', $('.q_name').text().match(/\(мини\)/) && !$('.q_name').text().match(/\(отменено\)/));
 
 		//Shovel pictogramm start
 		var $digVoice = $('#hk_gold_we .voice_generator');
