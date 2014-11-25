@@ -1632,7 +1632,7 @@ var ui_improver = {
 			var temp = document.querySelectorAll('#m_fight_log .d_line .d_msg:not(.m_infl)');
 			last = temp[temp.length - 1].textContent;
 		} else {
-			last = document.querySelector('#m_fight_log .d_line .d_msg:not(.m_infl)')[0].textContent;
+			last = document.querySelector('#m_fight_log .d_line .d_msg:not(.m_infl)').textContent;
 		}
 		this.old_chronicles = [];
 		var direction, entry, matches = xhr.responseText.match(/<div class="text_content ">[\s\S]+?<\/div>/g);
