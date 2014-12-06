@@ -88,6 +88,25 @@ return '<p>\n' +
 '									<label for="relocate_cvs">подземелья(для храмовиков)</label>-->\n' +
 '								</div>\n' +
 '							</div>\n' +
+'							<div class="new_line">\n' +
+'								<label class="l_capt" for="forbidden_title_notices">Выбрать уведомления в заголовке окна</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="forbidden_title_notices" name="forbidden_title_notices" class="option-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line" id="forbidden_title_notices_desc">\n' +
+'								<div class="g_desc">позволяет запретить отдельные уведомления в заголовке</div>\n' +
+'							</div>\n' +
+'							<div class="new_line" id="forbidden_title_notices_choice">\n' +
+'								<div class="g_desc">какие из них?<br>\n' +
+'									<input type="checkbox" id="title_notice_pm" name="title_notice_pm" checked="checked">\n' +
+'									<label for="title_notice_pm"><b>[1]</b> личка</label><br>\n' +
+'									<input type="checkbox" id="title_notice_gm" name="title_notice_gm" checked="checked">\n' +
+'									<label for="title_notice_gm"><b>[g]</b> гильдчат</label><br>\n' +
+'									<input type="checkbox" id="title_notice_fi" name="title_notice_fi" checked="checked">\n' +
+'									<label for="title_notice_fi"><b>[f]</b> новые сообщения на форуме</label>\n' +
+'								</div>\n' +
+'							</div>\n' +
 '							<div class="new_line"><label class="l_capt" for="use_background">Включить фон</label>\n' +
 '								<div class="field_content">\n' +
 '									<input id="use_background" name="use_background" class="menu-checkbox" type="checkbox">\n' +
@@ -212,7 +231,6 @@ return '<p>\n' +
 '									<input class="informer-checkbox" id="close_to_boss" name="close_to_boss" type="checkbox"><label for="close_to_boss">близость к боссу в подземелье</label><br>\n' +
 '									<input class="informer-checkbox" id="guild_quest" name="guild_quest" type="checkbox"><label for="guild_quest">взятие квеста на смену гильдии</label><br>\n' +
 '									<input class="informer-checkbox" id="mini_quest" name="mini_quest" type="checkbox"><label for="mini_quest">взятие мини-квеста</label><br>\n' +
-//'									<input class="informer-checkbox" id="SMELT_TIME" name="SMELT_TIME" type="checkbox"><label for="SMELT_TIME">ВРЕМЯ ПЛАВКИ КИРПИЧЕЙ (с назойливым звуковым оповещением)</label><br>\n' +
 '									<b>Активируемые предметы</b> (отметить <a id="check_all" style="cursor: pointer;">все</a> или <a id="uncheck_all" style="cursor: pointer;">ни один</a>):<br>\n' +
 '									<input class="item-informer informer-checkbox" id="coolstory_box" name="coolstory_box" type="checkbox"><label for="coolstory_box">сочиняющие былину</label><br>\n' +
 '									<input class="item-informer informer-checkbox" id="invite" name="invite" type="checkbox"><label for="invite">инвайт на Годвилль</label><br>\n' +

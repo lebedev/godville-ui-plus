@@ -216,19 +216,17 @@ var ui_utils = {
 			}
 		},
 		{
-			msg_no: 3,
-			title: 'Godville UI+: Новые фичи',
+			msg_no: 4,
+			title: 'Godville UI+: Новая опция',
 			content: '<div style="text-align: justify;">' +
-					 '<ul style="padding-left: 1em; margin: 0;">' +
-						'<li>Теперь после обновления страницы в подземелье будут краситься и старые клетки.</li>' +
-						'<li>Таймеру возложения добавлена память, так что для активных игроков "время неопределенности" должно быть сведено к минимуму (требует проверки).</li>' +
-						'<li>Починены опции выключения звука.</li>' +
-					 '</ul>' +
+					 '&emsp;В <a href="user/profile#ui_options">настройках</a> появилась новая опция <b>Выбрать уведомления в заголовке окна</b>, ' +
+					 'позволяющая запретить вывод в заголовок окна уведомлений о новой личке <b>[1]</b>, о непрочитанных сообщениях в гильдчате <b>[g]</b> ' +
+					 'или о новых непрочитанных сообщениях в выбранных темах на форуме <b>[f]</b>.' +
 					 '</div>'+
-					 '<div style="text-align: right;">На сегодня всё.<br>~~Бэдлак</div>'
+					 '<div style="text-align: right;">Вуаля.<br>~~Бэдлак</div>'
 		}
 		/*{
-			msg_no: 4, // 1..3 are used
+			msg_no: 5, // 1..4 are used
 			title: '<b>Godville UI+</b>: Заголовок',
 			content: '<div style="text-align: justify;">&emsp;Текст.</div>'+
 					 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
@@ -813,25 +811,33 @@ var ui_informer = {
 	},
 
 	clear_title: function() {
-		var pm = 0,
-			pm_badge = document.querySelector('.fr_new_badge_pos');
-		if (pm_badge && pm_badge.style.display != 'none') {
-			pm = +pm_badge.textContent;
-		}
-		var stars = document.querySelectorAll('.msgDock .fr_new_msg');
-		for (var i = 0, len = stars.length; i < len; i++) {
-			if (stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent != 'Гильдсовет') {
-				pm++;
+		var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
+		var pm = 0;
+		if (!forbidden_title_notices.match('pm')) {
+			var pm_badge = document.querySelector('.fr_new_badge_pos');
+			if (pm_badge && pm_badge.style.display != 'none') {
+				pm = +pm_badge.textContent;
+			}
+			var stars = document.querySelectorAll('.msgDock .fr_new_msg');
+			for (var i = 0, len = stars.length; i < len; i++) {
+				if (stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent != 'Гильдсовет') {
+					pm++;
+				}
 			}
 		}
 		pm = pm ? '[' + pm + ']' : '';
 
-		var gm = document.getElementsByClassName('gc_new_badge')[0].style.display != 'none';
+		var gm = false;
+		if (!forbidden_title_notices.match('gm')) {
+			gm = document.getElementsByClassName('gc_new_badge')[0].style.display != 'none';
+		}
 		gm = gm ? '[g]' : '';
 
 		var fi = 0;
-		for (var topic in JSON.parse(ui_storage.get('ForumInformers'))) {
-			fi++;
+		if (!forbidden_title_notices.match('fi')) {
+			for (var topic in JSON.parse(ui_storage.get('ForumInformers'))) {
+				fi++;
+			}
 		}
 		fi = fi ? '[f]' : '';
 

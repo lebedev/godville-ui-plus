@@ -81,6 +81,10 @@ function loadOptions() {
 		$j('#relocate_duel_buttons_desc').slideToggle("slow");
 		$j('#relocate_duel_buttons_choice').slideToggle("slow");
 	});
+	$j('#forbidden_title_notices').click(function() {
+		$j('#forbidden_title_notices_desc').slideToggle("slow");
+		$j('#forbidden_title_notices_choice').slideToggle("slow");
+	});
 	$j('#use_background').click(function() {
 		$j('#background_choice').slideToggle("slow");
 		$j('#background_desc').slideToggle("slow");
@@ -199,6 +203,14 @@ function save_options(form) {
 			if ($j('#relocate_cvs:checked').length) buttons.push('cvs');
 			storage.set('Option:relocateDuelButtons', buttons.join());
 		} else storage.set('Option:relocateDuelButtons', '');
+
+		if ($j('#forbidden_title_notices:checked').length) {
+			var notices = [];
+			if (!$j('#title_notice_pm:checked').length) notices.push('pm');
+			if (!$j('#title_notice_gm:checked').length) notices.push('gm');
+			if (!$j('#title_notice_fi:checked').length) notices.push('fi');
+			storage.set('Option:forbiddenTitleNotices', notices.join());
+		} else storage.set('Option:forbiddenTitleNotices', '');
 
 		if ($j('#use_background:checked').length) {
 			if ($j('#custom_background:checked').length) {
@@ -330,6 +342,15 @@ function restore_options() {
 	} else {
 		$j('#relocate_duel_buttons_choice').hide();
 	}
+	if ($j('#forbidden_title_notices:checked').length) {
+		$j('#forbidden_title_notices_desc').hide();
+		var notices = storage.get('Option:forbiddenTitleNotices');
+		if (notices.match('pm')) $j('#title_notice_pm').prop('checked', false);
+		if (notices.match('gm')) $j('#title_notice_gm').prop('checked', false);
+		if (notices.match('fi')) $j('#title_notice_fi').prop('checked', false);
+	} else {
+		$j('#forbidden_title_notices_choice').hide();
+	}
 	if ($j('#use_background:checked').length) {
 		$j('#background_desc').hide();
 		var bg = storage.get('Option:useBackground');
@@ -357,8 +378,9 @@ function restore_options() {
 	if (forbiddenInformers) {
 		forbiddenInformers = forbiddenInformers.split(',');
 		for (i = 0; i < $j('.informer-checkbox').length; i++) {
-			if (forbiddenInformers.indexOf($j('.informer-checkbox')[i].id) === -1)
+			if (forbiddenInformers.indexOf($j('.informer-checkbox')[i].id) === -1) {
 				$j('.informer-checkbox')[i].checked = true;
+			}
 		}
 	} else {
 		$j('.informer-checkbox').prop('checked', true);
@@ -368,8 +390,9 @@ function restore_options() {
 	if (forbiddenCraft) {
 		forbiddenCraft = forbiddenCraft.split(',');
 		for (i = 0; i < $j('.craft-checkbox').length; i++) {
-			if (forbiddenCraft.indexOf($j('.craft-checkbox')[i].id) === -1)
+			if (forbiddenCraft.indexOf($j('.craft-checkbox')[i].id) === -1) {
 				$j('.craft-checkbox')[i].checked = true;
+			}
 		}
 	} else {
 		$j('.craft-checkbox').prop('checked', true);
