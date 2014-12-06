@@ -5,18 +5,11 @@ var ui_data = {
 	currentVersion: '$VERSION',
 // base variables initialization
 	init: function() {
-		this.isBattle = ($('#m_info').length > 0);
-		this.isDungeon = ($('#map .dml').length > 0);
-		if (this.isBattle) {
-			this.god_name = $('#m_info .l_val')[0].textContent.replace('庙','').replace('畜','').replace('舟','');
-			this.char_name = $('#m_info .l_val')[1].textContent;
-		} else {
-			var $user = $('#stats.block div a[href^="/gods/"]')[0];
-			this.god_name = decodeURI($user.href.replace(/http(s)?:\/\/godville\.net\/gods\//, ''));
-			this.char_name = $user.textContent;
-		}
-		ui_storage.set('sex', document.title.match('героиня') ? 'female' : 'male');
-		this.char_sex = document.title.match('героиня') ? ['героиню', 'героине'] : ['героя', 'герою'];
+		this.isBattle = window.so.state.is_fighting();
+		this.isDungeon = window.so.state.fight_type() == 'dungeon';
+		this.god_name = window.so.state.stats.godname.value;
+		this.char_name = window.so.state.stats.name.value;
+		this.char_sex = window.so.state.stats.gender.value == 'male' ? ['героя', 'герою'] : ['героиню', 'героине'];
 		ui_storage.set('ui_s', '');
 		localStorage.setItem('GUIp_CurrentUser', this.god_name);
 
@@ -1709,7 +1702,6 @@ var ui_improver = {
 			}
 		}
 		if (this.old_chronicles && this.old_chronicles.length) {
-			console.log(this.old_chronicles);
 			for (i = this.old_chronicles.length - 1; i >= 0; i--) {
 				if (this.old_chronicles[i].classList) {
 					for (j = 0, len2 = this.old_chronicles[i].classList.length; j < len2; j++) {	
