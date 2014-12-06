@@ -1093,6 +1093,8 @@ var ui_improver = {
 		for (i = 0, len = flags.length; i < len; i++) {
 			ui_informer.update(ui_words.base.usable_items.types[i], flags[i]);
 		}
+		ui_informer.update('transform!', window.so.state.stats.bricks_cnt.value < 1000 && flags[ui_words.base.usable_items.types.indexOf('transformer')] && bold_items);
+		ui_informer.update('smelt!', window.so.state.stats.bricks_cnt.value < 1000 && flags[ui_words.base.usable_items.types.indexOf('smelter')] && ui_storage.get('Stats:Gold') >= 3000);
 
 		// Склейка трофеев, формирование списков
 		this.b_b = [];
@@ -1136,12 +1138,6 @@ var ui_improver = {
 			inv_content.insertBefore(ui_utils.createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного'), null);
 			inv_content.insertBefore(ui_utils.createCraftButton('нж+нж', 'r_r', 'нежирных'), null);
 		}
-
-		//ui_informer.update(flag_names[11], flags[11] && !bold_items);
-		//ui_informer.update('transform!', flags[11] && bold_items);
-
-		//ui_informer.update('smelt!', flags[10] && ui_storage.get('Stats:Gold') >= 3000);
-		//ui_informer.update(flag_names[10], flags[10] && ui_storage.get('Stats:Gold') < 3000);
 	},
 
 	improveVoiceDialog: function() {
