@@ -730,8 +730,9 @@ var ui_informer = {
 		// load and draw labels
 		this.load();
 		for (var flag in this.flags) {
-			if (this.flags[flag])
+			if (this.flags[flag]) {
 				this.create_label(flag);
+			}
 		}
 		// run flicker
 		this.tick();
@@ -795,8 +796,9 @@ var ui_informer = {
 		// пройти по всем флагам и выбрать те, которые надо показывать
 		var to_show = [];
 		for (var flag in this.flags) {
-			if (this.flags[flag])
+			if (this.flags[flag]) {
 				to_show.push(flag);
+			}
 		}
 		to_show.sort();
 
@@ -1150,8 +1152,9 @@ var ui_improver = {
 	improveVoiceDialog: function() {
 		// Add links and show timeout bar after saying
 		if (this.isFirstTime) {
-			if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty'))
+			if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
 				$('#voice_submit').attr('disabled', 'disabled');
+			}
 			$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
 				if (!ui_data.isBattle && $(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout.bar.style.width))) {
 					$('#voice_submit').removeAttr('disabled');
@@ -1184,7 +1187,9 @@ var ui_improver = {
 				} else {
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'жертвуй', 'sacrifice', 'Послать ' + ui_data.char_sex[1] + ' требование кровавой или золотой жертвы для внушительного пополнения праны');
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'молись', 'pray', 'Попросить ' + ui_data.char_sex[0] + ' вознести молитву для пополнения праны');
-					$('#voice_submit').click(function() {ui_improver.voiceSubmitted = true;});
+					$('#voice_submit').click(function() {
+						ui_improver.voiceSubmitted = true;
+					});
 				}
 			}
 			//hide_charge_button
@@ -1290,7 +1295,7 @@ var ui_improver = {
 				kColumn = $boxML[0].textContent.length;
 
 			//	Гласы направления делаем невидимыми
-			for (i = 0; i < 4; i++){
+			for (i = 0; i < 4; i++) {
 				$box[i].style.visibility = 'hidden';
 			}
 
@@ -1361,7 +1366,7 @@ var ui_improver = {
 						$boxMC[si * kColumn + sj].style.color = 'green';
 						var ThermoMinStep = 0;	//	Минимальное количество шагов до клада
 						var ThermoMaxStep = 0;	//	Максимальное количество шагов до клада
-						switch(Pointer){
+						switch(Pointer) {
 							case '✺': ThermoMinStep = 1; ThermoMaxStep = 2; break;	//	✺ - очень горячо(1-2)
 							case '☀': ThermoMinStep = 3; ThermoMaxStep = 5; break;	//	☀ - горячо(3-5)
 							case '♨': ThermoMinStep = 6; ThermoMaxStep = 9; break;	//	♨ - тепло(6-9)
@@ -1451,8 +1456,9 @@ var ui_improver = {
 			}
 			return;
 		}
-		if (ui_storage.get('Logger:LocationPrev') != 'Pole')
+		if (ui_storage.get('Logger:LocationPrev') != 'Pole') {
 			ui_storage.set('Logger:LocationPrev', 'Pole');
+		}
 		var $box = $('#stats');
 		if (!ui_utils.isAlreadyImproved($('#stats'))) {
 			// Add links
@@ -1463,8 +1469,9 @@ var ui_improver = {
 			ui_utils.addSayPhraseAfterLabel($box, 'Задание', 'делай', 'do_task', 'Открыть ' + ui_data.char_sex[1] + ' секрет более эффективного выполнения задания');
 			ui_utils.addSayPhraseAfterLabel($box, 'Смертей', 'умри', 'die', 'Попросить ' + ui_data.char_sex[0] + ' увеличить на единичку счетчик смертей');
 		}
-		if (!$('#hk_distance .voice_generator').length)
+		if (!$('#hk_distance .voice_generator').length) {
 			ui_utils.addSayPhraseAfterLabel($box, 'Столбов от столицы', $('#main_wrapper.page_wrapper_5c').length ? '回' : 'дом', 'town', 'Наставить ' + ui_data.char_sex[0] + ' на путь в ближайший город');
+		}
 
 		ui_stats.setFromProgressBar('Exp', $('#hk_level .p_bar'));
 		ui_stats.setFromProgressBar('Task', $('#hk_quests_completed .p_bar'));
@@ -1475,8 +1482,9 @@ var ui_improver = {
 		ui_stats.setFromLabelCounter('Wood', $box, 'Дерева для ковчега', parseFloat);
 		ui_stats.setFromLabelCounter('Retirement', $box, 'Сбережения', gold_parser);
 		ui_stats.set('Battery',$('#control .acc_val').text(), parseFloat);
-		if (ui_storage.get('Stats:Inv') != ui_stats.setFromLabelCounter('Inv', $box, 'Инвентарь') || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length)
+		if (ui_storage.get('Stats:Inv') != ui_stats.setFromLabelCounter('Inv', $box, 'Инвентарь') || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
 			this.inventoryChanged = true;
+		}
 		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, 'Золота', gold_parser) >= (ui_stats.get('Brick') > 1000 ? 10000 : 3000));
 		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, 'Здоровье') === 0);
 		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии/) && !$('.q_name').text().match(/\(отменено\)/));
@@ -1533,8 +1541,9 @@ var ui_improver = {
 			ui_stats.set('Equip' + i--, parseInt($('#eq_' + i + ' .eq_level').text()));
 			seq += parseInt($('#eq_' + i + ' .eq_level').text()) || 0;
 		}
-		if (!ui_utils.isAlreadyImproved($('#equipment')))
+		if (!ui_utils.isAlreadyImproved($('#equipment'))) {
 			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
+		}
 		$('#equip_badge').text((seq / 7).toFixed(1));
 	},
 // ---------- Group HP --------------
@@ -1542,10 +1551,13 @@ var ui_improver = {
 		var seq = 0;
 		var $box = flag ? $('#alls .opp_h') : $('#opps .opp_h');
 		var GroupCount = $box.length;
-		if (GroupCount > 0)
-			for (var i = 0; i < GroupCount; i++)
-				if (parseInt($box[i].textContent))
+		if (GroupCount > 0) {
+			for (var i = 0; i < GroupCount; i++) {
+				if (parseInt($box[i].textContent)) {
 					seq += parseInt($box[i].textContent);
+				}
+			}
+		}
 		return seq; 
 	},
 // ---------- Pantheons --------------	
@@ -1601,8 +1613,9 @@ var ui_improver = {
 			var newMessages = $('#diary .d_msg:not(.parsed)');
 			if (newMessages.length) {
 				if (this.voiceSubmitted) {
-					if (newMessages.length - document.querySelectorAll('#diary .d_msg:not(.parsed) .vote_links_b').length >= 2)
+					if (newMessages.length - document.querySelectorAll('#diary .d_msg:not(.parsed) .vote_links_b').length >= 2) {
 						ui_timeout.start();
+					}
 					$('#god_phrase').change();
 					this.voiceSubmitted = false;
 				}
@@ -1832,7 +1845,7 @@ var ui_improver = {
 
 	checkButtonsVisibility: function() {
 		$('.arena_link_wrap,.chf_link_wrap,.cvs_link_wrap', $('#pantheons')).hide();
-		if (ui_storage.get('Stats:Prana') >= 50){
+		if (ui_storage.get('Stats:Prana') >= 50) {
 			$('#pantheons .chf_link_wrap').show();
 			$('#pantheons .cvs_link_wrap').show();
 			$('#pantheons .arena_link_wrap').show();
@@ -1910,7 +1923,7 @@ var ui_improver = {
 	},
 
 	nodeInsertion: function() {
-		if(!this.improveInProcess) {
+		if (!this.improveInProcess) {
 			this.improveInProcess = true;
 			setTimeout(this.nodeInsertionDelay.bind(this), 50);
 		}
@@ -2205,7 +2218,7 @@ var ui_trycatcher = {
 	},
 	process: function(object, object_name) {
 		var method_name, method;
-		for (method_name in object){
+		for (method_name in object) {
 			method = object[method_name];
 			if (typeof method == "function") {
 				object[method_name] = this.replacer(object_name, method_name, method);
