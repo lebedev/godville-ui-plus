@@ -1166,19 +1166,15 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($box)) {
 			$('.gp_label').addClass('l_capt');
 			$('.gp_val').addClass('l_val');
-			if (ui_data.isDungeon){
-				if (ui_storage.get('Option:relocateMap')){
-					$('#map').insertBefore($('#m_control')); 
-					$('#m_control').appendTo($('#a_right_block'));
-					$('#m_control .block_title').text('Пульт');
-				} 
+			if (ui_data.isDungeon) {
 				var isContradictions = $('#map')[0].textContent.match('Противоречия');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Восток', (isContradictions ? 'walk_w' : 'walk_e'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Восток');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Запад', (isContradictions ? 'walk_e' : 'walk_w'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Запад');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Юг', (isContradictions ? 'walk_n' : 'walk_s'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Юг');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Север', (isContradictions ? 'walk_s' : 'walk_n'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Север');
-				if ($('#map')[0].textContent.match('Бессилия'))
+				if ($('#map')[0].textContent.match('Бессилия')) {
 					$('#actions').hide();
+				}
 			} else {
 				if (ui_data.isBattle) {
 					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'отбивай', 'defend', 'Попытаться заставить ' + ui_data.char_sex[0] + ' принять защитную стойку, поднять щит и отбить атаку противника');
@@ -1272,6 +1268,19 @@ var ui_improver = {
 					'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ловушка: пропуск хода</div></div>' +
 					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - близость к боссу и ловушка</div></div>'
 				);
+			}
+			if (ui_storage.get('Option:relocateMap')) {
+				if (!$('#a_central_block #map').length) {
+					$('#map').insertBefore($('#m_control'));
+					$('#m_control').appendTo($('#a_right_block'));
+					$('#m_control .block_title').text('Пульт');
+				}
+			} else {
+				if (!$('#a_right_block #map').length) {
+					$('#m_control').insertBefore($('#map'));
+					$('#map').appendTo($('#a_right_block'));
+					$('#m_control .block_title').text('Пульт вмешательства в личную жизнь');
+				}
 			}
 			var i, j,
 				$box = $('#cntrl .voice_generator'),
