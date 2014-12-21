@@ -811,6 +811,7 @@ var ui_informer = {
 	},
 
 	clear_title: function() {
+
 		var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
 		var pm = 0;
 		if (!forbidden_title_notices.match('pm')) {
@@ -1870,6 +1871,25 @@ var ui_improver = {
 		}
 	},
 
+	initSoundsOverride: function() {
+		if (window.so && window.so.a_notify) {
+			window.so.a_notify_orig = window.so.a_notify;
+			window.so.a_notify = function() {
+				if (!ui_storage.get('Option:disableArenaSound')) {
+					window.so.a_notify_orig();
+				}
+			};
+		}
+		if (window.so && window.so.play_sound) {
+			window.so.play_sound_orig = window.so.play_sound;
+			window.so.play_sound = function(a, b) {
+				if (!(ui_storage.get('Option:disablePmSound') && a == 'msg.mp3')) {
+					window.so.play_sound_orig(a, b);
+				}
+			};
+		}
+	},
+
 	mouseMove: function() {
 		if (!ui_logger.Updating) {
 			ui_logger.Updating = true;
@@ -2205,6 +2225,7 @@ var ui_starter = {
 			ui_improver.improve();
 			ui_laying_timer.init();
 			ui_observers.init();
+			ui_improver.initSoundsOverride();
 			
 			// Event and listeners
 			$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
@@ -2217,20 +2238,6 @@ var ui_starter = {
 			var shiftEnterScript = document.createElement('script');
 			shiftEnterScript.src = window.GUIp_getResource('shift_enter.js');
 			document.head.appendChild(shiftEnterScript);
-
-			// Disable PM sound external script
-			if (ui_storage.get('Option:disablePmSound')) {
-				var disablePmSoundScript = document.createElement('script');
-				disablePmSoundScript.src = window.GUIp_getResource('disable_pm_sound.js');
-				document.body.appendChild(disablePmSoundScript);
-			}
-
-			// Disable arena sound external script
-			if (ui_storage.get('Option:disableArenaSound')) {
-				var disableArenaSoundScript = document.createElement('script');
-				disableArenaSoundScript.src = window.GUIp_getResource('disable_arena_sound.js');
-				document.body.appendChild(disableArenaSoundScript);
-			}
 
 			// svg for #logger fade-out in FF
 			var is5c = document.getElementsByClassName('page_wrapper_5c').length;
