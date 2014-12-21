@@ -32,10 +32,10 @@
 	},
 	
 	"web_accessible_resources": [
-		"godville-ui-plus.css",
+		"superhero.css",
 		"forum.css",
 		"options.css",
-		"godville-ui-plus.js",
+		"superhero.js",
 		"guip_chrome.js",
 		"phrases.js",
 		"options-page.js",

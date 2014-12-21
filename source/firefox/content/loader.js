@@ -9,7 +9,7 @@ contentLoad: function(event) {
 			windowStats.set(doc, 'scriptsLoaded');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
-			loader.createScript(doc, 'chrome://godville-ui-plus/content/godville-ui-plus.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/superhero.js');
 		}
 		if (path.match(/^\/user\/(?:profile|rk_success)/) && !windowStats.get(doc)) {
 			windowStats.set(doc, 'scriptsLoaded');

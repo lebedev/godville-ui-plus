@@ -133,7 +133,7 @@ var ui_utils = {
 	},
 	addCSS: function () {
 		if ($('#ui_css').length === 0) {
-			window.GUIp_addGlobalStyleURL(window.GUIp_getResource('godville-ui-plus.css'), 'ui_css');
+			window.GUIp_addGlobalStyleURL(window.GUIp_getResource('superhero.css'), 'guip_css');
 		}
 	},
 	getXHR: function(path, success_callback, fail_callback, extra_arg) {
