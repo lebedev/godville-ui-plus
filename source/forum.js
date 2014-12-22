@@ -177,7 +177,9 @@ if ($reply_form) {
 		try {
 			val = editor.value;
 			var pos = editor.selectionDirection == 'backward' ? editor.selectionStart : editor.selectionEnd;
-			editor.value = val.slice(0, pos) + "<br>" + val.slice(pos);
+			editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
+			editor.focus();
+			editor.selectionStart = editor.selectionEnd = pos + 4;
 		} catch(error) {
 			console.error(error);
 		}
