@@ -136,13 +136,15 @@ if ($reply_form) {
 			val = editor.value;
 			ss = editor.selectionStart;
 			se = editor.selectionEnd;
-			while (ss < se && val[ss].match(/\s/)) {
+			while (ss < se && val[ss].match(/[\W_]/)) {
 				ss++;
 			}
-			while (ss < se && val[se - 1].match(/\s/)) {
+			while (ss < se && val[se - 1].match(/[\W_]/)) {
 				se--;
 			}
-			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\s/) ? ' ' : '') + left + val.slice(ss, se) + right + (val && val [se] && !val[se].match(/\s/) ? ' ' : '') + val.slice(se);
+			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[\W_]/) ? ' ' : '') + left + val.slice(ss, se) + right + (val && val [se] && !val[se].match(/[\W_]/) ? ' ' : '') + val.slice(se);
+			editor.focus();
+			editor.selectionStart = editor.selectionEnd = se + left.length;
 		} catch(error) {
 			console.error(error);
 		}
