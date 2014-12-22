@@ -228,7 +228,7 @@ function save_options(form) {
 					$j('#cb_status').text('ссылка');
 					$j('#cb_status').css('color', 'green');
 					storage.set('Option:useBackground', custom_link);
-				} else if (storage.get('Option:useBackground') && storage.get('Option:useBackground') != 'cloud') {
+				} else if (storage.get('Option:useBackground') && storage.get('Option:useBackground') !== 'cloud') {
 					$j('#cb_status').text('тот же');
 					$j('#cb_status').css('color', 'blue');
 				} else {
@@ -325,7 +325,7 @@ function restore_options() {
 			var option = localStorage.key(i).replace(r, '');
 			if (storage.get(localStorage.key(i).replace(storage._get_key(''), ''))) {
 				var pos;
-				while ((pos = option.indexOf(option.match('[A-Z]'))) != -1) {
+				while ((pos = option.indexOf(option.match('[A-Z]'))) !== -1) {
 					option = option.slice(0, pos) + '_' + option.charAt(pos).toLowerCase() + option.slice(pos + 1);
 				}
 				$j('#' + option).prop('checked', true);
@@ -354,7 +354,7 @@ function restore_options() {
 	if ($j('#use_background:checked').length) {
 		$j('#background_desc').hide();
 		var bg = storage.get('Option:useBackground');
-		if (bg != 'cloud') {
+		if (bg !== 'cloud') {
 			$j('#custom_background').click();
 		}
 	} else {
@@ -419,7 +419,7 @@ function set_theme_and_background() {
 	window.GUIp_addGlobalStyleURL('/stylesheets/' + storage.get('ui_s') + '.css', 'ui_s_css');
 	var background = storage.get('Option:useBackground');
 	if (background) {
-		if (background == 'cloud') {
+		if (background === 'cloud') {
 			document.body.style.backgroundImage = 'url(' + window.GUIp_getResource('images/background.jpg') + ')';
 		} else {
 			document.body.style.backgroundImage =  'url(' + background + ')';

@@ -184,7 +184,7 @@ if ($reply_form) {
 	var paste_br = function(editor, e) {
 		try {
 			init(editor);
-			var pos = editor.selectionDirection == 'backward' ? ss : se;
+			var pos = editor.selectionDirection === 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
 			putSelectionTo(editor, pos + 4);
 		} catch(error) {

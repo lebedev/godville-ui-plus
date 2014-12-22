@@ -6,10 +6,10 @@ var ui_data = {
 // base variables initialization
 	init: function() {
 		this.isBattle = window.so.state.is_fighting();
-		this.isDungeon = window.so.state.fight_type() == 'dungeon';
+		this.isDungeon = window.so.state.fight_type() === 'dungeon';
 		this.god_name = window.so.state.stats.godname.value;
 		this.char_name = window.so.state.stats.name.value;
-		this.char_sex = window.so.state.stats.gender.value == 'male' ? ['героя', 'герою'] : ['героиню', 'героине'];
+		this.char_sex = window.so.state.stats.gender.value === 'male' ? ['героя', 'герою'] : ['героиню', 'героине'];
 		ui_storage.set('ui_s', '');
 		localStorage.setItem('GUIp_CurrentUser', this.god_name);
 
@@ -64,7 +64,7 @@ var ui_utils = {
 // finds a label with given name
 	findLabel: function($base_elem, label_name) {
 		return $('.l_capt', $base_elem).filter(function(index) {
-			return $(this).text() == label_name;
+			return $(this).text() === label_name;
 		});
 	},
 // finds a label with given name and appends given elem after it
@@ -243,7 +243,7 @@ var ui_utils = {
 		var current, friends = document.querySelectorAll('.msgDockPopupW .frline');
 		for (var i = 0, len = friends.length; i < len; i++) {
 			current = friends[i].querySelector('.frname');
-			if (current.textContent == friend) {
+			if (current.textContent === friend) {
 				current.click();
 				break;
 			}
@@ -336,10 +336,10 @@ var ui_help_dialog = {
 							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
 						'<li class="update_required Chrome Firefox hidden">Обратно к шагу 1.</li>' +
 						'<li class="console Chrome Firefox hidden">Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.</li>' +
-						'<li class="console Chrome Firefox hidden">Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GUIp_browser == 'Firefox' ? 'K' : 'J') + '</b>). ' +
-							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+						'<li class="console Chrome Firefox hidden">Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
+							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
 						'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке ' +
-							'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser == 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
+							'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
 						'И с этой информацией напишите <b>Бэдлаку</b> или в тему на форуме по ссылкам ниже.</li>' +
 						'</ol>' +
 						'<div>Полезные ссылки: ' +
@@ -426,8 +426,8 @@ var ui_storage = {
 	get: function(id) {
 		var val = localStorage.getItem(this.get_key(id));
 		if (val) val = val.replace(/^[NSB]\]/, '');
-		if (val == 'true') return true;
-		if (val == 'false') return false;
+		if (val === 'true') return true;
+		if (val === 'false') return false;
 		return val;
 	},
 // gets diff with a value
@@ -543,7 +543,7 @@ var ui_words = {
 	},
 	
 	isHealItem: function(item) {
-		return item.style.fontStyle == "italic";
+		return item.style.fontStyle === "italic";
 	},
 
 	isUsableItem: function(item) {
@@ -551,7 +551,7 @@ var ui_words = {
 	},
 	
 	isBoldItem: function(item) {
-		return item.style.fontWeight == 700 || item.style.fontWeight == "bold";
+		return item.style.fontWeight === 700 || item.style.fontWeight === "bold";
 	},
 
 	_changeFirstLetter: function(text) {
@@ -603,7 +603,7 @@ var ui_stats = {
 		var $label = ui_utils.findLabel($container, label);
 		var $field = $label.siblings('.l_val');
 		var value = parser($field.text());
-		if (id == 'Brick' || id == 'Wood') return this.set(id, Math.floor(value*10 + 0.5));
+		if (id === 'Brick' || id === 'Wood') return this.set(id, Math.floor(value*10 + 0.5));
 		else return this.set(id, value);
 	}
 };
@@ -636,7 +636,7 @@ var ui_logger = {
 		// append string	
 		this.bar.append('<li class="' + klass + '" title="' + descr + '">' + str + '</li>');
 		this.bar.scrollLeft(10000); //Dirty fix
-		while ($('#logger li').position().left + $('#logger li').width() < 0 || $('#logger li')[0].className == "separator") {
+		while ($('#logger li').position().left + $('#logger li').width() < 0 || $('#logger li')[0].className === "separator") {
 			$('#logger li:first').remove();
 		}
 	},
@@ -646,7 +646,7 @@ var ui_logger = {
 		var diff = ui_storage.set_with_diff('Logger:' + id, ui_stats.get(id));
 		if (diff) {
 			// Если нужно, то преобразовываем в число с одним знаком после запятой
-			if (parseInt(diff) != diff) diff = diff.toFixed(1);
+			if (parseInt(diff) !== diff) diff = diff.toFixed(1);
 			// Добавление плюcа, минуса или стрелочки
 			var s;
 			if (diff < 0) {
@@ -739,7 +739,7 @@ var ui_informer = {
 	},
 	// устанавливает или удаляет флаг
 	update: function(flag, value) {
-		if (value && (flag == 'pvp' || !(ui_data.isBattle && !ui_data.isDungeon)) && !(ui_storage.get('Option:forbiddenInformers') &&
+		if (value && (flag === 'pvp' || !(ui_data.isBattle && !ui_data.isDungeon)) && !(ui_storage.get('Option:forbiddenInformers') &&
 			ui_storage.get('Option:forbiddenInformers').match(flag.replace(/= /g, '').replace(/> /g, '').replace(/ /g, '_')))) {
 			if (!(flag in this.flags)) {
 				this.flags[flag] = true;
@@ -786,7 +786,7 @@ var ui_informer = {
 		$('div', this.container)
 			.each(function() {
 						var $this = $(this);
-						if ($this.text() == flag) {
+						if ($this.text() === flag) {
 							$this.remove();
 					 }
 				 });
@@ -818,12 +818,12 @@ var ui_informer = {
 		var pm = 0;
 		if (!forbidden_title_notices.match('pm')) {
 			var pm_badge = document.querySelector('.fr_new_badge_pos');
-			if (pm_badge && pm_badge.style.display != 'none') {
+			if (pm_badge && pm_badge.style.display !== 'none') {
 				pm = +pm_badge.textContent;
 			}
 			var stars = document.querySelectorAll('.msgDock .fr_new_msg');
 			for (var i = 0, len = stars.length; i < len; i++) {
-				if (stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent != 'Гильдсовет') {
+				if (stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent !== 'Гильдсовет') {
 					pm++;
 				}
 			}
@@ -832,7 +832,7 @@ var ui_informer = {
 
 		var gm = false;
 		if (!forbidden_title_notices.match('gm')) {
-			gm = document.getElementsByClassName('gc_new_badge')[0].style.display != 'none';
+			gm = document.getElementsByClassName('gc_new_badge')[0].style.display !== 'none';
 		}
 		gm = gm ? '[g]' : '';
 
@@ -900,11 +900,11 @@ var ui_forum = {
 		var informer = $('#topic' + topic_no)[0];
 		if (!informer) {
 			var $informer = $('<a id="topic' + topic_no + '" target="_blank"><span /><div class="fr_new_badge" /></a>').click(function(e) {
-				if (e.which == 1) {
+				if (e.which === 1) {
 					e.preventDefault();
 				}
 			}).bind('mouseup', function(e) {
-				if (e.which == 1 || e.which == 2) {
+				if (e.which === 1 || e.which === 2) {
 					var informers = JSON.parse(ui_storage.get('ForumInformers'));
 					delete informers[this.id.match(/\d+/)[0]];
 					ui_storage.set('ForumInformers', JSON.stringify(informers));
@@ -939,7 +939,7 @@ var ui_forum = {
 				diff = +temp[2] - forum[topics[i]];
 				if (diff) {
 					forum[topics[i]] = +temp[2];
-					if (temp[3] != ui_data.god_name) {
+					if (temp[3] !== ui_data.god_name) {
 						if (!informers[topics[i]]) {
 							//create
 							informers[topics[i]] = {diff: diff, name: temp[1].replace(/&quot;/g, '"')};
@@ -1047,7 +1047,7 @@ var ui_improver = {
 
 		// Parse items
 		for (i = 0, len = items.length; i < len; i++) {
-			if (getComputedStyle(items[i]).overflow == 'visible') {
+			if (getComputedStyle(items[i]).overflow === 'visible') {
 				var item_name = items[i].textContent.replace(/\?$/, '')
 													.replace(/\(@\)/, '')
 													.replace(/\(\d+ шт\)$/, '')
@@ -1056,7 +1056,7 @@ var ui_improver = {
 				if (ui_words.isUsableItem(items[i])) {
 					var desc = items[i].querySelector('.item_act_link_div *').getAttribute('title').replace(/ \(.*/g, ''),
 						sect = ui_words.usableItemType(desc);
-					if (sect != -1) {
+					if (sect !== -1) {
 						flags[sect] = true;
 					} else if (!ui_utils.hasShownInfoMessage) {
 						ui_utils.hasShownInfoMessage = true;
@@ -1113,7 +1113,7 @@ var ui_improver = {
 			trophy_list.sort();
 			for (i = 0, len = trophy_list.length - 1; i < len; i++) {
 				for (j = i + 1; j < len + 1; j++) {
-					if (trophy_list[i][0] == trophy_list[j][0]) {
+					if (trophy_list[i][0] === trophy_list[j][0]) {
 						if (trophy_boldness[trophy_list[i]] && trophy_boldness[trophy_list[j]]) {
 							if (!(forbidden_craft && forbidden_craft.match('b_b'))) {
 								this.b_b.push(trophy_list[i] + ' и ' + trophy_list[j]);
@@ -1201,7 +1201,7 @@ var ui_improver = {
 		
 		// Save stats
 		ui_stats.setFromLabelCounter('Prana', $box, 'Прана');
-		ui_informer.update('full prana', $('#cntrl .p_val').width() == $('#cntrl .p_bar').width());
+		ui_informer.update('full prana', $('#cntrl .p_val').width() === $('#cntrl .p_bar').width());
 	},
 
 // ----------- Вести с полей ----------------
@@ -1214,7 +1214,7 @@ var ui_improver = {
 		var isMonsterWithCapabilities = false;
 		var isTamableMonster = false;
 		// Если герой дерется с монстром
-		if ($('#news .line')[0].style.display != 'none') {
+		if ($('#news .line')[0].style.display !== 'none') {
 			var currentMonster = $('#news .l_val').text();
 			isMonsterOfTheDay = this.monstersOfTheDay && currentMonster.match(this.monstersOfTheDay);
 			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий/);
@@ -1246,7 +1246,7 @@ var ui_improver = {
 					var iNext = iPointer + iStep,
 						jNext = jPointer + jStep;
 					if (iNext >= 0 && iNext < kRow && jNext >= 0 && jNext < kColumn) {
-						if (MapThermo[iNext][jNext] != -1) {
+						if (MapThermo[iNext][jNext] !== -1) {
 							if (MapThermo[iNext][jNext] > step || MapThermo[iNext][jNext] === 0) {
 								MapThermo[iNext][jNext] = step;
 								this.MapIteration(MapThermo, iNext, jNext, step, kRow, kColumn);
@@ -1307,27 +1307,27 @@ var ui_improver = {
 			for (i = 0; i < kRow; i++) {
 				MapArray[i] = [];
 				for (j = 0; j < kColumn; j++) {
-					MapArray[i][j] = ('?!@'.indexOf($boxML[i].textContent[j]) != - 1) ? 0 : -1;
+					MapArray[i][j] = ('?!@'.indexOf($boxML[i].textContent[j]) !== - 1) ? 0 : -1;
 				}
 			}
 			for (var si = 0; si < kRow; si++) {
 				//	Ищем где мы находимся
 				j = $boxML[si].textContent.indexOf('@');
-				if (j != -1) {
-					var direction = document.querySelector('.sort_ch').textContent == '▼',
+				if (j !== -1) {
+					var direction = document.querySelector('.sort_ch').textContent === '▼',
 						chronicles = document.querySelectorAll('#m_fight_log .d_line');
 					if (!(chronicles[direction ? 0 : chronicles.length - 1].classList.contains('moveLoss') && !chronicles[direction ? 1 : chronicles.length - 2].classList.contains('moveLoss'))) {
 						//	Проверяем куда можно пройти
-						if ($boxML[si - 1].textContent[j] != '#' || isJumping && (si == 1 || si != 1 && $boxML[si - 2].textContent[j] != '#')) {
+						if ($boxML[si - 1].textContent[j] !== '#' || isJumping && (si === 1 || si !== 1 && $boxML[si - 2].textContent[j] !== '#')) {
 							$box[0].style.visibility = '';	//	Север
 						}
-						if ($boxML[si + 1].textContent[j] != '#' || isJumping && (si == kRow - 2 || si != kRow - 2 && $boxML[si + 2].textContent[j] != '#')) {
+						if ($boxML[si + 1].textContent[j] !== '#' || isJumping && (si === kRow - 2 || si !== kRow - 2 && $boxML[si + 2].textContent[j] !== '#')) {
 							$box[1].style.visibility = '';	//	Юг
 						}
-						if ($boxML[si].textContent[j - 1] != '#' || isJumping && $boxML[si].textContent[j - 2] != '#') {
+						if ($boxML[si].textContent[j - 1] !== '#' || isJumping && $boxML[si].textContent[j - 2] !== '#') {
 							$box[2].style.visibility = '';	//	Запад
 						}
-						if ($boxML[si].textContent[j + 1] != '#' || isJumping && $boxML[si].textContent[j + 2] != '#') {
+						if ($boxML[si].textContent[j + 1] !== '#' || isJumping && $boxML[si].textContent[j + 2] !== '#') {
 							$box[3].style.visibility = '';	//	Восток
 						}
 					}
@@ -1336,23 +1336,23 @@ var ui_improver = {
 				for (var sj = 0; sj < kColumn; sj++) {
 					var ik, jk,
 						Pointer = $boxML[si].textContent[sj];
-					if ('←→↓↑↙↘↖↗'.indexOf(Pointer) != - 1) {
+					if ('←→↓↑↙↘↖↗'.indexOf(Pointer) !== - 1) {
 						MaxMap++;
 						$boxMC[si * kColumn + sj].style.color = 'green';
 						for (ik = 0; ik < kRow; ik++) {
 							for (jk = 0; jk < kColumn; jk++) {
 								var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
 									jstep = parseInt((Math.abs(ik - si) - 1) / 5);
-								if ('←→'.indexOf(Pointer) != -1 && ik >= si - istep && ik <= si + istep ||
-									Pointer == '↓' && ik >= si + istep ||
-									Pointer == '↑' && ik <= si - istep ||
-									'↙↘'.indexOf(Pointer) != -1 && ik > si + istep ||
-									'↖↗'.indexOf(Pointer) != -1 && ik < si - istep) {
-									if (Pointer == '→' && jk >= sj + jstep ||
-										Pointer == '←' && jk <= sj - jstep ||
-										'↓↑'.indexOf(Pointer) != -1 && jk >= sj - jstep && jk <= sj + jstep ||
-										'↘↗'.indexOf(Pointer) != -1 && jk > sj + jstep ||
-										'↙↖'.indexOf(Pointer) != -1 && jk < sj - jstep) {
+								if ('←→'.indexOf(Pointer) !== -1 && ik >= si - istep && ik <= si + istep ||
+									Pointer === '↓' && ik >= si + istep ||
+									Pointer === '↑' && ik <= si - istep ||
+									'↙↘'.indexOf(Pointer) !== -1 && ik > si + istep ||
+									'↖↗'.indexOf(Pointer) !== -1 && ik < si - istep) {
+									if (Pointer === '→' && jk >= sj + jstep ||
+										Pointer === '←' && jk <= sj - jstep ||
+										'↓↑'.indexOf(Pointer) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
+										'↘↗'.indexOf(Pointer) !== -1 && jk > sj + jstep ||
+										'↙↖'.indexOf(Pointer) !== -1 && jk < sj - jstep) {
 										if (MapArray[ik][jk] >= 0) {
 											MapArray[ik][jk]++;
 										}
@@ -1361,7 +1361,7 @@ var ui_improver = {
 							}
 						}
 					}
-					if ('✺☀♨☁❄✵'.indexOf(Pointer) != -1) {
+					if ('✺☀♨☁❄✵'.indexOf(Pointer) !== -1) {
 						MaxMap++;
 						$boxMC[si * kColumn + sj].style.color = 'green';
 						var ThermoMinStep = 0;	//	Минимальное количество шагов до клада
@@ -1379,7 +1379,7 @@ var ui_improver = {
 						for (ik = 0; ik < kRow; ik++) {
 							MapThermo[ik] = [];
 							for (jk = 0; jk < kColumn; jk++) {
-								MapThermo[ik][jk] = ($boxML[ik].textContent[jk] == '#' || ((Math.abs(jk - sj) + Math.abs(ik - si)) > ThermoMaxStep)) ? -1 : 0;
+								MapThermo[ik][jk] = ($boxML[ik].textContent[jk] === '#' || ((Math.abs(jk - sj) + Math.abs(ik - si)) > ThermoMaxStep)) ? -1 : 0;
 							}
 						} 
 						//	Запускаем итерацию
@@ -1403,8 +1403,8 @@ var ui_improver = {
 			if (MaxMap !== 0) {
 				for (i = 0; i < kRow; i++) {
 					for (j = 0; j < kColumn; j++) {
-						if (MapArray[i][j] == MaxMap) {
-							$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] == '@') ? 'blue' : 'red';
+						if (MapArray[i][j] === MaxMap) {
+							$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'red';
 						}
 					}
 				}
@@ -1425,7 +1425,7 @@ var ui_improver = {
 			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), 'Инвентарь');
 			ui_stats.set('Map_Battery',$('#m_control .acc_val').text(), parseFloat);
 			ui_stats.set('Map_Alls_HP', this.GroupHP(true));
-			if (ui_storage.get('Logger:LocationPrev') == 'Pole') {
+			if (ui_storage.get('Logger:LocationPrev') === 'Pole') {
 				ui_storage.set('Logger:LocationPrev', 'Map');
 				ui_storage.set('Logger:Map_HP', ui_stats.get('Map_HP'));
 				ui_storage.set('Logger:Map_Gold', ui_stats.get('Map_Gold'));
@@ -1456,7 +1456,7 @@ var ui_improver = {
 			}
 			return;
 		}
-		if (ui_storage.get('Logger:LocationPrev') != 'Pole') {
+		if (ui_storage.get('Logger:LocationPrev') !== 'Pole') {
 			ui_storage.set('Logger:LocationPrev', 'Pole');
 		}
 		var $box = $('#stats');
@@ -1482,7 +1482,7 @@ var ui_improver = {
 		ui_stats.setFromLabelCounter('Wood', $box, 'Дерева для ковчега', parseFloat);
 		ui_stats.setFromLabelCounter('Retirement', $box, 'Сбережения', gold_parser);
 		ui_stats.set('Battery',$('#control .acc_val').text(), parseFloat);
-		if (ui_storage.get('Stats:Inv') != ui_stats.setFromLabelCounter('Inv', $box, 'Инвентарь') || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
+		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, 'Инвентарь') || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
 			this.inventoryChanged = true;
 		}
 		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, 'Золота', gold_parser) >= (ui_stats.get('Brick') > 1000 ? 10000 : 3000));
@@ -1516,14 +1516,14 @@ var ui_improver = {
 				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 			} 
 			$('#pet_badge').text(ui_utils.findLabel($('#pet'), 'Статус').siblings('.l_val').text().replace(/[^0-9:]/g, ''));
-			if ($('#pet .block_content')[0].style.display == 'none') {
+			if ($('#pet .block_content')[0].style.display === 'none') {
 				$('#pet_badge').show(); 
 			}
 			else {
 				$('#pet_badge').hide();
 			}
 		} else {
-			if ($('#pet_badge').length == 1) {
+			if ($('#pet_badge').length === 1) {
 				$('#pet_badge').hide();
 			}
 		}
@@ -1646,7 +1646,7 @@ var ui_improver = {
 	},
 	parseChronicles: function(xhr) {
 		var last;
-		if (document.querySelector('.sort_ch').textContent == '▼') {
+		if (document.querySelector('.sort_ch').textContent === '▼') {
 			var temp = document.querySelectorAll('#m_fight_log .d_line .d_msg:not(.m_infl)');
 			last = temp[temp.length - 1].textContent;
 		} else {
@@ -1656,7 +1656,7 @@ var ui_improver = {
 		var direction, entry, matches = xhr.responseText.match(/<div class="text_content ">[\s\S]+?<\/div>/g);
 		for (var i = 0, len = matches.length; i < len; i++) {
 			matches[i] = matches[i].replace('<div class="text_content ">', '').replace('</div>', '').trim();
-			if (matches[i] == last) {
+			if (matches[i] === last) {
 				break;
 			} else {
 				entry = {};
@@ -1690,7 +1690,7 @@ var ui_improver = {
 			}
 
 			// informer
-			ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent == '▼' ? document.querySelectorAll('#m_fight_log .d_line.bossWarnings:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.bossWarnings:last-child').length);
+			ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent === '▼' ? document.querySelectorAll('#m_fight_log .d_line.bossWarnings:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.bossWarnings:last-child').length);
 
 			this.colorDungeonMap();
 		}
@@ -1705,7 +1705,7 @@ var ui_improver = {
 			x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
 			y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
 			chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
-			ch_down = document.querySelector('.sort_ch').textContent == '▼';
+			ch_down = document.querySelector('.sort_ch').textContent === '▼';
 		for (len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
 			for (j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
 				if (chronicles[i].parentNode.classList.contains(this.dungeonPhrases[j])) {
@@ -1769,7 +1769,7 @@ var ui_improver = {
 			document.body.className = ui_storage.get('ui_s').replace('th_', '');
 		}
 
-		if (ui_storage.get('Option:useBackground') == 'cloud') {
+		if (ui_storage.get('Option:useBackground') === 'cloud') {
 			if ($('body').css('background-image') !== 'url(' + window.GUIp_getResource("images/background.jpg") + ')') {
 				$('body').css('background-image', 'url(' + window.GUIp_getResource("images/background.jpg") + ')');
 			}
@@ -1781,7 +1781,7 @@ var ui_improver = {
 				hash = ((hash<<5)-hash)+ch;
 				hash = hash & hash; // Convert to 32bit integer
 			}
-			if (hash != this.hash) {
+			if (hash !== this.hash) {
 				this.hash = hash;
 				$('body').css('background-image', 'url(' + ui_utils.escapeHTML(str) + ')');
 			}
@@ -1860,16 +1860,16 @@ var ui_improver = {
 			if (this.b_r.length) $('.b_r').show();
 			if (this.r_r.length) $('.r_r').show();
 			if ($('.b_b:visible, .b_r:visible, .r_r:visible').length) $('span.craft_button').show();
-			//if ($('.f_news').text() != 'Возвращается к заданию...')fc
+			//if ($('.f_news').text() !== 'Возвращается к заданию...')fc
 			if (!ui_data.isBattle) {
-				if ($('#hk_distance .l_capt').text() == 'Город' || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display != 'none') 
+				if ($('#hk_distance .l_capt').text() === 'Город' || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display !== 'none') 
 					$('#hk_distance .voice_generator').hide();
-				//if (ui_storage.get('Stats:Prana') == 100) $('#control .voice_generator').hide();
-				if ($('#control .p_val').width() == $('#control .p_bar').width() || $('#news .line')[0].style.display != 'none') $('#control .voice_generator')[0].style.display = 'none';
-				if ($('#hk_distance .l_capt').text() == 'Город') $('#control .voice_generator')[1].style.display = 'none';
+				//if (ui_storage.get('Stats:Prana') === 100) $('#control .voice_generator').hide();
+				if ($('#control .p_val').width() === $('#control .p_bar').width() || $('#news .line')[0].style.display !== 'none') $('#control .voice_generator')[0].style.display = 'none';
+				if ($('#hk_distance .l_capt').text() === 'Город') $('#control .voice_generator')[1].style.display = 'none';
 			}
 			if ($('#hk_quests_completed .q_name').text().match(/\(выполнено\)/)) $('#hk_quests_completed .voice_generator').hide();
-			if ($('#hk_health .p_val').width() == $('#hk_health .p_bar').width()) $('#hk_health .voice_generator').hide();
+			if ($('#hk_health .p_val').width() === $('#hk_health .p_bar').width()) $('#hk_health .voice_generator').hide();
 		}
 	},
 
@@ -1905,7 +1905,7 @@ var ui_improver = {
 		if (window.so && window.so.play_sound) {
 			window.so.play_sound_orig = window.so.play_sound;
 			window.so.play_sound = function(a, b) {
-				if (!(ui_storage.get('Option:disablePmSound') && a == 'msg.mp3')) {
+				if (!(ui_storage.get('Option:disablePmSound') && a === 'msg.mp3')) {
 					window.so.play_sound_orig(a, b);
 				}
 			};
@@ -1939,7 +1939,7 @@ var ui_improver = {
 
 var ui_laying_timer = {
 	init: function() {
-		if (+$('#hk_bricks_cnt .l_val').text() == 1000 && !ui_data.isBattle && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
+		if (+$('#hk_bricks_cnt .l_val').text() === 1000 && !ui_data.isBattle && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
 			document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
 			for (var key in window) {
 				if (key.match(/^diary/)) {
@@ -2068,12 +2068,12 @@ var ui_observers = {
 			attributeFilter: ['style']
 		},
 		func: function(mutation) {
-			if (mutation.target.tagName.toLowerCase() == 'li' && mutation.type == "attributes" &&
-				mutation.target.style.display == 'none' && mutation.target.parentNode) {
+			if (mutation.target.tagName.toLowerCase() === 'li' && mutation.type === "attributes" &&
+				mutation.target.style.display === 'none' && mutation.target.parentNode) {
 				mutation.target.parentNode.removeChild(mutation.target);
 				ui_improver.improveLoot();
 			}
-			if (mutation.target.tagName.toLowerCase() == 'ul' && mutation.addedNodes.length) {
+			if (mutation.target.tagName.toLowerCase() === 'ul' && mutation.addedNodes.length) {
 				ui_improver.improveLoot();
 			}
 		},
@@ -2158,7 +2158,7 @@ var ui_observers = {
 		},
 		func: function(mutation) {
 			if (mutation.addedNodes.length) {
-				if (ui_improver.currentAlly == ui_improver.currentAllyObserver) {
+				if (ui_improver.currentAlly === ui_improver.currentAllyObserver) {
 					var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly],
 						motto_field = mutation.target.querySelector('.h_motto');
 					if (motto_field) {
@@ -2220,7 +2220,7 @@ var ui_trycatcher = {
 		var method_name, method;
 		for (method_name in object) {
 			method = object[method_name];
-			if (typeof method == "function") {
+			if (typeof method === "function") {
 				object[method_name] = this.replacer(object_name, method_name, method);
 			}
 		}

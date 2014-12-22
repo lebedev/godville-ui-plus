@@ -4,7 +4,7 @@ var inlineChatImprove = function() {
 	if ($tas.length) {
 		var new_keypress = function(handlers) {
 			return function(e) {
-				if (e.which == 13 && !e.shiftKey) {
+				if (e.which === 13 && !e.shiftKey) {
 					for (var i = 0, len = handlers.length; i < len; i++) {
 						handlers[i](e);
 					}
