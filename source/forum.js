@@ -136,6 +136,10 @@ if ($reply_form) {
 		ss = editor.selectionStart;
 		se = editor.selectionEnd;
 	};
+	var putSelectionTo = function(pos) {
+		editor.focus();
+		editor.selectionStart = editor.selectionEnd = pos;
+	};
 	var basic_formatting = function(left, right, editor, e) {
 		try {
 			init();
@@ -146,8 +150,7 @@ if ($reply_form) {
 				se--;
 			}
 			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[\W_]/) ? ' ' : '') + left + val.slice(ss, se) + right + (val && val [se] && !val[se].match(/[\W_]/) ? ' ' : '') + val.slice(se);
-			editor.focus();
-			editor.selectionStart = editor.selectionEnd = se + left.length;
+			putSelectionTo(se + left.length);
 		} catch(error) {
 			console.error(error);
 		}
@@ -158,8 +161,7 @@ if ($reply_form) {
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
 			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
 			editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + nle + val.slice(se);
-			editor.focus();
-			editor.selectionStart = editor.selectionEnd = se + quotation.length + nls.length + (se > ss ? nle.length : 0);
+			putSelectionTo(se + quotation.length + nls.length + (se > ss ? nle.length : 0));
 		} catch(error) {
 			console.error(error);
 		}
@@ -171,8 +173,7 @@ if ($reply_form) {
 			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
 			var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
 			editor.value = val.slice(0, ss) + nls + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + nle + val.slice(se);
-			editor.focus();
-			editor.selectionStart = editor.selectionEnd = se + nls.length + (list_marker.length + 1)*count;
+			putSelectionTo(se + nls.length + (list_marker.length + 1)*count);
 		} catch(error) {
 			console.error(error);
 		}
@@ -182,8 +183,7 @@ if ($reply_form) {
 			init();
 			var pos = editor.selectionDirection == 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
-			editor.focus();
-			editor.selectionStart = editor.selectionEnd = pos + 4;
+			putSelectionTo(pos + 4);
 		} catch(error) {
 			console.error(error);
 		}
