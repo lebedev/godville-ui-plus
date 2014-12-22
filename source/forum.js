@@ -130,7 +130,7 @@ if ($reply_form) {
 		'<a class="formatting button sub" title="Сделать текст подстрочным">X<sub>2</sub></a>' +
 		'<a class="formatting button monospace" title="Сделать текст моноширинным"><code>мш</code></a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
-	var val, ss, se;
+	var val, ss, se, nls, nle;
 	var basic_formatting = function(left, right, editor, e) {
 		try {
 			val = editor.value;
@@ -154,7 +154,11 @@ if ($reply_form) {
 			val = editor.value;
 			ss = editor.selectionStart;
 			se = editor.selectionEnd;
-			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '')) + quotation + val.slice(ss, se) + (val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '')) + val.slice(se);
+			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
+			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
+			editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + nle + val.slice(se);
+			editor.focus();
+			editor.selectionStart = editor.selectionEnd = se + quotation.length + nls.length + (se > ss ? nle.length : 0);
 		} catch(error) {
 			console.error(error);
 		}
