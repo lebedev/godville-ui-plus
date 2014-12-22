@@ -131,11 +131,14 @@ if ($reply_form) {
 		'<a class="formatting button monospace" title="Сделать текст моноширинным"><code>мш</code></a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
 	var val, ss, se, nls, nle;
+	var init = function() {
+		val = editor.value;
+		ss = editor.selectionStart;
+		se = editor.selectionEnd;
+	};
 	var basic_formatting = function(left, right, editor, e) {
 		try {
-			val = editor.value;
-			ss = editor.selectionStart;
-			se = editor.selectionEnd;
+			init();
 			while (ss < se && val[ss].match(/[\W_]/)) {
 				ss++;
 			}
@@ -151,9 +154,7 @@ if ($reply_form) {
 	};
 	var quote_formatting = function(quotation, editor, e) {
 		try {
-			val = editor.value;
-			ss = editor.selectionStart;
-			se = editor.selectionEnd;
+			init();
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
 			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
 			editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + nle + val.slice(se);
@@ -165,9 +166,7 @@ if ($reply_form) {
 	};
 	var list_formatting = function(list_marker, editor, e) {
 		try {
-			val = editor.value;
-			ss = editor.selectionStart;
-			se = editor.selectionEnd;
+			init();
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '';
 			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
 			var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
@@ -180,8 +179,8 @@ if ($reply_form) {
 	};
 	var paste_br = function(editor, e) {
 		try {
-			val = editor.value;
-			var pos = editor.selectionDirection == 'backward' ? editor.selectionStart : editor.selectionEnd;
+			init();
+			var pos = editor.selectionDirection == 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
 			editor.focus();
 			editor.selectionStart = editor.selectionEnd = pos + 4;
