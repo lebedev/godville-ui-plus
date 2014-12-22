@@ -9,6 +9,8 @@
 	text-decoration: none;
 	vertical-align: middle;
 	width: 18px;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }
 .formatting.button {
 	background-color: lightgray;

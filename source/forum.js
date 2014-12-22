@@ -130,60 +130,63 @@ if ($reply_form) {
 		'<a class="formatting button sub" title="Сделать текст подстрочным">X<sub>2</sub></a>' +
 		'<a class="formatting button monospace" title="Сделать текст моноширинным"><code>мш</code></a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
-	var val, ss, se, nls, nle;
-	var init = function() {
+	var val, ss, se, nls, nle, selection;
+	var init = function(editor) {
 		val = editor.value;
 		ss = editor.selectionStart;
 		se = editor.selectionEnd;
+		selection = window.getSelection().isCollapsed ? '' : window.getSelection().toString().trim();
 	};
-	var putSelectionTo = function(pos) {
+	var putSelectionTo = function(editor, pos) {
 		editor.focus();
-		editor.selectionStart = editor.selectionEnd = pos;
+		editor.selectionStart = editor.selectionEnd = pos + selection.length;
 	};
 	var basic_formatting = function(left, right, editor, e) {
 		try {
-			init();
+			init(editor);
 			while (ss < se && val[ss].match(/[\W_]/)) {
 				ss++;
 			}
 			while (ss < se && val[se - 1].match(/[\W_]/)) {
 				se--;
 			}
-			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[\W_]/) ? ' ' : '') + left + val.slice(ss, se) + right + (val && val [se] && !val[se].match(/[\W_]/) ? ' ' : '') + val.slice(se);
-			putSelectionTo(se + left.length);
+			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[\W_]/) ? ' ' : '') + left + val.slice(ss, se) + selection + right + (val && val [se] && !val[se].match(/[\W_]/) ? ' ' : '') + val.slice(se);
+			putSelectionTo(editor, se + left.length);
+			return false;
 		} catch(error) {
 			console.error(error);
 		}
 	};
 	var quote_formatting = function(quotation, editor, e) {
 		try {
-			init();
+			init(editor);
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
-			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
-			editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + nle + val.slice(se);
-			putSelectionTo(se + quotation.length + nls.length + (se > ss ? nle.length : 0));
+			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '') +
+			      selection && !selection[selection.length - 1].match(/\n/) ? '\n\n' : (selection[selection.length - 2] && !selection[selection.length - 2].match(/\n/) ? '\n' : '');
+			editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + selection + nle + val.slice(se);
+			putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0));
 		} catch(error) {
 			console.error(error);
 		}
 	};
 	var list_formatting = function(list_marker, editor, e) {
 		try {
-			init();
+			init(editor);
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '';
 			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
 			var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
 			editor.value = val.slice(0, ss) + nls + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + nle + val.slice(se);
-			putSelectionTo(se + nls.length + (list_marker.length + 1)*count);
+			putSelectionTo(editor, se + nls.length + (list_marker.length + 1)*count);
 		} catch(error) {
 			console.error(error);
 		}
 	};
 	var paste_br = function(editor, e) {
 		try {
-			init();
+			init(editor);
 			var pos = editor.selectionDirection == 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
-			putSelectionTo(pos + 4);
+			putSelectionTo(editor, pos + 4);
 		} catch(error) {
 			console.error(error);
 		}
