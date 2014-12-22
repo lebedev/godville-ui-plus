@@ -168,7 +168,12 @@ if ($reply_form) {
 			val = editor.value;
 			ss = editor.selectionStart;
 			se = editor.selectionEnd;
-			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '') + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + (val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '')) + val.slice(se);
+			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '';
+			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
+			var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
+			editor.value = val.slice(0, ss) + nls + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + nle + val.slice(se);
+			editor.focus();
+			editor.selectionStart = editor.selectionEnd = se + nls.length + (list_marker.length + 1)*count;
 		} catch(error) {
 			console.error(error);
 		}
