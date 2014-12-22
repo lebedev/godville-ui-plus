@@ -1270,7 +1270,8 @@ var ui_improver = {
 					'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ловушка: слабый урон</div></div>' +
 					'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ловушка: сильный урон</div></div>' +
 					'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ловушка: пропуск хода</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - близость к боссу и ловушка</div></div>'
+					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - близость к боссу и ловушка</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossSlay moveLoss"></div><div> - босс и ловушка</div></div>'
 				);
 			}
 			if (ui_storage.get('Option:relocateMap')) {
