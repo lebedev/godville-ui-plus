@@ -1544,7 +1544,7 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($('#equipment'))) {
 			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 		}
-		$('#equip_badge').text((seq / 7).toFixed(1));
+		$('#equip_badge').text((seq / 7 - ui_stats.get('Level')).toFixed(1));
 	},
 // ---------- Group HP --------------
 	GroupHP: function(flag) {		
