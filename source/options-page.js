@@ -161,6 +161,24 @@ return '<p>\n' +
 '								<div class="g_desc">в подземельях</div>\n' +
 '							</div>\n' +
 '							<div class="new_line">\n' +
+'							<label class="l_capt" for="temperature_min_active">Учитывать нижнюю границу для указателей типа термометр</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="temperature_min_active" name="temperature_min_active" class="option-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<div class="g_desc">в подземельях</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'							<label class="l_capt" for="is_contradictions_active">Учитывать особенность подземелья Противоречия</label>\n' +
+'								<div class="field_content">\n' +
+'									<input id="is_contradictions_active" name="is_contradictions_active" class="option-checkbox" type="checkbox">\n' +
+'								</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
+'								<div class="g_desc">в подземельях</div>\n' +
+'							</div>\n' +
+'							<div class="new_line">\n' +
 '								<label class="l_capt" for="freeze_voice_button">Замораживать кнопку гласа</label>\n' +
 '								<div class="field_content">\n' +
 '									<input id="freeze_voice_button" name="freeze_voice_button" class="menu-checkbox" type="checkbox">\n' +
