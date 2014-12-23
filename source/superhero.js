@@ -26,7 +26,7 @@ var ui_data = {
 			// clear old data
 			localStorage.removeItem('GUIp_' + this.god_name + ':posts');
 			localStorage.removeItem('GUIp_Options:User');
-			var informer_flags = JSON.parse(ui_storage.get('informer_flags'));
+			var informer_flags = ui_storage.get('informer_flags') && JSON.parse(ui_storage.get('informer_flags')) || null;
 			if (informer_flags) {
 				delete informer_flags['new posts'];
 				ui_storage.set('informer_flags', JSON.stringify(informer_flags));
