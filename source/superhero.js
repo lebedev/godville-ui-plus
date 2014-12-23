@@ -11,7 +11,7 @@ var ui_data = {
 		this.char_name = window.so.state.stats.name.value;
 		this.char_sex = window.so.state.stats.gender.value === 'male' ? ['героя', 'герою'] : ['героиню', 'героине'];
 		ui_storage.set('ui_s', '');
-		localStorage.setItem('GUIp_CurrentUser', this.god_name);
+		localStorage.GUIp_CurrentUser = this.god_name;
 
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
@@ -418,12 +418,12 @@ var ui_storage = {
 	},
 // stores a value
 	set: function(id, value) {
-		localStorage.setItem(this.get_key(id), value);
+		localStorage[this.get_key(id)] = value;
 		return value;
 	},
 // reads a value
 	get: function(id) {
-		var val = localStorage.getItem(this.get_key(id));
+		var val = localStorage[this.get_key(id)];
 		if (val) val = val.replace(/^[NSB]\]/, '');
 		if (val === 'true') return true;
 		if (val === 'false') return false;
@@ -470,7 +470,7 @@ var ui_storage = {
 		return "Storage cleared. Reloading...";
 	},
 	migrate: function() {
-		if (!localStorage.getItem('GUIp_migrated')) {
+		if (!localStorage.GUIp_migrated) {
 			var i, len, lines = [];
 			for (i = 0, len = localStorage.length; i < len; i++) {
 				if (localStorage.key(i).match(/^GM_/)) {
@@ -478,10 +478,10 @@ var ui_storage = {
 				}
 			}
 			for (i = 0, len = lines.length; i < len; i++) {
-				localStorage.setItem(lines[i].replace(/^GM_/, 'GUIp_'), localStorage[lines[i]]);
+				localStorage[lines[i].replace(/^GM_/, 'GUIp_')] = localStorage[lines[i]];
 				localStorage.removeItem(lines[i]);
 			}
-			localStorage.setItem('GUIp_migrated', '151114');
+			localStorage.GUIp_migrated = '151114';
 		}
 	}
 };
@@ -1763,8 +1763,8 @@ var ui_improver = {
 			}).bind(this));
 		}
 
-		if (localStorage.getItem('ui_s') !== ui_storage.get('ui_s')) {
-			ui_storage.set('ui_s', localStorage.getItem('ui_s') || 'th_classic');
+		if (localStorage.ui_s !== ui_storage.get('ui_s')) {
+			ui_storage.set('ui_s', localStorage.ui_s || 'th_classic');
 			this.Shovel = false;
 			document.body.className = ui_storage.get('ui_s').replace('th_', '');
 		}

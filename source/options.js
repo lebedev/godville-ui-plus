@@ -8,11 +8,11 @@ var storage = {
 		return "GUIp_" + god_name + ':' + key;
 	},
 	set: function(id, value) {
-		localStorage.setItem(this._get_key(id), value);
+		localStorage[this._get_key(id)] = value;
 		return value;
 	},
 	get: function(id) {
-		var val = localStorage.getItem(this._get_key(id));
+		var val = localStorage[this._get_key(id)];
 		if (val) val = val.replace(/^[NSB]\]/, '');
 		if (val === 'true') return true;
 		else if (val === 'false') return false;
@@ -55,7 +55,7 @@ function addMenu() {
 }
 
 function loadOptions() {
-	if (!(localStorage.getItem('GUIp_CurrentUser') || $j('#profile_main').length)) {
+	if (!(localStorage.GUIp_CurrentUser || $j('#profile_main').length)) {
 		setTimeout(function() {loadOptions();}, 100);
 		return;
 	}
@@ -439,10 +439,10 @@ var starterInt = setInterval(function() {
 		$j = jQuery.noConflict();
 		clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
-		if (god_name !== "") {
-			localStorage.setItem("GUIp_CurrentUser", god_name);
+		if (god_name) {
+			localStorage.GUIp_CurrentUser = god_name;
 		} else {
-			god_name = localStorage.getItem("GUIp_CurrentUser");
+			god_name = localStorage.GUIp_CurrentUser;
 		}
 		addMenu();
 		if (location.hash === "#ui_options") {

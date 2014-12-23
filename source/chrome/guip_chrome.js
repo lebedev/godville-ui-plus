@@ -1,6 +1,6 @@
 var GUIp_browser = 'Chrome';
 GUIp_getResource = function(res) {
-	return localStorage.getItem('GUIp_prefix') + res;
+	return localStorage.GUIp_prefix + res;
 };
 GUIp_addGlobalStyleURL = function(url, id) {
 	var sel = document.createElement('link');

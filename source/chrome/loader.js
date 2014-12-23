@@ -7,7 +7,7 @@
 		scr.id = 'godville-ui-plus';
 		head.appendChild(scr);
 	}
-	localStorage.setItem('GUIp_prefix', chrome.extension.getURL(''));
+	localStorage.GUIp_prefix = chrome.extension.getURL('');
 	var path = location.pathname;
 	if (path.match(/^\/superhero/)) {
 		createScript(chrome.extension.getURL('guip_chrome.js'));
