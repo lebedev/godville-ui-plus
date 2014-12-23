@@ -2058,10 +2058,10 @@ var ui_observers = {
 		func: function(mutation) {
 			if (mutation.addedNodes.length && !mutation.addedNodes[0].classList.contains('moved')) {
 				var newNode = mutation.addedNodes[0];
-				mutation.target.appendChild(newNode);
 				newNode.classList.add('moved');
+				mutation.target.appendChild(newNode);
 				var msgArea = newNode.querySelector('.frMsgArea');
-				msgArea.scrollTop = msgArea.scrollTopMax;
+				msgArea.scrollTop = msgArea.scrollTopMax || msgArea.scrollHeight;
 			} else if (mutation.addedNodes.length || mutation.removedNodes.length) {
 				ui_improver.chatsFix();
 			}
