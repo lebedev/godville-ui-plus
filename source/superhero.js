@@ -1897,7 +1897,19 @@ var ui_improver = {
 		if (window.so && window.so.a_notify) {
 			window.so.a_notify_orig = window.so.a_notify;
 			window.so.a_notify = function() {
-				if (!ui_storage.get('Option:disableArenaSound')) {
+				if (ui_storage.get('Option:disableArenaSound')) {
+					if(($(document.activeElement).is("input") || $(document.activeElement).is("textarea")) &&
+						$(document.activeElement).attr("id") !== "god_phrase" &&
+						$(document.activeElement).val().length > 3) {
+						var readyness = confirm(Loc.duel_switch_confirm);
+						if (!readyness)  {
+							return false;
+						}
+					}
+					setTimeout(function() {
+						document.location.href = document.location.pathname;
+					}, 3e3);
+				} else {
 					window.so.a_notify_orig();
 				}
 			};
