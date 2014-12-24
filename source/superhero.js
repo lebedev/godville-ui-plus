@@ -37,11 +37,8 @@ var ui_data = {
 		setInterval(this.getLEMRestrictions, 60*60*1000);
 
 		// get monsters of the day
-		$('<div>', {id:"motd"}).insertAfter($('#menu_bar')).hide();
-		$('#motd').load('news .game.clearfix:first a', function() {
-			ui_improver.monstersOfTheDay = new RegExp($('#motd a:eq(0)').text() + '|' + $('#motd a:eq(1)').text());
-			$('#motd').remove();
-		});
+		this.getMonsterOfTheDay();
+		setInterval(this.getMonsterOfTheDay, 5*60*1000);
 	},
 	getLEMRestrictions: function() {
 		if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictionsDate') > 24*60*60*1000) {
@@ -55,6 +52,23 @@ var ui_data = {
 		ui_storage.set('LEMRestrictions:TimeFrame', restrictions.time_frame);
 		ui_storage.set('LEMRestrictions:RequestLimit', restrictions.request_limit);
 	},
+	getMonsterOfTheDay: function() {
+		if (isNaN(ui_storage.get('MonsterOfTheDay:Date')) ||
+			ui_utils.dateToMoscowTimeZone(ui_storage.get('MonsterOfTheDay:Date')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
+			ui_utils.getXHR('/news', ui_data.parseMonsterOfTheDay);
+		} else {
+			ui_improver.monstersOfTheDay = new RegExp(ui_storage.get('MonsterOfTheDay:Value'));
+		}
+	},
+	parseMonsterOfTheDay: function(xhr) {
+		var temp = xhr.responseText.match(/Разыскиваются[\s\S]+?>([^<]+?)<\/a>[\s\S]+?>([^<]+?)<\/a>/),
+			newMonstersOfTheDay = temp ? temp[1] + '|' + temp[2] : '';
+		if (newMonstersOfTheDay !== ui_storage.get('MonsterOfTheDay:Value')) {
+			ui_storage.set('MonsterOfTheDay:Date', Date.now());
+			ui_storage.set('MonsterOfTheDay:Value', newMonstersOfTheDay);
+			ui_improver.monstersOfTheDay = new RegExp(newMonstersOfTheDay);
+		}
+	}
 };
 
 // ------------------------
@@ -262,6 +276,13 @@ var ui_utils = {
 				break;
 			}
 		}
+	},
+	dateToMoscowTimeZone: function(date) {
+		var temp = new Date(date);
+		temp.setTime(temp.getTime() + (temp.getTimezoneOffset() + 180)*60*1000);
+		return (temp.getDate() < 10 ? '0' : '') + temp.getDate() + '/' +
+			   (temp.getMonth() < 10 ? '0' : '') + temp.getMonth() + '/' +
+			    temp.getFullYear();
 	}
 };
 
