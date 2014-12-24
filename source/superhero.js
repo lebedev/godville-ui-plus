@@ -1035,7 +1035,7 @@ var ui_improver = {
 	improveLoot: function() {
 		var i, j, len, items = document.querySelectorAll('#inventory li'),
 			flags = new Array(ui_words.base.usable_items.types.length),
-			bold_items = false,
+			bold_items = 0,
 			trophy_list = [],
 			trophy_boldness = {},
 			forbidden_craft = ui_storage.get('Option:forbiddenCraft');
@@ -1055,6 +1055,7 @@ var ui_improver = {
 				if (ui_words.isUsableItem(items[i])) {
 					var desc = items[i].querySelector('.item_act_link_div *').getAttribute('title').replace(/ \(.*/g, ''),
 						sect = ui_words.usableItemType(desc);
+					bold_items++;
 					if (sect !== -1) {
 						flags[sect] = true;
 					} else if (!ui_utils.hasShownInfoMessage) {
@@ -1078,7 +1079,7 @@ var ui_improver = {
 					}
 				} else {
 					if (ui_words.isBoldItem(items[i])) {
-						bold_items = true;
+						bold_items++;
 						if (!(forbidden_craft && forbidden_craft.match('b_b') && forbidden_craft.match('b_r')) &&
 							!item_name.match('золотой кирпич') && !item_name.match(' босса ')) {
 							trophy_list.push(item_name);
@@ -1101,7 +1102,7 @@ var ui_improver = {
 		for (i = 0, len = flags.length; i < len; i++) {
 			ui_informer.update(ui_words.base.usable_items.types[i], flags[i]);
 		}
-		ui_informer.update('transform!', flags[ui_words.base.usable_items.types.indexOf('transformer')] && bold_items);
+		ui_informer.update('transform!', flags[ui_words.base.usable_items.types.indexOf('transformer')] && bold_items >= 2);
 		ui_informer.update('smelt!', flags[ui_words.base.usable_items.types.indexOf('smelter')] && ui_storage.get('Stats:Gold') >= 3000);
 
 		// Склейка трофеев, формирование списков
