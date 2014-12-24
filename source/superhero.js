@@ -33,13 +33,28 @@ var ui_data = {
 			}
 		}
 
+		this.getLEMRestrictions();
+		setInterval(this.getLEMRestrictions, 60*60*1000);
+
 		// get monsters of the day
 		$('<div>', {id:"motd"}).insertAfter($('#menu_bar')).hide();
 		$('#motd').load('news .game.clearfix:first a', function() {
 			ui_improver.monstersOfTheDay = new RegExp($('#motd a:eq(0)').text() + '|' + $('#motd a:eq(1)').text());
 			$('#motd').remove();
 		});
-	}
+	},
+	getLEMRestrictions: function() {
+		if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictionsDate') > 24*60*60*1000) {
+			ui_utils.getXHR('http://www.godalert.info/Dungeons/guip.cgi', ui_data.parseLEMRestrictions);
+		}
+	},
+	parseLEMRestrictions: function(xhr) {
+		var restrictions = JSON.parse(xhr.responseText);
+		ui_storage.set('LEMRestrictions:Date', Date.now());
+		ui_storage.set('LEMRestrictions:FirstRequest', restrictions.first_request);
+		ui_storage.set('LEMRestrictions:TimeFrame', restrictions.time_frame);
+		ui_storage.set('LEMRestrictions:RequestLimit', restrictions.request_limit);
+	},
 };
 
 // ------------------------
@@ -1925,20 +1940,6 @@ var ui_improver = {
 		}
 	},
 
-	getLEMRestrictions: function() {
-		if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictionsDate') > 24*60*60*1000) {
-			ui_utils.getXHR('http://www.godalert.info/Dungeons/guip.cgi', ui_improver.parseLEMRestrictions);
-		}
-	},
-
-	parseLEMRestrictions: function(xhr) {
-		var restrictions = JSON.parse(xhr.responseText);
-		ui_storage.set('LEMRestrictions:Date', Date.now());
-		ui_storage.set('LEMRestrictions:FirstRequest', restrictions.first_request);
-		ui_storage.set('LEMRestrictions:TimeFrame', restrictions.time_frame);
-		ui_storage.set('LEMRestrictions:RequestLimit', restrictions.request_limit);
-	},
-
 	mouseMove: function() {
 		if (!ui_logger.Updating) {
 			ui_logger.Updating = true;
@@ -2275,8 +2276,6 @@ var ui_starter = {
 			ui_laying_timer.init();
 			ui_observers.init();
 			ui_improver.initSoundsOverride();
-			ui_improver.getLEMRestrictions();
-			setInterval(ui_improver.getLEMRestrictions, 60*60*1000);
 			
 			// Event and listeners
 			$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
