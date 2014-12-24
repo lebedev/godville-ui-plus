@@ -212,7 +212,7 @@ var ui_utils = {
 		}, 1000);
 	},
 	inform: function() {
-		var last_shown = (ui_storage.get('lastShownMessage') !== null) ? +ui_storage.get('lastShownMessage') : -1;
+		var last_shown = (ui_storage.get('lastShownMessage') !== undefined) ? +ui_storage.get('lastShownMessage') : -1;
 		for (var i = 0, len = this.messages.length; i < len; i++) {
 			if (this.messages[i].msg_no > last_shown) {
 				this.showMessage(this.messages[i].msg_no, this.messages[i]);
@@ -1600,7 +1600,7 @@ var ui_improver = {
 // ---------- Pantheons --------------	
 	improvePantheons: function() {
 		if (ui_data.isBattle) return;
-		if (ui_storage.get('Option:relocateDuelButtons') !== null && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
+		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
 			if (!$('#pantheons.arena_link_relocated').length) {
 				$('#pantheons').addClass('arena_link_relocated');
 				$('.arena_link_wrap').insertBefore($('#pantheons_content')).addClass('p_group_sep').css('padding-top', 0);
@@ -1609,7 +1609,7 @@ var ui_improver = {
 			$('#pantheons').removeClass('arena_link_relocated').removeClass('both');
 			$('.arena_link_wrap').insertBefore($('#control .arena_msg')).removeClass('p_group_sep').css('padding-top', '0.5em');
 		}
-		if (ui_storage.get('Option:relocateDuelButtons') !== null && ui_storage.get('Option:relocateDuelButtons').match('chf')) {
+		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('chf')) {
 			if (!$('#pantheons.chf_link_relocated').length) {
 				$('#pantheons').addClass('chf_link_relocated');
 				$('.chf_link_wrap:first').insertBefore($('#pantheons_content'));
@@ -1620,7 +1620,7 @@ var ui_improver = {
 			$('.chf_link_wrap').removeClass('p_group_sep');
 			$('#pantheons .chf_link_wrap').insertAfter($('#control .arena_msg'));
 		}/*
-		if (ui_storage.get('Option:relocateDuelButtons') !== null && ui_storage.get('Option:relocateDuelButtons').match('cvs')) {
+		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('cvs')) {
 			if (!$('#pantheons.cvs_link_relocated').length) {
 				$('#pantheons').addClass('cvs_link_relocated');
 				$('.chf_link_wrap:first').insertBefore($('#pantheons_content'));
