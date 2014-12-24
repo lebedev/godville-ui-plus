@@ -1920,9 +1920,9 @@ var ui_improver = {
 			}
 		}
 		//padding for page settings link
-		var padding_bottom = $('.frDockCell:last').length ? Math.floor($('.frDockCell:last').position().top/26.3 + 0.5)*$('.frDockCell').height() : 0,
+		var padding_bottom = $('.frDockCell:first').length ? Math.floor($('.frDockCell:first').position().top + $('.frDockCell').height()) : 0,
 			isBottom = window.scrollY >= window.scrollMaxY - 10;
-		padding_bottom = Math.floor(padding_bottom*10)/10 + 40;
+		padding_bottom = Math.floor(padding_bottom*10)/10 + 10;
 		padding_bottom = (padding_bottom < 0) ? 0 : padding_bottom + 'px';
 		$('.reset_layout').css('padding-bottom', padding_bottom);
 		if (isBottom) {
