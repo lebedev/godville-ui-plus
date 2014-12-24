@@ -25,4 +25,8 @@
 		createScript(chrome.extension.getURL('guip_chrome.js'));
 		createScript(chrome.extension.getURL('forum.js'));
 	}
+	if (path.match(/^\/duels\/log\//)) {
+		createScript(chrome.extension.getURL('guip_chrome.js'));
+		createScript(chrome.extension.getURL('log.js'));
+	}
 })();

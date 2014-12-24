@@ -20,7 +20,9 @@
 			"http://godville.net/forums/show/*",
 			"http://godville.net/forums/show_topic/*",
 			"https://godville.net/forums/show/*",
-			"https://godville.net/forums/show_topic/*"
+			"https://godville.net/forums/show_topic/*",
+			"http://godville.net/duels/log/*",
+			"https://godville.net/duels/log/*"
 		]
 	}],
 	
@@ -43,6 +45,7 @@
 		"forum.js",
 		"shift_enter.js",
 		"laying_timer.js",
+		"log.js",
 		"images/background.jpg",
 		"images/shovel.png"
 	]
