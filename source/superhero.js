@@ -1101,8 +1101,8 @@ var ui_improver = {
 		for (i = 0, len = flags.length; i < len; i++) {
 			ui_informer.update(ui_words.base.usable_items.types[i], flags[i]);
 		}
-		ui_informer.update('transform!', window.so.state.stats.bricks_cnt.value < 1000 && flags[ui_words.base.usable_items.types.indexOf('transformer')] && bold_items);
-		ui_informer.update('smelt!', window.so.state.stats.bricks_cnt.value < 1000 && flags[ui_words.base.usable_items.types.indexOf('smelter')] && ui_storage.get('Stats:Gold') >= 3000);
+		ui_informer.update('transform!', flags[ui_words.base.usable_items.types.indexOf('transformer')] && bold_items);
+		ui_informer.update('smelt!', flags[ui_words.base.usable_items.types.indexOf('smelter')] && ui_storage.get('Stats:Gold') >= 3000);
 
 		// Склейка трофеев, формирование списков
 		this.b_b = [];
