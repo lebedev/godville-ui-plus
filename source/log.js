@@ -15,7 +15,6 @@
 			'<input type="hidden" name="partial" value="X">' +
 			'<input type="hidden" name="room_x" value="">' +
 			'<input type="hidden" name="room_y" value="">' +
-			'<input type="hidden" name="stoneeater" value="">' +
 			'<input type="hidden" name="Submit" value="Получить карту">' +
 			'<input type="hidden" name="guip" value="1">' +
 			'<input type="checkbox" id="match" name="match" value="1"><label for="match">Искать в базе данных.</label>' +
@@ -26,6 +25,10 @@
 				'<div><input type="radio" id="medium" name="search_mode" value="medium" checked=""><label for="medium">Нормальный поиск.</label></div>' +
 				'<div><input type="radio" id="low" name="search_mode" value="low"><label for="low">Первичный поиск.</label></div>' +
 			'</div>' +
+			'<table style="box-shadow: none; width: 100%;"><tr>' +
+				'<td style="border: none; padding: 0;"><label for="stoneeater">Корректировки:</label></td>' +
+				'<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="" style=" width: 100%; padding: 0;"></td>' +
+			'</tr></table>' +
 			'<input type="submit" id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
 		'</form>');
 	document.querySelector('#fight_text').value = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' +
