@@ -529,7 +529,7 @@ var ui_words = {
 	currentPhrase: "",
 // gets words from phrases.js file and splits them into sections
 	init: function() {
-		this.base = getWords();
+		this.base = GUIp_getWords();
 		for (var sect in this.base.phrases) {
 			var text = ui_storage.get('phrases_' + sect);
 			if (text && text !== "") {
@@ -720,7 +720,7 @@ var ui_logger = {
 			this.watchStatsValue('Hero_Alls_HP', 'a:hp', 'Здоровье союзников', 'charges');
 			this.watchStatsValue('Hero_Inv', 'h:inv', 'Инвентарь', 'inv');
 			this.watchStatsValue('Hero_Gold', 'h:gld', 'Золото', 'gold'); 
-			this.watchStatsValue('Hero_Charges', 'h:bt', 'Заряды', 'charges');
+			this.watchStatsValue('Hero_Charges', 'h:ch', 'Заряды', 'charges');
 			this.watchStatsValue('Enemy_Gold', 'e:gld', 'Золото', 'monster');
 			this.watchStatsValue('Enemy_Inv', 'e:inv', 'Инвентарь', 'monster');
 		}
@@ -1085,7 +1085,7 @@ var ui_improver = {
 			if (getComputedStyle(items[i]).overflow === 'visible') {
 				var item_name = items[i].textContent.replace(/\?$/, '')
 													.replace(/\(@\)/, '')
-													.replace(/\(\d+ шт\)$/, '')
+													.replace(/\(\d шт\)$/, '')
 													.replace(/^\s+|\s+$/g, '');
 				// color items and add buttons
 				if (ui_words.isUsableItem(items[i])) {
