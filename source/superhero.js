@@ -711,24 +711,24 @@ var ui_logger = {
 			this.watchStatsValue('Map_HP', 'hp', 'Здоровье героя', 'hp');
 			this.watchStatsValue('Map_Inv', 'inv', 'Инвентарь', 'inv');
 			this.watchStatsValue('Map_Gold', 'gld', 'Золото', 'gold'); 
-			this.watchStatsValue('Map_Battery', 'bt', 'Заряды', 'battery');
-			this.watchStatsValue('Map_Alls_HP', 'a:hp', 'Здоровье союзников', 'battery');
+			this.watchStatsValue('Map_Charges', 'ch', 'Заряды', 'charges');
+			this.watchStatsValue('Map_Alls_HP', 'a:hp', 'Здоровье союзников', 'charges');
 		}
 		if (ui_data.isBattle && !ui_data.isDungeon) {
 			this.watchStatsValue('Hero_HP', 'h:hp', 'Здоровье героя', 'hp');
 			this.watchStatsValue('Enemy_HP', 'e:hp', 'Здоровье соперника', 'death');
-			this.watchStatsValue('Hero_Alls_HP', 'a:hp', 'Здоровье союзников', 'battery');
+			this.watchStatsValue('Hero_Alls_HP', 'a:hp', 'Здоровье союзников', 'charges');
 			this.watchStatsValue('Hero_Inv', 'h:inv', 'Инвентарь', 'inv');
 			this.watchStatsValue('Hero_Gold', 'h:gld', 'Золото', 'gold'); 
-			this.watchStatsValue('Hero_Battery', 'h:bt', 'Заряды', 'battery');
+			this.watchStatsValue('Hero_Charges', 'h:bt', 'Заряды', 'charges');
 			this.watchStatsValue('Enemy_Gold', 'e:gld', 'Золото', 'monster');
 			this.watchStatsValue('Enemy_Inv', 'e:inv', 'Инвентарь', 'monster');
 		}
 		this.watchStatsValue('Exp', 'exp', 'Опыт (проценты)');
 		this.watchStatsValue('Level', 'lvl', 'Уровень');
 		this.watchStatsValue('HP', 'hp', 'Здоровье');
-		this.watchStatsValue('Prana', 'pr', 'Прана (проценты)');
-		this.watchStatsValue('Battery', 'bt', 'Заряды');
+		this.watchStatsValue('Godpower', 'gp', 'Прана (проценты)');
+		this.watchStatsValue('Charges', 'ch', 'Заряды');
 		this.watchStatsValue('Task', 'tsk', 'Задание (проценты)');
 		this.watchStatsValue('Monster', 'mns', 'Монстры');
 		this.watchStatsValue('Inv', 'inv', 'Инвентарь');
@@ -1236,8 +1236,8 @@ var ui_improver = {
 		}
 		
 		// Save stats
-		ui_stats.setFromLabelCounter('Prana', $box, 'Прана');
-		ui_informer.update('full prana', $('#cntrl .p_val').width() === $('#cntrl .p_bar').width());
+		ui_stats.setFromLabelCounter('Godpower', $box, 'Прана');
+		ui_informer.update('full godpower', $('#cntrl .p_val').width() === $('#cntrl .p_bar').width());
 	},
 
 // ----------- Вести с полей ----------------
@@ -1460,14 +1460,14 @@ var ui_improver = {
 			ui_stats.setFromLabelCounter('Map_HP', $('#m_info'), 'Здоровье');
 			ui_stats.setFromLabelCounter('Map_Gold', $('#m_info'), 'Золота', gold_parser);
 			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), 'Инвентарь');
-			ui_stats.set('Map_Battery',$('#m_control .acc_val').text(), parseFloat);
+			ui_stats.set('Map_Charges', $('#m_control .acc_val').text(), parseFloat);
 			ui_stats.set('Map_Alls_HP', this.GroupHP(true));
 			if (ui_storage.get('Logger:LocationPrev') === 'Pole') {
 				ui_storage.set('Logger:LocationPrev', 'Map');
 				ui_storage.set('Logger:Map_HP', ui_stats.get('Map_HP'));
 				ui_storage.set('Logger:Map_Gold', ui_stats.get('Map_Gold'));
 				ui_storage.set('Logger:Map_Inv', ui_stats.get('Map_Inv'));
-				ui_storage.set('Logger:Map_Battery',ui_stats.get('Map_Battery'));
+				ui_storage.set('Logger:Map_Charges',ui_stats.get('Map_Charges'));
 				ui_storage.set('Logger:Map_Alls_HP', ui_stats.get('Map_Alls_HP'));
 			}
 			return;
@@ -1476,7 +1476,7 @@ var ui_improver = {
 			ui_stats.setFromLabelCounter('Hero_HP', $('#m_info'), 'Здоровье');
 			ui_stats.setFromLabelCounter('Hero_Gold', $('#m_info'), 'Золота', gold_parser);
 			ui_stats.setFromLabelCounter('Hero_Inv', $('#m_info'), 'Инвентарь');
-			ui_stats.set('Hero_Battery',$('#m_control .acc_val').text(), parseFloat);
+			ui_stats.set('Hero_Charges',$('#m_control .acc_val').text(), parseFloat);
 			ui_stats.setFromLabelCounter('Enemy_Gold', $('#o_info'), 'Золота', gold_parser);
 			ui_stats.setFromLabelCounter('Enemy_Inv', $('#o_info'), 'Инвентарь');
 			ui_stats.set('Hero_Alls_HP', this.GroupHP(true));
@@ -1485,7 +1485,7 @@ var ui_improver = {
 				ui_storage.set('Logger:Hero_HP', ui_stats.get('Hero_HP'));
 				ui_storage.set('Logger:Hero_Gold', ui_stats.get('Hero_Gold'));
 				ui_storage.set('Logger:Hero_Inv', ui_stats.get('Hero_Inv'));
-				ui_storage.set('Logger:Hero_Battery',ui_stats.get('Hero_Battery'));
+				ui_storage.set('Logger:Hero_Charges',ui_stats.get('Hero_Charges'));
 				ui_storage.set('Logger:Enemy_HP', ui_stats.get('Enemy_HP'));
 				ui_storage.set('Logger:Enemy_Gold', ui_stats.get('Enemy_Gold'));
 				ui_storage.set('Logger:Enemy_Inv', ui_stats.get('Enemy_Inv'));
@@ -1518,7 +1518,7 @@ var ui_improver = {
 		ui_stats.setFromLabelCounter('Brick', $box, 'Кирпичей для храма', parseFloat);
 		ui_stats.setFromLabelCounter('Wood', $box, 'Дерева для ковчега', parseFloat);
 		ui_stats.setFromLabelCounter('Retirement', $box, 'Сбережения', gold_parser);
-		ui_stats.set('Battery',$('#control .acc_val').text(), parseFloat);
+		ui_stats.set('Charges', $('#control .acc_val').text(), parseFloat);
 		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, 'Инвентарь') || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
 			this.inventoryChanged = true;
 		}
@@ -1882,13 +1882,13 @@ var ui_improver = {
 
 	checkButtonsVisibility: function() {
 		$('.arena_link_wrap,.chf_link_wrap,.cvs_link_wrap', $('#pantheons')).hide();
-		if (ui_storage.get('Stats:Prana') >= 50) {
+		if (ui_storage.get('Stats:Godpower') >= 50) {
 			$('#pantheons .chf_link_wrap').show();
 			$('#pantheons .cvs_link_wrap').show();
 			$('#pantheons .arena_link_wrap').show();
 		}
 		$('.craft_button,.inspect_button,.voice_generator').hide();
-		if (ui_storage.get('Stats:Prana') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
+		if (ui_storage.get('Stats:Godpower') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
 			$('.voice_generator, .inspect_button').show();
 			if (ui_storage.get('Option:disableDieButton')) {
 				$('#hk_death_count .voice_generator').hide();
@@ -1901,7 +1901,7 @@ var ui_improver = {
 			if (!ui_data.isBattle) {
 				if ($('#hk_distance .l_capt').text() === 'Город' || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display !== 'none') 
 					$('#hk_distance .voice_generator').hide();
-				//if (ui_storage.get('Stats:Prana') === 100) $('#control .voice_generator').hide();
+				//if (ui_storage.get('Stats:Godpower') === 100) $('#control .voice_generator').hide();
 				if ($('#control .p_val').width() === $('#control .p_bar').width() || $('#news .line')[0].style.display !== 'none') $('#control .voice_generator')[0].style.display = 'none';
 				if ($('#hk_distance .l_capt').text() === 'Город') $('#control .voice_generator')[1].style.display = 'none';
 			}

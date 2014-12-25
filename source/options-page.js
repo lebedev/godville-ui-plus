@@ -221,7 +221,7 @@ return '<p>\n' +
 '							<div class="new_line">\n' +
 '								<div class="g_desc">позволяет выбрать отображаемые информеры</div>\n' +
 '								<div class="g_desc" id="informers">\n' +
-'									<input class="informer-checkbox" id="full_prana" name="full_prana" type="checkbox"><label for="full_prana">полная прана</label><br>\n' +
+'									<input class="informer-checkbox" id="full_godpower" name="full_godpower" type="checkbox"><label for="full_godpower">полная прана</label><br>\n' +
 '									<input class="informer-checkbox" id="much_gold" name="much_gold" type="checkbox"><label for="much_gold">много золота</label><br>\n' +
 '									<input class="informer-checkbox" id="dead" name="dead" type="checkbox"><label for="dead">смерть</label><br>\n' +
 '									<input class="informer-checkbox" id="pvp" name="pvp" type="checkbox"><label for="pvp">бой</label><br>\n' +
@@ -243,7 +243,7 @@ return '<p>\n' +
 '									<input class="item-informer informer-checkbox" id="good_box" name="good_box" type="checkbox"><label for="good_box">делающие что-то хорошее</label><br>\n' +
 '									<input class="item-informer informer-checkbox" id="heal_box" name="heal_box" type="checkbox"><label for="heal_box">восстанавливающие здоровье</label><br>\n' +
 '									<input class="item-informer informer-checkbox" id="raidboss_box" name="raidboss_box" type="checkbox"><label for="raidboss_box">откапывающие рейд-босса</label><br>\n' +
-'									<input class="item-informer informer-checkbox" id="prana_box" name="prana_box" type="checkbox"><label for="prana_box">пакующие прану за полцены</label><br>\n' +
+'									<input class="item-informer informer-checkbox" id="charge_box" name="charge_box" type="checkbox"><label for="charge_box">пакующие прану за полцены</label><br>\n' +
 '									<input class="item-informer informer-checkbox" id="quest_box" name="quest_box" type="checkbox"><label for="quest_box">выдающие мини-квест</label><br>\n' +
 '									<input class="item-informer informer-checkbox" id="smelter" name="smelter" type="checkbox"><input class="item-informer informer-checkbox" id="smelt!" name="smelt!" type="checkbox" style="display: none;"><label for="smelter">плавящие золото в кирпич</label><br>\n' +
 '									<input class="item-informer informer-checkbox" id="teleporter" name="teleporter" type="checkbox"><label for="teleporter">телепортирующие в город</label><br>\n' +

@@ -169,7 +169,7 @@ body.nightly .ui_msg {
 	margin-left: 0.5em;
 }
 
-#logger .prana { color: #199bdc; }
+#logger .godpower { color: #199bdc; }
 #logger .exp { color: #f9b436; }
 #logger .task { color: pink; }
 #logger .level { color: red; font-weight: bold; }
@@ -180,7 +180,7 @@ body.nightly .ui_msg {
 #logger .death { color: red; }
 #logger .brick { color: goldenrod; font-weight: bold; }
 #logger .wood { color: saddlebrown; font-weight: bold; }
-#logger .battery { color: blue; }
+#logger .charges { color: blue; }
 #logger .retirement { color: darkorange; }
 #logger {
 	display: block;
