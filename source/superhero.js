@@ -529,7 +529,7 @@ var ui_words = {
 	currentPhrase: "",
 // gets words from phrases.js file and splits them into sections
 	init: function() {
-		this.base = GUIp_getWords();
+		this.base = window.GUIp_getWords();
 		for (var sect in this.base.phrases) {
 			var text = ui_storage.get('phrases_' + sect);
 			if (text && text !== "") {

@@ -585,3 +585,29 @@ body.nightly .shovel:hover {
 .guip_legend .dmc {
 	margin-right: 5px;
 }
+
+/* inventory fullness marks */
+#hk_inventory_num .p_bar {
+	position: relative;
+}
+#hk_inventory_num .p_bar:before,
+#hk_inventory_num .p_bar:after {
+	content: " ";
+	height: 100%;
+	position: absolute;
+	width: 2px;
+}
+body:not(.nightly) #hk_inventory_num .p_bar:before,
+body:not(.nightly) #hk_inventory_num .p_bar:after {
+	background: #ddd;
+}
+body.nightly #hk_inventory_num .p_bar:before,
+body.nightly #hk_inventory_num .p_bar:after {
+	background: #555;
+}
+#hk_inventory_num .p_bar:before {
+	left: 36%;
+}
+#hk_inventory_num .p_bar:after {
+	left: 50%;
+}
