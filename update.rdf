@@ -6,13 +6,13 @@
                    em:version="0.16.92.9">
     <em:targetApplication RDF:resource="rdf:#$X3hfY3"/>
   </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$T3hfY3">
-    <RDF:li RDF:resource="rdf:#$U3hfY3"/>
-  </RDF:Seq>
   <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
                    em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBADyNFCURnvIYIivM71W4tV26VAeJHzjaQo+ulIw8MhWzwU1+7l1lslOAh1umXP6w/ihWZHcSO5n9HWDUepAIBAdt5iDiCu4VU43+E8qndJbuix50hkRUcPf3KCdQJMB+cEwH5ZPySTBBQmM1Zn4drfcjo3YWp5iP+AggBwa/geZI">
     <em:updates RDF:resource="rdf:#$T3hfY3"/>
   </RDF:Description>
+  <RDF:Seq RDF:about="rdf:#$T3hfY3">
+    <RDF:li RDF:resource="rdf:#$U3hfY3"/>
+  </RDF:Seq>
   <RDF:Description RDF:about="rdf:#$X3hfY3"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="4.0"
