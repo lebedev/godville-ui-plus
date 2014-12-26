@@ -318,7 +318,7 @@ function setText(element_name) {
 
 // Restores select box state to saved value from localStorage.
 function restore_options() {
-	def = getWords();
+	def = window.GUIp_getWords();
 	var i, r = new RegExp('^' + storage._get_key('Option:'));
 	for (i = 0; i < localStorage.length; i++) {
 		if (localStorage.key(i).match(r)) {
