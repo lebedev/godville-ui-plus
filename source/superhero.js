@@ -1213,7 +1213,7 @@ var ui_improver = {
 			$('.gp_label').addClass('l_capt');
 			$('.gp_val').addClass('l_val');
 			if (ui_data.isDungeon) {
-				var isContradictions = $('#map')[0].textContent.match('Противоречия');
+				var isContradictions = $('#map')[0].textContent.match('Противоречия') && ui_storage.get('Option:isContradictionsActive');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Восток', (isContradictions ? 'walk_w' : 'walk_e'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Восток');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Запад', (isContradictions ? 'walk_e' : 'walk_w'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Запад');
 				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Юг', (isContradictions ? 'walk_n' : 'walk_s'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Юг');
@@ -1413,10 +1413,10 @@ var ui_improver = {
 						switch(Pointer) {
 							case '✺': ThermoMinStep = 1; ThermoMaxStep = 2; break;	//	✺ - очень горячо(1-2)
 							case '☀': ThermoMinStep = 3; ThermoMaxStep = 5; break;	//	☀ - горячо(3-5)
-							case '♨': ThermoMinStep = 6; ThermoMaxStep = 9; break;	//	♨ - тепло(6-9)
-							case '☁': ThermoMinStep = 10; ThermoMaxStep = 13; break;	//	☁ - свежо(10-13)
-							case '❄': ThermoMinStep = 14; ThermoMaxStep = 18; break;	//	❄ - холодно(14-18)
-							case '✵': ThermoMinStep = 19; ThermoMaxStep = 100; break;	//	✵ - очень холодно(19)
+							case '♨': ThermoMinStep = (ui_storage.get('Option:temperatureMinActive') ? 6 : 3); ThermoMaxStep = 9; break;	//	♨ - тепло(6-9)
+							case '☁': ThermoMinStep = (ui_storage.get('Option:temperatureMinActive') ? 10 : 3); ThermoMaxStep = 13; break;	//	☁ - свежо(10-13)
+							case '❄': ThermoMinStep = (ui_storage.get('Option:temperatureMinActive') ? 14 : 3); ThermoMaxStep = 18; break;	//	❄ - холодно(14-18)
+							case '✵': ThermoMinStep = (ui_storage.get('Option:temperatureMinActive') ? 19 : 3); ThermoMaxStep = 100; break;	//	✵ - очень холодно(19)
 						}
 						//	Временная карта возможных ходов
 						var MapThermo = [];
@@ -1588,7 +1588,7 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($('#equipment'))) {
 			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 		}
-		$('#equip_badge').text((seq / 7).toFixed(1));
+		$('#equip_badge').text((seq / 7 - ui_stats.get('Level')).toFixed(1));
 	},
 // ---------- Group HP --------------
 	GroupHP: function(flag) {		
