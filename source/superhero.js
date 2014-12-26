@@ -54,7 +54,7 @@ var ui_data = {
 	},
 	getMonsterOfTheDay: function() {
 		if (isNaN(ui_storage.get('MonsterOfTheDay:Date')) ||
-			ui_utils.dateToMoscowTimeZone(ui_storage.get('MonsterOfTheDay:Date')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
+			ui_utils.dateToMoscowTimeZone(+ui_storage.get('MonsterOfTheDay:Date')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
 			ui_utils.getXHR('/news', ui_data.parseMonsterOfTheDay);
 		} else {
 			ui_improver.monstersOfTheDay = new RegExp(ui_storage.get('MonsterOfTheDay:Value'));
