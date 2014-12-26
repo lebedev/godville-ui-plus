@@ -974,18 +974,20 @@ var ui_forum = {
 				diff = +temp[2] - forum[topics[i]];
 				if (diff) {
 					forum[topics[i]] = +temp[2];
-					if (temp[3] !== ui_data.god_name) {
-						if (!informers[topics[i]]) {
-							//create
-							informers[topics[i]] = {diff: diff, name: temp[1].replace(/&quot;/g, '"')};
+					if (diff > 0) {
+						if (temp[3] !== ui_data.god_name) {
+							if (!informers[topics[i]]) {
+								//create
+								informers[topics[i]] = {diff: diff, name: temp[1].replace(/&quot;/g, '"')};
+							} else {
+								//update
+								old_diff = informers[topics[i]].diff;
+								delete informers[topics[i]];
+								informers[topics[i]] = {diff: old_diff + diff, name: temp[1].replace(/&quot;/g, '"')};
+							}
 						} else {
-							//update
-							old_diff = informers[topics[i]].diff;
 							delete informers[topics[i]];
-							informers[topics[i]] = {diff: old_diff + diff, name: temp[1].replace(/&quot;/g, '"')};
 						}
-					} else {
-						delete informers[topics[i]];
 					}
 				}
 			}
