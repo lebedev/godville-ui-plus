@@ -8,7 +8,7 @@
 	}
 
 	(document.querySelector('#hero2 fieldset') || document.getElementById('right_block')).insertAdjacentHTML('beforeend',
-		'<form target="_blank" method="post" enctype="multipart/form-data" action="http://www.godalert.info/Dungeons/index.badluck.cgi" id="send_to_LEM_form" style="padding-top: calc(2em + 3px);">' +
+		'<form target="_blank" method="post" enctype="multipart/form-data" action="http://www.godalert.info/Dungeons/index.cgi" id="send_to_LEM_form" style="padding-top: calc(2em + 3px);">' +
 			'<input type="hidden" id="fight_text" name="fight_text">' +
 			'<input type="hidden" name="map_type" value="map_graphic">' +
 			'<input type="hidden" name="min" value="X">' +
