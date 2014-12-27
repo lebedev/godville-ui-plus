@@ -33,12 +33,13 @@
 		'</form>');
 	document.querySelector('#fight_text').value = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' +
 												  document.getElementsByTagName('html')[0].innerHTML.replace(/<(?:script|style)[\S\s]+?<\/(?:script|style)>/g, '')
-												  													.replace(/onclick="[^"]+?"/g, '')
-												  													.replace(/"javascript[^"]+"/g, '""')
-												  													.replace(/<form[\s\S]+?<\/form>/g, '')
-												  													.replace(/\t/g, '')
-												  													.replace(/ {2,}/g, ' ')
-												  													.replace(/\n{2,}/g, '\n') +
+																									.replace(/onclick="[^"]+?"/g, '')
+																									.replace(/"javascript[^"]+"/g, '""')
+																									.replace(/<form[\s\S]+?<\/form>/g, '')
+																									.replace(/<iframe[\s\S]+?<\/iframe>/g, '')
+																									.replace(/\t/g, '')
+																									.replace(/ {2,}/g, ' ')
+																									.replace(/\n{2,}/g, '\n') +
 												  '</html>';
 	var log = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':',
 		button = document.getElementById('send_to_LEM'),
