@@ -45,8 +45,8 @@ var ui_data = {
 		setInterval(this.getLEMRestrictions, 60*60*1000);
 
 		// get monsters of the day
-		this.getMonsterOfTheDay();
-		setInterval(this.getMonsterOfTheDay, 5*60*1000);
+		this.getWantedMonster();
+		setInterval(this.getWantedMonster, 5*60*1000);
 	},
 	getLEMRestrictions: function() {
 		if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictionsDate') > 24*60*60*1000) {
@@ -60,21 +60,21 @@ var ui_data = {
 		ui_storage.set('LEMRestrictions:TimeFrame', restrictions.time_frame);
 		ui_storage.set('LEMRestrictions:RequestLimit', restrictions.request_limit);
 	},
-	getMonsterOfTheDay: function() {
-		if (isNaN(ui_storage.get('MonsterOfTheDay:Date')) ||
-			ui_utils.dateToMoscowTimeZone(+ui_storage.get('MonsterOfTheDay:Date')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
-			ui_utils.getXHR('/news', ui_data.parseMonsterOfTheDay);
+	getWantedMonster: function() {
+		if (isNaN(ui_storage.get('WantedMonster:Date')) ||
+			ui_utils.dateToMoscowTimeZone(+ui_storage.get('WantedMonster:Date')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
+			ui_utils.getXHR('/news', ui_data.parseWantedMonster);
 		} else {
-			ui_improver.monstersOfTheDay = new RegExp(ui_storage.get('MonsterOfTheDay:Value'));
+			ui_improver.wantedMonsters = new RegExp(ui_storage.get('WantedMonster:Value'));
 		}
 	},
-	parseMonsterOfTheDay: function(xhr) {
+	parseWantedMonster: function(xhr) {
 		var temp = xhr.responseText.match(/(?:Разыскиваются|Wanted)[\s\S]+?>([^<]+?)<\/a>[\s\S]+?>([^<]+?)<\/a>/),
-			newMonstersOfTheDay = temp ? temp[1] + '|' + temp[2] : '';
-		if (newMonstersOfTheDay !== ui_storage.get('MonsterOfTheDay:Value')) {
-			ui_storage.set('MonsterOfTheDay:Date', Date.now());
-			ui_storage.set('MonsterOfTheDay:Value', newMonstersOfTheDay);
-			ui_improver.monstersOfTheDay = new RegExp(newMonstersOfTheDay);
+			newWantedMonster = temp ? temp[1] + '|' + temp[2] : '';
+		if (newWantedMonster !== ui_storage.get('WantedMonster:Value')) {
+			ui_storage.set('WantedMonster:Date', Date.now());
+			ui_storage.set('WantedMonster:Value', newWantedMonster);
+			ui_improver.wantedMonsters = new RegExp(newWantedMonster);
 		}
 	}
 };
@@ -243,7 +243,7 @@ var ui_utils = {
 					 'или задайте вопрос мне (богу <b>Бэдлак</b>) или в соответствующей <b>теме на форуме</b>.<br>' +
 
 					 '&emsp;Инструкции на случай проблем можно прочесть в <i>диалоговом окне помощи</i> (оно сейчас открыто), которое открывается/закрывается ' +
-					 'по щелчку на кнопке <b style="text-decoration: underline;">help</b> в верхнем меню. Ссылки на все ранее упомянутое находятся там же.<br>' +
+					 'по щелчку на кнопке <b style="text-decoration: underline;">' + GUIp_i10n.ui_help + '</b> в верхнем меню. Ссылки на все ранее упомянутое находятся там же.<br>' +
 
 					 '<div style="text-align: right;">Приятной игры!<br>~~Бэдлак</div>',
 			callback: function() {
@@ -1039,7 +1039,7 @@ var ui_improver = {
 	improveInProcess: true,
 	isFirstTime: true,
 	voiceSubmitted: false,
-	monstersOfTheDay: null,
+	wantedMonsters: null,
 	friendsRegexp: null,
 	windowResizeInt: 0,
 	mapColorizationTmt: 0,
@@ -1282,13 +1282,13 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($('#news'))) {
 			ui_utils.addSayPhraseAfterLabel($('#news'), GUIp_i10n.enemy_label, GUIp_i10n.hit, 'hit', GUIp_i10n.ask7 + ui_data.char_sex[1] + GUIp_i10n.to_hit);
 		}
-		var isMonsterOfTheDay = false;
+		var isWantedMonster = false;
 		var isMonsterWithCapabilities = false;
 		var isTamableMonster = false;
 		// Если герой дерется с монстром
 		if ($('#news .line')[0].style.display !== 'none') {
 			var currentMonster = $('#news .l_val').text();
-			isMonsterOfTheDay = this.monstersOfTheDay && currentMonster.match(this.monstersOfTheDay);
+			isWantedMonster = this.wantedMonsters && currentMonster.match(this.wantedMonsters);
 			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
 
 			if (!window.so.state.has_pet) {
@@ -1304,7 +1304,7 @@ var ui_improver = {
 			}
 		}
 
-		ui_informer.update('monster of the day', isMonsterOfTheDay);
+		ui_informer.update('wanted monster', isWantedMonster);
 		ui_informer.update('monster with capabilities', isMonsterWithCapabilities);
 		ui_informer.update('tamable monster', isTamableMonster);
 	},

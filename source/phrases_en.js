@@ -313,4 +313,5 @@ var GUIp_i10n = {
 	error_message_object: 'Location of the error: object',
 	error_message_method: 'method',
 	and: ' and ',
+	ui_help: 'ui+ help',
 };

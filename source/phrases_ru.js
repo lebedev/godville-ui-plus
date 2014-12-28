@@ -458,4 +458,5 @@ var GUIp_i10n = {
 	error_message_object: 'Место ошибки: объект',
 	error_message_method: 'метод',
 	and: ' и ',
+	ui_help: 'help',
 };
