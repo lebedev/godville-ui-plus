@@ -104,7 +104,7 @@ function GUIp_getWords() {
 
 	usable_items: {
 		types: [
-			//'aura box',
+			'aura box',
 			//'arena box',
 			'black box',
 			//'boss box',
@@ -123,7 +123,7 @@ function GUIp_getWords() {
 			//'quest box'
 		],
 		descriptions: [
-			//'Этот предмет наделяет героя случайной аурой',
+			'This item gives a new aura to the hero',
 			//'Данный предмет можно активировать только во время дуэли',
 			'This item can affect the hero in a good or bad way',
 			//'Этот предмет ищет для героя босса',
@@ -150,7 +150,7 @@ function GUIp_getWords() {
 
 var GUIp_locale = 'en';
 
-var GUIp_i10n = {
+var GUIp_i18n = {
 	hero: ['hero', 'hero'],
 	heroine: ['heroine', 'heroine'],
 	ask1: 'Ask ',

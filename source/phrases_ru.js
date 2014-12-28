@@ -294,7 +294,7 @@ function GUIp_getWords() {
 
 var GUIp_locale = 'ru';
 
-var GUIp_i10n = {
+var GUIp_i18n = {
 	hero: ['героя', 'герою'],
 	heroine: ['героиню', 'героине'],
 	ask1: 'Упросить ',
