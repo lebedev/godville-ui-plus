@@ -22,7 +22,8 @@ body {
 }
 #pet .line,
 #diary .line,
-.panth_line {
+.panth_line,
+#no_skills {
 	text-align: center;
 }
 .l_val {
@@ -178,7 +179,7 @@ body.nightly .ui_msg {
 #logger .gold { color: #ffd700; }
 #logger .monster { color: darkmagenta; }
 #logger .death { color: red; }
-#logger .brick { color: goldenrod; font-weight: bold; }
+#logger .bricks { color: goldenrod; font-weight: bold; }
 #logger .wood { color: saddlebrown; font-weight: bold; }
 #logger .charges { color: blue; }
 #logger .retirement { color: darkorange; }

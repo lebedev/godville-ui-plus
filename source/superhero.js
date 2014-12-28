@@ -9,27 +9,35 @@ var ui_data = {
 		this.isDungeon = window.so.state.fight_type() === 'dungeon';
 		this.god_name = window.so.state.stats.godname.value;
 		this.char_name = window.so.state.stats.name.value;
-		this.char_sex = window.so.state.stats.gender.value === 'male' ? ['героя', 'герою'] : ['героиню', 'героине'];
+		this.char_sex = window.so.state.stats.gender.value === 'male' ? GUIp_i10n.hero : GUIp_i10n.heroine;
 		ui_storage.set('ui_s', '');
 		localStorage.GUIp_CurrentUser = this.god_name;
 
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
-			ui_storage.set('Forum1', '{}');
-			ui_storage.set('Forum2', '{"2812": 0}');
-			ui_storage.set('Forum3', '{}');
-			ui_storage.set('Forum4', '{}');
-			ui_storage.set('Forum5', '{}');
-			ui_storage.set('Forum6', '{}');
-			ui_storage.set('ForumInformers', '{}');
+			if (GUIp_locale == 'ru') {
+				ui_storage.set('Forum1', '{}');
+				ui_storage.set('Forum2', '{"2812": 0}');
+				ui_storage.set('Forum3', '{}');
+				ui_storage.set('Forum4', '{}');
+				ui_storage.set('Forum5', '{}');
+				ui_storage.set('Forum6', '{}');
+				ui_storage.set('ForumInformers', '{}');
 
-			// clear old data
-			localStorage.removeItem('GUIp_' + this.god_name + ':posts');
-			localStorage.removeItem('GUIp_Options:User');
-			var informer_flags = ui_storage.get('informer_flags') && JSON.parse(ui_storage.get('informer_flags')) || null;
-			if (informer_flags) {
-				delete informer_flags['new posts'];
-				ui_storage.set('informer_flags', JSON.stringify(informer_flags));
+				// clear old data
+				localStorage.removeItem('GUIp_' + this.god_name + ':posts');
+				localStorage.removeItem('GUIp_Options:User');
+				var informer_flags = ui_storage.get('informer_flags') && JSON.parse(ui_storage.get('informer_flags')) || null;
+				if (informer_flags) {
+					delete informer_flags['new posts'];
+					ui_storage.set('informer_flags', JSON.stringify(informer_flags));
+				}
+			} else {
+				ui_storage.set('Forum1', '{"2800": 0}');
+				ui_storage.set('Forum2', '{}');
+				ui_storage.set('Forum3', '{}');
+				ui_storage.set('Forum4', '{}');
+				ui_storage.set('ForumInformers', '{}');
 			}
 		}
 
@@ -61,7 +69,7 @@ var ui_data = {
 		}
 	},
 	parseMonsterOfTheDay: function(xhr) {
-		var temp = xhr.responseText.match(/Разыскиваются[\s\S]+?>([^<]+?)<\/a>[\s\S]+?>([^<]+?)<\/a>/),
+		var temp = xhr.responseText.match(/(?:Разыскиваются|Wanted)[\s\S]+?>([^<]+?)<\/a>[\s\S]+?>([^<]+?)<\/a>/),
 			newMonstersOfTheDay = temp ? temp[1] + '|' + temp[2] : '';
 		if (newMonstersOfTheDay !== ui_storage.get('MonsterOfTheDay:Value')) {
 			ui_storage.set('MonsterOfTheDay:Date', Date.now());
@@ -131,7 +139,7 @@ var ui_utils = {
 	createInspectButton: function(item_name) {
 		var a = document.createElement('a');
 		a.className = 'inspect_button';
-		a.title = 'Упросить ' + ui_data.char_sex[0] + ' ' + ['потрясти', 'исследовать', 'осмотреть'][Math.floor(Math.random()*3)] + ' ' + item_name;
+		a.title = GUIp_i10n.ask1 + ui_data.char_sex[0] + GUIp_i10n.inspect + item_name;
 		a.textContent = '?';
 		a.onclick = function() {
 			ui_utils.sayToHero(ui_words.inspectPhrase(item_name));
@@ -143,7 +151,7 @@ var ui_utils = {
 	createCraftButton: function(combo, combo_list, hint) {
 		var a = document.createElement('a');
 		a.className = 'craft_button ' + combo_list;
-		a.title = 'Уговорить ' + ui_data.char_sex[0] + ' ' + ['склеить', 'собрать', 'скрафтить', 'соединить', 'сделать', 'слепить'][Math.floor(Math.random()*6)] + ' случайную комбинацию ' + hint + ' предметов из инвентаря';
+		a.title = GUIp_i10n.ask2 + ui_data.char_sex[0] + GUIp_i10n.craft1 + hint + GUIp_i10n.craft2;
 		a.innerHTML = combo;
 		a.onclick = function() {
 			var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
@@ -195,7 +203,7 @@ var ui_utils = {
 			$msg = $('<div id="' + id + '" class="hint_bar ui_msg">'+
 						'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
 						'<div class="hint_bar_content">' + msg.content + '</div>'+
-						'<div class="hint_bar_close"><a id="' + id + '_close">закрыть</a></div>' +
+						'<div class="hint_bar_close"><a id="' + id + '_close">' + GUIp_i10n.close + '</a></div>' +
 					 '</div>').insertAfter($('#menu_bar'));
 		$('#' + id + '_close').click(function() {
 			$('#' + id).fadeToggle(function() {
@@ -212,15 +220,15 @@ var ui_utils = {
 		}, 1000);
 	},
 	inform: function() {
-		var last_shown = (ui_storage.get('lastShownMessage') !== undefined) ? +ui_storage.get('lastShownMessage') : -1;
-		for (var i = 0, len = this.messages.length; i < len; i++) {
-			if (this.messages[i].msg_no > last_shown) {
-				this.showMessage(this.messages[i].msg_no, this.messages[i]);
+		var last_shown = !isNaN(ui_storage.get('lastShownMessage')) ? +ui_storage.get('lastShownMessage') : -1;
+		for (var i = 0, len = this.messages[GUIp_locale].length; i < len; i++) {
+			if (this.messages[GUIp_locale][i].msg_no > last_shown) {
+				this.showMessage(this.messages[GUIp_locale][i].msg_no, this.messages[GUIp_locale][i]);
 			}
 		}
 	},
-	messages: [
-		{
+	messages: {
+		ru: [{
 			msg_no: 0,
 			title: 'Приветственное сообщение Godville UI+',
 			content: '<div>Приветствую бог' + (document.title.match('её') ? 'иню' : 'а') + ', использующ' + (document.title.match('её') ? 'ую' : 'его') +
@@ -259,12 +267,40 @@ var ui_utils = {
 					 '<div style="text-align: right;">Ура!<br>~~Бэдлак</div>'
 		}
 		/*{
-			msg_no: 7, // 1..6 are used
-			title: '<b>Godville UI+</b>: Заголовок',
+			msg_no: 7, // 0..6 are used
+			title: 'Godville UI+: Заголовок',
 			content: '<div style="text-align: justify;">&emsp;Текст.</div>'+
 					 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
-		}*/
-	],
+		}*/],
+		en: [{
+			msg_no: 0,
+			title: 'Godville UI+ greeting message',
+			content: '<div>Greetings to a god' + (document.title.match('his') ? '' : 'dess') + ', using <b>Godville UI+</b> ' + (GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + '.</div>' +
+
+					 '<div style="text-align: justify; margin: 0.2em 0 0.3em;">&emsp;Please click <b>ui+ settings</b> button at the top of a page, or ' +
+					 'open <b>UI+ settings</b> tab in the hero <b>profile</b> and familiarize yourself with the settings available in this ' + (GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ', if you haven\'t done so yet.<br>' +
+
+					 '&emsp;In respect to forum informers, by default you are only subscribed to the topic for this addon, and most likely you can see it <i>in the upper left corner</i> right now.<br>' +
+
+					 '&emsp;If you can\'t figure out some functions of the ' + (GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask me (god <b>Bad&nbsp;Luck</b>) directly or in the forums.<br>' +
+
+					 '&emsp;Guides for handling errors can be found in the <i>help dialog</i> (which is open now), that can be shown or hidden by clicking <b style="text-decoration: underline;">help</b> in the top menu. ' +
+					 'Links to everything mentioned above can also be found there.<br>' +
+
+					 '<div style="text-align: right;">Enjoy the game!<br>~~Bad Luck</div>',
+			callback: function() {
+				if (!ui_storage.get('helpDialogVisible')) {
+					ui_help_dialog.toggle();
+				}
+			}
+		}
+		/*{
+			msg_no: 1, // 0 is used
+			title: 'Godville UI+: Заголовок',
+			content: '<div style="text-align: justify;">&emsp;Текст.</div>'+
+					 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
+		}*/]
+	},
 	getNodeIndex: function(node) {
 		var i = 0;
 		while ((node = node.previousElementSibling)) {
@@ -358,37 +394,26 @@ var ui_help_dialog = {
 // creates ui dialog	
 	create: function() {
 		this.bar = $('<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
-					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, если что-то пошло не так...</div>' + 
+					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, ' + GUIp_i10n.if_something_wrong_capt + '...</div>' + 
 					 '<div class="hint_bar_content" style="padding: 0.5em 0.8em;"></div>' + 
 					 '<div class="hint_bar_close"></div></div>');
 		if (ui_storage.get('helpDialogVisible')) this.bar.show();
 		this.content = $('.hint_bar_content', this.bar);
 		this.append('<div style="text-align: left;">' +
-						'<div>Если что-то работает не так, как должно:</div>' +
+						'<div>' + GUIp_i10n.if_something_wrong + '</div>' +
 						'<ol>' +
-						'<li>Обновите страницу. Если баг повторяется - переходите к следующему шагу.</li>' +
-						'<li><div id="check_version" class="div_link" style="display: inline;">Нажмите сюда, чтоб проверить, последняя ли у вас версия дополнения.</div></li>' +
-						'<li class="update_required Chrome hidden">Откройте страницу настроек Хрома (2). <a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_1.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-						'<li class="update_required Chrome hidden">Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку "Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
-							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-						'<li class="update_required Firefox hidden">Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). <a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_1.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-						'<li class="update_required Firefox hidden">Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4), подождите несколько секунд и согласитеcь на перезапуск браузера. ' +
-							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-						'<li class="update_required Chrome Firefox hidden">Обратно к шагу 1.</li>' +
-						'<li class="console Chrome Firefox hidden">Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.</li>' +
-						'<li class="console Chrome Firefox hidden">Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль (через меню или комбинацией <b>Ctrl+Shift+' + (GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
-							'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-						'<li class="console Chrome Firefox hidden">Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке ' +
-							'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' + (GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
-						'И с этой информацией напишите <b>Бэдлаку</b> или в тему на форуме по ссылкам ниже.</li>' +
+						'<li>' + GUIp_i10n.help_refresh + '</li>' +
+						'<li><div id="check_version" class="div_link" style="display: inline;">' + GUIp_i10n.help_check_version + '</div></li>' +
+						'<li class="update_required Chrome hidden">' + GUIp_i10n.help_update_chrome_1 + '</li>' +
+						'<li class="update_required Chrome hidden">' + GUIp_i10n.help_update_chrome_2 + '</li>' +
+						'<li class="update_required Firefox hidden">' + GUIp_i10n.help_update_firefox_1 + '</li>' +
+						'<li class="update_required Firefox hidden">' + GUIp_i10n.help_update_firefox_2 + '</li>' +
+						'<li class="update_required Chrome Firefox hidden">' + GUIp_i10n.help_back_to_step_1 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + GUIp_i10n.help_console_1 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + GUIp_i10n.help_console_2 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + GUIp_i10n.help_console_3 + '</li>' +
 						'</ol>' +
-						'<div>Полезные ссылки: ' +
-							'<a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
-							'его <a href="skype:angly_cat">скайп</a>, ' +
-							'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" title="Откроется в новой вкладке" target="_blank">список багов и идей (aka "блокнотик")</a>, ' +
-							'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
-							'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
-							'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.' +
+						'<div>' + GUIp_i10n.help_useful_links + '</div>' +
 					'</div>');
 		if (ui_utils.isDebugMode) {
 			this.append($('<span>dump: </span>'));
@@ -406,11 +431,11 @@ var ui_help_dialog = {
 		$('.hint_bar_close', this.bar).append(this.getToggleButton('закрыть'));
 		$('#menu_bar').after(this.bar);
 		$('#menu_bar ul').append('<li> | </li>')
-						 .append('<a href="user/profile#ui_options">настройки <strong>ui+</strong></a><li> | </li>')
+						 .append('<a href="user/profile#ui_options">' + GUIp_i10n.ui_settings_top_menu + '</a><li> | </li>')
 						 .append(this.getToggleButton('<strong>help</strong>'));
 
 		$('#check_version').click(function() {
-			this.textContent = "Получения номера последней версии дополнения...";
+			this.textContent = GUIp_i10n.getting_version_no;
 			this.classList.remove('div_link');
 			ui_utils.getXHR('/forums/show/2', ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
 			return false;
@@ -426,18 +451,18 @@ var ui_help_dialog = {
 						   +temp_cur[1] >= +temp_last[1] &&
 						   +temp_cur[2] >= +temp_last[2] &&
 						   +temp_cur[3] >= +temp_last[3];
-			$('#check_version')[0].innerHTML = (isNewest ? 'У вас последняя версия.' : 'Последняя версия - <b>' + last_version + '</b>. Нужно обновить вручную.') + ' Переходите к следующему шагу.';
+			$('#check_version')[0].innerHTML = (isNewest ? GUIp_i10n.is_last_version : GUIp_i10n.is_not_last_version_1 + last_version + GUIp_i10n.is_not_last_version_1) + GUIp_i10n.proceed_to_next_step;
 			if (!isNewest) {
 				$('#ui_help_dialog ol li.update_required.' + GUIp_browser).removeClass('hidden');
 			} else {
 				$('#ui_help_dialog ol li.console.' + GUIp_browser).removeClass('hidden');
 			}
 		} else {
-			this.onXHRFail();
+			ui_help_dialog.onXHRFail();
 		}
 	},
 	onXHRFail: function() {
-		$('#check_version')[0].textContent = 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 2, иначе к шагу 6.';
+		$('#check_version')[0].textContent = GUIp_i10n.getting_version_failed;
 		$('#ui_help_dialog ol li.' + GUIp_browser).removeClass('hidden');
 	},
 // gets toggle button
@@ -499,13 +524,16 @@ var ui_storage = {
 	},
 // resets saved options
 	clear: function() {
-		var key,
+		var i, len, key, keys = [],
 			r = new RegExp('^GUIp_.*');
-		for (var i = 0; i < localStorage.length; i++) {
+		for (i = 0, len = localStorage.length; i < len; i++) {
 			key = localStorage.key(i);
 			if (key.match(r)) {
-				localStorage.removeItem(key);
+				keys.push(key);
 			}
+		}
+		for (i = 0, len = keys.length; i < len; i++) {
+			localStorage.removeItem(keys[i]);
 		}
 		location.reload();
 		return "Storage cleared. Reloading...";
@@ -643,7 +671,7 @@ var ui_stats = {
 		var $label = ui_utils.findLabel($container, label);
 		var $field = $label.siblings('.l_val');
 		var value = parser($field.text());
-		if (id === 'Brick' || id === 'Wood') return this.set(id, Math.floor(value*10 + 0.5));
+		if (id === 'Bricks' || id === 'Logs') return this.set(id, Math.floor(value*10 + 0.5));
 		else return this.set(id, value);
 	}
 };
@@ -713,43 +741,43 @@ var ui_logger = {
 			this.bar.show();
 		}
 		if (ui_data.isDungeon) {
-			this.watchStatsValue('Map_HP', 'hp', 'Здоровье героя', 'hp');
-			this.watchStatsValue('Map_Inv', 'inv', 'Инвентарь', 'inv');
-			this.watchStatsValue('Map_Gold', 'gld', 'Золото', 'gold'); 
-			this.watchStatsValue('Map_Charges', 'ch', 'Заряды', 'charges');
-			this.watchStatsValue('Map_Alls_HP', 'a:hp', 'Здоровье союзников', 'charges');
+			this.watchStatsValue('Map_HP', 'hp', GUIp_i10n.hero_health, 'hp');
+			this.watchStatsValue('Map_Inv', 'inv', GUIp_i10n.inventory, 'inv');
+			this.watchStatsValue('Map_Gold', 'gld', GUIp_i10n.gold, 'gold'); 
+			this.watchStatsValue('Map_Charges', 'ch', GUIp_i10n.charges, 'charges');
+			this.watchStatsValue('Map_Alls_HP', 'a:hp', GUIp_i10n.allies_health, 'charges');
 		}
 		if (ui_data.isBattle && !ui_data.isDungeon) {
-			this.watchStatsValue('Hero_HP', 'h:hp', 'Здоровье героя', 'hp');
-			this.watchStatsValue('Enemy_HP', 'e:hp', 'Здоровье соперника', 'death');
-			this.watchStatsValue('Hero_Alls_HP', 'a:hp', 'Здоровье союзников', 'charges');
-			this.watchStatsValue('Hero_Inv', 'h:inv', 'Инвентарь', 'inv');
-			this.watchStatsValue('Hero_Gold', 'h:gld', 'Золото', 'gold'); 
-			this.watchStatsValue('Hero_Charges', 'h:ch', 'Заряды', 'charges');
-			this.watchStatsValue('Enemy_Gold', 'e:gld', 'Золото', 'monster');
-			this.watchStatsValue('Enemy_Inv', 'e:inv', 'Инвентарь', 'monster');
+			this.watchStatsValue('Hero_HP', 'h:hp', GUIp_i10n.hero_health, 'hp');
+			this.watchStatsValue('Enemy_HP', 'e:hp', GUIp_i10n.enemy_health, 'death');
+			this.watchStatsValue('Hero_Alls_HP', 'a:hp', GUIp_i10n.allies_health, 'charges');
+			this.watchStatsValue('Hero_Inv', 'h:inv', GUIp_i10n.inventory, 'inv');
+			this.watchStatsValue('Hero_Gold', 'h:gld', GUIp_i10n.gold, 'gold');
+			this.watchStatsValue('Hero_Charges', 'h:ch', GUIp_i10n.charges, 'charges');
+			this.watchStatsValue('Enemy_Gold', 'e:gld', GUIp_i10n.gold, 'monster');
+			this.watchStatsValue('Enemy_Inv', 'e:inv', GUIp_i10n.inventory, 'monster');
 		}
-		this.watchStatsValue('Exp', 'exp', 'Опыт (проценты)');
-		this.watchStatsValue('Level', 'lvl', 'Уровень');
-		this.watchStatsValue('HP', 'hp', 'Здоровье');
-		this.watchStatsValue('Godpower', 'gp', 'Прана (проценты)');
-		this.watchStatsValue('Charges', 'ch', 'Заряды');
-		this.watchStatsValue('Task', 'tsk', 'Задание (проценты)');
-		this.watchStatsValue('Monster', 'mns', 'Монстры');
-		this.watchStatsValue('Inv', 'inv', 'Инвентарь');
-		this.watchStatsValue('Gold', 'gld', 'Золото');
-		this.watchStatsValue('Brick', 'br', 'Кирпичи');
-		this.watchStatsValue('Wood', 'wd', 'Дерево');
-		this.watchStatsValue('Retirement', 'rtr', 'Сбережения (тысячи)');
-		this.watchStatsValue('Equip1', 'eq1', 'Оружие', 'equip');
-		this.watchStatsValue('Equip2', 'eq2', 'Щит', 'equip');
-		this.watchStatsValue('Equip3', 'eq3', 'Голова', 'equip');
-		this.watchStatsValue('Equip4', 'eq4', 'Тело', 'equip');
-		this.watchStatsValue('Equip5', 'eq5', 'Руки', 'equip');
-		this.watchStatsValue('Equip6', 'eq6', 'Ноги', 'equip');
-		this.watchStatsValue('Equip7', 'eq7', 'Талисман', 'equip');
-		this.watchStatsValue('Death', 'death', 'Смерти');
-		this.watchStatsValue('Pet_Level', 'pet_level', 'Уровень питомца', 'monster');
+		this.watchStatsValue('Exp', 'exp', GUIp_i10n.exp);
+		this.watchStatsValue('Level', 'lvl', GUIp_i10n.level);
+		this.watchStatsValue('HP', 'hp', GUIp_i10n.health);
+		this.watchStatsValue('Godpower', 'gp', GUIp_i10n.godpower);
+		this.watchStatsValue('Charges', 'ch', GUIp_i10n.charges);
+		this.watchStatsValue('Task', 'tsk', GUIp_i10n.task);
+		this.watchStatsValue('Monster', 'mns', GUIp_i10n.monsters);
+		this.watchStatsValue('Inv', 'inv', GUIp_i10n.inventory);
+		this.watchStatsValue('Gold', 'gld', GUIp_i10n.gold);
+		this.watchStatsValue('Bricks', 'br', GUIp_i10n.bricks);
+		this.watchStatsValue('Logs', 'wd', GUIp_i10n.logs);
+		this.watchStatsValue('Savings', 'rtr', GUIp_i10n.savings);
+		this.watchStatsValue('Equip1', 'eq1', GUIp_i10n.weapon, 'equip');
+		this.watchStatsValue('Equip2', 'eq2', GUIp_i10n.shield, 'equip');
+		this.watchStatsValue('Equip3', 'eq3', GUIp_i10n.head, 'equip');
+		this.watchStatsValue('Equip4', 'eq4', GUIp_i10n.body, 'equip');
+		this.watchStatsValue('Equip5', 'eq5', GUIp_i10n.arms, 'equip');
+		this.watchStatsValue('Equip6', 'eq6', GUIp_i10n.legs, 'equip');
+		this.watchStatsValue('Equip7', 'eq7', GUIp_i10n.talisman, 'equip');
+		this.watchStatsValue('Death', 'death', GUIp_i10n.death_count);
+		this.watchStatsValue('Pet_Level', 'pet_level', GUIp_i10n.pet_level, 'monster');
 		this.need_separator = true;
 	}
 };
@@ -863,7 +891,7 @@ var ui_informer = {
 			}
 			var stars = document.querySelectorAll('.msgDock .fr_new_msg');
 			for (var i = 0, len = stars.length; i < len; i++) {
-				if (stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent !== 'Гильдсовет') {
+				if (!stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent.match(/Гильдсовет|Guild Council/)) {
 					pm++;
 				}
 			}
@@ -917,7 +945,7 @@ var ui_forum = {
 		setInterval(this.check.bind(this), 300000);
 	},
 	check: function() {
-		for (var forum_no = 1; forum_no <= 6; forum_no++) {
+		for (var forum_no = 1; forum_no <= (GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
 			var current_forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
 				topics = [];
 			for (var topic in current_forum) {
@@ -1054,7 +1082,7 @@ var ui_improver = {
 				this.improveDiary();
 				this.improveLoot();
 			}
-			if (ui_data.isDungeon) {
+			if (ui_data.isDungeon && GUIp_locale === 'ru') {
 				this.getDungeonPhrases();
 			}
 		}
@@ -1093,6 +1121,7 @@ var ui_improver = {
 				var item_name = items[i].textContent.replace(/\?$/, '')
 													.replace(/\(@\)/, '')
 													.replace(/\(\d шт\)$/, '')
+													.replace(/\(\dpcs\)$/, '')
 													.replace(/^\s+|\s+$/g, '');
 				// color items and add buttons
 				if (ui_words.isUsableItem(items[i])) {
@@ -1104,8 +1133,8 @@ var ui_improver = {
 					} else if (!ui_utils.hasShownInfoMessage) {
 						ui_utils.hasShownInfoMessage = true;
 						ui_utils.showMessage('info', {
-							title: 'Неизвестный тип предмета в Godville UI+!',
-							content: '<div>Дополнение обнаружило в вашем инвентаре неизвестную доселе категорию предмета. Пожалуйста, сообщите разработчику следующее описание: <b>"' + desc + '</b>"'
+							title: GUIp_i10n.unknown_item_type_title,
+							content: '<div>' + GUIp_i10n.unknown_item_type_content + '<b>"' + desc + '</b>"</div>'
 						});
 					}
 					if (!(forbidden_craft && (forbidden_craft.match('activatable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r'))))) {
@@ -1159,20 +1188,20 @@ var ui_improver = {
 					if (trophy_list[i][0] === trophy_list[j][0]) {
 						if (trophy_boldness[trophy_list[i]] && trophy_boldness[trophy_list[j]]) {
 							if (!(forbidden_craft && forbidden_craft.match('b_b'))) {
-								this.b_b.push(trophy_list[i] + ' и ' + trophy_list[j]);
-								this.b_b.push(trophy_list[j] + ' и ' + trophy_list[i]);
+								this.b_b.push(trophy_list[i] + GUIp_i10n.and + trophy_list[j]);
+								this.b_b.push(trophy_list[j] + GUIp_i10n.and + trophy_list[i]);
 							}
 						} else if (!trophy_boldness[trophy_list[i]] && !trophy_boldness[trophy_list[j]]) {
 							if (!(forbidden_craft && forbidden_craft.match('r_r'))) {
-								this.r_r.push(trophy_list[i] + ' и ' + trophy_list[j]);
-								this.r_r.push(trophy_list[j] + ' и ' + trophy_list[i]);
+								this.r_r.push(trophy_list[i] + GUIp_i10n.and + trophy_list[j]);
+								this.r_r.push(trophy_list[j] + GUIp_i10n.and + trophy_list[i]);
 							}
 						} else {
 							if (!(forbidden_craft && forbidden_craft.match('b_r'))) {
 								if (trophy_boldness[trophy_list[i]]) {
-									this.b_r.push(trophy_list[i] + ' и ' + trophy_list[j]);
+									this.b_r.push(trophy_list[i] + GUIp_i10n.and + trophy_list[j]);
 								} else {
-									this.b_r.push(trophy_list[j] + ' и ' + trophy_list[i]);
+									this.b_r.push(trophy_list[j] + GUIp_i10n.and + trophy_list[i]);
 								}
 							}
 						}
@@ -1185,10 +1214,10 @@ var ui_improver = {
 
 		if (!ui_utils.isAlreadyImproved($('#inventory'))) {
 			var inv_content = document.querySelector('#inventory .block_content');
-			inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + ['Склей', 'Собери', 'Скрафти', 'Соедини', 'Сделай', 'Слепи'][Math.floor(Math.random()*6)] + ':</span>');
-			inv_content.insertBefore(ui_utils.createCraftButton('<b>ж</b>+<b>ж</b>', 'b_b', 'жирных'), null);
-			inv_content.insertBefore(ui_utils.createCraftButton('<b>ж</b>+нж', 'b_r', 'жирного и нежирного'), null);
-			inv_content.insertBefore(ui_utils.createCraftButton('нж+нж', 'r_r', 'нежирных'), null);
+			inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + GUIp_i10n.craft_verb + ':</span>');
+			inv_content.insertBefore(ui_utils.createCraftButton(GUIp_i10n.b_b, 'b_b', GUIp_i10n.b_b_hint), null);
+			inv_content.insertBefore(ui_utils.createCraftButton(GUIp_i10n.b_r, 'b_r', GUIp_i10n.b_r_hint), null);
+			inv_content.insertBefore(ui_utils.createCraftButton(GUIp_i10n.r_r, 'r_r', GUIp_i10n.r_r_hint), null);
 		}
 	},
 
@@ -1213,23 +1242,23 @@ var ui_improver = {
 			$('.gp_label').addClass('l_capt');
 			$('.gp_val').addClass('l_val');
 			if (ui_data.isDungeon) {
-				var isContradictions = $('#map')[0].textContent.match('Противоречия');
-				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Восток', (isContradictions ? 'walk_w' : 'walk_e'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Восток');
-				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Запад', (isContradictions ? 'walk_e' : 'walk_w'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Запад');
-				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Юг', (isContradictions ? 'walk_n' : 'walk_s'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Юг');
-				ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'Север', (isContradictions ? 'walk_s' : 'walk_n'), 'Попросить ' + ui_data.char_sex[0] + ' повести команду на Север');
-				if ($('#map')[0].textContent.match('Бессилия')) {
+				var isContradictions = $('#map')[0].textContent.match(/Противоречия|Disobedience/);
+				ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.east, (isContradictions ? 'walk_w' : 'walk_e'), GUIp_i10n.ask3 + ui_data.char_sex[0] + GUIp_i10n.go_east);
+				ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.west, (isContradictions ? 'walk_e' : 'walk_w'), GUIp_i10n.ask3 + ui_data.char_sex[0] + GUIp_i10n.go_west);
+				ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.south, (isContradictions ? 'walk_n' : 'walk_s'), GUIp_i10n.ask3 + ui_data.char_sex[0] + GUIp_i10n.go_south);
+				ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.north, (isContradictions ? 'walk_s' : 'walk_n'), GUIp_i10n.ask3 + ui_data.char_sex[0] + GUIp_i10n.go_north);
+				if ($('#map')[0].textContent.match(/Бессилия|Anti-influence/)) {
 					$('#actions').hide();
 				}
 			} else {
 				if (ui_data.isBattle) {
-					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'отбивай', 'defend', 'Попытаться заставить ' + ui_data.char_sex[0] + ' принять защитную стойку, поднять щит и отбить атаку противника');
-					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'молись', 'pray', 'Попросить ' + ui_data.char_sex[0] + ' вознести молитву для пополнения праны');
-					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'лечись', 'heal', 'Посоветовать ' + ui_data.char_sex[1] + ' подлечиться подручными средствами');
-					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'бей', 'hit', 'Подсказать ' + ui_data.char_sex[1] + ' о возможности нанесения сильного удара вне очереди');
+					ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.defend, 'defend', GUIp_i10n.ask4 + ui_data.char_sex[0] + GUIp_i10n.to_defend);
+					ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.pray, 'pray', GUIp_i10n.ask5 + ui_data.char_sex[0] + GUIp_i10n.to_pray);
+					ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.heal, 'heal', GUIp_i10n.ask6 + ui_data.char_sex[1] + GUIp_i10n.to_heal);
+					ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.hit, 'hit', GUIp_i10n.ask7 + ui_data.char_sex[1] + GUIp_i10n.to_hit);
 				} else {
-					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'жертвуй', 'sacrifice', 'Послать ' + ui_data.char_sex[1] + ' требование кровавой или золотой жертвы для внушительного пополнения праны');
-					ui_utils.addSayPhraseAfterLabel($box, 'Прана', 'молись', 'pray', 'Попросить ' + ui_data.char_sex[0] + ' вознести молитву для пополнения праны');
+					ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.sacrifice, 'sacrifice', GUIp_i10n.ask8 + ui_data.char_sex[1] + GUIp_i10n.to_sacrifice);
+					ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.godpower_label, GUIp_i10n.pray, 'pray', GUIp_i10n.ask5 + ui_data.char_sex[0] + GUIp_i10n.to_pray);
 					$('#voice_submit').click(function() {
 						ui_improver.voiceSubmitted = true;
 					});
@@ -1243,7 +1272,7 @@ var ui_improver = {
 		}
 		
 		// Save stats
-		ui_stats.setFromLabelCounter('Godpower', $box, 'Прана');
+		ui_stats.setFromLabelCounter('Godpower', $box, GUIp_i10n.godpower_label);
 		ui_informer.update('full godpower', $('#cntrl .p_val').width() === $('#cntrl .p_bar').width());
 	},
 
@@ -1251,7 +1280,7 @@ var ui_improver = {
 	improveNews: function() {
 		if (ui_data.isBattle) return;
 		if (!ui_utils.isAlreadyImproved($('#news'))) {
-			ui_utils.addSayPhraseAfterLabel($('#news'), 'Противник', 'бей', 'hit', 'Подсказать ' + ui_data.char_sex[1] + ' о возможности нанесения сильного удара вне очереди');
+			ui_utils.addSayPhraseAfterLabel($('#news'), GUIp_i10n.enemy_label, GUIp_i10n.hit, 'hit', GUIp_i10n.ask7 + ui_data.char_sex[1] + GUIp_i10n.to_hit);
 		}
 		var isMonsterOfTheDay = false;
 		var isMonsterWithCapabilities = false;
@@ -1260,7 +1289,7 @@ var ui_improver = {
 		if ($('#news .line')[0].style.display !== 'none') {
 			var currentMonster = $('#news .l_val').text();
 			isMonsterOfTheDay = this.monstersOfTheDay && currentMonster.match(this.monstersOfTheDay);
-			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий/);
+			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
 
 			if (!window.so.state.has_pet) {
 				var hasArk = parseInt(window.so.state.stats.wood.value) >= 100;
@@ -1306,29 +1335,33 @@ var ui_improver = {
 		if (ui_data.isDungeon) {
 			if (this.isFirstTime) {
 				document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
-					'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - близость к боссу</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - босс</div></div>' +
-					'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - слабая молилка</div></div>' +
-					'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - слабая лечилка</div></div>' +
-					'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ловушка: золото или трофеи</div></div>' +
-					'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ловушка: слабый урон</div></div>' +
-					'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ловушка: сильный урон</div></div>' +
-					'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ловушка: пропуск хода</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - близость к боссу и ловушка</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossSlay moveLoss"></div><div> - босс и ловушка</div></div>'
+					'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - ' + GUIp_i10n.boss_warning_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + GUIp_i10n.boss_slay_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - ' + GUIp_i10n.small_prayer_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - ' + GUIp_i10n.small_healing_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ' + GUIp_i10n.trophy_loss_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ' + GUIp_i10n.low_damage_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ' + GUIp_i10n.mid_damage_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ' + GUIp_i10n.move_loss_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - ' + GUIp_i10n.boss_warning_and_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossSlay moveLoss"></div><div> - ' + GUIp_i10n.boss_slay_and_trap_hint + '</div></div>'
 				);
 			}
 			if (ui_storage.get('Option:relocateMap')) {
 				if (!$('#a_central_block #map').length) {
 					$('#map').insertBefore($('#m_control'));
 					$('#m_control').appendTo($('#a_right_block'));
-					$('#m_control .block_title').text('Пульт');
+					if (GUIp_locale === 'ru') {
+						$('#m_control .block_title').text('Пульт');
+					}
 				}
 			} else {
 				if (!$('#a_right_block #map').length) {
 					$('#m_control').insertBefore($('#map'));
 					$('#map').appendTo($('#a_right_block'));
-					$('#m_control .block_title').text('Пульт вмешательства в личную жизнь');
+					if (GUIp_locale === 'ru') {
+						$('#m_control .block_title').text('Пульт вмешательства в личную жизнь');
+					}
 				}
 			}
 			var i, j,
@@ -1343,7 +1376,7 @@ var ui_improver = {
 				$box[i].style.visibility = 'hidden';
 			}
 
-			var isJumping = $('#map')[0].textContent.match('Прыгучести'); 
+			var isJumping = $('#map')[0].textContent.match(/Прыгучести|Jumping/); 
 
 			var MaxMap = 0;	//	Счетчик указателей  
 			//	Карта возможного клада
@@ -1464,13 +1497,13 @@ var ui_improver = {
 		};
 
 		if (ui_data.isDungeon) {
-			ui_stats.setFromLabelCounter('Map_HP', $('#m_info'), 'Здоровье');
-			ui_stats.setFromLabelCounter('Map_Gold', $('#m_info'), 'Золота', gold_parser);
-			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), 'Инвентарь');
+			ui_stats.setFromLabelCounter('Map_HP', $('#m_info'), GUIp_i10n.health_label);
+			ui_stats.setFromLabelCounter('Map_Gold', $('#m_info'), GUIp_i10n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), GUIp_i10n.inventory_label);
 			ui_stats.set('Map_Charges', $('#m_control .acc_val').text(), parseFloat);
 			ui_stats.set('Map_Alls_HP', this.GroupHP(true));
-			if (ui_storage.get('Logger:LocationPrev') === 'Pole') {
-				ui_storage.set('Logger:LocationPrev', 'Map');
+			if (ui_storage.get('Logger:LocationPrev') === 'Field') {
+				ui_storage.set('Logger:LocationPrev', 'Dungeon');
 				ui_storage.set('Logger:Map_HP', ui_stats.get('Map_HP'));
 				ui_storage.set('Logger:Map_Gold', ui_stats.get('Map_Gold'));
 				ui_storage.set('Logger:Map_Inv', ui_stats.get('Map_Inv'));
@@ -1480,12 +1513,12 @@ var ui_improver = {
 			return;
 		}
 		if (ui_data.isBattle) {
-			ui_stats.setFromLabelCounter('Hero_HP', $('#m_info'), 'Здоровье');
-			ui_stats.setFromLabelCounter('Hero_Gold', $('#m_info'), 'Золота', gold_parser);
-			ui_stats.setFromLabelCounter('Hero_Inv', $('#m_info'), 'Инвентарь');
+			ui_stats.setFromLabelCounter('Hero_HP', $('#m_info'), GUIp_i10n.health_label);
+			ui_stats.setFromLabelCounter('Hero_Gold', $('#m_info'), GUIp_i10n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Hero_Inv', $('#m_info'), GUIp_i10n.inventory_label);
 			ui_stats.set('Hero_Charges',$('#m_control .acc_val').text(), parseFloat);
-			ui_stats.setFromLabelCounter('Enemy_Gold', $('#o_info'), 'Золота', gold_parser);
-			ui_stats.setFromLabelCounter('Enemy_Inv', $('#o_info'), 'Инвентарь');
+			ui_stats.setFromLabelCounter('Enemy_Gold', $('#o_info'), GUIp_i10n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Enemy_Inv', $('#o_info'), GUIp_i10n.inventory_label);
 			ui_stats.set('Hero_Alls_HP', this.GroupHP(true));
 			ui_stats.set('Enemy_HP', this.GroupHP(false));
 			if (this.isFirstTime) {
@@ -1500,37 +1533,37 @@ var ui_improver = {
 			}
 			return;
 		}
-		if (ui_storage.get('Logger:LocationPrev') !== 'Pole') {
-			ui_storage.set('Logger:LocationPrev', 'Pole');
+		if (ui_storage.get('Logger:LocationPrev') !== 'Field') {
+			ui_storage.set('Logger:LocationPrev', 'Field');
 		}
 		var $box = $('#stats');
 		if (!ui_utils.isAlreadyImproved($('#stats'))) {
 			// Add links
-			ui_utils.addSayPhraseAfterLabel($box, 'Уровень', 'учись', 'exp', 'Предложить ' + ui_data.char_sex[1] + ' получить порцию опыта');
-			ui_utils.addSayPhraseAfterLabel($box, 'Здоровье', 'лечись', 'heal', 'Посоветовать ' + ui_data.char_sex[1] + ' подлечиться подручными средствами');
-			ui_utils.addSayPhraseAfterLabel($box, 'Золота', 'копай', 'dig', 'Указать ' + ui_data.char_sex[1] + ' место для копания клада или босса');
-			ui_utils.addSayPhraseAfterLabel($box, 'Задание', 'отмени', 'cancel_task', 'Убедить ' + ui_data.char_sex[0] + ' отменить текущее задание');
-			ui_utils.addSayPhraseAfterLabel($box, 'Задание', 'делай', 'do_task', 'Открыть ' + ui_data.char_sex[1] + ' секрет более эффективного выполнения задания');
-			ui_utils.addSayPhraseAfterLabel($box, 'Смертей', 'умри', 'die', 'Попросить ' + ui_data.char_sex[0] + ' увеличить на единичку счетчик смертей');
+			ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.level_label, GUIp_i10n.study, 'exp', GUIp_i10n.ask9 + ui_data.char_sex[1] + GUIp_i10n.to_study);
+			ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.health_label, GUIp_i10n.heal, 'heal', GUIp_i10n.ask6 + ui_data.char_sex[1] + GUIp_i10n.to_heal);
+			ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.gold_label, GUIp_i10n.dig, 'dig', GUIp_i10n.ask10 + ui_data.char_sex[1] + GUIp_i10n.to_dig);
+			ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.task_label, GUIp_i10n.cancel_task, 'cancel_task', GUIp_i10n.ask11 + ui_data.char_sex[0] + GUIp_i10n.to_cancel_task);
+			ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.task_label, GUIp_i10n.do_task, 'do_task', GUIp_i10n.ask12 + ui_data.char_sex[1] + GUIp_i10n.to_do_task);
+			ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.death_label, GUIp_i10n.die, 'die', GUIp_i10n.ask13 + ui_data.char_sex[0] + GUIp_i10n.to_die);
 		}
 		if (!$('#hk_distance .voice_generator').length) {
-			ui_utils.addSayPhraseAfterLabel($box, 'Столбов от столицы', $('#main_wrapper.page_wrapper_5c').length ? '回' : 'дом', 'town', 'Наставить ' + ui_data.char_sex[0] + ' на путь в ближайший город');
+			ui_utils.addSayPhraseAfterLabel($box, GUIp_i10n.milestones_label, $('#main_wrapper.page_wrapper_5c').length ? '回' : GUIp_i10n.return, 'town', GUIp_i10n.ask14 + ui_data.char_sex[0] + GUIp_i10n.to_return);
 		}
 
 		ui_stats.setFromProgressBar('Exp', $('#hk_level .p_bar'));
 		ui_stats.setFromProgressBar('Task', $('#hk_quests_completed .p_bar'));
-		ui_stats.setFromLabelCounter('Level', $box, 'Уровень');
-		ui_stats.setFromLabelCounter('Monster', $box, 'Убито монстров');
-		ui_stats.setFromLabelCounter('Death', $box, 'Смертей');
-		ui_stats.setFromLabelCounter('Brick', $box, 'Кирпичей для храма', parseFloat);
-		ui_stats.setFromLabelCounter('Wood', $box, 'Дерева для ковчега', parseFloat);
-		ui_stats.setFromLabelCounter('Retirement', $box, 'Сбережения', gold_parser);
+		ui_stats.setFromLabelCounter('Level', $box, GUIp_i10n.level_label);
+		ui_stats.setFromLabelCounter('Monster', $box, GUIp_i10n.monsters_label);
+		ui_stats.setFromLabelCounter('Death', $box, GUIp_i10n.death_label);
+		ui_stats.setFromLabelCounter('Bricks', $box, GUIp_i10n.bricks_label, parseFloat);
+		ui_stats.setFromLabelCounter('Logs', $box, GUIp_i10n.logs_label, parseFloat);
+		ui_stats.setFromLabelCounter('Savings', $box, GUIp_i10n.savings_label, gold_parser);
 		ui_stats.set('Charges', $('#control .acc_val').text(), parseFloat);
-		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, 'Инвентарь') || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
+		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, GUIp_i10n.inventory_label) || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
 			this.inventoryChanged = true;
 		}
-		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, 'Золота', gold_parser) >= (ui_stats.get('Brick') > 1000 ? 10000 : 3000));
-		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, 'Здоровье') === 0);
+		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, GUIp_i10n.gold_label, gold_parser) >= (ui_stats.get('Bricks') > 1000 ? 10000 : 3000));
+		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, GUIp_i10n.health_label) === 0);
 		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии/) && !$('.q_name').text().match(/\(отменено\)/));
 		ui_informer.update('mini quest', $('.q_name').text().match(/\(мини\)/) && !$('.q_name').text().match(/\(отменено\)/));
 
@@ -1559,7 +1592,7 @@ var ui_improver = {
 			if (!ui_utils.isAlreadyImproved($('#pet'))) {
 				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 			} 
-			$('#pet_badge').text(ui_utils.findLabel($('#pet'), 'Статус').siblings('.l_val').text().replace(/[^0-9:]/g, ''));
+			$('#pet_badge').text(ui_utils.findLabel($('#pet'), GUIp_i10n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, ''));
 			if ($('#pet .block_content')[0].style.display === 'none') {
 				$('#pet_badge').show(); 
 			}
@@ -1574,7 +1607,7 @@ var ui_improver = {
 		// bruise informer
 		ui_informer.update('pet is bruised', window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value);
 
-		ui_stats.setFromLabelCounter('Pet_Level', $('#pet'), 'Уровень');
+		ui_stats.setFromLabelCounter('Pet_Level', $('#pet'), GUIp_i10n.pet_level_label);
 	},
 // ---------- Equipment --------------
 	improveEquip: function() {
@@ -1906,11 +1939,11 @@ var ui_improver = {
 			if ($('.b_b:visible, .b_r:visible, .r_r:visible').length) $('span.craft_button').show();
 			//if ($('.f_news').text() !== 'Возвращается к заданию...')fc
 			if (!ui_data.isBattle) {
-				if ($('#hk_distance .l_capt').text() === 'Город' || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display !== 'none') 
+				if ($('#hk_distance .l_capt').text().match(/Город|Current Town/) || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display !== 'none') 
 					$('#hk_distance .voice_generator').hide();
 				//if (ui_storage.get('Stats:Godpower') === 100) $('#control .voice_generator').hide();
 				if ($('#control .p_val').width() === $('#control .p_bar').width() || $('#news .line')[0].style.display !== 'none') $('#control .voice_generator')[0].style.display = 'none';
-				if ($('#hk_distance .l_capt').text() === 'Город') $('#control .voice_generator')[1].style.display = 'none';
+				if ($('#hk_distance .l_capt').text().match(/Город|Current Town/)) $('#control .voice_generator')[1].style.display = 'none';
 			}
 			if ($('#hk_quests_completed .q_name').text().match(/\(выполнено\)/)) $('#hk_quests_completed .voice_generator').hide();
 			if ($('#hk_health .p_val').width() === $('#hk_health .p_bar').width()) $('#hk_health .voice_generator').hide();
@@ -2048,28 +2081,28 @@ var ui_laying_timer = {
 			if (hours < 0) {
 				$timer.textContent = '✓';
 				$timer.classList.add('green');
-				$timer.title = 'Сейчас можно сделать возложение без штрафов';
+				$timer.title = GUIp_i10n.gte_no_penalty;
 			} else {
 				$timer.textContent = (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 				if (hours >= 12) {
 					$timer.classList.add('red');
-					$timer.title = 'Сейчас на возложения действует штраф в две трети';
+					$timer.title = GUIp_i10n.gte_major_penalty;
 				} else {
 					$timer.classList.add('yellow');
-					$timer.title = 'Сейчас на возложения действует штраф в одну треть';
+					$timer.title = GUIp_i10n.gte_minor_penalty;
 				}
 			}
 		} else {
 			if (Math.floor((Date.now() - earliest)/1000/60/60) >= 24) {
 				$timer.textContent = '✓';
 				$timer.classList.add('green');
-				$timer.title = 'Сейчас можно сделать возложение без штрафов';
+				$timer.title = GUIp_i10n.gte_no_penalty;
 			} else {
 				hours = Math.floor(24 - (Date.now() - earliest)/1000/60/60);
 				minutes = Math.floor(60 - (Date.now() - earliest)/1000/60%60);
 				$timer.textContent = '?';
 				$timer.classList.add('grey');
-				$timer.title = 'Нет информации о штрафах. Неопределенность разрешится после возложения или через ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
+				$timer.title = GUIp_i10n.gte_unknown_penalty + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 			}
 		}
 	}
@@ -2176,7 +2209,7 @@ var ui_observers = {
 	},
 	chronicles: {
 		get condition() {
-			return ui_data.isDungeon;
+			return ui_data.isDungeon && GUIp_locale === 'ru';
 		},
 		config: { childList: true },
 		func: function(mutation) {
@@ -2189,7 +2222,7 @@ var ui_observers = {
 	},
 	map_colorization: {
 		get condition() {
-			return ui_data.isDungeon;
+			return ui_data.isDungeon && GUIp_locale === 'ru';
 		},
 		config: {
 			childList: true,
@@ -2245,7 +2278,7 @@ var ui_observers = {
 		target: ['#popover_opp_all0', '#popover_opp_all1', '#popover_opp_all2', '#popover_opp_all3', '#popover_opp_all4']
 	}
 };
-
+      
 var ui_trycatcher = {
 	replacer: function(object_name, method_name, method) {
 		return function() {
@@ -2258,10 +2291,10 @@ var ui_trycatcher = {
 				if (!ui_utils.hasShownErrorMessage) {
 					ui_utils.hasShownErrorMessage = true;
 					ui_utils.showMessage('error', {
-						title: 'Ошибка в Godville UI+!',
-						content: '<div>Произошла ошибка. Скопируйте следующую информацию и действуйте по инструции из окошка помощи:</div>' +
-								 '<div>Текст ошибки: <b>' + error.message + '</b>.</div>' +
-								 '<div>Место ошибки: объект <b>' + object_name + '</b>, метод <b>' + method_name + '()</b>.</div>',
+						title: GUIp_i10n.error_message_title,
+						content: '<div>' + GUIp_i10n.error_message_subtitle + '</div>' +
+								 '<div>' + GUIp_i10n.error_message_text + ' <b>' + error.message + '</b>.</div>' +
+								 '<div>' + GUIp_i10n.error_message_object + ' <b>' + object_name + '</b>, ' + GUIp_i10n.error_message_method + ' <b>' + method_name + '()</b>.</div>',
 						callback: function() {
 							if (!ui_storage.get('helpDialogVisible')) {
 								ui_help_dialog.toggle();
@@ -2285,11 +2318,13 @@ var ui_trycatcher = {
 
 var ui_starter = {
 	start: function() {
-		if ($ && ($('#m_info').length || $('#stats').length)) {
+		if ($ && ($('#m_info').length || $('#stats').length) && GUIp_locale) {
 			clearInterval(starterInt);
 			var start = new Date();
-			// migration from GUIp_ to GUIp_
-			ui_storage.migrate();
+			if (GUIp_locale === 'ru') {
+				// migration from GM_ to GUIp_
+				ui_storage.migrate();
+			}
 
 			ui_data.init();
 			ui_utils.addCSS();
@@ -2301,7 +2336,9 @@ var ui_starter = {
 			ui_informer.init();
 			ui_forum.init();
 			ui_improver.improve();
-			ui_laying_timer.init();
+			if (GUIp_locale === 'ru') {
+				ui_laying_timer.init();
+			}
 			ui_observers.init();
 			ui_improver.initSoundsOverride();
 			
@@ -2312,7 +2349,7 @@ var ui_starter = {
 				$('html').mousemove(ui_improver.mouseMove);
 			}
 
-			// "Shift+Enter → new line" improvement by external-script to bypass stupid Chrome restrictions
+			// "Shift+Enter → new line" improvement by external-script
 			var shiftEnterScript = document.createElement('script');
 			shiftEnterScript.src = window.GUIp_getResource('shift_enter.js');
 			document.head.appendChild(shiftEnterScript);

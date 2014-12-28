@@ -4,7 +4,7 @@ function GUIp_getWords() {
 	// Меняется только при _структурных_ изменениях.
 	// Например: добавление, удаление, переименование секций.
 	// Добавление фраз — НЕ структурное изменение
-	version: 12,
+	version: 13,
 
 	// Фразы
 	phrases: {
@@ -151,7 +151,7 @@ function GUIp_getWords() {
 			"Возвращайся в город, выпей кружку кваса! Поверни обратно, надоела трасса!", "Возвращайся домой, уши с мылом помой!",
 			"Не сворачивая вбок, в город дуй, как хочет бог!", "Время повернуть назад, в городе гонять парад!",
 			"Без малейшей ответной реакции в город вернись к рекреации!"
-		],	
+		],
 
 		// Ключевые корни: Север
 		walk_n: [
@@ -178,13 +178,13 @@ function GUIp_getWords() {
 			"Исследуй", "Осмотри", "Рассмотри", "Поиграй в исследователя — потряси", "Осмотрись по сторонам, и потряси",
 			"Потряси воображение — осмотри", "Глянь, какой трофей красивый, осмотри"
 		],
-		
+
 		// Ключевые слова для крафта
 		craft_prefix: [
 			"Склей", "Собери", "Скрафти", "Соедини", "Сделай", "Слепи", "Не спи, собери", "Вместо ласт, склей лучше",
 			"Сила в единстве, соедини", "Моментально склей"
 		],
-		
+
 		// Префиксы во имя
 		heil: [
 			"Во имя богов", "Ради меня", "Во исполнение моей воли", "Во имя моё, которого ты не знаешь", "Ради всего цветного",
@@ -291,3 +291,171 @@ function GUIp_getWords() {
 	]
 	};
 }
+
+var GUIp_locale = 'ru';
+
+var GUIp_i10n = {
+	hero: ['героя', 'герою'],
+	heroine: ['героиню', 'героине'],
+	ask1: 'Упросить ',
+	get inspect() { return ' ' + ['потрясти', 'исследовать', 'осмотреть'][Math.floor(Math.random()*3)] + ' '; },
+	ask2: 'Уговорить ',
+	get craft1() {
+		return ' ' + ['склеить', 'собрать', 'скрафтить', 'соединить', 'сделать', 'слепить'][Math.floor(Math.random()*6)] + ' случайную комбинацию ';
+	},
+	b_b: '<b>ж</b>+<b>ж</b>',
+	b_b_hint: 'жирных',
+	b_r: '<b>ж</b>+нж',
+	b_r_hint: 'жирного и нежирного',
+	r_r: 'нж+нж',
+	r_r_hint: 'нежирных',
+	craft2: ' предметов из инвентаря.',
+	get craft_verb() { return ['Склей', 'Собери', 'Скрафти', 'Соедини', 'Сделай', 'Слепи'][Math.floor(Math.random()*6)]; },
+	close: 'закрыть',
+	if_something_wrong_capt: 'если что-то пошло не так',
+	if_something_wrong: 'Если что-то работает не так, как должно:',
+	help_refresh: 'Обновите страницу. Если баг повторяется — переходите к следующему шагу.',
+	help_check_version: 'Нажмите сюда, чтоб проверить, последняя ли у вас версия дополнения.',
+	help_update_chrome_1: 'Откройте страницу настроек Хрома (2). ' +
+		'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_1.png" ' +
+		'target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
+	help_update_chrome_2: 'Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку ' +
+		'"Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
+		'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/chrome_manual_update_2.png" ' +
+		'target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
+	help_update_firefox_1: 'Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). ' +
+		'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_1.png" ' +
+		'target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
+	help_update_firefox_2: 'Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4), подождите несколько секунд и согласитеcь ' +
+		'на перезапуск браузера. ' +
+		'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/firefox_manual_update_2.png" ' +
+		'target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
+	help_back_to_step_1: 'Обратно к шагу 1.',
+	help_console_1: 'Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.',
+	help_console_2: 'Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль ' +
+		'(через меню или комбинацией <b>Ctrl+Shift+' + (GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
+		'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' +
+		(GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
+	help_console_3: 'Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке ' +
+		'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' +
+		(GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
+		'И с этой информацией напишите <b>Бэдлаку</b> или в тему на форуме по ссылкам ниже.',
+	help_useful_links: 'Полезные ссылки: ' +
+		'<a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
+		'его <a href="skype:angly_cat">скайп</a>, ' +
+		'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" title="Откроется в новой вкладке" ' +
+			'target="_blank">список багов и идей (aka "блокнотик")</a>, ' +
+		'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
+		'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
+		'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.',
+	ui_settings_top_menu: 'настройки <strong>ui+</strong>',
+	getting_version_no: 'Получения номера последней версии дополнения...',
+	is_last_version: 'У вас последняя версия.',
+	is_not_last_version_1: 'Последняя версия — <b>',
+	is_not_last_version_2: '</b>. Нужно обновить вручную.',
+	proceed_to_next_step: ' Переходите к следующему шагу.',
+	getting_version_failed: 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 3, иначе к шагу 6.',
+	hero_health: 'Здоровье героя',
+	inventory: 'Инвентарь',
+	gold: 'Золото',
+	charges: 'Заряды',
+	allies_health: 'Здоровье союзников',
+	enemy_health: 'Здоровье соперника',
+	exp: 'Опыт (проценты)',
+	level: 'Уровень',
+	health: 'Здоровье',
+	godpower: 'Прана (проценты)',
+	task: 'Задание (проценты)',
+	monsters: 'Монстры',
+	bricks: 'Кирпичи',
+	wood: 'Дерево',
+	savings: 'Сбережения (тысячи)',
+	weapon: 'Оружие',
+	shield: 'Щит',
+	head: 'Голова',
+	body: 'Тело',
+	arms: 'Руки',
+	legs: 'Ноги',
+	talisman: 'Талисман',
+	death_count: 'Смерти',
+	pet_level: 'Уровень питомца',
+	unknown_item_type_title: 'Неизвестный тип предмета в Godville UI+!',
+	unknown_item_type_content: 'Дополнение обнаружило в вашем инвентаре неизвестную доселе категорию предмета. Пожалуйста, сообщите разработчику следующее описание: ',
+	godpower_label: 'Прана',
+	north: 'Север',
+	go_north: ' повести команду на север',
+	east: 'Восток',
+	go_east: ' повести команду на восток',
+	south: 'Юг',
+	go_south: ' повести команду на юг',
+	west: 'Запад',
+	go_west: ' повести команду на запад',
+	ask3: 'Попросить ',
+	defend: 'отбивай',
+	ask4: 'Попытаться заставить ',
+	to_defend: ' принять защитную стойку, поднять щит и отбить атаку противника',
+	pray: 'молись',
+	ask5: 'Попросить ',
+	to_pray: ' вознести молитву для пополнения праны',
+	heal: 'лечись',
+	ask6: 'Посоветовать ',
+	to_heal: ' подлечиться подручными средствами',
+	hit: 'бей',
+	ask7: 'Подсказать ',
+	to_hit: ' о возможности нанесения сильного удара вне очереди',
+	sacrifice: 'жертвуй',
+	ask8: 'Послать ',
+	to_sacrifice: ' требование кровавой или золотой жертвы для внушительного пополнения праны',
+	enemy_label: 'Противник',
+	boss_warning_hint: 'близость к боссу',
+	boss_slay_hint: 'босс',
+	small_prayer_hint: 'слабая молилка',
+	small_healing_hint: 'слабая лечилка',
+	trophy_loss_trap_hint: 'ловушка: золото или трофеи',
+	low_damage_trap_hint: 'ловушка: слабый урон',
+	mid_damage_trap_hint: 'ловушка: сильный урон',
+	move_loss_trap_hint: 'ловушка: пропуск хода',
+	boss_warning_and_trap_hint: 'близость к боссу и ловушка',
+	boss_slay_and_trap_hint: 'босс и ловушка',
+	health_label: 'Здоровье',
+	gold_label: 'Золота',
+	inventory_label: 'Инвентарь',
+	level_label: 'Уровень',
+	task_label: 'Задание',
+	death_label: 'Смертей',
+	study: 'учись',
+	dig: 'копай',
+	cancel_task: 'отмени',
+	do_task: 'делай',
+	die: 'умри',
+	ask9: 'Предложить ',
+	to_study: ' получить порцию опыта',
+	ask10: 'Указать ',
+	to_dig: ' место для копания клада или босса',
+	ask11: 'Убедить ',
+	to_cancel_task: ' отменить текущее задание',
+	ask12: 'Открыть ',
+	to_do_task: ' секрет более эффективного выполнения задания',
+	ask13: 'Попросить ',
+	to_die: ' увеличить на единичку счетчик смертей',
+	milestones_label: 'Столбов от столицы',
+	return: 'дом',
+	ask14: 'Наставить ',
+	to_return: ' на путь в ближайший город',
+	monsters_label: 'Убито монстров',
+	bricks_label: 'Кирпичей для храма',
+	logs_label: 'Дерева для ковчега',
+	savings_label: 'Сбережения',
+	pet_status_label: 'Статус',
+	pet_level_label: 'Уровень',
+	gte_no_penalty: 'Сейчас можно сделать возложение без штрафов',
+	gte_minor_penalty: 'Сейчас на возложения действует штраф в одну треть',
+	gte_major_penalty: 'Сейчас на возложения действует штраф в две трети',
+	gte_unknown_penalty: 'Нет информации о штрафах. Неопределенность разрешится после возложения или через ',
+	error_message_title: 'Ошибка в Godville UI+!',
+	error_message_subtitle: 'Произошла ошибка. Скопируйте следующую информацию и действуйте по инструции из окошка помощи:',
+	error_message_text: 'Текст ошибки:',
+	error_message_object: 'Место ошибки: объект',
+	error_message_method: 'метод',
+	and: ' и ',
+};

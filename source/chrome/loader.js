@@ -11,13 +11,13 @@
 	var path = location.pathname;
 	if (path.match(/^\/superhero/)) {
 		createScript(chrome.extension.getURL('guip_chrome.js'));
-		createScript(chrome.extension.getURL('phrases.js'));
+		createScript(chrome.extension.getURL('phrases_ru.js'));
 		createScript(chrome.extension.getURL('superhero.js'));
 	}
 	if (path.match(/^\/user\/(?:profile|rk_success)/)) {
 		createScript('//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js');
 		createScript(chrome.extension.getURL('guip_chrome.js'));
-		createScript(chrome.extension.getURL('phrases.js'));
+		createScript(chrome.extension.getURL('phrases_ru.js'));
 		createScript(chrome.extension.getURL('options-page.js'));
 		createScript(chrome.extension.getURL('options.js'));
 	}
