@@ -117,7 +117,7 @@ return '<p>\n' +
 '							</div>\n' +
 '							<div class="new_line" id="background_choice">\n' +
 '								<div class="g_desc">\n' +
-'									какой из них?<br>\n' +
+'									' + GUIp_i18n.use_background_hint + '<br>\n' +
 '									<input type="radio" name="background" id="cloud_background" value="cloud" checked="checked">\n' +
 '									<label for="cloud_background">' + GUIp_i18n.use_background_cloud + '</label><br>\n' +
 '									<input type="radio" name="background" id="custom_background" value="custom">\n' +
