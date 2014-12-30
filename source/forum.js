@@ -58,8 +58,10 @@ for (i = 0, len = links_containers.length; i < len; i++) {
 	topic = isTopic ? location.pathname.match(/\d+/)[0]
 					: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
 	isFollowed = topics[topic] !== undefined;
-	links_containers[i].insertAdjacentHTML('beforeend', isTopic ? ('(<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">Подписаться</a><a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">Отписаться</a>)')
-													 			: ('\n<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">подписаться</a><a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">отписаться</a>'));
+	links_containers[i].insertAdjacentHTML('beforeend',
+		(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? GUIp_i18n.Subscribe : GUIp_i18n.subscribe) + '</a>' +
+								 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? GUIp_i18n.Unsubscribe : GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
+	);
 }
 
 // add click events to follow links
@@ -115,26 +117,27 @@ var $reply_form = $id('post_body_editor');
 if ($reply_form) {
 	window.GUIp_addGlobalStyleURL(window.GUIp_getResource('forum.css'), 'forum_css');
 	var formatting_buttons =
-		'<a class="formatting button bold" title="Сделать полужирным">Ж</a>' +
-		'<a class="formatting button underline" title="Подчеркнуть">П</a>' +
-		'<a class="formatting button strike" title="Зачеркнуть">З</a>' +
-		'<a class="formatting button italic" title="Сделать курсивным">К</a>' +
-		'<blockquote class="formatting bq" title="Процитировать">bq.</blockquote>' +
-		'<pre class="formatting bc" title="Выделить"><code>bc.</code></pre>' +
-		'<a class="formatting button godname" title="Вставить ссылку на бога"></a>' +
-		'<a class="formatting button link" title="Вставить ссылку">a</a>' +
-		'<a class="formatting button ul" title="Оформить как неупорядоченный список">•</a>' +
-		'<a class="formatting button ol" title="Оформить как упорядоченный список">1.</a>' +
-		'<a class="formatting button br" title="Вставить перенос на новую строку">\\n</a>' +
-		'<a class="formatting button sup" title="Сделать текст надстрочным">X<sup>2</sup></a>' +
-		'<a class="formatting button sub" title="Сделать текст подстрочным">X<sub>2</sub></a>' +
-		'<a class="formatting button monospace" title="Сделать текст моноширинным"><code>мш</code></a>';
+		'<a class="formatting button bold" title="' + GUIp_i18n.bold_hint + '">' + GUIp_i18n.bold + '</a>' +
+		'<a class="formatting button underline" title="' + GUIp_i18n.underline_hint + '">' + GUIp_i18n.underline + '</a>' +
+		'<a class="formatting button strike" title="' + GUIp_i18n.strike_hint + '">' + GUIp_i18n.strike + '</a>' +
+		'<a class="formatting button italic" title="' + GUIp_i18n.italic_hint + '">' + GUIp_i18n.italic + '</a>' +
+		'<blockquote class="formatting bq" title="' + GUIp_i18n.quote_hint + '">bq.</blockquote>' +
+		'<pre class="formatting bc" title="' + GUIp_i18n.code_hint + '"><code>bc.</code></pre>' +
+		(GUIp_locale === 'ru' ? '<a class="formatting button godname" title="Вставить ссылку на бога"></a>' : '') +
+		'<a class="formatting button link" title="' + GUIp_i18n.link_hint + '">a</a>' +
+		'<a class="formatting button ul" title="' + GUIp_i18n.unordered_list_hint + '">•</a>' +
+		'<a class="formatting button ol" title="' + GUIp_i18n.ordered_list_hint + '">1.</a>' +
+		'<a class="formatting button br" title="' + GUIp_i18n.br_hint + '">\\n</a>' +
+		'<a class="formatting button sup" title="' + GUIp_i18n.sup_hint + '">X<sup>2</sup></a>' +
+		'<a class="formatting button sub" title="' + GUIp_i18n.sub_hint + '">X<sub>2</sub></a>' +
+		'<a class="formatting button monospace" title="' + GUIp_i18n.monospace_hint + '"><code>' + GUIp_i18n.monospace + '</code></a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
 	var val, ss, se, nls, nle, selection;
 	var init = function(editor) {
 		val = editor.value;
 		ss = editor.selectionStart;
 		se = editor.selectionEnd;
+		console.log(ss, se);
 		selection = window.getSelection().isCollapsed ? '' : window.getSelection().toString().trim();
 	};
 	var putSelectionTo = function(editor, pos) {
@@ -199,7 +202,9 @@ if ($reply_form) {
 		$q(temp + 'italic').onclick = basic_formatting.bind(this, '_', '_', container);
 		$q(temp + 'bq').onclick = quote_formatting.bind(this, 'bq. ', container);
 		$q(temp + 'bc').onclick = quote_formatting.bind(this, 'bc. ', container);
-		$q(temp + 'godname').onclick = basic_formatting.bind(this, '"', '":пс', container);
+		if (GUIp_locale === 'ru') {
+			$q(temp + 'godname').onclick = basic_formatting.bind(this, '"', '":пс', container);
+		}
 		$q(temp + 'link').onclick = basic_formatting.bind(this, '"', '":', container);
 		$q(temp + 'ul').onclick = list_formatting.bind(this, '*', container);
 		$q(temp + 'ol').onclick = list_formatting.bind(this, '#', container);
