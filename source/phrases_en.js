@@ -151,6 +151,7 @@ function GUIp_getWords() {
 var GUIp_locale = 'en';
 
 var GUIp_i18n = {
+	// superhero
 	hero: ['hero', 'hero'],
 	heroine: ['heroine', 'heroine'],
 	ask1: 'Ask ',
@@ -314,4 +315,15 @@ var GUIp_i18n = {
 	error_message_method: 'method',
 	and: ' and ',
 	ui_help: 'ui+ help',
+	// options
+	import_success: 'You setting\'ve been imported successfully',
+	import_fail: 'Incorrect settings string',
+	ui_options: 'UI+ Settings',
+	import_prompt: 'Settings import\nPaste here your settings string',
+	export_prompt: 'Settings export\nCopy your settings string from here',
+	bg_status_file: 'file',
+	bg_status_link: 'link',
+	bg_status_same: 'same',
+	bg_status_error: 'error',
+	// options-page
 };

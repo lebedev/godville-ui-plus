@@ -295,6 +295,7 @@ function GUIp_getWords() {
 var GUIp_locale = 'ru';
 
 var GUIp_i18n = {
+	// superhero
 	hero: ['героя', 'герою'],
 	heroine: ['героиню', 'героине'],
 	ask1: 'Упросить ',
@@ -459,4 +460,16 @@ var GUIp_i18n = {
 	error_message_method: 'метод',
 	and: ' и ',
 	ui_help: 'help',
+	// options
+	import_success: 'Настройки успешно импортированы',
+	import_fail: 'Некорректная строка настроек',
+	ui_options: 'Настройки UI+',
+	import_prompt: 'Импорт настроек\nВставьте сюда строку настроек',
+	export_prompt: 'Экспорт настроек\nСкопируйте отсюда строку настроек',
+	bg_status_file: 'файл',
+	bg_status_link: 'ссылка',
+	bg_status_same: 'тот же',
+	bg_status_error: 'ошибка',
+	// options-page
+	
 };

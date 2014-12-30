@@ -24,10 +24,10 @@ var storage = {
 			for (var key in options) {
 				this.set(key, options[key]);
 			}
-			alert('Настройки успешно импортированы');
+			alert(GUIp_i18n.import_success);
 			location.reload();
 		} catch(e) {
-			alert('Некорректная строка настроек');
+			alert(GUIp_i18n.import_fail);
 		}
 	},
 	exportOptions: function() {
@@ -46,7 +46,7 @@ function addMenu() {
 	if (god_name === "") return;
 	ImproveInProcess = true;
 	if ($j('#ui_options').length === 0) {
-		$j('#profile_main p:first').append(' | <a id="ui_options" href="#ui_options">Настройки UI+</a>');
+		$j('#profile_main p:first').append(' | <a id="ui_options" href="#ui_options">' + GUIp_i18n.ui_options + '</a>');
 		$j('#ui_options').click(function() {
 			loadOptions();
 		});
@@ -128,13 +128,13 @@ function loadOptions() {
 	}).attr('rows', 1);
 
 	$j('#GUIp_import').click(function() {
-		var options_string = prompt('Импорт настроек\nВставьте сюда строку настроек');
+		var options_string = prompt(GUIp_i18n.import_prompt);
 		if (options_string) {
 			storage.importOptions(options_string);
 		}
 	});
 	$j('#GUIp_export').click(function() {
-		prompt('Экспорт настроек\nСкопируйте отсюда строку настроек', storage.exportOptions());
+		prompt(GUIp_i18n.export_prompt, storage.exportOptions());
 	});
 
 	ImproveInProcess = false;
@@ -222,17 +222,17 @@ function save_options(form) {
 						storage.set('Option:useBackground', e.target.result);
 					};
 					reader.readAsDataURL(custom_file);
-					$j('#cb_status').text('файл');
+					$j('#cb_status').text(GUIp_i18n.bg_status_file);
 					$j('#cb_status').css('color', 'green');
 				} else if (custom_link) {
-					$j('#cb_status').text('ссылка');
+					$j('#cb_status').text(GUIp_i18n.bg_status_link);
 					$j('#cb_status').css('color', 'green');
 					storage.set('Option:useBackground', custom_link);
 				} else if (storage.get('Option:useBackground') && storage.get('Option:useBackground') !== 'cloud') {
-					$j('#cb_status').text('тот же');
+					$j('#cb_status').text(GUIp_i18n.bg_status_same);
 					$j('#cb_status').css('color', 'blue');
 				} else {
-					$j('#cb_status').text('ошибка');
+					$j('#cb_status').text(GUIp_i18n.bg_status_error);
 					$j('#cb_status').css('color', 'red');
 					setTimeout(function() {
 						$j('#cloud_background').click();
@@ -435,7 +435,7 @@ var def, curr_sect, god_name,
 	isDataRead = false;
 
 var starterInt = setInterval(function() {
-	if (jQuery) {
+	if (jQuery && GUIp_i18n) {
 		$j = jQuery.noConflict();
 		clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
@@ -453,7 +453,7 @@ var starterInt = setInterval(function() {
 		improve_blocks();
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
-			if (!$j('#profile_main p:first').text().match('Настройки UI+')) {
+			if (!$j('#profile_main p:first').text().match(GUIp_i18n.ui_options)) {
 				setTimeout(addMenu, 0);
 			}
 			improve_blocks();
