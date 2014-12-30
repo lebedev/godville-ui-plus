@@ -451,7 +451,7 @@ var ui_help_dialog = {
 						   +temp_cur[1] >= +temp_last[1] &&
 						   +temp_cur[2] >= +temp_last[2] &&
 						   +temp_cur[3] >= +temp_last[3];
-			$('#check_version')[0].innerHTML = (isNewest ? GUIp_i18n.is_last_version : GUIp_i18n.is_not_last_version_1 + last_version + GUIp_i18n.is_not_last_version_1) + GUIp_i18n.proceed_to_next_step;
+			$('#check_version')[0].innerHTML = (isNewest ? GUIp_i18n.is_last_version : GUIp_i18n.is_not_last_version_1 + last_version + GUIp_i18n.is_not_last_version_2) + GUIp_i18n.proceed_to_next_step;
 			if (!isNewest) {
 				$('#ui_help_dialog ol li.update_required.' + GUIp_browser).removeClass('hidden');
 			} else {
