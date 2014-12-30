@@ -2047,7 +2047,7 @@ var ui_laying_timer = {
 			lastLayingFromStorage = ui_storage.get('thirdEyeLastLayingEntry') && new Date(ui_storage.get('thirdEyeLastLayingEntry'));
 		for (var msg in window[this.third_eye]) {
 			temp = new Date(window[this.third_eye][msg].time);
-			if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков)/)) {
+			if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/)) {
 				lastLaying = temp > lastLaying ? temp : lastLaying;
 			}
 			if (!latest || latest < temp) {
