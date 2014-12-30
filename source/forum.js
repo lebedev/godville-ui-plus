@@ -137,7 +137,6 @@ if ($reply_form) {
 		val = editor.value;
 		ss = editor.selectionStart;
 		se = editor.selectionEnd;
-		console.log(ss, se);
 		selection = window.getSelection().isCollapsed ? '' : window.getSelection().toString().trim();
 	};
 	var putSelectionTo = function(editor, pos) {
@@ -147,13 +146,13 @@ if ($reply_form) {
 	var basic_formatting = function(left, right, editor, e) {
 		try {
 			init(editor);
-			while (ss < se && val[ss].match(/[\W_]/)) {
+			while (ss < se && val[ss].match(/[^\wА-Яа-я]/)) {
 				ss++;
 			}
-			while (ss < se && val[se - 1].match(/[\W_]/)) {
+			while (ss < se && val[se - 1].match(/[^\wА-Яа-я]/)) {
 				se--;
 			}
-			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[\W_]/) ? ' ' : '') + left + val.slice(ss, se) + selection + right + (val && val [se] && !val[se].match(/[\W_]/) ? ' ' : '') + val.slice(se);
+			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[^\wА-Яа-я]/) ? ' ' : '') + left + val.slice(ss, se) + selection + right + (val && val [se] && !val[se].match(/[^\wА-Яа-я]/) ? ' ' : '') + val.slice(se);
 			putSelectionTo(editor, se + left.length);
 			return false;
 		} catch(error) {
