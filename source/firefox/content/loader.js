@@ -55,11 +55,6 @@ contentLoad: function(event) {
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/forum.js');
 		}
-		if (path.match(/^\/duels\/log\//) && !windowStats.get(doc)) {
-			windowStats.set(doc, 'scriptsLoaded');
-			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases_en.js');
-			loader.createScript(doc, 'chrome://godville-ui-plus/content/log.js');
-		}
 	}
 },
 
