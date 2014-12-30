@@ -437,7 +437,7 @@ var ui_help_dialog = {
 		$('#check_version').click(function() {
 			this.textContent = GUIp_i18n.getting_version_no;
 			this.classList.remove('div_link');
-			ui_utils.getXHR('/forums/show/2', ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
+			ui_utils.getXHR('/forums/show/' + (GUIp_locale === 'ru' ? '2' : '1'), ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
 			return false;
 		});
 	},
