@@ -453,7 +453,7 @@ var starterInt = setInterval(function() {
 		improve_blocks();
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
-			if (!$j('#profile_main p:first').text().match(GUIp_i18n.ui_options)) {
+			if (!$j('#profile_main p:first').text().match(GUIp_i18n.ui_options.replace('+', '\\+'))) {
 				setTimeout(addMenu, 0);
 			}
 			improve_blocks();

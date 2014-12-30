@@ -428,7 +428,7 @@ var ui_help_dialog = {
 			this.append(this.getDumpButton('forum', 'Forum'));
 			this.append('<br>');
 		}
-		$('.hint_bar_close', this.bar).append(this.getToggleButton('закрыть'));
+		$('.hint_bar_close', this.bar).append(this.getToggleButton(GUIp_i18n.close));
 		$('#menu_bar').after(this.bar);
 		$('#menu_bar ul').append('<li> | </li>')
 						 .append('<a href="user/profile#ui_options">' + GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>')
