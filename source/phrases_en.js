@@ -96,7 +96,7 @@ function GUIp_getWords() {
 		],
 
 		// Префиксы во имя
-		heil: [
+		exclamation: [
 			"For my pleasure", "For science", "Please", "For the Godville", "I command you", "Hey", "Quick",
 			"I need you to do something for me"
 		]

@@ -430,7 +430,7 @@ function set_theme_and_background() {
 }
 
 var def, curr_sect, god_name,
-	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'heil', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
+	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'exclamation', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
 	ImproveInProcess = false,
 	isDataRead = false;
 

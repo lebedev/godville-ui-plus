@@ -580,7 +580,7 @@ var ui_words = {
 			ui_words.init();
 			ui_storage.set('phrasesChanged', 'false');
 		}
-		var prefix = this._addHeroName(this._addHeil(''));
+		var prefix = this._addHeroName(this._addExclamation(''));
 		var phrases;
 		if (item_name) {
 			phrases = [this.randomPhrase(sect) + ' ' + item_name + '!'];
@@ -631,9 +631,9 @@ var ui_words = {
 		return ui_data.char_name + ', ' + this._changeFirstLetter(text);
 	},
 
-	_addHeil: function(text) {
-		if (!ui_storage.get('Option:useHeil')) return text;
-		return ui_utils.getRandomItem(this.base.phrases.heil) + ', ' + this._changeFirstLetter(text);
+	_addExclamation: function(text) {
+		if (!ui_storage.get('Option:useExclamations')) return text;
+		return ui_utils.getRandomItem(this.base.phrases.exclamation) + ', ' + this._changeFirstLetter(text);
 	},
 
 // Private (или типа того)
@@ -1137,7 +1137,7 @@ var ui_improver = {
 							content: '<div>' + GUIp_i18n.unknown_item_type_content + '<b>"' + desc + '</b>"</div>'
 						});
 					}
-					if (!(forbidden_craft && (forbidden_craft.match('activatable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r'))))) {
+					if (!(forbidden_craft && (forbidden_craft.match('usable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r'))))) {
 						trophy_list.push(item_name);
 						trophy_boldness[item_name] = true;
 					}
