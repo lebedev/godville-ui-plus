@@ -6,6 +6,7 @@ module.exports = function(grunt) {
       chrome: {
         files: [
           {expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome', filter: 'isFile'},
+          {expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales'},
           {expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome'}
         ]
       },

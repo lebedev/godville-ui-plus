@@ -22,11 +22,13 @@ contentLoad: function(event) {
 		}
 		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/) && !windowStats.get(doc)) {
 			windowStats.set(doc, 'scriptsLoaded');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases_ru.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/forum.js');
 		}
 		if (path.match(/^\/duels\/log\//) && !windowStats.get(doc)) {
 			windowStats.set(doc, 'scriptsLoaded');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases_ru.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/log.js');
 		}
 	}
@@ -42,18 +44,20 @@ contentLoad: function(event) {
 		if (path.match(/^\/user\/(?:profile|rk_success)/) && !windowStats.get(doc)) {
 			windowStats.set(doc, 'scriptsLoaded');
 			loader.createScript(doc, '/javascripts/jquery-1.10.2.min.js');
-			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases_ru.js');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases_en.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/options-page.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/options.js');
 		}
 		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/) && !windowStats.get(doc)) {
 			windowStats.set(doc, 'scriptsLoaded');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases_en.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/guip_firefox.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/forum.js');
 		}
 		if (path.match(/^\/duels\/log\//) && !windowStats.get(doc)) {
 			windowStats.set(doc, 'scriptsLoaded');
+			loader.createScript(doc, 'chrome://godville-ui-plus/content/phrases_en.js');
 			loader.createScript(doc, 'chrome://godville-ui-plus/content/log.js');
 		}
 	}

@@ -207,7 +207,7 @@ function GUIp_getWords() {
 			'good box',
 			'invite',
 			'heal box',
-			'prana box',
+			'charge box',
 			'raidboss box',
 			'smelter',
 			'teleporter',

@@ -2,10 +2,12 @@
 	"manifest_version": 2,
 	
 	"name": "Godville UI+",
-	"description": "Godville.net UI improvements",
+	"description": "__MSG_appDesc__",
+	"author": "__MSG_author__",
+	"default_locale": "ru",
 	"version": "$VERSION",
 	"homepage_url": "http://godville.net/forums/show_topic/2812",
-	"permissions": ["http://godville.net/", "https://godville.net/"],
+	"permissions": ["http://godville.net/", "https://godville.net/", "http://godvillegame.com/", "https://godvillegame.com/"],
 	"content_scripts": [{
 		"js": [
 			"loader.js"
@@ -22,7 +24,19 @@
 			"https://godville.net/forums/show/*",
 			"https://godville.net/forums/show_topic/*",
 			"http://godville.net/duels/log/*",
-			"https://godville.net/duels/log/*"
+			"https://godville.net/duels/log/*",
+			"http://godvillegame.com/superhero*",
+			"https://godvillegame.com/superhero*",
+			"http://godvillegame.com/user/profile*",
+			"http://godvillegame.com/user/rk_success*",
+			"https://godvillegame.com/user/profile*",
+			"https://godvillegame.com/user/rk_success*",
+			"http://godvillegame.com/forums/show/*",
+			"http://godvillegame.com/forums/show_topic/*",
+			"https://godvillegame.com/forums/show/*",
+			"https://godvillegame.com/forums/show_topic/*",
+			"http://godvillegame.com/duels/log/*",
+			"https://godvillegame.com/duels/log/*"
 		]
 	}],
 	

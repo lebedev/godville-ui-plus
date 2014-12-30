@@ -8,25 +8,54 @@
 		head.appendChild(scr);
 	}
 	localStorage.GUIp_prefix = chrome.extension.getURL('');
-	var path = location.pathname;
-	if (path.match(/^\/superhero/)) {
-		createScript(chrome.extension.getURL('guip_chrome.js'));
-		createScript(chrome.extension.getURL('phrases_ru.js'));
-		createScript(chrome.extension.getURL('superhero.js'));
+	var site = location.href,
+		path = location.pathname;
+	if (site.match(/^https?:\/\/godville.net/)) {
+		if (path.match(/^\/superhero/)) {
+			createScript(chrome.extension.getURL('guip_chrome.js'));
+			createScript(chrome.extension.getURL('phrases_ru.js'));
+			createScript(chrome.extension.getURL('superhero.js'));
+		}
+		if (path.match(/^\/user\/(?:profile|rk_success)/)) {
+			createScript('//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js');
+			createScript(chrome.extension.getURL('guip_chrome.js'));
+			createScript(chrome.extension.getURL('phrases_ru.js'));
+			createScript(chrome.extension.getURL('options-page.js'));
+			createScript(chrome.extension.getURL('options.js'));
+		}
+		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
+			createScript(chrome.extension.getURL('guip_chrome.js'));
+			createScript(chrome.extension.getURL('phrases_ru.js'));
+			createScript(chrome.extension.getURL('forum.js'));
+		}
+		if (path.match(/^\/duels\/log\//)) {
+			createScript(chrome.extension.getURL('guip_chrome.js'));
+			createScript(chrome.extension.getURL('phrases_ru.js'));
+			createScript(chrome.extension.getURL('log.js'));
+		}
 	}
-	if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-		createScript('//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js');
-		createScript(chrome.extension.getURL('guip_chrome.js'));
-		createScript(chrome.extension.getURL('phrases_ru.js'));
-		createScript(chrome.extension.getURL('options-page.js'));
-		createScript(chrome.extension.getURL('options.js'));
-	}
-	if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-		createScript(chrome.extension.getURL('guip_chrome.js'));
-		createScript(chrome.extension.getURL('forum.js'));
-	}
-	if (path.match(/^\/duels\/log\//)) {
-		createScript(chrome.extension.getURL('guip_chrome.js'));
-		createScript(chrome.extension.getURL('log.js'));
+	if (site.match(/^https?:\/\/godvillegame.com/)) {
+		if (path.match(/^\/superhero/)) {
+			createScript(chrome.extension.getURL('guip_chrome.js'));
+			createScript(chrome.extension.getURL('phrases_en.js'));
+			createScript(chrome.extension.getURL('superhero.js'));
+		}
+		if (path.match(/^\/user\/(?:profile|rk_success)/)) {
+			createScript('//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js');
+			createScript(chrome.extension.getURL('guip_chrome.js'));
+			createScript(chrome.extension.getURL('phrases_en.js'));
+			createScript(chrome.extension.getURL('options-page.js'));
+			createScript(chrome.extension.getURL('options.js'));
+		}
+		if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
+			createScript(chrome.extension.getURL('guip_chrome.js'));
+			createScript(chrome.extension.getURL('phrases_en.js'));
+			createScript(chrome.extension.getURL('forum.js'));
+		}
+		if (path.match(/^\/duels\/log\//)) {
+			createScript(chrome.extension.getURL('guip_chrome.js'));
+			createScript(chrome.extension.getURL('phrases_en.js'));
+			createScript(chrome.extension.getURL('log.js'));
+		}
 	}
 })();
