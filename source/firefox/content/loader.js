@@ -12,7 +12,7 @@ var scripts = {
 var loader = {
 
 createScripts: function(doc, uris) {
-	var src, head = doc.getElementsByTagName('head')[0];
+	var scr, head = doc.getElementsByTagName('head')[0];
 	for (var i = 0, len = uris.length; i < len; i++) {
 		scr = doc.createElement('script');
 		scr.type = 'text/javascript';
@@ -22,12 +22,10 @@ createScripts: function(doc, uris) {
 	}
 },
 
-contentLoad: function(event) {
-	var doc = event.originalTarget,
-		windowStats, path;
+checkRu: function(doc) {
 	if (doc.location.href.match(/^https?:\/\/godville.net/)) {
-		windowStats = new WeakMap();
-		path = doc.location.pathname;
+		var windowStats = new WeakMap(),
+			path = doc.location.pathname;
 		if (!windowStats.get(doc)) {
 			if (path.match(/^\/superhero/)) {
 				windowStats.set(doc, 'scriptsLoaded');
@@ -44,9 +42,12 @@ contentLoad: function(event) {
 			}
 		}
 	}
+},
+
+checkEn: function(doc) {
 	if (doc.location.href.match(/^https?:\/\/godvillegame.com/)) {
-		windowStats = new WeakMap();
-		path = doc.location.pathname;
+		var windowStats = new WeakMap(),
+			path = doc.location.pathname;
 		if (!windowStats.get(doc)) {
 			if (path.match(/^\/superhero/)) {
 				windowStats.set(doc, 'scriptsLoaded');
@@ -60,7 +61,13 @@ contentLoad: function(event) {
 			}
 		}
 	}
+},
+
+contentLoad: function(event) {
+	var doc = event.originalTarget;
+	loader.checkRu(doc);
+	loader.checkEn(doc);
 }
 };
 
-gBrowser.addEventListener("load", loader.contentLoad, true);
+window.gBrowser.addEventListener("load", loader.contentLoad, true);
