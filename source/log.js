@@ -98,6 +98,6 @@
 	updateButton();
 	setInterval(updateButton, 1000);
 	match.onchange = function() {
-		document.getElementById('search_mode').style.display = document.getElementById('search_mode').style.display === 'none' ? 'block' : 'none';
+		search_mode.style.display = search_mode.style.display === 'none' ? 'block' : 'none';
 	};
 })();

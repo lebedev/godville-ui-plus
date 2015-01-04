@@ -143,7 +143,7 @@ if ($reply_form) {
 		editor.focus();
 		editor.selectionStart = editor.selectionEnd = pos + selection.length;
 	};
-	var basic_formatting = function(left, right, editor, e) {
+	var basic_formatting = function(left, right, editor) {
 		try {
 			init(editor);
 			while (ss < se && val[ss].match(/[^\wА-Яа-я]/)) {
@@ -159,7 +159,7 @@ if ($reply_form) {
 			console.error(error);
 		}
 	};
-	var quote_formatting = function(quotation, editor, e) {
+	var quote_formatting = function(quotation, editor) {
 		try {
 			init(editor);
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
@@ -171,7 +171,7 @@ if ($reply_form) {
 			console.error(error);
 		}
 	};
-	var list_formatting = function(list_marker, editor, e) {
+	var list_formatting = function(list_marker, editor) {
 		try {
 			init(editor);
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '';
@@ -183,7 +183,7 @@ if ($reply_form) {
 			console.error(error);
 		}
 	};
-	var paste_br = function(editor, e) {
+	var paste_br = function(editor) {
 		try {
 			init(editor);
 			var pos = editor.selectionDirection === 'backward' ? ss : se;
@@ -215,7 +215,7 @@ if ($reply_form) {
 	set_click_actions('post_body_editor', $id('post_body'));
 	
 	var editFormObserver = new MutationObserver(function(mutations) {
-		mutations.forEach(function(mutation) {
+		mutations.forEach(function() {
 			if ($id('edit_body_editor') && !$q('#edit_body_editor .formatting.button.bold')) {
 				$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
 				set_click_actions('edit_body_editor', $id('edit_body'));
