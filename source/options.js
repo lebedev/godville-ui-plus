@@ -440,8 +440,8 @@ var def, curr_sect, god_name,
 	isDataRead = false;
 
 var starterInt = setInterval(function() {
-	if (jQuery && window.GUIp_i18n) {
-		$j = jQuery.noConflict();
+	if (window.jQuery && window.GUIp_i18n) {
+		$j = window.jQuery.noConflict();
 		clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
 		if (god_name) {
