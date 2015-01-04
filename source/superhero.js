@@ -49,7 +49,7 @@ var ui_data = {
 		setInterval(this.getWantedMonster, 5*60*1000);
 	},
 	getLEMRestrictions: function() {
-		if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictionsDate') > 24*60*60*1000) {
+		if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
 			ui_utils.getXHR('http://www.godalert.info/Dungeons/guip.cgi', ui_data.parseLEMRestrictions);
 		}
 	},
