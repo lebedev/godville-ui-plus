@@ -322,9 +322,9 @@ var ui_utils = {
 	dateToMoscowTimeZone: function(date) {
 		var temp = new Date(date);
 		temp.setTime(temp.getTime() + (temp.getTimezoneOffset() + 180)*60*1000);
-		return (temp.getDate() < 10 ? '0' : '') + temp.getDate() + '/' +
-			   (temp.getMonth() < 10 ? '0' : '') + temp.getMonth() + '/' +
-			    temp.getFullYear();
+		return temp.getFullYear() + '/' +
+			  (temp.getMonth() + 1 < 10 ? '0' : '') + (temp.getMonth() + 1) + '/' +
+			  (temp.getDate() < 10 ? '0' : '') + temp.getDate();
 	}
 };
 
