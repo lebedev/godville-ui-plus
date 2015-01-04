@@ -1566,7 +1566,7 @@ var ui_improver = {
 		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, GUIp_i18n.gold_label, gold_parser) >= (ui_stats.get('Bricks') > 1000 ? 10000 : 3000));
 		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, GUIp_i18n.health_label) === 0);
 		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии|member of the guild/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
-		ui_informer.update('mini quest', $('.q_name').text().match(/\(мини\)/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
+		ui_informer.update('mini quest', $('.q_name').text().match(/\((мини|mini)\)/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
 
 		//Shovel pictogramm start
 		var $digVoice = $('#hk_gold_we .voice_generator');
