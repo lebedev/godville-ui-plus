@@ -1,4 +1,4 @@
-function GUIp_getWords() {
+window.GUIp_getWords = function() {
 	return {
 	// Этот параметр показывает текущую версию файла
 	// Меняется только при _структурных_ изменениях.
@@ -290,11 +290,11 @@ function GUIp_getWords() {
 		{name: 'ядрёнорог', min_level: 34}
 	]
 	};
-}
+};
 
-var GUIp_locale = 'ru';
+window.GUIp_locale = 'ru';
 
-var GUIp_i18n = {
+window.GUIp_i18n = {
 	// superhero
 	hero: ['героя', 'герою'],
 	heroine: ['героиню', 'героине'],
@@ -334,12 +334,12 @@ var GUIp_i18n = {
 	help_back_to_step_1: 'Обратно к шагу 1.',
 	help_console_1: 'Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.',
 	help_console_2: 'Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль ' +
-		'(через меню или комбинацией <b>Ctrl+Shift+' + (GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
+		'(через меню или комбинацией <b>Ctrl+Shift+' + (window.GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
 		'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' +
-		(GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
+		(window.GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
 	help_console_3: 'Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке ' +
 		'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' +
-		(GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
+		(window.GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Откроется в новой вкладке">картинка</a>). ' +
 		'И с этой информацией напишите <b>Бэдлаку</b> или в тему на форуме по ссылкам ниже.',
 	help_useful_links: 'Полезные ссылки: ' +
 		'<a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +

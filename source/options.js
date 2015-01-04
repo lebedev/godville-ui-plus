@@ -24,10 +24,10 @@ var storage = {
 			for (var key in options) {
 				this.set(key, options[key]);
 			}
-			alert(window.GUIp_i18n.import_success);
+			window.alert(window.GUIp_i18n.import_success);
 			location.reload();
 		} catch(e) {
-			alert(window.GUIp_i18n.import_fail);
+			window.alert(window.GUIp_i18n.import_fail);
 		}
 	},
 	exportOptions: function() {
@@ -61,14 +61,14 @@ function loadOptions() {
 	}
 	ImproveInProcess = true;
 	$j('#profile_main').empty();
-	$j('#profile_main').append(getOptionsPage());
+	$j('#profile_main').append(window.getOptionsPage());
 	setForm();
 	restore_options();
 	$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css({'position' : 'relative', 'top' : '0.25em'});
 	$j('input:not(.menu-checkbox):not(.option-checkbox)[type=radio]').css({'position' : 'relative', 'top' : '0.25em'});
-	if (GUIp_browser === 'Firefox') {
+	if (window.GUIp_browser === 'Firefox') {
 		$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css('transform', 'scale(0.7)');
-	} else if (GUIp_browser === 'Chrome') {
+	} else if (window.GUIp_browser === 'Chrome') {
 		$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css('-webkit-transform', 'scale(0.69)');
 	}
 	$j('#forbidden_informers').click(function() {
@@ -128,13 +128,13 @@ function loadOptions() {
 	}).attr('rows', 1);
 
 	$j('#GUIp_import').click(function() {
-		var options_string = prompt(window.GUIp_i18n.import_prompt);
+		var options_string = window.prompt(window.GUIp_i18n.import_prompt);
 		if (options_string) {
 			storage.importOptions(options_string);
 		}
 	});
 	$j('#GUIp_export').click(function() {
-		prompt(window.GUIp_i18n.export_prompt, storage.exportOptions());
+		window.prompt(window.GUIp_i18n.export_prompt, storage.exportOptions());
 	});
 
 	ImproveInProcess = false;
@@ -146,19 +146,19 @@ function setForm() {
 		var $el = $j('#l_' + t);
 		addOnClick($el, t);
 	}
-	var $bt1 = $j('#words').submit(function() {save_options(1); return false;});
-	var $bt2 = $j('#add_options').submit(function() {save_options(2); return false;});
-	var $bt3 = $j('#words input[type="button"]').click(function() {reset_options(1); return false;});
+	$j('#words').submit(function() { save_options(1); return false; });
+	$j('#add_options').submit(function() { save_options(2); return false; });
+	$j('#words input[type="button"]').click(function() { reset_options(); return false; });
 }
 
 function addOnClick($el, text) {
-	$el.click(function(e) {
+	$el.click(function() {
 		setText(text);
 		return false;
 	});
 }
 
-function reset_options(form) {
+function reset_options() {
 	ImproveInProcess = true;
 	var $elem = $j('#ta_edit');
 	var text = def.phrases[curr_sect];
@@ -204,7 +204,9 @@ function save_options(form) {
 			if ($j('#relocate_chf:checked').length) { buttons.push('chf'); }
 			if ($j('#relocate_cvs:checked').length) { buttons.push('cvs'); }
 			storage.set('Option:relocateDuelButtons', buttons.join());
-		} else storage.set('Option:relocateDuelButtons', '');
+		} else {
+			storage.set('Option:relocateDuelButtons', '');
+		}
 
 		if ($j('#forbidden_title_notices:checked').length) {
 			var notices = [];
@@ -212,7 +214,9 @@ function save_options(form) {
 			if (!$j('#title_notice_gm:checked').length) { notices.push('gm'); }
 			if (!$j('#title_notice_fi:checked').length) { notices.push('fi'); }
 			storage.set('Option:forbiddenTitleNotices', notices.join());
-		} else storage.set('Option:forbiddenTitleNotices', '');
+		} else {
+			storage.set('Option:forbiddenTitleNotices', '');
+		}
 
 		if ($j('#use_background:checked').length) {
 			if ($j('#custom_background:checked').length) {
@@ -271,7 +275,9 @@ function save_options(form) {
 			if ($j('#freeze_after_voice:checked').length) { cases.push('after_voice'); }
 			if ($j('#freeze_when_empty:checked').length) { cases.push('when_empty'); }
 			storage.set('Option:freezeVoiceButton', cases.join());
-		} else storage.set('Option:freezeVoiceButton', '');
+		} else {
+			storage.set('Option:freezeVoiceButton', '');
+		}
 
 		if (!$j('#forbidden_informers:checked').length) {
 			$j('.informer-checkbox').prop('checked', true);
@@ -436,8 +442,7 @@ function set_theme_and_background() {
 
 var def, curr_sect, god_name,
 	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'exclamation', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
-	ImproveInProcess = false,
-	isDataRead = false;
+	ImproveInProcess = false;
 
 var starterInt = setInterval(function() {
 	if (window.jQuery && window.GUIp_i18n) {

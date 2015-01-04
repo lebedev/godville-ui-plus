@@ -835,7 +835,7 @@ var ui_informer = {
 	// PRIVATE
 	load: function() {
 		var fl = ui_storage.get('informer_flags');
-		if (!fl || fl === "") fl = ' {}';
+		if (!fl || fl === "") { fl = '{}'; }
 		this.flags = JSON.parse(fl);
 	},
 	
