@@ -1,8 +1,8 @@
-var GUIp_browser = 'Firefox';
-GUIp_getResource = function(resname) {
+window.GUIp_browser = 'Firefox';
+window.GUIp_getResource = function(resname) {
 	return 'chrome://godville-ui-plus/content/' + resname;
 };
-GUIp_addGlobalStyleURL = function(uri, id) {
+window.GUIp_addGlobalStyleURL = function(uri, id) {
 	var style = document.createElement('link');
 	style.type = 'text/css';
 	style.href = uri;

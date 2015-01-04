@@ -59,8 +59,8 @@ for (i = 0, len = links_containers.length; i < len; i++) {
 					: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
 	isFollowed = topics[topic] !== undefined;
 	links_containers[i].insertAdjacentHTML('beforeend',
-		(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? GUIp_i18n.Subscribe : GUIp_i18n.subscribe) + '</a>' +
-								 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? GUIp_i18n.Unsubscribe : GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
+		(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? window.GUIp_i18n.Subscribe : window.GUIp_i18n.subscribe) + '</a>' +
+								 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? window.GUIp_i18n.Unsubscribe : window.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
 	);
 }
 
@@ -117,20 +117,20 @@ var $reply_form = $id('post_body_editor');
 if ($reply_form) {
 	window.GUIp_addGlobalStyleURL(window.GUIp_getResource('forum.css'), 'forum_css');
 	var formatting_buttons =
-		'<a class="formatting button bold" title="' + GUIp_i18n.bold_hint + '">' + GUIp_i18n.bold + '</a>' +
-		'<a class="formatting button underline" title="' + GUIp_i18n.underline_hint + '">' + GUIp_i18n.underline + '</a>' +
-		'<a class="formatting button strike" title="' + GUIp_i18n.strike_hint + '">' + GUIp_i18n.strike + '</a>' +
-		'<a class="formatting button italic" title="' + GUIp_i18n.italic_hint + '">' + GUIp_i18n.italic + '</a>' +
-		'<blockquote class="formatting bq" title="' + GUIp_i18n.quote_hint + '">bq.</blockquote>' +
-		'<pre class="formatting bc" title="' + GUIp_i18n.code_hint + '"><code>bc.</code></pre>' +
-		(GUIp_locale === 'ru' ? '<a class="formatting button godname" title="Вставить ссылку на бога"></a>' : '') +
-		'<a class="formatting button link" title="' + GUIp_i18n.link_hint + '">a</a>' +
-		'<a class="formatting button ul" title="' + GUIp_i18n.unordered_list_hint + '">•</a>' +
-		'<a class="formatting button ol" title="' + GUIp_i18n.ordered_list_hint + '">1.</a>' +
-		'<a class="formatting button br" title="' + GUIp_i18n.br_hint + '">\\n</a>' +
-		'<a class="formatting button sup" title="' + GUIp_i18n.sup_hint + '">X<sup>2</sup></a>' +
-		'<a class="formatting button sub" title="' + GUIp_i18n.sub_hint + '">X<sub>2</sub></a>' +
-		'<a class="formatting button monospace" title="' + GUIp_i18n.monospace_hint + '"><code>' + GUIp_i18n.monospace + '</code></a>';
+		'<a class="formatting button bold" title="' + window.GUIp_i18n.bold_hint + '">' + window.GUIp_i18n.bold + '</a>' +
+		'<a class="formatting button underline" title="' + window.GUIp_i18n.underline_hint + '">' + window.GUIp_i18n.underline + '</a>' +
+		'<a class="formatting button strike" title="' + window.GUIp_i18n.strike_hint + '">' + window.GUIp_i18n.strike + '</a>' +
+		'<a class="formatting button italic" title="' + window.GUIp_i18n.italic_hint + '">' + window.GUIp_i18n.italic + '</a>' +
+		'<blockquote class="formatting bq" title="' + window.GUIp_i18n.quote_hint + '">bq.</blockquote>' +
+		'<pre class="formatting bc" title="' + window.GUIp_i18n.code_hint + '"><code>bc.</code></pre>' +
+		(window.GUIp_locale === 'ru' ? '<a class="formatting button godname" title="Вставить ссылку на бога"></a>' : '') +
+		'<a class="formatting button link" title="' + window.GUIp_i18n.link_hint + '">a</a>' +
+		'<a class="formatting button ul" title="' + window.GUIp_i18n.unordered_list_hint + '">•</a>' +
+		'<a class="formatting button ol" title="' + window.GUIp_i18n.ordered_list_hint + '">1.</a>' +
+		'<a class="formatting button br" title="' + window.GUIp_i18n.br_hint + '">\\n</a>' +
+		'<a class="formatting button sup" title="' + window.GUIp_i18n.sup_hint + '">X<sup>2</sup></a>' +
+		'<a class="formatting button sub" title="' + window.GUIp_i18n.sub_hint + '">X<sub>2</sub></a>' +
+		'<a class="formatting button monospace" title="' + window.GUIp_i18n.monospace_hint + '"><code>' + window.GUIp_i18n.monospace + '</code></a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
 	var val, ss, se, nls, nle, selection;
 	var init = function(editor) {
@@ -201,7 +201,7 @@ if ($reply_form) {
 		$q(temp + 'italic').onclick = basic_formatting.bind(this, '_', '_', container);
 		$q(temp + 'bq').onclick = quote_formatting.bind(this, 'bq. ', container);
 		$q(temp + 'bc').onclick = quote_formatting.bind(this, 'bc. ', container);
-		if (GUIp_locale === 'ru') {
+		if (window.GUIp_locale === 'ru') {
 			$q(temp + 'godname').onclick = basic_formatting.bind(this, '"', '":пс', container);
 		}
 		$q(temp + 'link').onclick = basic_formatting.bind(this, '"', '":', container);

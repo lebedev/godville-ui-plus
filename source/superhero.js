@@ -9,13 +9,13 @@ var ui_data = {
 		this.isDungeon = window.so.state.fight_type() === 'dungeon';
 		this.god_name = window.so.state.stats.godname.value;
 		this.char_name = window.so.state.stats.name.value;
-		this.char_sex = window.so.state.stats.gender.value === 'male' ? GUIp_i18n.hero : GUIp_i18n.heroine;
+		this.char_sex = window.so.state.stats.gender.value === 'male' ? window.GUIp_i18n.hero : window.GUIp_i18n.heroine;
 		ui_storage.set('ui_s', '');
 		localStorage.GUIp_CurrentUser = this.god_name;
 
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
-			if (GUIp_locale == 'ru') {
+			if (window.GUIp_locale === 'ru') {
 				ui_storage.set('Forum1', '{}');
 				ui_storage.set('Forum2', '{"2812": 0}');
 				ui_storage.set('Forum3', '{}');
@@ -94,7 +94,7 @@ var ui_utils = {
 	},
 // checks if $elem already improved
 	isAlreadyImproved: function($elem) {
-		if ($elem.hasClass('improved')) return true;
+		if ($elem.hasClass('improved')) { return true; }
 		$elem.addClass('improved');
 		return false;
 	},
@@ -139,7 +139,7 @@ var ui_utils = {
 	createInspectButton: function(item_name) {
 		var a = document.createElement('a');
 		a.className = 'inspect_button';
-		a.title = GUIp_i18n.ask1 + ui_data.char_sex[0] + GUIp_i18n.inspect + item_name;
+		a.title = window.GUIp_i18n.ask1 + ui_data.char_sex[0] + window.GUIp_i18n.inspect + item_name;
 		a.textContent = '?';
 		a.onclick = function() {
 			ui_utils.sayToHero(ui_words.inspectPhrase(item_name));
@@ -151,7 +151,7 @@ var ui_utils = {
 	createCraftButton: function(combo, combo_list, hint) {
 		var a = document.createElement('a');
 		a.className = 'craft_button ' + combo_list;
-		a.title = GUIp_i18n.ask2 + ui_data.char_sex[0] + GUIp_i18n.craft1 + hint + GUIp_i18n.craft2;
+		a.title = window.GUIp_i18n.ask2 + ui_data.char_sex[0] + window.GUIp_i18n.craft1 + hint + window.GUIp_i18n.craft2;
 		a.innerHTML = combo;
 		a.onclick = function() {
 			var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
@@ -203,7 +203,7 @@ var ui_utils = {
 			$msg = $('<div id="' + id + '" class="hint_bar ui_msg">'+
 						'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
 						'<div class="hint_bar_content">' + msg.content + '</div>'+
-						'<div class="hint_bar_close"><a id="' + id + '_close">' + GUIp_i18n.close + '</a></div>' +
+						'<div class="hint_bar_close"><a id="' + id + '_close">' + window.GUIp_i18n.close + '</a></div>' +
 					 '</div>').insertAfter($('#menu_bar'));
 		$('#' + id + '_close').click(function() {
 			$('#' + id).fadeToggle(function() {
@@ -221,9 +221,9 @@ var ui_utils = {
 	},
 	inform: function() {
 		var last_shown = !isNaN(ui_storage.get('lastShownMessage')) ? +ui_storage.get('lastShownMessage') : -1;
-		for (var i = 0, len = this.messages[GUIp_locale].length; i < len; i++) {
-			if (this.messages[GUIp_locale][i].msg_no > last_shown) {
-				this.showMessage(this.messages[GUIp_locale][i].msg_no, this.messages[GUIp_locale][i]);
+		for (var i = 0, len = this.messages[window.GUIp_locale].length; i < len; i++) {
+			if (this.messages[window.GUIp_locale][i].msg_no > last_shown) {
+				this.showMessage(this.messages[window.GUIp_locale][i].msg_no, this.messages[window.GUIp_locale][i]);
 			}
 		}
 	},
@@ -276,13 +276,13 @@ var ui_utils = {
 		en: [{
 			msg_no: 0,
 			title: 'Godville UI+ greeting message',
-			get content() { return '<div>Greetings to a god' + (document.title.match('his') ? '' : 'dess') + ', using <b>Godville UI+</b> ' + (GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + '.</div>' +
+			get content() { return '<div>Greetings to a god' + (document.title.match('his') ? '' : 'dess') + ', using <b>Godville UI+</b> ' + (window.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + '.</div>' +
 				'<div style="text-align: justify; margin: 0.2em 0 0.3em;">&emsp;Please click <b>ui+ settings</b> button at the top of a page, or ' +
-				'open <b>UI+ settings</b> tab in the hero <b>profile</b> and familiarize yourself with the settings available in this ' + (GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ', if you haven\'t done so yet.<br>' +
+				'open <b>UI+ settings</b> tab in the hero <b>profile</b> and familiarize yourself with the settings available in this ' + (window.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ', if you haven\'t done so yet.<br>' +
 
 				'&emsp;In respect to forum informers, by default you are only subscribed to the topic for this addon, and most likely you can see it <i>in the upper left corner</i> right now.<br>' +
 
-				'&emsp;If you can\'t figure out some functions of the ' + (GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask me (god <b>Bad&nbsp;Luck</b>) directly or in the forums.<br>' +
+				'&emsp;If you can\'t figure out some functions of the ' + (window.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask me (god <b>Bad&nbsp;Luck</b>) directly or in the forums.<br>' +
 
 				'&emsp;Guides for handling errors can be found in the <i>help dialog</i> (which is open now), that can be shown or hidden by clicking <b style="text-decoration: underline;">ui+ help</b> in the top menu. ' +
 				'Links to everything mentioned above can also be found there.<br>' +
@@ -395,26 +395,26 @@ var ui_help_dialog = {
 // creates ui dialog	
 	create: function() {
 		this.bar = $('<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
-					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, ' + GUIp_i18n.if_something_wrong_capt + '...</div>' + 
+					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, ' + window.GUIp_i18n.if_something_wrong_capt + '...</div>' + 
 					 '<div class="hint_bar_content" style="padding: 0.5em 0.8em;"></div>' + 
 					 '<div class="hint_bar_close"></div></div>');
-		if (ui_storage.get('helpDialogVisible')) this.bar.show();
+		if (ui_storage.get('helpDialogVisible')) { this.bar.show(); }
 		this.content = $('.hint_bar_content', this.bar);
 		this.append('<div style="text-align: left;">' +
-						'<div>' + GUIp_i18n.if_something_wrong + '</div>' +
+						'<div>' + window.GUIp_i18n.if_something_wrong + '</div>' +
 						'<ol>' +
-						'<li>' + GUIp_i18n.help_refresh + '</li>' +
-						'<li><div id="check_version" class="div_link" style="display: inline;">' + GUIp_i18n.help_check_version + '</div></li>' +
-						'<li class="update_required Chrome hidden">' + GUIp_i18n.help_update_chrome_1 + '</li>' +
-						'<li class="update_required Chrome hidden">' + GUIp_i18n.help_update_chrome_2 + '</li>' +
-						'<li class="update_required Firefox hidden">' + GUIp_i18n.help_update_firefox_1 + '</li>' +
-						'<li class="update_required Firefox hidden">' + GUIp_i18n.help_update_firefox_2 + '</li>' +
-						'<li class="update_required Chrome Firefox hidden">' + GUIp_i18n.help_back_to_step_1 + '</li>' +
-						'<li class="console Chrome Firefox hidden">' + GUIp_i18n.help_console_1 + '</li>' +
-						'<li class="console Chrome Firefox hidden">' + GUIp_i18n.help_console_2 + '</li>' +
-						'<li class="console Chrome Firefox hidden">' + GUIp_i18n.help_console_3 + '</li>' +
+						'<li>' + window.GUIp_i18n.help_refresh + '</li>' +
+						'<li><div id="check_version" class="div_link" style="display: inline;">' + window.GUIp_i18n.help_check_version + '</div></li>' +
+						'<li class="update_required Chrome hidden">' + window.GUIp_i18n.help_update_chrome_1 + '</li>' +
+						'<li class="update_required Chrome hidden">' + window.GUIp_i18n.help_update_chrome_2 + '</li>' +
+						'<li class="update_required Firefox hidden">' + window.GUIp_i18n.help_update_firefox_1 + '</li>' +
+						'<li class="update_required Firefox hidden">' + window.GUIp_i18n.help_update_firefox_2 + '</li>' +
+						'<li class="update_required Chrome Firefox hidden">' + window.GUIp_i18n.help_back_to_step_1 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_1 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_2 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_3 + '</li>' +
 						'</ol>' +
-						'<div>' + GUIp_i18n.help_useful_links + '</div>' +
+						'<div>' + window.GUIp_i18n.help_useful_links + '</div>' +
 					'</div>');
 		if (ui_utils.isDebugMode) {
 			this.append($('<span>dump: </span>'));
@@ -429,16 +429,16 @@ var ui_help_dialog = {
 			this.append(this.getDumpButton('forum', 'Forum'));
 			this.append('<br>');
 		}
-		$('.hint_bar_close', this.bar).append(this.getToggleButton(GUIp_i18n.close));
+		$('.hint_bar_close', this.bar).append(this.getToggleButton(window.GUIp_i18n.close));
 		$('#menu_bar').after(this.bar);
 		$('#menu_bar ul').append('<li> | </li>')
-						 .append('<a href="user/profile#ui_options">' + GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>')
-						 .append(this.getToggleButton('<strong>' + GUIp_i18n.ui_help + '</strong>'));
+						 .append('<a href="user/profile#ui_options">' + window.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>')
+						 .append(this.getToggleButton('<strong>' + window.GUIp_i18n.ui_help + '</strong>'));
 
 		$('#check_version').click(function() {
-			this.textContent = GUIp_i18n.getting_version_no;
+			this.textContent = window.GUIp_i18n.getting_version_no;
 			this.classList.remove('div_link');
-			ui_utils.getXHR('/forums/show/' + (GUIp_locale === 'ru' ? '2' : '1'), ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
+			ui_utils.getXHR('/forums/show/' + (window.GUIp_locale === 'ru' ? '2' : '1'), ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
 			return false;
 		});
 	},
@@ -452,19 +452,19 @@ var ui_help_dialog = {
 						   +temp_cur[1] >= +temp_last[1] &&
 						   +temp_cur[2] >= +temp_last[2] &&
 						   +temp_cur[3] >= +temp_last[3];
-			$('#check_version')[0].innerHTML = (isNewest ? GUIp_i18n.is_last_version : GUIp_i18n.is_not_last_version_1 + last_version + GUIp_i18n.is_not_last_version_2) + GUIp_i18n.proceed_to_next_step;
+			$('#check_version')[0].innerHTML = (isNewest ? window.GUIp_i18n.is_last_version : window.GUIp_i18n.is_not_last_version_1 + last_version + window.GUIp_i18n.is_not_last_version_2) + window.GUIp_i18n.proceed_to_next_step;
 			if (!isNewest) {
-				$('#ui_help_dialog ol li.update_required.' + GUIp_browser).removeClass('hidden');
+				$('#ui_help_dialog ol li.update_required.' + window.GUIp_browser).removeClass('hidden');
 			} else {
-				$('#ui_help_dialog ol li.console.' + GUIp_browser).removeClass('hidden');
+				$('#ui_help_dialog ol li.console.' + window.GUIp_browser).removeClass('hidden');
 			}
 		} else {
 			ui_help_dialog.onXHRFail();
 		}
 	},
 	onXHRFail: function() {
-		$('#check_version')[0].textContent = GUIp_i18n.getting_version_failed;
-		$('#ui_help_dialog ol li.' + GUIp_browser).removeClass('hidden');
+		$('#check_version')[0].textContent = window.GUIp_i18n.getting_version_failed;
+		$('#ui_help_dialog ol li.' + window.GUIp_browser).removeClass('hidden');
 	},
 // gets toggle button
 	getToggleButton: function(text) {
@@ -491,9 +491,9 @@ var ui_storage = {
 // reads a value
 	get: function(id) {
 		var val = localStorage[this.get_key(id)];
-		if (val) val = val.replace(/^[NSB]\]/, '');
-		if (val === 'true') return true;
-		if (val === 'false') return false;
+		if (val) { val = val.replace(/^[NSB]\]/, ''); }
+		if (val === 'true') { return true; }
+		if (val === 'false') { return false; }
 		return val;
 	},
 // gets diff with a value
@@ -628,12 +628,12 @@ var ui_words = {
 	},
 
 	_addHeroName: function(text) {
-		if (!ui_storage.get('Option:useHeroName')) return text;
+		if (!ui_storage.get('Option:useHeroName')) { return text; }
 		return ui_data.char_name + ', ' + this._changeFirstLetter(text);
 	},
 
 	_addExclamation: function(text) {
-		if (!ui_storage.get('Option:useExclamations')) return text;
+		if (!ui_storage.get('Option:useExclamations')) { return text; }
 		return ui_utils.getRandomItem(this.base.phrases.exclamation) + ', ' + this._changeFirstLetter(text);
 	},
 
@@ -672,8 +672,8 @@ var ui_stats = {
 		var $label = ui_utils.findLabel($container, label);
 		var $field = $label.siblings('.l_val');
 		var value = parser($field.text());
-		if (id === 'Bricks' || id === 'Logs') return this.set(id, Math.floor(value*10 + 0.5));
-		else return this.set(id, value);
+		if (id === 'Bricks' || id === 'Logs') { return this.set(id, Math.floor(value*10 + 0.5)); }
+		else { return this.set(id, value); }
 	}
 };
 
@@ -715,7 +715,7 @@ var ui_logger = {
 		var diff = ui_storage.set_with_diff('Logger:' + id, ui_stats.get(id));
 		if (diff) {
 			// Если нужно, то преобразовываем в число с одним знаком после запятой
-			if (parseInt(diff) !== diff) diff = diff.toFixed(1);
+			if (parseInt(diff) !== diff) { diff = diff.toFixed(1); }
 			// Добавление плюcа, минуса или стрелочки
 			var s;
 			if (diff < 0) {
@@ -742,43 +742,43 @@ var ui_logger = {
 			this.bar.show();
 		}
 		if (ui_data.isDungeon) {
-			this.watchStatsValue('Map_HP', 'hp', GUIp_i18n.hero_health, 'hp');
-			this.watchStatsValue('Map_Inv', 'inv', GUIp_i18n.inventory, 'inv');
-			this.watchStatsValue('Map_Gold', 'gld', GUIp_i18n.gold, 'gold'); 
-			this.watchStatsValue('Map_Charges', 'ch', GUIp_i18n.charges, 'charges');
-			this.watchStatsValue('Map_Alls_HP', 'a:hp', GUIp_i18n.allies_health, 'charges');
+			this.watchStatsValue('Map_HP', 'hp', window.GUIp_i18n.hero_health, 'hp');
+			this.watchStatsValue('Map_Inv', 'inv', window.GUIp_i18n.inventory, 'inv');
+			this.watchStatsValue('Map_Gold', 'gld', window.GUIp_i18n.gold, 'gold'); 
+			this.watchStatsValue('Map_Charges', 'ch', window.GUIp_i18n.charges, 'charges');
+			this.watchStatsValue('Map_Alls_HP', 'a:hp', window.GUIp_i18n.allies_health, 'charges');
 		}
 		if (ui_data.isBattle && !ui_data.isDungeon) {
-			this.watchStatsValue('Hero_HP', 'h:hp', GUIp_i18n.hero_health, 'hp');
-			this.watchStatsValue('Enemy_HP', 'e:hp', GUIp_i18n.enemy_health, 'death');
-			this.watchStatsValue('Hero_Alls_HP', 'a:hp', GUIp_i18n.allies_health, 'charges');
-			this.watchStatsValue('Hero_Inv', 'h:inv', GUIp_i18n.inventory, 'inv');
-			this.watchStatsValue('Hero_Gold', 'h:gld', GUIp_i18n.gold, 'gold');
-			this.watchStatsValue('Hero_Charges', 'h:ch', GUIp_i18n.charges, 'charges');
-			this.watchStatsValue('Enemy_Gold', 'e:gld', GUIp_i18n.gold, 'monster');
-			this.watchStatsValue('Enemy_Inv', 'e:inv', GUIp_i18n.inventory, 'monster');
+			this.watchStatsValue('Hero_HP', 'h:hp', window.GUIp_i18n.hero_health, 'hp');
+			this.watchStatsValue('Enemy_HP', 'e:hp', window.GUIp_i18n.enemy_health, 'death');
+			this.watchStatsValue('Hero_Alls_HP', 'a:hp', window.GUIp_i18n.allies_health, 'charges');
+			this.watchStatsValue('Hero_Inv', 'h:inv', window.GUIp_i18n.inventory, 'inv');
+			this.watchStatsValue('Hero_Gold', 'h:gld', window.GUIp_i18n.gold, 'gold');
+			this.watchStatsValue('Hero_Charges', 'h:ch', window.GUIp_i18n.charges, 'charges');
+			this.watchStatsValue('Enemy_Gold', 'e:gld', window.GUIp_i18n.gold, 'monster');
+			this.watchStatsValue('Enemy_Inv', 'e:inv', window.GUIp_i18n.inventory, 'monster');
 		}
-		this.watchStatsValue('Exp', 'exp', GUIp_i18n.exp);
-		this.watchStatsValue('Level', 'lvl', GUIp_i18n.level);
-		this.watchStatsValue('HP', 'hp', GUIp_i18n.health);
-		this.watchStatsValue('Godpower', 'gp', GUIp_i18n.godpower);
-		this.watchStatsValue('Charges', 'ch', GUIp_i18n.charges);
-		this.watchStatsValue('Task', 'tsk', GUIp_i18n.task);
-		this.watchStatsValue('Monster', 'mns', GUIp_i18n.monsters);
-		this.watchStatsValue('Inv', 'inv', GUIp_i18n.inventory);
-		this.watchStatsValue('Gold', 'gld', GUIp_i18n.gold);
-		this.watchStatsValue('Bricks', 'br', GUIp_i18n.bricks);
-		this.watchStatsValue('Logs', 'wd', GUIp_i18n.logs);
-		this.watchStatsValue('Savings', 'rtr', GUIp_i18n.savings);
-		this.watchStatsValue('Equip1', 'eq1', GUIp_i18n.weapon, 'equip');
-		this.watchStatsValue('Equip2', 'eq2', GUIp_i18n.shield, 'equip');
-		this.watchStatsValue('Equip3', 'eq3', GUIp_i18n.head, 'equip');
-		this.watchStatsValue('Equip4', 'eq4', GUIp_i18n.body, 'equip');
-		this.watchStatsValue('Equip5', 'eq5', GUIp_i18n.arms, 'equip');
-		this.watchStatsValue('Equip6', 'eq6', GUIp_i18n.legs, 'equip');
-		this.watchStatsValue('Equip7', 'eq7', GUIp_i18n.talisman, 'equip');
-		this.watchStatsValue('Death', 'death', GUIp_i18n.death_count);
-		this.watchStatsValue('Pet_Level', 'pet_level', GUIp_i18n.pet_level, 'monster');
+		this.watchStatsValue('Exp', 'exp', window.GUIp_i18n.exp);
+		this.watchStatsValue('Level', 'lvl', window.GUIp_i18n.level);
+		this.watchStatsValue('HP', 'hp', window.GUIp_i18n.health);
+		this.watchStatsValue('Godpower', 'gp', window.GUIp_i18n.godpower);
+		this.watchStatsValue('Charges', 'ch', window.GUIp_i18n.charges);
+		this.watchStatsValue('Task', 'tsk', window.GUIp_i18n.task);
+		this.watchStatsValue('Monster', 'mns', window.GUIp_i18n.monsters);
+		this.watchStatsValue('Inv', 'inv', window.GUIp_i18n.inventory);
+		this.watchStatsValue('Gold', 'gld', window.GUIp_i18n.gold);
+		this.watchStatsValue('Bricks', 'br', window.GUIp_i18n.bricks);
+		this.watchStatsValue('Logs', 'wd', window.GUIp_i18n.logs);
+		this.watchStatsValue('Savings', 'rtr', window.GUIp_i18n.savings);
+		this.watchStatsValue('Equip1', 'eq1', window.GUIp_i18n.weapon, 'equip');
+		this.watchStatsValue('Equip2', 'eq2', window.GUIp_i18n.shield, 'equip');
+		this.watchStatsValue('Equip3', 'eq3', window.GUIp_i18n.head, 'equip');
+		this.watchStatsValue('Equip4', 'eq4', window.GUIp_i18n.body, 'equip');
+		this.watchStatsValue('Equip5', 'eq5', window.GUIp_i18n.arms, 'equip');
+		this.watchStatsValue('Equip6', 'eq6', window.GUIp_i18n.legs, 'equip');
+		this.watchStatsValue('Equip7', 'eq7', window.GUIp_i18n.talisman, 'equip');
+		this.watchStatsValue('Death', 'death', window.GUIp_i18n.death_count);
+		this.watchStatsValue('Pet_Level', 'pet_level', window.GUIp_i18n.pet_level, 'monster');
 		this.need_separator = true;
 	}
 };
@@ -946,7 +946,7 @@ var ui_forum = {
 		setInterval(this.check.bind(this), 300000);
 	},
 	check: function() {
-		for (var forum_no = 1; forum_no <= (GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
+		for (var forum_no = 1; forum_no <= (window.GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
 			var current_forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
 				topics = [];
 			for (var topic in current_forum) {
@@ -1083,7 +1083,7 @@ var ui_improver = {
 				this.improveDiary();
 				this.improveLoot();
 			}
-			if (ui_data.isDungeon && GUIp_locale === 'ru') {
+			if (ui_data.isDungeon && window.GUIp_locale === 'ru') {
 				this.getDungeonPhrases();
 			}
 		}
@@ -1134,8 +1134,8 @@ var ui_improver = {
 					} else if (!ui_utils.hasShownInfoMessage) {
 						ui_utils.hasShownInfoMessage = true;
 						ui_utils.showMessage('info', {
-							title: GUIp_i18n.unknown_item_type_title,
-							content: '<div>' + GUIp_i18n.unknown_item_type_content + '<b>"' + desc + '</b>"</div>'
+							title: window.GUIp_i18n.unknown_item_type_title,
+							content: '<div>' + window.GUIp_i18n.unknown_item_type_content + '<b>"' + desc + '</b>"</div>'
 						});
 					}
 					if (!(forbidden_craft && (forbidden_craft.match('usable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r'))))) {
@@ -1189,20 +1189,20 @@ var ui_improver = {
 					if (trophy_list[i][0] === trophy_list[j][0]) {
 						if (trophy_boldness[trophy_list[i]] && trophy_boldness[trophy_list[j]]) {
 							if (!(forbidden_craft && forbidden_craft.match('b_b'))) {
-								this.b_b.push(trophy_list[i] + GUIp_i18n.and + trophy_list[j]);
-								this.b_b.push(trophy_list[j] + GUIp_i18n.and + trophy_list[i]);
+								this.b_b.push(trophy_list[i] + window.GUIp_i18n.and + trophy_list[j]);
+								this.b_b.push(trophy_list[j] + window.GUIp_i18n.and + trophy_list[i]);
 							}
 						} else if (!trophy_boldness[trophy_list[i]] && !trophy_boldness[trophy_list[j]]) {
 							if (!(forbidden_craft && forbidden_craft.match('r_r'))) {
-								this.r_r.push(trophy_list[i] + GUIp_i18n.and + trophy_list[j]);
-								this.r_r.push(trophy_list[j] + GUIp_i18n.and + trophy_list[i]);
+								this.r_r.push(trophy_list[i] + window.GUIp_i18n.and + trophy_list[j]);
+								this.r_r.push(trophy_list[j] + window.GUIp_i18n.and + trophy_list[i]);
 							}
 						} else {
 							if (!(forbidden_craft && forbidden_craft.match('b_r'))) {
 								if (trophy_boldness[trophy_list[i]]) {
-									this.b_r.push(trophy_list[i] + GUIp_i18n.and + trophy_list[j]);
+									this.b_r.push(trophy_list[i] + window.GUIp_i18n.and + trophy_list[j]);
 								} else {
-									this.b_r.push(trophy_list[j] + GUIp_i18n.and + trophy_list[i]);
+									this.b_r.push(trophy_list[j] + window.GUIp_i18n.and + trophy_list[i]);
 								}
 							}
 						}
@@ -1215,10 +1215,10 @@ var ui_improver = {
 
 		if (!ui_utils.isAlreadyImproved($('#inventory'))) {
 			var inv_content = document.querySelector('#inventory .block_content');
-			inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + GUIp_i18n.craft_verb + ':</span>');
-			inv_content.insertBefore(ui_utils.createCraftButton(GUIp_i18n.b_b, 'b_b', GUIp_i18n.b_b_hint), null);
-			inv_content.insertBefore(ui_utils.createCraftButton(GUIp_i18n.b_r, 'b_r', GUIp_i18n.b_r_hint), null);
-			inv_content.insertBefore(ui_utils.createCraftButton(GUIp_i18n.r_r, 'r_r', GUIp_i18n.r_r_hint), null);
+			inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + window.GUIp_i18n.craft_verb + ':</span>');
+			inv_content.insertBefore(ui_utils.createCraftButton(window.GUIp_i18n.b_b, 'b_b', window.GUIp_i18n.b_b_hint), null);
+			inv_content.insertBefore(ui_utils.createCraftButton(window.GUIp_i18n.b_r, 'b_r', window.GUIp_i18n.b_r_hint), null);
+			inv_content.insertBefore(ui_utils.createCraftButton(window.GUIp_i18n.r_r, 'r_r', window.GUIp_i18n.r_r_hint), null);
 		}
 	},
 
@@ -1244,22 +1244,22 @@ var ui_improver = {
 			$('.gp_val').addClass('l_val');
 			if (ui_data.isDungeon) {
 				var isContradictions = $('#map')[0].textContent.match(/Противоречия|Disobedience/);
-				ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.east, (isContradictions ? 'walk_w' : 'walk_e'), GUIp_i18n.ask3 + ui_data.char_sex[0] + GUIp_i18n.go_east);
-				ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.west, (isContradictions ? 'walk_e' : 'walk_w'), GUIp_i18n.ask3 + ui_data.char_sex[0] + GUIp_i18n.go_west);
-				ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.south, (isContradictions ? 'walk_n' : 'walk_s'), GUIp_i18n.ask3 + ui_data.char_sex[0] + GUIp_i18n.go_south);
-				ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.north, (isContradictions ? 'walk_s' : 'walk_n'), GUIp_i18n.ask3 + ui_data.char_sex[0] + GUIp_i18n.go_north);
+				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.east, (isContradictions ? 'walk_w' : 'walk_e'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_east);
+				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.west, (isContradictions ? 'walk_e' : 'walk_w'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_west);
+				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.south, (isContradictions ? 'walk_n' : 'walk_s'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_south);
+				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.north, (isContradictions ? 'walk_s' : 'walk_n'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_north);
 				if ($('#map')[0].textContent.match(/Бессилия|Anti-influence/)) {
 					$('#actions').hide();
 				}
 			} else {
 				if (ui_data.isBattle) {
-					ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.defend, 'defend', GUIp_i18n.ask4 + ui_data.char_sex[0] + GUIp_i18n.to_defend);
-					ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.pray, 'pray', GUIp_i18n.ask5 + ui_data.char_sex[0] + GUIp_i18n.to_pray);
-					ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.heal, 'heal', GUIp_i18n.ask6 + ui_data.char_sex[1] + GUIp_i18n.to_heal);
-					ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.hit, 'hit', GUIp_i18n.ask7 + ui_data.char_sex[1] + GUIp_i18n.to_hit);
+					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.defend, 'defend', window.GUIp_i18n.ask4 + ui_data.char_sex[0] + window.GUIp_i18n.to_defend);
+					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.pray, 'pray', window.GUIp_i18n.ask5 + ui_data.char_sex[0] + window.GUIp_i18n.to_pray);
+					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.heal, 'heal', window.GUIp_i18n.ask6 + ui_data.char_sex[1] + window.GUIp_i18n.to_heal);
+					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.hit, 'hit', window.GUIp_i18n.ask7 + ui_data.char_sex[1] + window.GUIp_i18n.to_hit);
 				} else {
-					ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.sacrifice, 'sacrifice', GUIp_i18n.ask8 + ui_data.char_sex[1] + GUIp_i18n.to_sacrifice);
-					ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.godpower_label, GUIp_i18n.pray, 'pray', GUIp_i18n.ask5 + ui_data.char_sex[0] + GUIp_i18n.to_pray);
+					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.sacrifice, 'sacrifice', window.GUIp_i18n.ask8 + ui_data.char_sex[1] + window.GUIp_i18n.to_sacrifice);
+					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.pray, 'pray', window.GUIp_i18n.ask5 + ui_data.char_sex[0] + window.GUIp_i18n.to_pray);
 					$('#voice_submit').click(function() {
 						ui_improver.voiceSubmitted = true;
 					});
@@ -1273,15 +1273,15 @@ var ui_improver = {
 		}
 		
 		// Save stats
-		ui_stats.setFromLabelCounter('Godpower', $box, GUIp_i18n.godpower_label);
+		ui_stats.setFromLabelCounter('Godpower', $box, window.GUIp_i18n.godpower_label);
 		ui_informer.update('full godpower', $('#cntrl .p_val').width() === $('#cntrl .p_bar').width());
 	},
 
 // ----------- Вести с полей ----------------
 	improveNews: function() {
-		if (ui_data.isBattle) return;
+		if (ui_data.isBattle) { return; }
 		if (!ui_utils.isAlreadyImproved($('#news'))) {
-			ui_utils.addSayPhraseAfterLabel($('#news'), GUIp_i18n.enemy_label, GUIp_i18n.hit, 'hit', GUIp_i18n.ask7 + ui_data.char_sex[1] + GUIp_i18n.to_hit);
+			ui_utils.addSayPhraseAfterLabel($('#news'), window.GUIp_i18n.enemy_label, window.GUIp_i18n.hit, 'hit', window.GUIp_i18n.ask7 + ui_data.char_sex[1] + window.GUIp_i18n.to_hit);
 		}
 		var isWantedMonster = false;
 		var isMonsterWithCapabilities = false;
@@ -1336,23 +1336,23 @@ var ui_improver = {
 		if (ui_data.isDungeon) {
 			if (this.isFirstTime) {
 				document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
-					'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - ' + GUIp_i18n.boss_warning_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + GUIp_i18n.boss_slay_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - ' + GUIp_i18n.small_prayer_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - ' + GUIp_i18n.small_healing_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ' + GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ' + GUIp_i18n.low_damage_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ' + GUIp_i18n.mid_damage_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ' + GUIp_i18n.move_loss_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - ' + GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossSlay moveLoss"></div><div> - ' + GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
+					'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - ' + window.GUIp_i18n.boss_warning_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - ' + window.GUIp_i18n.small_prayer_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - ' + window.GUIp_i18n.small_healing_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ' + window.GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ' + window.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ' + window.GUIp_i18n.mid_damage_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ' + window.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - ' + window.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc bossSlay moveLoss"></div><div> - ' + window.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
 				);
 			}
 			if (ui_storage.get('Option:relocateMap')) {
 				if (!$('#a_central_block #map').length) {
 					$('#map').insertBefore($('#m_control'));
 					$('#m_control').appendTo($('#a_right_block'));
-					if (GUIp_locale === 'ru') {
+					if (window.GUIp_locale === 'ru') {
 						$('#m_control .block_title').text('Пульт');
 					}
 				}
@@ -1360,7 +1360,7 @@ var ui_improver = {
 				if (!$('#a_right_block #map').length) {
 					$('#m_control').insertBefore($('#map'));
 					$('#map').appendTo($('#a_right_block'));
-					if (GUIp_locale === 'ru') {
+					if (window.GUIp_locale === 'ru') {
 						$('#m_control .block_title').text('Пульт вмешательства в личную жизнь');
 					}
 				}
@@ -1498,9 +1498,9 @@ var ui_improver = {
 		};
 
 		if (ui_data.isDungeon) {
-			ui_stats.setFromLabelCounter('Map_HP', $('#m_info'), GUIp_i18n.health_label);
-			ui_stats.setFromLabelCounter('Map_Gold', $('#m_info'), GUIp_i18n.gold_label, gold_parser);
-			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), GUIp_i18n.inventory_label);
+			ui_stats.setFromLabelCounter('Map_HP', $('#m_info'), window.GUIp_i18n.health_label);
+			ui_stats.setFromLabelCounter('Map_Gold', $('#m_info'), window.GUIp_i18n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), window.GUIp_i18n.inventory_label);
 			ui_stats.set('Map_Charges', $('#m_control .acc_val').text(), parseFloat);
 			ui_stats.set('Map_Alls_HP', this.GroupHP(true));
 			if (ui_storage.get('Logger:LocationPrev') === 'Field') {
@@ -1514,12 +1514,12 @@ var ui_improver = {
 			return;
 		}
 		if (ui_data.isBattle) {
-			ui_stats.setFromLabelCounter('Hero_HP', $('#m_info'), GUIp_i18n.health_label);
-			ui_stats.setFromLabelCounter('Hero_Gold', $('#m_info'), GUIp_i18n.gold_label, gold_parser);
-			ui_stats.setFromLabelCounter('Hero_Inv', $('#m_info'), GUIp_i18n.inventory_label);
+			ui_stats.setFromLabelCounter('Hero_HP', $('#m_info'), window.GUIp_i18n.health_label);
+			ui_stats.setFromLabelCounter('Hero_Gold', $('#m_info'), window.GUIp_i18n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Hero_Inv', $('#m_info'), window.GUIp_i18n.inventory_label);
 			ui_stats.set('Hero_Charges',$('#m_control .acc_val').text(), parseFloat);
-			ui_stats.setFromLabelCounter('Enemy_Gold', $('#o_info'), GUIp_i18n.gold_label, gold_parser);
-			ui_stats.setFromLabelCounter('Enemy_Inv', $('#o_info'), GUIp_i18n.inventory_label);
+			ui_stats.setFromLabelCounter('Enemy_Gold', $('#o_info'), window.GUIp_i18n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Enemy_Inv', $('#o_info'), window.GUIp_i18n.inventory_label);
 			ui_stats.set('Hero_Alls_HP', this.GroupHP(true));
 			ui_stats.set('Enemy_HP', this.GroupHP(false));
 			if (this.isFirstTime) {
@@ -1540,31 +1540,31 @@ var ui_improver = {
 		var $box = $('#stats');
 		if (!ui_utils.isAlreadyImproved($('#stats'))) {
 			// Add links
-			ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.level_label, GUIp_i18n.study, 'exp', GUIp_i18n.ask9 + ui_data.char_sex[1] + GUIp_i18n.to_study);
-			ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.health_label, GUIp_i18n.heal, 'heal', GUIp_i18n.ask6 + ui_data.char_sex[1] + GUIp_i18n.to_heal);
-			ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.gold_label, GUIp_i18n.dig, 'dig', GUIp_i18n.ask10 + ui_data.char_sex[1] + GUIp_i18n.to_dig);
-			ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.task_label, GUIp_i18n.cancel_task, 'cancel_task', GUIp_i18n.ask11 + ui_data.char_sex[0] + GUIp_i18n.to_cancel_task);
-			ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.task_label, GUIp_i18n.do_task, 'do_task', GUIp_i18n.ask12 + ui_data.char_sex[1] + GUIp_i18n.to_do_task);
-			ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.death_label, GUIp_i18n.die, 'die', GUIp_i18n.ask13 + ui_data.char_sex[0] + GUIp_i18n.to_die);
+			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.level_label, window.GUIp_i18n.study, 'exp', window.GUIp_i18n.ask9 + ui_data.char_sex[1] + window.GUIp_i18n.to_study);
+			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.health_label, window.GUIp_i18n.heal, 'heal', window.GUIp_i18n.ask6 + ui_data.char_sex[1] + window.GUIp_i18n.to_heal);
+			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.gold_label, window.GUIp_i18n.dig, 'dig', window.GUIp_i18n.ask10 + ui_data.char_sex[1] + window.GUIp_i18n.to_dig);
+			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.task_label, window.GUIp_i18n.cancel_task, 'cancel_task', window.GUIp_i18n.ask11 + ui_data.char_sex[0] + window.GUIp_i18n.to_cancel_task);
+			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.task_label, window.GUIp_i18n.do_task, 'do_task', window.GUIp_i18n.ask12 + ui_data.char_sex[1] + window.GUIp_i18n.to_do_task);
+			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.death_label, window.GUIp_i18n.die, 'die', window.GUIp_i18n.ask13 + ui_data.char_sex[0] + window.GUIp_i18n.to_die);
 		}
 		if (!$('#hk_distance .voice_generator').length) {
-			ui_utils.addSayPhraseAfterLabel($box, GUIp_i18n.milestones_label, $('#main_wrapper.page_wrapper_5c').length ? '回' : GUIp_i18n.return, 'town', GUIp_i18n.ask14 + ui_data.char_sex[0] + GUIp_i18n.to_return);
+			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.milestones_label, $('#main_wrapper.page_wrapper_5c').length ? '回' : window.GUIp_i18n.return, 'town', window.GUIp_i18n.ask14 + ui_data.char_sex[0] + window.GUIp_i18n.to_return);
 		}
 
 		ui_stats.setFromProgressBar('Exp', $('#hk_level .p_bar'));
 		ui_stats.setFromProgressBar('Task', $('#hk_quests_completed .p_bar'));
-		ui_stats.setFromLabelCounter('Level', $box, GUIp_i18n.level_label);
-		ui_stats.setFromLabelCounter('Monster', $box, GUIp_i18n.monsters_label);
-		ui_stats.setFromLabelCounter('Death', $box, GUIp_i18n.death_label);
-		ui_stats.setFromLabelCounter('Bricks', $box, GUIp_i18n.bricks_label, parseFloat);
-		ui_stats.setFromLabelCounter('Logs', $box, GUIp_i18n.logs_label, parseFloat);
-		ui_stats.setFromLabelCounter('Savings', $box, GUIp_i18n.savings_label, gold_parser);
+		ui_stats.setFromLabelCounter('Level', $box, window.GUIp_i18n.level_label);
+		ui_stats.setFromLabelCounter('Monster', $box, window.GUIp_i18n.monsters_label);
+		ui_stats.setFromLabelCounter('Death', $box, window.GUIp_i18n.death_label);
+		ui_stats.setFromLabelCounter('Bricks', $box, window.GUIp_i18n.bricks_label, parseFloat);
+		ui_stats.setFromLabelCounter('Logs', $box, window.GUIp_i18n.logs_label, parseFloat);
+		ui_stats.setFromLabelCounter('Savings', $box, window.GUIp_i18n.savings_label, gold_parser);
 		ui_stats.set('Charges', $('#control .acc_val').text(), parseFloat);
-		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, GUIp_i18n.inventory_label) || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
+		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, window.GUIp_i18n.inventory_label) || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
 			this.inventoryChanged = true;
 		}
-		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, GUIp_i18n.gold_label, gold_parser) >= (ui_stats.get('Bricks') > 1000 ? 10000 : 3000));
-		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, GUIp_i18n.health_label) === 0);
+		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, window.GUIp_i18n.gold_label, gold_parser) >= (ui_stats.get('Bricks') > 1000 ? 10000 : 3000));
+		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, window.GUIp_i18n.health_label) === 0);
 		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии|member of the guild/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
 		ui_informer.update('mini quest', $('.q_name').text().match(/\((мини|mini)\)/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
 
@@ -1588,12 +1588,12 @@ var ui_improver = {
 	},
 // ---------- Pet --------------
 	improvePet: function() {
-		if (ui_data.isBattle) return;
+		if (ui_data.isBattle) { return; }
 		if (window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value) {
 			if (!ui_utils.isAlreadyImproved($('#pet'))) {
 				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 			} 
-			$('#pet_badge').text(ui_utils.findLabel($('#pet'), GUIp_i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, ''));
+			$('#pet_badge').text(ui_utils.findLabel($('#pet'), window.GUIp_i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, ''));
 			if ($('#pet .block_content')[0].style.display === 'none') {
 				$('#pet_badge').show(); 
 			}
@@ -1608,11 +1608,11 @@ var ui_improver = {
 		// bruise informer
 		ui_informer.update('pet is bruised', window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value);
 
-		ui_stats.setFromLabelCounter('Pet_Level', $('#pet'), GUIp_i18n.pet_level_label);
+		ui_stats.setFromLabelCounter('Pet_Level', $('#pet'), window.GUIp_i18n.pet_level_label);
 	},
 // ---------- Equipment --------------
 	improveEquip: function() {
-		if (ui_data.isBattle) return;
+		if (ui_data.isBattle) { return; }
 		// Save stats
 		var seq = 0;
 		for (var i = 7; i >= 1;) {
@@ -1640,7 +1640,7 @@ var ui_improver = {
 	},
 // ---------- Pantheons --------------	
 	improvePantheons: function() {
-		if (ui_data.isBattle) return;
+		if (ui_data.isBattle) { return; }
 		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
 			if (!$('#pantheons.arena_link_relocated').length) {
 				$('#pantheons').addClass('arena_link_relocated');
@@ -1680,7 +1680,7 @@ var ui_improver = {
 	},
 // ---------- Diary --------------		
 	improveDiary: function() {
-		if (ui_data.isBattle) return;
+		if (ui_data.isBattle) { return; }
 		var i, len;
 		if (this.isFirstTime) {
 			var $msgs = document.querySelectorAll('#diary .d_msg:not(.parsed)');
@@ -1934,20 +1934,19 @@ var ui_improver = {
 			if (ui_storage.get('Option:disableDieButton')) {
 				$('#hk_death_count .voice_generator').hide();
 			}
-			if (this.b_b.length) $('.b_b').show();
-			if (this.b_r.length) $('.b_r').show();
-			if (this.r_r.length) $('.r_r').show();
-			if ($('.b_b:visible, .b_r:visible, .r_r:visible').length) $('span.craft_button').show();
+			if (this.b_b.length) { $('.b_b').show(); }
+			if (this.b_r.length) { $('.b_r').show(); }
+			if (this.r_r.length) { $('.r_r').show(); }
+			if ($('.b_b:visible, .b_r:visible, .r_r:visible').length) { $('span.craft_button').show(); }
 			//if ($('.f_news').text() !== 'Возвращается к заданию...')fc
 			if (!ui_data.isBattle) {
-				if ($('#hk_distance .l_capt').text().match(/Город|Current Town/) || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display !== 'none') 
-					$('#hk_distance .voice_generator').hide();
+				if ($('#hk_distance .l_capt').text().match(/Город|Current Town/) || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display !== 'none') { $('#hk_distance .voice_generator').hide(); }
 				//if (ui_storage.get('Stats:Godpower') === 100) $('#control .voice_generator').hide();
-				if ($('#control .p_val').width() === $('#control .p_bar').width() || $('#news .line')[0].style.display !== 'none') $('#control .voice_generator')[0].style.display = 'none';
-				if ($('#hk_distance .l_capt').text().match(/Город|Current Town/)) $('#control .voice_generator')[1].style.display = 'none';
+				if ($('#control .p_val').width() === $('#control .p_bar').width() || $('#news .line')[0].style.display !== 'none') { $('#control .voice_generator')[0].style.display = 'none'; }
+				if ($('#hk_distance .l_capt').text().match(/Город|Current Town/)) { $('#control .voice_generator')[1].style.display = 'none'; }
 			}
-			if ($('#hk_quests_completed .q_name').text().match(/\(выполнено\)/)) $('#hk_quests_completed .voice_generator').hide();
-			if ($('#hk_health .p_val').width() === $('#hk_health .p_bar').width()) $('#hk_health .voice_generator').hide();
+			if ($('#hk_quests_completed .q_name').text().match(/\(выполнено\)/)) { $('#hk_quests_completed .voice_generator').hide(); }
+			if ($('#hk_health .p_val').width() === $('#hk_health .p_bar').width()) { $('#hk_health .voice_generator').hide(); }
 		}
 	},
 
@@ -2082,28 +2081,28 @@ var ui_laying_timer = {
 			if (hours < 0) {
 				$timer.textContent = '✓';
 				$timer.classList.add('green');
-				$timer.title = GUIp_i18n.gte_no_penalty;
+				$timer.title = window.GUIp_i18n.gte_no_penalty;
 			} else {
 				$timer.textContent = (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 				if (hours >= 12) {
 					$timer.classList.add('red');
-					$timer.title = GUIp_i18n.gte_major_penalty;
+					$timer.title = window.GUIp_i18n.gte_major_penalty;
 				} else {
 					$timer.classList.add('yellow');
-					$timer.title = GUIp_i18n.gte_minor_penalty;
+					$timer.title = window.GUIp_i18n.gte_minor_penalty;
 				}
 			}
 		} else {
 			if (Math.floor((Date.now() - earliest)/1000/60/60) >= 24) {
 				$timer.textContent = '✓';
 				$timer.classList.add('green');
-				$timer.title = GUIp_i18n.gte_no_penalty;
+				$timer.title = window.GUIp_i18n.gte_no_penalty;
 			} else {
 				hours = Math.floor(24 - (Date.now() - earliest)/1000/60/60);
 				minutes = Math.floor(60 - (Date.now() - earliest)/1000/60%60);
 				$timer.textContent = '?';
 				$timer.classList.add('grey');
-				$timer.title = GUIp_i18n.gte_unknown_penalty + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
+				$timer.title = window.GUIp_i18n.gte_unknown_penalty + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 			}
 		}
 	}
@@ -2210,7 +2209,7 @@ var ui_observers = {
 	},
 	chronicles: {
 		get condition() {
-			return ui_data.isDungeon && GUIp_locale === 'ru';
+			return ui_data.isDungeon && window.GUIp_locale === 'ru';
 		},
 		config: { childList: true },
 		func: function(mutation) {
@@ -2223,7 +2222,7 @@ var ui_observers = {
 	},
 	map_colorization: {
 		get condition() {
-			return ui_data.isDungeon && GUIp_locale === 'ru';
+			return ui_data.isDungeon && window.GUIp_locale === 'ru';
 		},
 		config: {
 			childList: true,
@@ -2292,10 +2291,10 @@ var ui_trycatcher = {
 				if (!ui_utils.hasShownErrorMessage) {
 					ui_utils.hasShownErrorMessage = true;
 					ui_utils.showMessage('error', {
-						title: GUIp_i18n.error_message_title,
-						content: '<div>' + GUIp_i18n.error_message_subtitle + '</div>' +
-								 '<div>' + GUIp_i18n.error_message_text + ' <b>' + error.message + '</b>.</div>' +
-								 '<div>' + GUIp_i18n.error_message_object + ' <b>' + object_name + '</b>, ' + GUIp_i18n.error_message_method + ' <b>' + method_name + '()</b>.</div>',
+						title: window.GUIp_i18n.error_message_title,
+						content: '<div>' + window.GUIp_i18n.error_message_subtitle + '</div>' +
+								 '<div>' + window.GUIp_i18n.error_message_text + ' <b>' + error.message + '</b>.</div>' +
+								 '<div>' + window.GUIp_i18n.error_message_object + ' <b>' + object_name + '</b>, ' + window.GUIp_i18n.error_message_method + ' <b>' + method_name + '()</b>.</div>',
 						callback: function() {
 							if (!ui_storage.get('helpDialogVisible')) {
 								ui_help_dialog.toggle();
@@ -2319,10 +2318,10 @@ var ui_trycatcher = {
 
 var ui_starter = {
 	start: function() {
-		if ($ && ($('#m_info').length || $('#stats').length) && GUIp_locale && GUIp_i18n) {
+		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_locale && window.GUIp_i18n) {
 			clearInterval(starterInt);
 			var start = new Date();
-			if (GUIp_locale === 'ru') {
+			if (window.GUIp_locale === 'ru') {
 				// migration from GM_ to GUIp_
 				ui_storage.migrate();
 			}
@@ -2337,7 +2336,7 @@ var ui_starter = {
 			ui_informer.init();
 			ui_forum.init();
 			ui_improver.improve();
-			if (GUIp_locale === 'ru') {
+			if (window.GUIp_locale === 'ru') {
 				ui_laying_timer.init();
 			}
 			ui_observers.init();

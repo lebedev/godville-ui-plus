@@ -1,8 +1,8 @@
-var GUIp_browser = 'Chrome';
-GUIp_getResource = function(res) {
+window.GUIp_browser = 'Chrome';
+window.GUIp_getResource = function(res) {
 	return localStorage.GUIp_prefix + res;
 };
-GUIp_addGlobalStyleURL = function(url, id) {
+window.GUIp_addGlobalStyleURL = function(url, id) {
 	var sel = document.createElement('link');
 	sel.setAttribute('type', 'text/css');
 	sel.setAttribute('href', url);
