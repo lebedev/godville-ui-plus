@@ -107,7 +107,7 @@ function GUIp_getWords() {
 			'aura box',
 			//'arena box',
 			'black box',
-			//'boss box',
+			'boss box',
 			//'coolstory box',
 			'friend box',
 			'gift box',
@@ -120,18 +120,18 @@ function GUIp_getWords() {
 			'teleporter',
 			'to arena box',
 			'transformer',
-			//'quest box'
+			'quest box'
 		],
 		descriptions: [
 			'This item gives a new aura to the hero',
 			//'Данный предмет можно активировать только во время дуэли',
 			'This item can affect the hero in a good or bad way',
-			//'Этот предмет ищет для героя босса',
+			'This item summons a boss-monster for the hero to fight',
 			//'Этот предмет сочиняет о герое былину',
 			'This item helps your hero find a new friend',
 			'This spooky item can turn into something',
 			'This item may give your hero a pleasant surprise',
-			'Activating this item will increase the number of available invitations',
+			'Activating this item will increase the number of available invitations.',
 			'This item can completely restore the hero\'s health',
 			'This item adds one accumulator charge when activated',
 			'This item makes the hero search for allies against an underground boss',
@@ -139,7 +139,7 @@ function GUIp_getWords() {
 			'This item can teleport the hero into a random town',
 			'This item teleports the hero to the arena when activated',
 			'This item can transform one or several bold items in inventory into golden bricks',
-			//'Этот предмет отправляет героя в мини-квест'
+			'This item sends the hero on a mini-quest when activated'
 		]
 	},
 
