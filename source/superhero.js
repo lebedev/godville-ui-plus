@@ -1243,7 +1243,7 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($box)) {
 			$('.gp_label').addClass('l_capt');
 			$('.gp_val').addClass('l_val');
-			if (ui_data.isDungeon) {
+			if (ui_data.isDungeon && $('#map').length) {
 				var isContradictions = $('#map')[0].textContent.match(/Противоречия|Disobedience/);
 				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.east, (isContradictions ? 'walk_w' : 'walk_e'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_east);
 				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.west, (isContradictions ? 'walk_e' : 'walk_w'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_west);
@@ -1267,9 +1267,9 @@ var ui_improver = {
 				}
 			}
 			//hide_charge_button
-			var charge_button = $('#cntrl .hch_link')[0];
-			if (charge_button) {
-				charge_button.style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
+			var charge_button = $('#cntrl .hch_link');
+			if (charge_button.length) {
+				charge_button[0].style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
 			}
 		}
 		
@@ -1334,8 +1334,8 @@ var ui_improver = {
 
 // ---------- Map --------------
 	improveMap: function() {
-		if (ui_data.isDungeon) {
-			if (this.isFirstTime) {
+		if (ui_data.isDungeon && $('#map .dml').length) {
+			if (this.isFirstTime && window.GUIp_locale === 'ru') {
 				document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
 					'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - ' + window.GUIp_i18n.boss_warning_hint + '</div></div>' +
 					'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
@@ -1372,26 +1372,22 @@ var ui_improver = {
 				$boxML = $('#map .dml'),
 				$boxMC = $('#map .dmc'),
 				kRow = $boxML.length,
-				kColumn = $boxML[0].textContent.length;
-
-			//	Гласы направления делаем невидимыми
-			for (i = 0; i < 4; i++) {
-				$box[i].style.visibility = 'hidden';
-			}
-
-			var isJumping = $('#map')[0].textContent.match(/Прыгучести|Jumping/); 
-
-			var MaxMap = 0;	//	Счетчик указателей  
-			//	Карта возможного клада
-			var MapArray = [];
+				kColumn = $boxML[0].textContent.length,
+				isJumping = $('#map')[0].textContent.match(/Прыгучести|Jumping/),
+				MaxMap = 0,	// Счетчик указателей
+				MapArray = []; // Карта возможного клада
 			for (i = 0; i < kRow; i++) {
 				MapArray[i] = [];
 				for (j = 0; j < kColumn; j++) {
 					MapArray[i][j] = ('?!@'.indexOf($boxML[i].textContent[j]) !== - 1) ? 0 : -1;
 				}
 			}
+			// Гласы направления делаем невидимыми
+			for (i = 0; i < 4; i++) {
+				$box[i].style.visibility = 'hidden';
+			}
 			for (var si = 0; si < kRow; si++) {
-				//	Ищем где мы находимся
+				// Ищем где мы находимся
 				j = $boxML[si].textContent.indexOf('@');
 				if (j !== -1) {
 					var direction = document.querySelector('.sort_ch').textContent === '▼',
