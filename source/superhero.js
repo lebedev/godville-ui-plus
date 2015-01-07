@@ -1094,7 +1094,9 @@ var ui_improver = {
 		this.improveNews();
 		this.improveEquip();
 		this.improvePantheons();
-		this.improveMap();
+		if (ui_data.isDungeon) {
+			this.improveMap();
+		}
 		this.improveInterface();
 		this.improveChat();
 		if (this.isFirstTime && (ui_data.isBattle || ui_data.isDungeon)) {
@@ -1334,22 +1336,22 @@ var ui_improver = {
 
 // ---------- Map --------------
 	improveMap: function() {
-		if (ui_data.isDungeon && $('#map .dml').length) {
-			if (this.isFirstTime && window.GUIp_locale === 'ru') {
-				document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
-					'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - ' + window.GUIp_i18n.boss_warning_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - ' + window.GUIp_i18n.small_prayer_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - ' + window.GUIp_i18n.small_healing_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc unknownTrap"></div><div> - ' + window.GUIp_i18n.unknown_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ' + window.GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ' + window.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ' + window.GUIp_i18n.mid_damage_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ' + window.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - ' + window.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
-					'<div class="guip_legend"><div class="dmc bossSlay moveLoss"></div><div> - ' + window.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
-				);
-			}
+		if (this.isFirstTime && window.GUIp_locale === 'ru') {
+			document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
+				'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - ' + window.GUIp_i18n.boss_warning_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - ' + window.GUIp_i18n.small_prayer_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - ' + window.GUIp_i18n.small_healing_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc unknownTrap"></div><div> - ' + window.GUIp_i18n.unknown_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ' + window.GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ' + window.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ' + window.GUIp_i18n.mid_damage_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ' + window.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - ' + window.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc bossSlay moveLoss"></div><div> - ' + window.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
+			);
+		}
+		if ($('#map .dml').length) {
 			if (ui_storage.get('Option:relocateMap')) {
 				if (!$('#a_central_block #map').length) {
 					$('#map').insertBefore($('#m_control'));
@@ -2316,7 +2318,7 @@ var ui_trycatcher = {
 
 var ui_starter = {
 	start: function() {
-		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_locale && window.GUIp_i18n) {
+		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_browser && window.GUIp_i18n) {
 			clearInterval(starterInt);
 			var start = new Date();
 			if (window.GUIp_locale === 'ru') {

@@ -1,3 +1,9 @@
+(function() {
+var starter = setInterval(initPhrases, 100);
+function initPhrases() {
+if (!window.GUIp_browser) { return; }
+clearInterval(starter);
+
 window.GUIp_getWords = function() {
 	return {
 	// Этот параметр показывает текущую версию файла
@@ -617,3 +623,6 @@ window.GUIp_i18n = {
 	monospace_hint: 'Сделать текст моноширинным',
 	monospace: 'мш',
 };
+
+}
+})();

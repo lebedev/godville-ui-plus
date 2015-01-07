@@ -1,6 +1,10 @@
 (function() {
 'use strict';
+var starter = setInterval(GUIp_forum, 100);
+function GUIp_forum() {
 try {
+
+if (!window.GUIp_i18n || !window.GUIp_browser) { return; }
 
 var doc = document;
 var $id = function(id) {
@@ -227,5 +231,6 @@ if ($reply_form) {
 
 } catch(e) {
 	console.error(e);
+}
 }
 })();

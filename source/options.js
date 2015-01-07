@@ -445,7 +445,7 @@ var def, curr_sect, god_name,
 	ImproveInProcess = false;
 
 var starterInt = setInterval(function() {
-	if (window.jQuery && window.GUIp_i18n) {
+	if (window.jQuery && window.GUIp_browser && window.GUIp_i18n) {
 		$j = window.jQuery.noConflict();
 		clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
