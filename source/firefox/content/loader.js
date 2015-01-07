@@ -8,7 +8,8 @@
 		jquery: '/javascripts/jquery-1.10.2.min.js',
 		options_page: prefix + 'options-page.js',
 		options: prefix + 'options.js',
-		forum: prefix + 'forum.js'
+		forum: prefix + 'forum.js',
+		log: prefix + 'log.js'
 	};
 
 	var loader = {
@@ -30,16 +31,16 @@
 				if (!windowStats.get(doc)) {
 					if (path.match(/^\/superhero/)) {
 						windowStats.set(doc, 'scriptsLoaded');
-						loader.createScripts(doc, [scripts.phrases_ru, scripts.guip_firefox, scripts.superhero]);
+						loader.createScripts(doc, [scripts.guip_firefox, scripts.phrases_ru, scripts.superhero]);
 					} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
 						windowStats.set(doc, 'scriptsLoaded');
-						loader.createScripts(doc, [scripts.jquery, scripts.phrases_ru, scripts.guip_firefox, scripts.options_page, scripts.options]);
+						loader.createScripts(doc, [scripts.jquery, scripts.guip_firefox, scripts.phrases_ru, scripts.options_page, scripts.options]);
 					} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
 						windowStats.set(doc, 'scriptsLoaded');
-						loader.createScripts(doc, [scripts.phrases_ru, scripts.guip_firefox, scripts.forum]);
+						loader.createScripts(doc, [scripts.guip_firefox, scripts.phrases_ru, scripts.forum]);
 					} else if (path.match(/^\/duels\/log\//)) {
 						windowStats.set(doc, 'scriptsLoaded');
-						loader.createScripts(doc, [scripts.phrases_ru, scripts.log]);
+						loader.createScripts(doc, [scripts.log]);
 					}
 				}
 			}
@@ -52,13 +53,13 @@
 				if (!windowStats.get(doc)) {
 					if (path.match(/^\/superhero/)) {
 						windowStats.set(doc, 'scriptsLoaded');
-						loader.createScripts(doc, [scripts.phrases_en, scripts.guip_firefox, scripts.superhero]);
+						loader.createScripts(doc, [scripts.guip_firefox, scripts.phrases_en, scripts.superhero]);
 					} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
 						windowStats.set(doc, 'scriptsLoaded');
-						loader.createScripts(doc, [scripts.jquery, scripts.phrases_en, scripts.guip_firefox, scripts.options_page, scripts.options]);
+						loader.createScripts(doc, [scripts.jquery, scripts.guip_firefox, scripts.phrases_en, scripts.options_page, scripts.options]);
 					} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
 						windowStats.set(doc, 'scriptsLoaded');
-						loader.createScripts(doc, [scripts.phrases_en, scripts.guip_firefox, scripts.forum]);
+						loader.createScripts(doc, [scripts.guip_firefox, scripts.phrases_en, scripts.forum]);
 					}
 				}
 			}

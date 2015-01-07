@@ -403,16 +403,16 @@ var ui_help_dialog = {
 		this.append('<div style="text-align: left;">' +
 						'<div>' + window.GUIp_i18n.if_something_wrong + '</div>' +
 						'<ol>' +
-						'<li>' + window.GUIp_i18n.help_refresh + '</li>' +
-						'<li><div id="check_version" class="div_link" style="display: inline;">' + window.GUIp_i18n.help_check_version + '</div></li>' +
-						'<li class="update_required Chrome hidden">' + window.GUIp_i18n.help_update_chrome_1 + '</li>' +
-						'<li class="update_required Chrome hidden">' + window.GUIp_i18n.help_update_chrome_2 + '</li>' +
-						'<li class="update_required Firefox hidden">' + window.GUIp_i18n.help_update_firefox_1 + '</li>' +
-						'<li class="update_required Firefox hidden">' + window.GUIp_i18n.help_update_firefox_2 + '</li>' +
-						'<li class="update_required Chrome Firefox hidden">' + window.GUIp_i18n.help_back_to_step_1 + '</li>' +
-						'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_1 + '</li>' +
-						'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_2 + '</li>' +
-						'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_3 + '</li>' +
+							'<li>' + window.GUIp_i18n.help_refresh + '</li>' +
+							'<li><div id="check_version" class="div_link" style="display: inline;">' + window.GUIp_i18n.help_check_version + '</div></li>' +
+							'<li class="update_required Chrome hidden">' + window.GUIp_i18n.help_update_chrome_1 + '</li>' +
+							'<li class="update_required Chrome hidden">' + window.GUIp_i18n.help_update_chrome_2 + '</li>' +
+							'<li class="update_required Firefox hidden">' + window.GUIp_i18n.help_update_firefox_1 + '</li>' +
+							'<li class="update_required Firefox hidden">' + window.GUIp_i18n.help_update_firefox_2 + '</li>' +
+							'<li class="update_required Chrome Firefox hidden">' + window.GUIp_i18n.help_back_to_step_1 + '</li>' +
+							'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_1 + '</li>' +
+							'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_2 + '</li>' +
+							'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_3 + '</li>' +
 						'</ol>' +
 						'<div>' + window.GUIp_i18n.help_useful_links + '</div>' +
 					'</div>');
@@ -427,6 +427,8 @@ var ui_help_dialog = {
 			this.append(this.getDumpButton('logger', 'Logger'));
 			this.append($('<span>, </span>'));
 			this.append(this.getDumpButton('forum', 'Forum'));
+			this.append($('<span>, </span>'));
+			this.append(this.getDumpButton('log', 'Log:'));
 			this.append('<br>');
 		}
 		$('.hint_bar_close', this.bar).append(this.getToggleButton(window.GUIp_i18n.close));
@@ -1775,6 +1777,8 @@ var ui_improver = {
 		if (this.isFirstTime) {
 			ui_utils.getXHR('/duels/log/' + window.so.state.stats.perm_link.value, this.parseChronicles.bind(this));
 		}
+		ui_storage.set('Log:' + window.so.state.stats.perm_link.value + ':steps', $('#m_fight_log .block_title').text().match(/\d+/)[0]);
+		ui_storage.set('Log:' + window.so.state.stats.perm_link.value + ':map', JSON.stringify(window.so.state.d_map));
 	},
 
 	colorDungeonMap: function() {

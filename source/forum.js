@@ -5,7 +5,7 @@ function GUIp_forum() {
 try {
 
 if (!window.GUIp_i18n || !window.GUIp_browser) { return; }
-
+clearInterval(starter);
 var doc = document;
 var $id = function(id) {
 	return doc.getElementById(id);

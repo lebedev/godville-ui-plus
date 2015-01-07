@@ -18,7 +18,8 @@
 		jquery: '//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js',
 		options_page: prefix + 'options-page.js',
 		options: prefix + 'options.js',
-		forum: prefix + 'forum.js'
+		forum: prefix + 'forum.js',
+		log: prefix + 'log.js'
 	};	
 	var site = location.href,
 		path = location.pathname;
@@ -30,7 +31,7 @@
 		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
 			createScripts([scripts.guip_chrome, scripts.phrases_ru, scripts.forum.js]);
 		} else if (path.match(/^\/duels\/log\//)) {
-			createScripts([scripts.guip_chrome, scripts.phrases_ru, scripts.log]);
+			createScripts([scripts.log]);
 		}
 	} else if (site.match(/^https?:\/\/godvillegame.com/)) {
 		if (path.match(/^\/superhero/)) {
