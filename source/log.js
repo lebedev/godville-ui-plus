@@ -23,7 +23,7 @@
 		// old entries deletion
 		var len, lines = [];
 		for (i = 0, len = localStorage.length; i < len; i++) {
-			if (localStorage.key(i).match(godname_prefix + 'Log:')) {
+			if (localStorage.key(i).match(godname_prefix + 'Log:') && !localStorage.key(i).match(log)) {
 				lines.push(localStorage.key(i));
 			}
 		}
@@ -37,13 +37,29 @@
 	if (location.href.match('boss') || !document.getElementById('fight_log_capt').textContent.match('Хроника подземелья')) {
 		return;
 	}
+
+	var godname_prefix = 'GUIp_' + localStorage.GUIp_CurrentUser + ':',
+		log = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':',
+		steps = +document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья \(шаг (\d+)\)/)[1];
+	if (!document.querySelector('#dmap') && steps === +localStorage[godname_prefix + log + 'steps']) {
+		var map = JSON.parse(localStorage[godname_prefix + log + 'map']),
+			map_elem = '<div id="hero2"><div class="box"><fieldset style="min-width:0;"><legend>Карта</legend><div id="dmap" class="new_line">';
+		for (var i = 0, ilen = map.length; i < ilen; i++) {
+			map_elem += '<div class="dml" style="width:' + (map[0].length * 21) + 'px;">';
+			for (var j = 0, jlen = map[0].length; j < jlen; j++) {
+				map_elem += '<div class="dmc">' + map[i][j] + '</div>';
+			}
+			map_elem += '</div>';
+		}
+		map_elem += '</div></fieldset></div></div>';
+		document.getElementById('right_block').insertAdjacentHTML('beforeend', map_elem);
+	}
 	var $box = document.querySelector('#hero2 fieldset') || document.getElementById('right_block');
 	if (location.href.match('sort')) {
 		$box.insertAdjacentHTML('beforeend', '<span>Кнопка работает только при другом порядке записей.</span>');
 		return;
 	}
-	var steps = +document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья \(шаг (\d+)\)/)[1],
-		steps_min = localStorage[godname_prefix + 'LEMRestrictions:FirstRequest'] || 12;
+	var steps_min = localStorage[godname_prefix + 'LEMRestrictions:FirstRequest'] || 12;
 	if (steps < steps_min) {
 		$box.insertAdjacentHTML('beforeend', '<span>Кнопка появится на ' + steps_min + '+ шаге.</span>');
 		return;
@@ -82,9 +98,7 @@
 																									.replace(/ {2,}/g, ' ')
 																									.replace(/\n{2,}/g, '\n') +
 												  '</html>';
-	var godname_prefix = 'GUIp_' + localStorage.GUIp_CurrentUser + ':',
-		log = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':',
-		button = document.getElementById('send_to_LEM'),
+	var button = document.getElementById('send_to_LEM'),
 		match = document.getElementById('match'),
 		search_mode = document.getElementById('search_mode'),
 		time_frame_seconds = (localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 6)*60;
