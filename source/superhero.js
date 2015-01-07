@@ -1057,6 +1057,7 @@ var ui_improver = {
 		'bossSlay',
 		'smallPrayer',
 		'smallHealing',
+		'unknownTrap',
 		'trophyLoss',
 		'moneyLoss',
 		'lowDamage',
@@ -1340,6 +1341,7 @@ var ui_improver = {
 					'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
 					'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - ' + window.GUIp_i18n.small_prayer_hint + '</div></div>' +
 					'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - ' + window.GUIp_i18n.small_healing_hint + '</div></div>' +
+					'<div class="guip_legend"><div class="dmc unknownTrap"></div><div> - ' + window.GUIp_i18n.unknown_trap_hint + '</div></div>' +
 					'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ' + window.GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
 					'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ' + window.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
 					'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ' + window.GUIp_i18n.mid_damage_trap_hint + '</div></div>' +

@@ -267,6 +267,7 @@ window.GUIp_i18n = {
 	boss_slay_hint: 'boss',
 	small_prayer_hint: 'small prayer',
 	small_healing_hint: 'small healing',
+	unknown_trap_hint: 'trap blocked by pet',
 	trophy_loss_trap_hint: 'trap: gold or trophy loss',
 	low_damage_trap_hint: 'trap: low damage',
 	mid_damage_trap_hint: 'trap: moderate damage',

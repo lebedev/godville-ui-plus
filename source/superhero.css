@@ -417,6 +417,9 @@ body:not(.nightly) .dmc.smallPrayer {
 body:not(.nightly) .dmc.smallHealing {
 	background: #b9edbe;
 }
+body:not(.nightly) .dmc.unknownTrap {
+	background: #c173da;
+}
 body:not(.nightly) .dmc.trophyLoss,
 body:not(.nightly) .dmc.moneyLoss {
 	background: #dee0c0;
@@ -483,7 +486,9 @@ body.nightly .dmc.smallPrayer {
 body.nightly .dmc.smallHealing {
 	background: #2f6c37;
 }
-
+body:.nightly .dmc.unknownTrap {
+	background: #62317c;
+}
 body.nightly .dmc.trophyLoss,
 body.nightly .dmc.moneyLoss {
 	background: #6c6d4e;

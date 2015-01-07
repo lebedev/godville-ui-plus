@@ -412,6 +412,7 @@ window.GUIp_i18n = {
 	boss_slay_hint: 'босс',
 	small_prayer_hint: 'слабая молилка',
 	small_healing_hint: 'слабая лечилка',
+	unknown_trap_hint: 'ловушка, заблокированная петом',
 	trophy_loss_trap_hint: 'ловушка: золото или трофеи',
 	low_damage_trap_hint: 'ловушка: слабый урон',
 	mid_damage_trap_hint: 'ловушка: сильный урон',
