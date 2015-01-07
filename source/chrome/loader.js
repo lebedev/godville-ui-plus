@@ -29,7 +29,7 @@
 		} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
 			createScripts([scripts.jquery, scripts.guip_chrome, scripts.phrases_ru, scripts.options_page, scripts.options]);
 		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-			createScripts([scripts.guip_chrome, scripts.phrases_ru, scripts.forum.js]);
+			createScripts([scripts.guip_chrome, scripts.phrases_ru, scripts.forum]);
 		} else if (path.match(/^\/duels\/log\//)) {
 			createScripts([scripts.log]);
 		}
