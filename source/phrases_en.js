@@ -4,7 +4,7 @@ function initPhrases() {
 if (!window.GUIp_browser) { return; }
 clearInterval(starter);
 
-window.GUIp_getWords = function() {
+window.GUIp_words = function() {
 	return {
 	// Этот параметр показывает текущую версию файла
 	// Меняется только при _структурных_ изменениях.

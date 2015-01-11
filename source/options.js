@@ -1,8 +1,6 @@
 (function() {
 'use strict';
 
-var $j;
-
 var storage = {
 	_get_key: function(key) {
 		return "GUIp_" + god_name + ':' + key;
@@ -112,7 +110,6 @@ function loadOptions() {
 		$j('#voice_menu').slideToggle("slow");
 		$j('#GUIp_words').slideToggle("slow");
 	});
-	$j('<div>', {id:"temp"}).insertAfter($j('#profile_main')).hide();
 	if (storage.get('sex') === 'female') {
 		$j('#voice_menu .l_capt:first').text($j('#voice_menu .l_capt:first').text().replace('героя', 'героини'));
 		$j('#voice_menu .g_desc:first').text($j('#voice_menu .g_desc:first').text().replace('герою', 'героине'));
@@ -120,6 +117,7 @@ function loadOptions() {
 
 	$j(document).on('change keypress paste focus textInput input', '#ta_edit', function() {
 		$j(this).attr('rows', $j(this).val().split('\n').length || 1);
+		setSaveWordsButtonState();
 	}).attr('rows', 1);
 
 	$j('#GUIp_import').click(function() {
@@ -136,22 +134,22 @@ function loadOptions() {
 }
 
 function setForm() {
-	for (var i = 0; i < sects.length; i++) {
-		addOnClick($j('#l_' + sects[i]), sects[i]);
+	for (var sect in def.phrases) {
+		addOnClick($j('#l_' + sect), sect);
 	}
-	$j('#words').submit(function() { save_options(1); return false; });
-	$j('#add_options').submit(function() { save_options(2); return false; });
-	$j('#words input[type="button"]').click(function() { reset_options(); return false; });
+	$j('#words').submit(function() { save_words(); return false; });
+	$j('#add_options').submit(function() { save_options(); return false; });
+	$j('#set_default').click(function() { delete_custom_words(); return false; });
 }
 
-function addOnClick($el, text) {
+function addOnClick($el, sect) {
 	$el.click(function() {
-		setText(text);
+		setText(sect);
 		return false;
 	});
 }
 
-function reset_options() {
+function delete_custom_words() {
 	ImproveInProcess = true;
 	var $elem = $j('#ta_edit');
 	var text = def.phrases[curr_sect];
@@ -159,170 +157,189 @@ function reset_options() {
 	$elem.val(text.join("\n"));
 	storage.remove('phrases_' + curr_sect);
 	storage.set('phrasesChanged', 'true');
+	setSaveWordsButtonState();
+	setDefaultWordsButtonState(false);
 	ImproveInProcess = false;
 }
 
-function save_options(form) {
+function save_words() {
 	ImproveInProcess = true;
+	$j('#gui_word_progress').show();
+	var text = $j('#ta_edit').val();
+	if (text === "") { return; }
+	var t_list = text.split("\n"),
+		t_out = [];
+	for (var i = 0; i < t_list.length; i++) {
+		if (t_list[i] !== '') {
+			t_out.push(t_list[i]);
+		}
+	}
+	storage.set('phrases_' + curr_sect, t_out.join("||"));
+	$j('#gui_word_progress').fadeOut("slow");
+	storage.set('phrasesChanged', 'true');
+	setSaveWordsButtonState();
+	setDefaultWordsButtonState(true);
+	ImproveInProcess = false;
+}
+
+function save_options() {
 	var i;
-	if (form === 1) {
-		$j('#gui_word_progress').show();
-		var text = $j('#ta_edit').val();
-		if (text === "") { return; }
-		var t_list = text.split("\n"); var t_out = [];
-		for (i = 0; i < t_list.length; i++) {
-			if (t_list[i] !== '') {
-				t_out.push(t_list[i]);
-			}
+	$j('#gui_options_progress').show();
+
+	for (i = 0; i < $j('.option-checkbox').length; i++) {
+		var option = $j('.option-checkbox')[i].id;
+		// option = "first_second_third" to option = "firstSecondThird"
+		var parts = option.split('_');
+		for (var k = 1; k < parts.length; k++) {
+			parts[k] = parts[k][0].toUpperCase() + parts[k].slice(1);
 		}
-		storage.set('phrases_' + curr_sect, t_out.join("||"));
-		$j('#gui_word_progress').fadeOut("slow");
-		setText(curr_sect);
-		storage.set('phrasesChanged', 'true');
+		option = parts.join('');
+		storage.set('Option:' + option, $j('.option-checkbox')[i].checked);
+	}
+
+	if ($j('#relocate_duel_buttons:checked').length) {
+		var buttons = [];
+		if ($j('#relocate_arena:checked').length) { buttons.push('arena'); }
+		if ($j('#relocate_chf:checked').length) { buttons.push('chf'); }
+		if ($j('#relocate_cvs:checked').length) { buttons.push('cvs'); }
+		storage.set('Option:relocateDuelButtons', buttons.join());
 	} else {
-		$j('#gui_options_progress').show();
+		storage.set('Option:relocateDuelButtons', '');
+	}
 
-		for (i = 0; i < $j('.option-checkbox').length; i++) {
-			var option = $j('.option-checkbox')[i].id;
-			// option = "first_second_third" to option = "firstSecondThird"
-			var parts = option.split('_');
-			for (var k = 1; k < parts.length; k++) {
-				parts[k] = parts[k][0].toUpperCase() + parts[k].slice(1);
-			}
-			option = parts.join('');
-			storage.set('Option:' + option, $j('.option-checkbox')[i].checked);
-		}
+	if ($j('#forbidden_title_notices:checked').length) {
+		var notices = [];
+		if (!$j('#title_notice_pm:checked').length) { notices.push('pm'); }
+		if (!$j('#title_notice_gm:checked').length) { notices.push('gm'); }
+		if (!$j('#title_notice_fi:checked').length) { notices.push('fi'); }
+		storage.set('Option:forbiddenTitleNotices', notices.join());
+	} else {
+		storage.set('Option:forbiddenTitleNotices', '');
+	}
 
-		if ($j('#relocate_duel_buttons:checked').length) {
-			var buttons = [];
-			if ($j('#relocate_arena:checked').length) { buttons.push('arena'); }
-			if ($j('#relocate_chf:checked').length) { buttons.push('chf'); }
-			if ($j('#relocate_cvs:checked').length) { buttons.push('cvs'); }
-			storage.set('Option:relocateDuelButtons', buttons.join());
-		} else {
-			storage.set('Option:relocateDuelButtons', '');
-		}
-
-		if ($j('#forbidden_title_notices:checked').length) {
-			var notices = [];
-			if (!$j('#title_notice_pm:checked').length) { notices.push('pm'); }
-			if (!$j('#title_notice_gm:checked').length) { notices.push('gm'); }
-			if (!$j('#title_notice_fi:checked').length) { notices.push('fi'); }
-			storage.set('Option:forbiddenTitleNotices', notices.join());
-		} else {
-			storage.set('Option:forbiddenTitleNotices', '');
-		}
-
-		if ($j('#use_background:checked').length) {
-			if ($j('#custom_background:checked').length) {
-				var custom_file = $j('#custom_file')[0].files[0],
-					custom_link = $j('#custom_link').val().match(/https?:\/\/.*/);
-				if (custom_file && custom_file.type.match(/^image\/(bmp|cis\-cod|gif|ief|jpeg|jpg|pipeg|png|svg\+xml|tiff|x\-cmu\-raster|x\-cmx|x\-icon|x\-portable\-anymap|x\-portable\-bitmap|x\-portable\-graymap|x\-portable\-pixmap|x\-rgb|x\-xbitmap|x\-xpixmap|x\-xwindowdump)$/i)) {
-					var reader = new FileReader();
-					reader.onload = function(e) {
-						storage.set('Option:useBackground', e.target.result);
-					};
-					reader.readAsDataURL(custom_file);
-					$j('#cb_status').text(window.GUIp_i18n.bg_status_file);
-					$j('#cb_status').css('color', 'green');
-				} else if (custom_link) {
-					$j('#cb_status').text(window.GUIp_i18n.bg_status_link);
-					$j('#cb_status').css('color', 'green');
-					storage.set('Option:useBackground', custom_link);
-				} else if (storage.get('Option:useBackground') && storage.get('Option:useBackground') !== 'cloud') {
-					$j('#cb_status').text(window.GUIp_i18n.bg_status_same);
-					$j('#cb_status').css('color', 'blue');
-				} else {
-					$j('#cb_status').text(window.GUIp_i18n.bg_status_error);
-					$j('#cb_status').css('color', 'red');
-					setTimeout(function() {
-						$j('#cloud_background').click();
-					}, 150);
-					storage.set('Option:useBackground', 'cloud');
-				}
-				$j('#cb_status').fadeIn();
+	if ($j('#use_background:checked').length) {
+		if ($j('#custom_background:checked').length) {
+			var custom_file = $j('#custom_file')[0].files[0],
+				custom_link = $j('#custom_link').val().match(/https?:\/\/.*/);
+			if (custom_file && custom_file.type.match(/^image\/(bmp|cis\-cod|gif|ief|jpeg|jpg|pipeg|png|svg\+xml|tiff|x\-cmu\-raster|x\-cmx|x\-icon|x\-portable\-anymap|x\-portable\-bitmap|x\-portable\-graymap|x\-portable\-pixmap|x\-rgb|x\-xbitmap|x\-xpixmap|x\-xwindowdump)$/i)) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					storage.set('Option:useBackground', e.target.result);
+				};
+				reader.readAsDataURL(custom_file);
+				$j('#cb_status').text(window.GUIp_i18n.bg_status_file);
+				$j('#cb_status').css('color', 'green');
+			} else if (custom_link) {
+				$j('#cb_status').text(window.GUIp_i18n.bg_status_link);
+				$j('#cb_status').css('color', 'green');
+				storage.set('Option:useBackground', custom_link);
+			} else if (storage.get('Option:useBackground') && storage.get('Option:useBackground') !== 'cloud') {
+				$j('#cb_status').text(window.GUIp_i18n.bg_status_same);
+				$j('#cb_status').css('color', 'blue');
+			} else {
+				$j('#cb_status').text(window.GUIp_i18n.bg_status_error);
+				$j('#cb_status').css('color', 'red');
 				setTimeout(function() {
-					$j('#cb_status').fadeOut();
-				}, 1000);
-			}
-			else if ($j('#cloud_background:checked').length) {
+					$j('#cloud_background').click();
+				}, 150);
 				storage.set('Option:useBackground', 'cloud');
 			}
-		} else {
-			storage.set('Option:useBackground', '');
+			$j('#cb_status').fadeIn();
+			setTimeout(function() {
+				$j('#cb_status').fadeOut();
+			}, 1000);
 		}
+		else if ($j('#cloud_background:checked').length) {
+			storage.set('Option:useBackground', 'cloud');
+		}
+	} else {
+		storage.set('Option:useBackground', '');
+	}
 
-		if ($j('#voice_timeout:checked').length) {
-			var voice_timeout = $j('#voice_timeout_value').val();
-			if (voice_timeout) {
-				storage.set('Option:voiceTimeout', voice_timeout);
-			} else {
-				$j('#voice_timeout_value').val('30');
-				$j('#voice_timeout').click();
-				storage.set('Option:voiceTimeout', '');
-			}
+	if ($j('#voice_timeout:checked').length) {
+		var voice_timeout = $j('#voice_timeout_value').val();
+		if (voice_timeout) {
+			storage.set('Option:voiceTimeout', voice_timeout);
 		} else {
+			$j('#voice_timeout_value').val('30');
+			$j('#voice_timeout').click();
 			storage.set('Option:voiceTimeout', '');
 		}
-
-		if ($j('#freeze_voice_button:checked').length) {
-			var cases = [];
-			if ($j('#freeze_after_voice:checked').length) { cases.push('after_voice'); }
-			if ($j('#freeze_when_empty:checked').length) { cases.push('when_empty'); }
-			storage.set('Option:freezeVoiceButton', cases.join());
-		} else {
-			storage.set('Option:freezeVoiceButton', '');
-		}
-
-		if (!$j('#forbidden_informers:checked').length) {
-			$j('.informer-checkbox').prop('checked', true);
-		}
-		if (!$j('#forbidden_craft:checked').length) {
-			$j('.craft-checkbox').prop('checked', true);
-		}
-		document.getElementById('smelt!').checked = $j('#smelter:checked').length;
-		document.getElementById('transform!').checked = $j('#transformer:checked').length;
-		var forbiddenInformers = [];
-		for (i = 0; i < $j('.informer-checkbox').length; i++) {
-			if (!$j('.informer-checkbox')[i].checked) {
-				forbiddenInformers.push($j('.informer-checkbox')[i].id);
-			}
-		}
-		storage.set('Option:forbiddenInformers', forbiddenInformers.join());
-		var forbiddenCraft = [];
-		for (i = 0; i < $j('.craft-checkbox').length; i++) {
-			if (!$j('.craft-checkbox')[i].checked) {
-				forbiddenCraft.push($j('.craft-checkbox')[i].id);
-			}
-		}
-		storage.set('Option:forbiddenCraft', forbiddenCraft.join());
-
-		$j('#gui_options_progress').fadeOut('slow');
-
-		set_theme_and_background();
+	} else {
+		storage.set('Option:voiceTimeout', '');
 	}
+
+	if ($j('#freeze_voice_button:checked').length) {
+		var cases = [];
+		if ($j('#freeze_after_voice:checked').length) { cases.push('after_voice'); }
+		if ($j('#freeze_when_empty:checked').length) { cases.push('when_empty'); }
+		storage.set('Option:freezeVoiceButton', cases.join());
+	} else {
+		storage.set('Option:freezeVoiceButton', '');
+	}
+
+	if (!$j('#forbidden_informers:checked').length) {
+		$j('.informer-checkbox').prop('checked', true);
+	}
+	if (!$j('#forbidden_craft:checked').length) {
+		$j('.craft-checkbox').prop('checked', true);
+	}
+	document.getElementById('smelt!').checked = $j('#smelter:checked').length;
+	document.getElementById('transform!').checked = $j('#transformer:checked').length;
+	var forbiddenInformers = [];
+	for (i = 0; i < $j('.informer-checkbox').length; i++) {
+		if (!$j('.informer-checkbox')[i].checked) {
+			forbiddenInformers.push($j('.informer-checkbox')[i].id);
+		}
+	}
+	storage.set('Option:forbiddenInformers', forbiddenInformers.join());
+	var forbiddenCraft = [];
+	for (i = 0; i < $j('.craft-checkbox').length; i++) {
+		if (!$j('.craft-checkbox')[i].checked) {
+			forbiddenCraft.push($j('.craft-checkbox')[i].id);
+		}
+	}
+	storage.set('Option:forbiddenCraft', forbiddenCraft.join());
+
+	$j('#gui_options_progress').fadeOut('slow');
+
+	set_theme_and_background();
 	ImproveInProcess = false;
 }
 
-function setText(element_name) {
+function setSaveWordsButtonState() {
+	var save_words = $j('#save_words');
+	if ($j('#ta_edit').val().replace(/\n/g, '||') !== (storage.get('phrases_' + curr_sect) || def.phrases[curr_sect].join('||'))) {
+		save_words.removeAttr('disabled');
+	} else {
+		save_words.attr('disabled', 'disabled');
+	}
+}
+
+function setDefaultWordsButtonState(condition) {
+	var set_default = $j('#set_default');
+	if (condition) {
+		set_default.removeAttr('disabled');
+	} else {
+		set_default.attr('disabled', 'disabled');
+	}
+}
+
+function setText(sect) {
 	ImproveInProcess = true;
-	curr_sect = element_name;
-	$j('#words a.selected')[0].classList.remove('selected');
-	$j('#words a#l_' + curr_sect)[0].classList.add('selected');
-	var text_list = storage.get("phrases_" + element_name);
-	var text = (text_list && text_list !== "") ? text_list.split("||") : def.phrases[element_name];
-	$j('#ta_edit').attr('rows', text.length).val(text.join("\n"));
-
-	$j('#ta_edit').removeAttr('disabled');
-	$j('#submit2').removeAttr('disabled');
-	$j('#cancel2').removeAttr('disabled');
-
+	curr_sect = sect;
+	$j('#words a.selected').removeClass('selected');
+	$j('#words a#l_' + curr_sect).addClass('selected');
+	var text_list = storage.get('phrases_' + curr_sect);
+	var text = text_list ? text_list.split('||') : def.phrases[curr_sect];
+	$j('#ta_edit').removeAttr('disabled').attr('rows', text.length).val(text.join("\n"));
+	setSaveWordsButtonState();
+	setDefaultWordsButtonState(text_list);
 	ImproveInProcess = false;
 }
 
 // Restores select box state to saved value from localStorage.
 function restore_options() {
-	def = window.GUIp_getWords();
 	var i, r = new RegExp('^' + storage._get_key('Option:'));
 	for (i = 0; i < localStorage.length; i++) {
 		if (localStorage.key(i).match(r)) {
@@ -433,13 +450,13 @@ function set_theme_and_background() {
 	}
 }
 
-var def, curr_sect, god_name,
-	sects = ['heal', 'pray', 'sacrifice', 'exp', 'dig', 'hit', 'do_task', 'cancel_task', 'die', 'town', 'defend', 'exclamation', 'inspect_prefix', 'craft_prefix', 'walk_n', 'walk_s', 'walk_w', 'walk_e'],
+var def, $j, curr_sect, god_name,
 	ImproveInProcess = false;
 
 var starterInt = setInterval(function() {
 	if (window.jQuery && window.GUIp_browser && window.GUIp_i18n) {
 		$j = window.jQuery.noConflict();
+		def = window.GUIp_words();
 		clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
 		if (god_name) {
