@@ -375,7 +375,7 @@ window.GUIp_i18n = {
 	task: 'Задание (проценты)',
 	monsters: 'Монстры',
 	bricks: 'Кирпичи',
-	wood: 'Дерево',
+	logs: 'Дерево',
 	savings: 'Сбережения (тысячи)',
 	weapon: 'Оружие',
 	shield: 'Щит',

@@ -2,9 +2,13 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$QBpYp2"
+  <RDF:Description RDF:about="rdf:#firefox"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                   em:minVersion="4.0"
+                   em:minVersion="28.0"
+                   em:maxVersion="36.0" />
+  <RDF:Description RDF:about="rdf:#fennec2"
+                   em:id="{aa3c5121-dab2-40e2-81ca-7ea25febc110}"
+                   em:minVersion="28.0"
                    em:maxVersion="36.0" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="godville-ui-plus@badluck.dicey"
@@ -23,6 +27,7 @@
     <em:contributor>https://godville.net/gods/Neniu</em:contributor>
     <em:contributor>Шоп</em:contributor>
     <em:contributor>https://godville.net/gods/Шоп</em:contributor>
-    <em:targetApplication RDF:resource="rdf:#$QBpYp2"/>
+    <em:targetApplication RDF:resource="rdf:#firefox"/>
+    <em:targetApplication RDF:resource="rdf:#fennec2"/>
   </RDF:Description>
 </RDF:RDF>
