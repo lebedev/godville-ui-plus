@@ -28,7 +28,7 @@
 			}
 		}
 		for (i = 0, len = lines.length; i < len; i++) {
-			if (Date.now() - localStorage[lines[i]] > time_frame_seconds*1000) {
+			if (isNaN(localStorage[lines[i]]) || Date.now() - localStorage[lines[i]] > time_frame_seconds*1000) {
 				localStorage.removeItem(lines[i]);
 			}
 		}
