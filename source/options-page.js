@@ -11,7 +11,7 @@ return '<p>\n' +
 '<div>\n' +
 '	<div id="central_block_my_page" style="width: 36%;">\n' +
 '		<div id="profile_forms">\n' +
-'			<div id="godvilleUI_options">\n' +
+'			<div id="GUIp_options">\n' +
 '				<form id="add_options">\n' +
 '					<div class="bl_cell">\n' +
 '						<div class="bl_capt">' + window.GUIp_i18n.ui_settings_capt + '</div>\n' +

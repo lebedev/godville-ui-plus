@@ -18,6 +18,9 @@ var storage = {
 		else if (val === 'false') { return false; }
 		else { return val; }
 	},
+	remove: function(id) {
+		localStorage.removeItem(this._get_key(id));
+	},
 	importOptions: function(options_string) {
 		try {
 			var options = JSON.parse(options_string);
@@ -64,13 +67,6 @@ function loadOptions() {
 	$j('#profile_main').append(window.getOptionsPage());
 	setForm();
 	restore_options();
-	$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css({'position' : 'relative', 'top' : '0.25em'});
-	$j('input:not(.menu-checkbox):not(.option-checkbox)[type=radio]').css({'position' : 'relative', 'top' : '0.25em'});
-	if (window.GUIp_browser === 'Firefox') {
-		$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css('transform', 'scale(0.7)');
-	} else if (window.GUIp_browser === 'Chrome') {
-		$j('input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox]').css('-webkit-transform', 'scale(0.69)');
-	}
 	$j('#forbidden_informers').click(function() {
 		$j('#informers').slideToggle("slow");
 	});
@@ -122,7 +118,6 @@ function loadOptions() {
 		$j('#voice_menu .g_desc:first').text($j('#voice_menu .g_desc:first').text().replace('герою', 'героине'));
 	}
 
-	$j('#words a').css({'text-decoration' : 'underline', 'color' : '#199BDC', 'cursor' : 'pointer'});
 	$j(document).on('change keypress paste focus textInput input', '#ta_edit', function() {
 		$j(this).attr('rows', $j(this).val().split('\n').length || 1);
 	}).attr('rows', 1);
@@ -142,9 +137,7 @@ function loadOptions() {
 
 function setForm() {
 	for (var i = 0; i < sects.length; i++) {
-		var t = sects[i];
-		var $el = $j('#l_' + t);
-		addOnClick($el, t);
+		addOnClick($j('#l_' + sects[i]), sects[i]);
 	}
 	$j('#words').submit(function() { save_options(1); return false; });
 	$j('#add_options').submit(function() { save_options(2); return false; });
@@ -164,6 +157,8 @@ function reset_options() {
 	var text = def.phrases[curr_sect];
 	$elem.attr('rows', text.length);
 	$elem.val(text.join("\n"));
+	storage.remove('phrases_' + curr_sect);
+	storage.set('phrasesChanged', 'true');
 	ImproveInProcess = false;
 }
 
@@ -180,7 +175,7 @@ function save_options(form) {
 				t_out.push(t_list[i]);
 			}
 		}
-		storage.set("phrases_" + curr_sect, t_out.join("||"));
+		storage.set('phrases_' + curr_sect, t_out.join("||"));
 		$j('#gui_word_progress').fadeOut("slow");
 		setText(curr_sect);
 		storage.set('phrasesChanged', 'true');
@@ -312,10 +307,8 @@ function save_options(form) {
 function setText(element_name) {
 	ImproveInProcess = true;
 	curr_sect = element_name;
-	$j('#submit2').removeAttr('disabled');
-	$j('#cancel2').removeAttr('disabled');
-	$j('#words a').css({'text-decoration' : 'underline', 'color' : '#199BDC', 'cursor' : 'pointer'});
-	$j('#words a#l_' + element_name).css({'text-decoration' : 'none', 'color' : '#DA251D'});
+	$j('#words a.selected')[0].classList.remove('selected');
+	$j('#words a#l_' + curr_sect)[0].classList.add('selected');
 	var text_list = storage.get("phrases_" + element_name);
 	var text = (text_list && text_list !== "") ? text_list.split("||") : def.phrases[element_name];
 	$j('#ta_edit').attr('rows', text.length).val(text.join("\n"));

@@ -17,3 +17,23 @@ th {
 #voice_menu {
 	width: 100%;
 }
+
+#words a {
+	text-decoration: underline;
+	color: #199BDC;
+	cursor: pointer;
+}
+#words a.selected{
+	text-decoration: none;
+	color: #DA251D;
+	cursor: default;
+}
+#GUIp_options input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox],
+#GUIp_options input:not(.menu-checkbox):not(.option-checkbox)[type=radio] {
+	position: relative;
+	top: 0.25em;
+}
+#GUIp_options input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox] {
+	transform: scale(0.7);
+	-webkit-transform: scale(0.69);
+}
