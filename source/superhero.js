@@ -1423,7 +1423,7 @@ var ui_improver = {
 				if (j !== -1) {
 					var direction = document.querySelector('.sort_ch').textContent === '▼',
 						chronicles = document.querySelectorAll('#m_fight_log .d_line');
-					if (!(chronicles[direction ? 0 : chronicles.length - 1].classList.contains('moveLoss') && !chronicles[direction ? 1 : chronicles.length - 2].classList.contains('moveLoss'))) {
+					if (!(chronicles[direction ? 0 : chronicles.length - 1].classList.contains('trapMoveLoss') && !chronicles[direction ? 1 : chronicles.length - 2].classList.contains('trapMoveLoss'))) {
 						//	Проверяем куда можно пройти
 						if ($boxML[si - 1].textContent[j] !== '#' || isJumping && (si === 1 || si !== 1 && $boxML[si - 2].textContent[j] !== '#')) {
 							$box[0].style.visibility = '';	//	Север
