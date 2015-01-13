@@ -440,6 +440,9 @@ body:not(.nightly) .dmc.bossWarnings.smallPrayer {
 body:not(.nightly) .dmc.bossWarnings.smallHealing {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #b9edbe 50%, #b9edbe 100%);
 }
+body:not(.nightly) .dmc.bossWarnings.unknownTrap {
+	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #c173da 50%, #c173da 100%);
+}
 body:not(.nightly) .dmc.bossWarnings.trophyLoss,
 body:not(.nightly) .dmc.bossWarnings.moneyLoss {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #dee0c0 50%, #dee0c0 100%);
@@ -511,6 +514,9 @@ body.nightly .dmc.bossWarnings.smallPrayer {
 }
 body.nightly .dmc.bossWarnings.smallHealing {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2f6c37 50%, #2f6c37 100%);
+}
+body.nightly .dmc.bossWarnings.unknownTrap {
+	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #62317c 50%, #62317c 100%);
 }
 body.nightly .dmc.bossWarnings.trophyLoss,
 body.nightly .dmc.bossWarnings.moneyLoss {
