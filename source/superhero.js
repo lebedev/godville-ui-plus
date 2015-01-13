@@ -1845,6 +1845,9 @@ var ui_improver = {
 				clearInterval(this.windowResizeInt);
 				this.windowResizeInt = setTimeout(this.whenWindowResize.bind(this), 250);
 			}).bind(this));
+			if (ui_data.isBattle) {
+				document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + window.so.state.stats.perm_link.value + '" target="_blank">' + window.GUIp_i18n.broadcast + '</a>');
+			}
 		}
 
 		if (localStorage.ui_s !== ui_storage.get('ui_s')) {

@@ -624,3 +624,8 @@ body.nightly #hk_inventory_num .p_bar:after {
 #hk_inventory_num .p_bar:after {
 	left: 50%;
 }
+
+a.broadcast {
+	font-weight: bold;
+	font-size: 80%;
+}
