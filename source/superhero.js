@@ -45,6 +45,17 @@ var ui_data = {
 			}
 		}
 
+		if (!this.isBattle && !this.isDungeon) {
+			for (var i = 0, lines = [], len = localStorage.length; i < len; i++) {
+				if (localStorage.key(i).match(/Dungeon:/)) {
+					lines.push(localStorage.key(i));
+				}
+			}
+			for (i = 0, len = lines.length; i < len; i++) {
+				localStorage.removeItem(lines[i]);
+			}
+		}
+
 		this.getLEMRestrictions();
 		setInterval(this.getLEMRestrictions, 60*60*1000);
 
@@ -1735,12 +1746,10 @@ var ui_improver = {
 			this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(temp);
 			ui_storage.set('Dungeon:' + this.dungeonPhrases[i] + 'Phrases', temp);
 		}
-		ui_storage.set('Dungeon:phrasesExpirationDate', Date.now() + 4*60*60*1000);
 		this.improveChronicles();
 	},
 	getDungeonPhrases: function() {
-		var dungeonPhrasesExpirationDate = ui_storage.get('Dungeon:phrasesExpirationDate');
-		if (!dungeonPhrasesExpirationDate || dungeonPhrasesExpirationDate && Date.now() > dungeonPhrasesExpirationDate) {
+		if (!ui_storage.get('Dungeon:bossPhrases')) {
 			ui_utils.getXHR('/gods/' + (window.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), this.parseDungeonPhrases.bind(this));
 		} else {
 			for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
