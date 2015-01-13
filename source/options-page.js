@@ -283,7 +283,7 @@ return '<p>\n' +
 '			</div>\n' +
 '		</form>\n' +
 '	</div>\n' +
-'	<div style="margin-top: 2em;">\n' +
+'	<div id="GUIp_words" style="margin-top: 2em;">\n' +
 '		<form id="words">\n' +
 '			<div class="bl_cell">\n' +
 '				<div class="bl_capt">' + window.GUIp_i18n.voices_capt + '</div>\n' +
