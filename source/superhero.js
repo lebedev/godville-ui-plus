@@ -1088,7 +1088,7 @@ var ui_improver = {
 				this.improveDiary();
 				this.improveLoot();
 			}
-			if (ui_data.isDungeon && window.GUIp_locale === 'ru') {
+			if (ui_data.isDungeon) {
 				this.getDungeonPhrases();
 			}
 		}
@@ -1340,7 +1340,7 @@ var ui_improver = {
 
 // ---------- Map --------------
 	improveMap: function() {
-		if (this.isFirstTime && window.GUIp_locale === 'ru') {
+		if (this.isFirstTime) {
 			document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
 				'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - ' + window.GUIp_i18n.boss_warning_hint + '</div></div>' +
 				'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
@@ -1718,7 +1718,7 @@ var ui_improver = {
 	getDungeonPhrases: function() {
 		var dungeonPhrasesExpirationDate = ui_storage.get('Dungeon:phrasesExpirationDate');
 		if (!dungeonPhrasesExpirationDate || dungeonPhrasesExpirationDate && Date.now() > dungeonPhrasesExpirationDate) {
-			ui_utils.getXHR('/gods/Спандарамет', this.parseDungeonPhrases.bind(this));
+			ui_utils.getXHR('/gods/' + (window.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), this.parseDungeonPhrases.bind(this));
 		} else {
 			for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
 				this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(ui_storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
@@ -2218,7 +2218,7 @@ var ui_observers = {
 	},
 	chronicles: {
 		get condition() {
-			return ui_data.isDungeon && window.GUIp_locale === 'ru';
+			return ui_data.isDungeon;
 		},
 		config: { childList: true },
 		func: function(mutation) {
@@ -2231,7 +2231,7 @@ var ui_observers = {
 	},
 	map_colorization: {
 		get condition() {
-			return ui_data.isDungeon && window.GUIp_locale === 'ru';
+			return ui_data.isDungeon;
 		},
 		config: {
 			childList: true,
