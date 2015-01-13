@@ -121,7 +121,7 @@ var ui_utils = {
 	},
 // finds a label with given name and appends given elem after it
 	addAfterLabel: function($base_elem, label_name, $elem) {
-		ui_utils.findLabel($base_elem, label_name).after($elem.addClass('voice_generator'));
+		ui_utils.findLabel($base_elem, label_name).after($elem.addClass('voice_generator').addClass(ui_data.isDungeon ? 'dungeon' : ui_data.isBattle ? 'battle' : 'field'));
 	},
 // generic voice generator
 	getGenSayButton: function(title, section, hint) {
