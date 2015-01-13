@@ -1608,7 +1608,7 @@ var ui_improver = {
 			}
 		}
 		// bruise informer
-		ui_informer.update('pet is bruised', window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value);
+		ui_informer.update('pet knocked out', window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value);
 
 		ui_stats.setFromLabelCounter('Pet_Level', $('#pet'), window.GUIp_i18n.pet_level_label);
 	},

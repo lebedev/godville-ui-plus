@@ -219,6 +219,7 @@ return '<p>\n' +
 '							<input class="informer-checkbox" id="wanted_monster" name="wanted_monster" type="checkbox"><label for="wanted_monster">' + window.GUIp_i18n.forbidden_informers_wanted_monster + '</label><br>\n' +
 '							<input class="informer-checkbox" id="special_monster" name="special_monster" type="checkbox"><label for="special_monster">' + window.GUIp_i18n.forbidden_informers_special_monster + '</label><br>\n' +
 '							<input class="informer-checkbox" id="tamable_monster" name="tamable_monster" type="checkbox"><label for="tamable_monster">' + window.GUIp_i18n.forbidden_informers_tamable_monster + '</label><br>\n' +
+'							<input class="informer-checkbox" id="pet_knocked_out" name="pet_knocked_out" type="checkbox"><label for="pet_knocked_out">' + window.GUIp_i18n.forbidden_informers_pet_knocked_out + '</label><br>\n' +
 '							<input class="informer-checkbox" id="close_to_boss" name="close_to_boss" type="checkbox"><label for="close_to_boss">' + window.GUIp_i18n.forbidden_informers_close_to_boss + '</label><br>\n' +
 '							<input class="informer-checkbox" id="guild_quest" name="guild_quest" type="checkbox"><label for="guild_quest">' + window.GUIp_i18n.forbidden_informers_guild_quest + '</label><br>\n' +
 '							<input class="informer-checkbox" id="mini_quest" name="mini_quest" type="checkbox"><label for="mini_quest">' + window.GUIp_i18n.forbidden_informers_mini_quest + '</label><br>\n' +

@@ -398,6 +398,7 @@ window.GUIp_i18n = {
 	forbidden_informers_wanted_monster: 'wanted monster',
 	forbidden_informers_special_monster: 'special monster',
 	forbidden_informers_tamable_monster: 'tamable monster',
+	forbidden_informers_pet_knocked_out: 'pet knocked out',
 	forbidden_informers_close_to_boss: 'boss warning (dungeon)',
 	forbidden_informers_guild_quest: 'attempt to defect from the guild',
 	forbidden_informers_mini_quest: 'beginning of a mini-quest',

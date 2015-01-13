@@ -543,6 +543,7 @@ window.GUIp_i18n = {
 	forbidden_informers_wanted_monster: 'монстр дня',
 	forbidden_informers_special_monster: 'монстр со способностями',
 	forbidden_informers_tamable_monster: 'приручаемый монстр',
+	forbidden_informers_pet_knocked_out: 'контузия питомца',
 	forbidden_informers_close_to_boss: 'близость к боссу в подземелье',
 	forbidden_informers_guild_quest: 'взятие квеста на смену гильдии',
 	forbidden_informers_mini_quest: 'взятие мини-квеста',
