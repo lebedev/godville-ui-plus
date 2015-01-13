@@ -252,20 +252,6 @@ var ui_utils = {
 					ui_help_dialog.toggle();
 				}
 			}
-		},
-		{
-			msg_no: 6,
-			title: 'Godville UI+: нового в этой версии:',
-			content: '<div style="text-align: justify;">' +
-					 '<ul>' +
-						'<li>На полоску инвентаря добавлены риски: 36% (ниже которой герой заходит в город только полечиться) и 50% (выше котороЙ герой заходит в город на полный цикл).</li>' +
-						'<li>Переименование <i>full prana</i> → <i>full godpower</i>, <i>prana box</i> → <i>charge box</i>, <i>bt</i> → <i>ch</i>, <i>pr</i> → <i>gp</i> (цвета в логгере остались теми же, так что не запутаетесь).</li>' +
-						'<li>Переработано запрашивание монстров дня (теперь оно само запрашивается раз в сутки после наступления нового дня в Москве).</li>' +
-						'<li>На страницу лога добавлена кнопка для отправки его в скрипт <b>ЛЕМа</b> (спасибо ему огромное за кооперацию :3).</li>' +
-						'<li>Починена перезагрузка страницы после начала боя (требует проверки).</li>' +
-					 '</ul>' +
-					 '</div>'+
-					 '<div style="text-align: right;">Ура!<br>~~Бэдлак</div>'
 		}
 		/*{
 			msg_no: 7, // 0..6 are used
@@ -294,9 +280,16 @@ var ui_utils = {
 					ui_help_dialog.toggle();
 				}
 			}
+		},
+		{
+			msg_no: 1,
+			title: 'Godville UI+: New functionality!',
+			content: '<div style="text-align: justify;">&emsp;I\'ve enabled dungeon functionality and gold-to-exp conversion penalty timer.<br>' +
+					 'Tell me if there are any issues with that.</div>'+
+					 '<div style="text-align: right;">Have fun!<br>~~Bad Luck</div>'
 		}
 		/*{
-			msg_no: 1, // 0 is used
+			msg_no: 2, // 0..1 are used
 			title: 'Godville UI+: Заголовок',
 			content: '<div style="text-align: justify;">&emsp;Текст.</div>'+
 					 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
