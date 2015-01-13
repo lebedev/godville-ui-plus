@@ -48,7 +48,9 @@ body {
 .dockfr_close,
 .dockfr_ppage,
 .craft_button,
-#informer_bar div {
+#informer_bar div,
+.voice_generator,
+.craft_button {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
