@@ -1768,7 +1768,7 @@ var ui_improver = {
 				break;
 			} else {
 				entry = {};
-				direction = matches[i].match(/^.*?[\.!\?](?:\s|$)/)[0].match(/север|восток|юг|запад/i);
+				direction = matches[i].match(/^.*?[\.!\?](?:\s|$)/)[0].match(/север|восток|юг|запад|north|east|south|west/i);
 				if (direction) {
 					entry.direction = direction[0];
 				}
@@ -1785,7 +1785,7 @@ var ui_improver = {
 		}
 	},
 	improveChronicles: function() {
-		if (this.bossWarningsRegExp) {
+		if (this.bossRegExp) {
 			// chronicles painting
 			var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
 			for (var i = 0, len = chronicles.length; i < len; i++) {
@@ -1798,7 +1798,7 @@ var ui_improver = {
 			}
 
 			// informer
-			ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent === '▼' ? document.querySelectorAll('#m_fight_log .d_line.bossWarnings:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.bossWarnings:last-child').length);
+			ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent === '▼' ? document.querySelectorAll('#m_fight_log .d_line.warning:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.warning:last-child').length);
 
 			this.colorDungeonMap();
 		}
