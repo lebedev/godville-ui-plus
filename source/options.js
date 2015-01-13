@@ -156,7 +156,7 @@ function delete_custom_words() {
 	var text = def.phrases[curr_sect];
 	$elem.attr('rows', text.length);
 	$elem.val(text.join("\n"));
-	storage.remove('phrases_' + curr_sect);
+	storage.remove('CustomPhrases:' + curr_sect);
 	storage.set('phrasesChanged', 'true');
 	setSaveWordsButtonState();
 	setDefaultWordsButtonState(false);
@@ -175,7 +175,7 @@ function save_words() {
 			t_out.push(t_list[i]);
 		}
 	}
-	storage.set('phrases_' + curr_sect, t_out.join("||"));
+	storage.set('CustomPhrases:' + curr_sect, t_out.join("||"));
 	$j('#gui_word_progress').fadeOut("slow");
 	storage.set('phrasesChanged', 'true');
 	setSaveWordsButtonState();
@@ -310,7 +310,7 @@ function save_options() {
 
 function setSaveWordsButtonState() {
 	var save_words = $j('#save_words');
-	if ($j('#ta_edit').val().replace(/\n/g, '||') !== (storage.get('phrases_' + curr_sect) || def.phrases[curr_sect].join('||'))) {
+	if ($j('#ta_edit').val().replace(/\n/g, '||') !== (storage.get('CustomPhrases:' + curr_sect) || def.phrases[curr_sect].join('||'))) {
 		save_words.removeAttr('disabled');
 	} else {
 		save_words.attr('disabled', 'disabled');
@@ -331,7 +331,7 @@ function setText(sect) {
 	curr_sect = sect;
 	$j('#words a.selected').removeClass('selected');
 	$j('#words a#l_' + curr_sect).addClass('selected');
-	var text_list = storage.get('phrases_' + curr_sect);
+	var text_list = storage.get('CustomPhrases:' + curr_sect);
 	var text = text_list ? text_list.split('||') : def.phrases[curr_sect];
 	$j('#ta_edit').removeAttr('disabled').attr('rows', text.length).val(text.join("\n"));
 	setSaveWordsButtonState();
