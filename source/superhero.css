@@ -602,7 +602,8 @@ body.nightly .shovel:hover {
 }
 
 /* inventory fullness marks */
-#hk_inventory_num .p_bar {
+#hk_inventory_num .p_bar,
+body.has_temple #hk_health .p_bar {
 	position: relative;
 }
 #hk_inventory_num .p_bar:before,
@@ -614,11 +615,13 @@ body.has_temple #hk_health .p_bar:before {
 	width: 2px;
 }
 body:not(.nightly) #hk_inventory_num .p_bar:before,
-body:not(.nightly) #hk_inventory_num .p_bar:after {
+body:not(.nightly) #hk_inventory_num .p_bar:after,
+body.has_temple:not(.nightly) #hk_health .p_bar:before {
 	background: #ddd;
 }
 body.nightly #hk_inventory_num .p_bar:before,
-body.nightly #hk_inventory_num .p_bar:after {
+body.nightly #hk_inventory_num .p_bar:after,
+body.has_temple.nightly #hk_health .p_bar:before  {
 	background: #555;
 }
 #hk_inventory_num .p_bar:before {
