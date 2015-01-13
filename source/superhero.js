@@ -1055,17 +1055,17 @@ var ui_improver = {
 	r_r: [],
 	// dungeon phrases
 	dungeonPhrases: [
-		'bossWarnings',
-		'bossSlay',
-		'smallPrayer',
-		'smallHealing',
-		'unknownTrap',
-		'trophyLoss',
-		'moneyLoss',
-		'lowDamage',
-		'midDamage',
-		'moveLoss',
-		'springnessDungeon'
+		'warning',
+		'boss',
+		'bonusGodpower',
+		'bonusHealth',
+		'trapUnknown',
+		'trapTrophy',
+		'trapGold',
+		'trapLowDamage',
+		'trapModerateDamage',
+		'trapMoveLoss',
+		'jumpingDungeon'
 	],
 	// resresher
 	softRefreshInt: 0,

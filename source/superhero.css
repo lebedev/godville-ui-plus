@@ -399,155 +399,155 @@ body:not(.nightly) #laying_timer.red {
 }
 
 /* dungeon phrases colorization */
-#m_fight_log .bossWarnings .d_time,
-#m_fight_log .bossWarnings .d_msg {
+#m_fight_log .warning .d_time,
+#m_fight_log .warning .d_msg {
 	color: darkgoldenrod;
 }
 
 /* dungeon map colorization */
 /* not nightly theme */
-body:not(.nightly) .dmc.bossWarnings {
+body:not(.nightly) .dmc.warning {
 	background: #ffce09;
 }
-body:not(.nightly) .dmc.bossSlay {
+body:not(.nightly) .dmc.boss {
 	background: #fa8700;
 }
-body:not(.nightly) .dmc.smallPrayer {
+body:not(.nightly) .dmc.bonusGodpower {
 	background: #c5e0f3;
 }
-body:not(.nightly) .dmc.smallHealing {
+body:not(.nightly) .dmc.bonusHealth {
 	background: #b9edbe;
 }
-body:not(.nightly) .dmc.unknownTrap {
+body:not(.nightly) .dmc.trapUnknown {
 	background: #c173da;
 }
-body:not(.nightly) .dmc.trophyLoss,
-body:not(.nightly) .dmc.moneyLoss {
+body:not(.nightly) .dmc.trapTrophy,
+body:not(.nightly) .dmc.trapGold {
 	background: #dee0c0;
 }
-body:not(.nightly) .dmc.lowDamage {
+body:not(.nightly) .dmc.trapLowDamage {
 	background: #e7afaf;
 }
-body:not(.nightly) .dmc.midDamage {
+body:not(.nightly) .dmc.trapModerateDamage {
 	background: #cb555b;
 }
-body:not(.nightly) .dmc.moveLoss {
+body:not(.nightly) .dmc.trapMoveLoss {
 	background: #aaaaaa;
 }
-body:not(.nightly) .dmc.bossWarnings.smallPrayer {
+body:not(.nightly) .dmc.warning.bonusGodpower {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #c5e0f3 50%, #c5e0f3 100%);
 }
-body:not(.nightly) .dmc.bossWarnings.smallHealing {
+body:not(.nightly) .dmc.warning.bonusHealth {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #b9edbe 50%, #b9edbe 100%);
 }
-body:not(.nightly) .dmc.bossWarnings.unknownTrap {
+body:not(.nightly) .dmc.warning.trapUnknown {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #c173da 50%, #c173da 100%);
 }
-body:not(.nightly) .dmc.bossWarnings.trophyLoss,
-body:not(.nightly) .dmc.bossWarnings.moneyLoss {
+body:not(.nightly) .dmc.warning.trapTrophy,
+body:not(.nightly) .dmc.warning.trapGold {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #dee0c0 50%, #dee0c0 100%);
 }
-body:not(.nightly) .dmc.bossWarnings.lowDamage {
+body:not(.nightly) .dmc.warning.trapLowDamage {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #e7afaf 50%, #e7afaf 100%);
 }
-body:not(.nightly) .dmc.bossWarnings.midDamage {
+body:not(.nightly) .dmc.warning.trapModerateDamage {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #cb555b 50%, #cb555b 100%);
 }
-body:not(.nightly) .dmc.bossWarnings.moveLoss {
+body:not(.nightly) .dmc.warning.trapMoveLoss {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #aaaaaa 50%, #aaaaaa 100%);
 }
-body:not(.nightly) .dmc.bossSlay.smallPrayer {
+body:not(.nightly) .dmc.boss.bonusGodpower {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #c5e0f3 50%, #c5e0f3 100%);
 }
-body:not(.nightly) .dmc.bossSlay.smallHealing {
+body:not(.nightly) .dmc.boss.bonusHealth {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #b9edbe 50%, #b9edbe 100%);
 }
-body:not(.nightly) .dmc.bossSlay.trophyLoss,
-body:not(.nightly) .dmc.bossSlay.moneyLoss {
+body:not(.nightly) .dmc.boss.trapTrophy,
+body:not(.nightly) .dmc.boss.trapGold {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #dee0c0 50%, #dee0c0 100%);
 }
-body:not(.nightly) .dmc.bossSlay.lowDamage {
+body:not(.nightly) .dmc.boss.trapLowDamage {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #e7afaf 50%, #e7afaf 100%);
 }
-body:not(.nightly) .dmc.bossSlay.midDamage {
+body:not(.nightly) .dmc.boss.trapModerateDamage {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #cb555b 50%, #cb555b 100%);
 }
-body:not(.nightly) .dmc.bossSlay.moveLoss {
+body:not(.nightly) .dmc.boss.trapMoveLoss {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #aaaaaa 50%, #aaaaaa 100%);
 }
 /* nightly theme */
-body.nightly .dmc.bossWarnings {
+body.nightly .dmc.warning {
 	background: #d3ae00;
 }
-body.nightly .dmc.bossSlay {
+body.nightly .dmc.boss {
 	background: #ff9f07;
 }
 
-body.nightly .dmc.smallPrayer {
+body.nightly .dmc.bonusGodpower {
 	background: #2d546f;
 }
 
-body.nightly .dmc.smallHealing {
+body.nightly .dmc.bonusHealth {
 	background: #2f6c37;
 }
-body:.nightly .dmc.unknownTrap {
+body:.nightly .dmc.trapUnknown {
 	background: #62317c;
 }
-body.nightly .dmc.trophyLoss,
-body.nightly .dmc.moneyLoss {
+body.nightly .dmc.trapTrophy,
+body.nightly .dmc.trapGold {
 	background: #6c6d4e;
 }
 
-body.nightly .dmc.lowDamage {
+body.nightly .dmc.trapLowDamage {
 	background: #8b5d5d;
 }
 
-body.nightly .dmc.midDamage {
+body.nightly .dmc.trapModerateDamage {
 	background: #9d1515;
 }
 
-body.nightly .dmc.moveLoss {
+body.nightly .dmc.trapMoveLoss {
 	background: #5c5c5c;
 }
-body.nightly .dmc.bossWarnings.smallPrayer {
+body.nightly .dmc.warning.bonusGodpower {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2d546f 50%, #2d546f 100%);
 }
-body.nightly .dmc.bossWarnings.smallHealing {
+body.nightly .dmc.warning.bonusHealth {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2f6c37 50%, #2f6c37 100%);
 }
-body.nightly .dmc.bossWarnings.unknownTrap {
+body.nightly .dmc.warning.trapUnknown {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #62317c 50%, #62317c 100%);
 }
-body.nightly .dmc.bossWarnings.trophyLoss,
-body.nightly .dmc.bossWarnings.moneyLoss {
+body.nightly .dmc.warning.trapTrophy,
+body.nightly .dmc.warning.trapGold {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #6c6d4e 50%, #6c6d4e 100%);
 }
-body.nightly .dmc.bossWarnings.lowDamage {
+body.nightly .dmc.warning.trapLowDamage {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #8b5d5d 50%, #8b5d5d 100%);
 }
-body.nightly .dmc.bossWarnings.midDamage {
+body.nightly .dmc.warning.trapModerateDamage {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #9d1515 50%, #9d1515 100%);
 }
-body.nightly .dmc.bossWarnings.moveLoss {
+body.nightly .dmc.warning.trapMoveLoss {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
-body.nightly .dmc.bossSlay.smallPrayer {
+body.nightly .dmc.boss.bonusGodpower {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #2d546f 50%, #2d546f 100%);
 }
-body.nightly .dmc.bossSlay.smallHealing {
+body.nightly .dmc.boss.bonusHealth {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #2f6c37 50%, #2f6c37 100%);
 }
-body.nightly .dmc.bossSlay.trophyLoss,
-body.nightly .dmc.bossSlay.moneyLoss {
+body.nightly .dmc.boss.trapTrophy,
+body.nightly .dmc.boss.trapGold {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #6c6d4e 50%, #6c6d4e 100%);
 }
-body.nightly .dmc.bossSlay.lowDamage {
+body.nightly .dmc.boss.trapLowDamage {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #8b5d5d 50%, #8b5d5d 100%);
 }
-body.nightly .dmc.bossSlay.midDamage {
+body.nightly .dmc.boss.trapModerateDamage {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #9d1515 50%, #9d1515 100%);
 }
-body.nightly .dmc.bossSlay.moveLoss {
+body.nightly .dmc.boss.trapMoveLoss {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
 
