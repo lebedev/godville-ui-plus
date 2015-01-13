@@ -49,3 +49,12 @@
 .formatting.br:hover {
 	color: darkviolet;
 }
+
+.popup_menu ul li {
+	display: flex;
+	padding: 0;
+}
+.popup_menu ul li a {
+	padding: 0.5em;
+	width: 100%;
+}
