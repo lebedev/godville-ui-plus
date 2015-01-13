@@ -23,7 +23,8 @@ body {
 #pet .line,
 #diary .line,
 .panth_line,
-#no_skills {
+#no_skills,
+#send_feedback_form {
 	text-align: center;
 }
 .l_val {
