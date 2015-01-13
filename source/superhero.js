@@ -611,7 +611,7 @@ var ui_words = {
 		var phrases;
 		if (item_name) {
 			phrases = [this.randomPhrase(sect) + ' ' + item_name + '!'];
-		} else if (ui_storage.get('Option:useShortPhrases')) {
+		} else if (ui_storage.get('Option:useShortPhrases') || sect.match(/go_/)) {
 			phrases = [this.randomPhrase(sect)];
 		} else {
 			phrases = this._longPhrase_recursion(this.base.phrases[sect].slice(), (len || 100) - prefix.length);
