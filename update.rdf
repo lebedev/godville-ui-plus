@@ -3,27 +3,27 @@
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHcYDXFD6MB2MWliJeoKYMaXPZNUVKJSXzahUM6CFIwnC6FCvzyqqmzy1lIosXdWGk8rj2nKrBjRwoV2YFoUyGbVj0N7LAxSuY203ONn5fF1obL9EoTQerLydbuZUdOMSjh4DBQ9H3xTsZ53gBOOofmAdTm07PoCQ8zTfXMAysZ3">
-    <em:updates RDF:resource="rdf:#$I9Esz2"/>
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAD+AzR3YYqOps/UOYq7daptqNqFQi6KeQ80Ywk48VMy3sExOBEAQsn9UTRLOuTMYNXx0yoHXM/4RMkWagcjOiKph+hmFFs5LrY0ldLCb5QEL6f5MT3b5LtmUpObnCENJAZ8DQI6syovZeaphEd/nllV/INEXdlchB8sTlDv0/S5R">
+    <em:updates RDF:resource="rdf:#$8ZRlY"/>
   </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$M9Esz2"
+  <RDF:Description RDF:about="rdf:#$cZRlY"
                    em:id="{aa3c5121-dab2-40e2-81ca-7ea25febc110}"
                    em:minVersion="28.0"
                    em:maxVersion="36.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/raw/master/release/godville-ui-plus%40badluck.dicey.xpi"
-                   em:updateHash="sha1:6331e8edeecc29933d4cd229cb50b5130bdaa86e" />
-  <RDF:Description RDF:about="rdf:#$T9Esz2"
+                   em:updateHash="sha1:4a0159bb6826cd41656bb7decee6be81a62353e2" />
+  <RDF:Description RDF:about="rdf:#$jZRlY"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="28.0"
                    em:maxVersion="36.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/raw/master/release/godville-ui-plus%40badluck.dicey.xpi"
-                   em:updateHash="sha1:6331e8edeecc29933d4cd229cb50b5130bdaa86e" />
-  <RDF:Description RDF:about="rdf:#$J9Esz2"
-                   em:version="0.18.98.18">
-    <em:targetApplication RDF:resource="rdf:#$M9Esz2"/>
-    <em:targetApplication RDF:resource="rdf:#$T9Esz2"/>
+                   em:updateHash="sha1:4a0159bb6826cd41656bb7decee6be81a62353e2" />
+  <RDF:Description RDF:about="rdf:#$9ZRlY"
+                   em:version="0.19.98.3">
+    <em:targetApplication RDF:resource="rdf:#$cZRlY"/>
+    <em:targetApplication RDF:resource="rdf:#$jZRlY"/>
   </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$I9Esz2">
-    <RDF:li RDF:resource="rdf:#$J9Esz2"/>
+  <RDF:Seq RDF:about="rdf:#$8ZRlY">
+    <RDF:li RDF:resource="rdf:#$9ZRlY"/>
   </RDF:Seq>
 </RDF:RDF>
