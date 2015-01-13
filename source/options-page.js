@@ -216,6 +216,8 @@ return '<p>\n' +
 '							<input class="informer-checkbox" id="much_gold" name="much_gold" type="checkbox"><label for="much_gold">' + window.GUIp_i18n.forbidden_informers_much_gold + '</label><br>\n' +
 '							<input class="informer-checkbox" id="dead" name="dead" type="checkbox"><label for="dead">' + window.GUIp_i18n.forbidden_informers_dead + '</label><br>\n' +
 '							<input class="informer-checkbox" id="pvp" name="pvp" type="checkbox"><label for="pvp">' + window.GUIp_i18n.forbidden_informers_pvp + '</label><br>\n' +
+'							<input class="informer-checkbox" id="arena_available" name="arena_available" type="checkbox"><label for="arena_available">' + window.GUIp_i18n.forbidden_informers_arena_available + '</label><br>\n' +
+'							<input class="informer-checkbox" id="dungeon_available" name="dungeon_available" type="checkbox"><label for="dungeon_available">' + window.GUIp_i18n.forbidden_informers_dungeon_available + '</label><br>\n' +
 '							<input class="informer-checkbox" id="wanted_monster" name="wanted_monster" type="checkbox"><label for="wanted_monster">' + window.GUIp_i18n.forbidden_informers_wanted_monster + '</label><br>\n' +
 '							<input class="informer-checkbox" id="special_monster" name="special_monster" type="checkbox"><label for="special_monster">' + window.GUIp_i18n.forbidden_informers_special_monster + '</label><br>\n' +
 '							<input class="informer-checkbox" id="tamable_monster" name="tamable_monster" type="checkbox"><label for="tamable_monster">' + window.GUIp_i18n.forbidden_informers_tamable_monster + '</label><br>\n' +

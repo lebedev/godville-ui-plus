@@ -1081,6 +1081,8 @@ var ui_improver = {
 	improve: function() {
 		this.improveInProcess = true;
 		ui_informer.update('pvp', ui_data.isBattle && !ui_data.isDungeon);
+		ui_informer.update('arena available', window.so.state.arena_available());
+		ui_informer.update('dungeon available', window.so.state.dungeon_available());
 		if (this.isFirstTime) {
 			if (!ui_data.isBattle && !ui_data.isDungeon) {
 				this.improveDiary();
