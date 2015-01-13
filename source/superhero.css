@@ -637,4 +637,5 @@ body.has_temple #hk_health .p_bar:before {
 a.broadcast {
 	font-weight: bold;
 	font-size: 80%;
+	vertical-align: top;
 }
