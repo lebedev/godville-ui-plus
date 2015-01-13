@@ -12,6 +12,10 @@ var ui_data = {
 		this.char_sex = window.so.state.stats.gender.value === 'male' ? window.GUIp_i18n.hero : window.GUIp_i18n.heroine;
 		ui_storage.set('ui_s', '');
 		localStorage.GUIp_CurrentUser = this.god_name;
+		if (window.so.state.bricks_cnt() === 1000) {
+			document.body.classList.add('has_temple');
+			this.hasTemple = true;
+		}
 
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
@@ -1588,7 +1592,7 @@ var ui_improver = {
 		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, window.GUIp_i18n.inventory_label) || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
 			this.inventoryChanged = true;
 		}
-		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, window.GUIp_i18n.gold_label, gold_parser) >= (ui_stats.get('Bricks') > 1000 ? 10000 : 3000));
+		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, window.GUIp_i18n.gold_label, gold_parser) >= (ui_data.hasTemple ? 10000 : 3000));
 		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, window.GUIp_i18n.health_label) === 0);
 		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии|member of the guild/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
 		ui_informer.update('mini quest', $('.q_name').text().match(/\((мини|mini)\)/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
@@ -2060,7 +2064,7 @@ var ui_improver = {
 
 var ui_laying_timer = {
 	init: function() {
-		if (+$('#hk_bricks_cnt .l_val').text() === 1000 && !ui_data.isBattle && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
+		if (ui_data.hasTemple && !ui_data.isBattle && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
 			document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
 			for (var key in window) {
 				if (key.match(/^diary/)) {

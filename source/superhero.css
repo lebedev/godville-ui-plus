@@ -606,7 +606,8 @@ body.nightly .shovel:hover {
 	position: relative;
 }
 #hk_inventory_num .p_bar:before,
-#hk_inventory_num .p_bar:after {
+#hk_inventory_num .p_bar:after,
+body.has_temple #hk_health .p_bar:before {
 	content: " ";
 	height: 100%;
 	position: absolute;
@@ -625,6 +626,9 @@ body.nightly #hk_inventory_num .p_bar:after {
 }
 #hk_inventory_num .p_bar:after {
 	left: 50%;
+}
+body.has_temple #hk_health .p_bar:before {
+	left: 67%;
 }
 
 a.broadcast {
