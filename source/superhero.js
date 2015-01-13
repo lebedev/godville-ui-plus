@@ -493,7 +493,6 @@ var ui_storage = {
 // reads a value
 	get: function(id) {
 		var val = localStorage[this.get_key(id)];
-		if (val) { val = val.replace(/^[NSB]\]/, ''); }
 		if (val === 'true') { return true; }
 		if (val === 'false') { return false; }
 		return val;
@@ -542,8 +541,8 @@ var ui_storage = {
 		return "Storage cleared. Reloading...";
 	},
 	migrate: function() {
+		var i, len, lines = [];
 		if (!localStorage.GUIp_migrated) {
-			var i, len, lines = [];
 			for (i = 0, len = localStorage.length; i < len; i++) {
 				if (localStorage.key(i).match(/^GM_/)) {
 					lines.push(localStorage.key(i));
@@ -554,6 +553,34 @@ var ui_storage = {
 				localStorage.removeItem(lines[i]);
 			}
 			localStorage.GUIp_migrated = '151114';
+		}
+		if (localStorage.GUIp_migrated === '151114' || localStorage.GUIp_migrated < '150113') {
+			if (this.get('phrases_walk_n')) {
+				this.set('CustomPhrases:go_north', this.get('phrases_walk_n'));
+				localStorage.removeItem(this.get_key('phrases_walk_n'));
+			}
+			if (this.get('phrases_walk_e')) {
+				this.set('CustomPhrases:go_east', this.get('phrases_walk_e'));
+				localStorage.removeItem(this.get_key('phrases_walk_e'));
+			}
+			if (this.get('phrases_walk_s')) {
+				this.set('CustomPhrases:go_south', this.get('phrases_walk_s'));
+				localStorage.removeItem(this.get_key('phrases_walk_s'));
+			}
+			if (this.get('phrases_walk_w')) {
+				this.set('CustomPhrases:go_west', this.get('phrases_walk_w'));
+				localStorage.removeItem(this.get_key('phrases_walk_w'));
+			}
+			for (i = 0, len = localStorage.length; i < len; i++) {
+				if (localStorage.key(i).match(/:phrases_/)) {
+					lines.push(localStorage.key(i));
+				}
+			}
+			for (i = 0, len = lines.length; i < len; i++) {
+				localStorage[lines[i].replace(/:phrases_/, ':CustomPhrases:')] = localStorage[lines[i]];
+				localStorage.removeItem(lines[i]);
+			}
+			localStorage.GUIp_migrated = '150113';
 		}
 	}
 };
@@ -567,7 +594,7 @@ var ui_words = {
 	init: function() {
 		this.base = window.GUIp_words();
 		for (var sect in this.base.phrases) {
-			var text = ui_storage.get('phrases_' + sect);
+			var text = ui_storage.get('CustomPhrases:' + sect);
 			if (text && text !== "") {
 				this.base.phrases[sect] = text.split("||");
 			}
@@ -1253,10 +1280,10 @@ var ui_improver = {
 			$('.gp_val').addClass('l_val');
 			if (ui_data.isDungeon && $('#map').length) {
 				var isContradictions = $('#map')[0].textContent.match(/Противоречия|Disobedience/);
-				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.east, (isContradictions ? 'walk_w' : 'walk_e'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_east);
-				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.west, (isContradictions ? 'walk_e' : 'walk_w'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_west);
-				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.south, (isContradictions ? 'walk_n' : 'walk_s'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_south);
-				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.north, (isContradictions ? 'walk_s' : 'walk_n'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_north);
+				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.east, (isContradictions ? 'go_west' : 'go_east'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_east);
+				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_west);
+				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_south);
+				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_north);
 				if ($('#map')[0].textContent.match(/Бессилия|Anti-influence/)) {
 					$('#actions').hide();
 				}
@@ -2333,12 +2360,8 @@ var ui_starter = {
 		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_browser && window.GUIp_i18n) {
 			clearInterval(starterInt);
 			var start = new Date();
-			if (window.GUIp_locale === 'ru') {
-				// migration from GM_ to GUIp_
-				ui_storage.migrate();
-			}
-
 			ui_data.init();
+			ui_storage.migrate();
 			ui_utils.addCSS();
 			ui_utils.inform();
 			ui_words.init();

@@ -302,10 +302,10 @@ return '<p>\n' +
 '					<a id="l_exclamation" href="#">' + window.GUIp_i18n.voices_exclamation + '</a>\n' +
 '					<a id="l_inspect_prefix" href="#">' + window.GUIp_i18n.voices_inspect_prefix + '</a>\n' +
 '					<a id="l_craft_prefix" href="#">' + window.GUIp_i18n.voices_craft_prefix + '</a>\n' +
-'					<a id="l_walk_n" href="#">' + window.GUIp_i18n.voices_north + '</a>\n' +
-'					<a id="l_walk_s" href="#">' + window.GUIp_i18n.voices_south + '</a>\n' +
-'					<a id="l_walk_w" href="#">' + window.GUIp_i18n.voices_west + '</a>\n' +
-'					<a id="l_walk_e" href="#">' + window.GUIp_i18n.voices_east + '</a>\n' +
+'					<a id="l_go_north" href="#">' + window.GUIp_i18n.voices_north + '</a>\n' +
+'					<a id="l_go_south" href="#">' + window.GUIp_i18n.voices_south + '</a>\n' +
+'					<a id="l_go_west" href="#">' + window.GUIp_i18n.voices_west + '</a>\n' +
+'					<a id="l_go_east" href="#">' + window.GUIp_i18n.voices_east + '</a>\n' +
 '					<div id="opt_change_words">\n' +
 '						<div class="new_line">\n' +
 '							<textarea id="ta_edit" class="rounded_field" rows="4" wrap="virtual;" style="width: 98%; resize: none;" disabled></textarea>\n' +

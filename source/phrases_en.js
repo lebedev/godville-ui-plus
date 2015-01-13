@@ -72,22 +72,22 @@ window.GUIp_words = function() {
 		],
 
 		// Ключевые корни: Север
-		walk_n: [
+		go_north: [
 			"Go north!"
 		],
 
 		// Ключевые корни: Юг
-		walk_s: [
+		go_south: [
 			"Go south!"
 		],
 
 		// Ключевые корни: Запад
-		walk_w: [
+		go_west: [
 			"Go west!"
 		],
 
 		// Ключевые корни: Восток
-		walk_e: [
+		go_east: [
 			"Go east!"
 		],
 
