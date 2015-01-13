@@ -1095,9 +1095,11 @@ var ui_improver = {
 		this.improveStats();
 		this.improvePet();
 		this.improveVoiceDialog();
-		this.improveNews();
-		this.improveEquip();
-		this.improvePantheons();
+		if (!ui_data.isBattle) {
+			this.improveNews();
+			this.improveEquip();
+			this.improvePantheons();
+		}
 		if (ui_data.isDungeon) {
 			this.improveMap();
 		}
@@ -1286,7 +1288,6 @@ var ui_improver = {
 
 // ----------- Вести с полей ----------------
 	improveNews: function() {
-		if (ui_data.isBattle) { return; }
 		if (!ui_utils.isAlreadyImproved($('#news'))) {
 			ui_utils.addSayPhraseAfterLabel($('#news'), window.GUIp_i18n.enemy_label, window.GUIp_i18n.hit, 'hit', window.GUIp_i18n.ask7 + ui_data.char_sex[1] + window.GUIp_i18n.to_hit);
 		}
@@ -1342,17 +1343,17 @@ var ui_improver = {
 	improveMap: function() {
 		if (this.isFirstTime) {
 			document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
-				'<div class="guip_legend"><div class="dmc bossWarnings"></div><div> - ' + window.GUIp_i18n.boss_warning_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc bossSlay"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc smallPrayer"></div><div> - ' + window.GUIp_i18n.small_prayer_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc smallHealing"></div><div> - ' + window.GUIp_i18n.small_healing_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc unknownTrap"></div><div> - ' + window.GUIp_i18n.unknown_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc trophyLoss"></div><div> - ' + window.GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc lowDamage"></div><div> - ' + window.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc midDamage"></div><div> - ' + window.GUIp_i18n.mid_damage_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc moveLoss"></div><div> - ' + window.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc bossWarnings moveLoss"></div><div> - ' + window.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc bossSlay moveLoss"></div><div> - ' + window.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
+				'<div class="guip_legend"><div class="dmc warning"></div><div> - ' + window.GUIp_i18n.boss_warning_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc boss"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc bonusGodpower"></div><div> - ' + window.GUIp_i18n.small_prayer_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc bonusHealth"></div><div> - ' + window.GUIp_i18n.small_healing_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapUnknown"></div><div> - ' + window.GUIp_i18n.unknown_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapTrophy"></div><div> - ' + window.GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapLowDamage"></div><div> - ' + window.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapModerateDamage"></div><div> - ' + window.GUIp_i18n.moderate_damage_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapMoveLoss"></div><div> - ' + window.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc warning trapMoveLoss"></div><div> - ' + window.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc boss trapMoveLoss"></div><div> - ' + window.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
 			);
 		}
 		if ($('#map .dml').length) {
@@ -1616,7 +1617,6 @@ var ui_improver = {
 	},
 // ---------- Equipment --------------
 	improveEquip: function() {
-		if (ui_data.isBattle) { return; }
 		// Save stats
 		var seq = 0;
 		for (var i = 7; i >= 1;) {
@@ -1644,7 +1644,6 @@ var ui_improver = {
 	},
 // ---------- Pantheons --------------	
 	improvePantheons: function() {
-		if (ui_data.isBattle) { return; }
 		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
 			if (!$('#pantheons.arena_link_relocated').length) {
 				$('#pantheons').addClass('arena_link_relocated');
@@ -1708,7 +1707,7 @@ var ui_improver = {
 
 	parseDungeonPhrases: function(xhr) {
 		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
-			temp = xhr.responseText.match(new RegExp('<p>' + this.dungeonPhrases[i] + '([\\s\\S]+?)<\/p>'))[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
+			temp = xhr.responseText.match(new RegExp('<p>' + this.dungeonPhrases[i] + '\\b([\\s\\S]+?)<\/p>'))[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
 			this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(temp);
 			ui_storage.set('Dungeon:' + this.dungeonPhrases[i] + 'Phrases', temp);
 		}
@@ -1798,8 +1797,8 @@ var ui_improver = {
 			}
 			first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 			if (first_sentence) {
-				direction = first_sentence[0].match(/север|восток|юг|запад/i);
-				step = first_sentence[0].match(this.springnessDungeonRegExp) ? 2 : 1;
+				direction = first_sentence[0].match(/север|восток|юг|запад|north|east|south|west/i);
+				step = first_sentence[0].match(this.jumpingDungeonRegExp) ? 2 : 1;
 				if (direction) {
 					switch(direction[0]) {
 					case 'север': y += step; break;
@@ -1818,13 +1817,17 @@ var ui_improver = {
 					}
 				}
 				direction = this.old_chronicles[i].direction;
-				step = this.old_chronicles[i].classList && this.old_chronicles[i].classList.indexOf('springnessDungeon') >= 0 ? 2 : 1;
+				step = this.old_chronicles[i].classList && this.old_chronicles[i].classList.indexOf('jumpingDungeon') >= 0 ? 2 : 1;
 				if (direction) {
 					switch(direction) {
-					case 'север': y += step; break;
-					case 'восток': x -= step; break;
-					case 'юг': y -= step; break;
-					case 'запад': x += step; break;
+					case 'север':
+					case 'north': y += step; break;
+					case 'восток':
+					case 'east': x -= step; break;
+					case 'юг':
+					case 'south': y -= step; break;
+					case 'запад':
+					case 'west': x += step; break;
 					}
 				}
 			}

@@ -421,7 +421,7 @@ window.GUIp_i18n = {
 	unknown_trap_hint: 'ловушка, заблокированная петом',
 	trophy_loss_trap_hint: 'ловушка: золото или трофеи',
 	low_damage_trap_hint: 'ловушка: слабый урон',
-	mid_damage_trap_hint: 'ловушка: сильный урон',
+	moderate_damage_trap_hint: 'ловушка: средний урон',
 	move_loss_trap_hint: 'ловушка: пропуск хода',
 	boss_warning_and_trap_hint: 'близость к боссу и ловушка',
 	boss_slay_and_trap_hint: 'босс и ловушка',

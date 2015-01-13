@@ -276,7 +276,7 @@ window.GUIp_i18n = {
 	unknown_trap_hint: 'trap blocked by pet',
 	trophy_loss_trap_hint: 'trap: gold or trophy loss',
 	low_damage_trap_hint: 'trap: low damage',
-	mid_damage_trap_hint: 'trap: moderate damage',
+	moderate_damage_trap_hint: 'trap: moderate damage',
 	move_loss_trap_hint: 'trap: move loss',
 	boss_warning_and_trap_hint: 'boss warning and trap',
 	boss_slay_and_trap_hint: 'boss and trap',

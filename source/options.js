@@ -138,7 +138,7 @@ function setForm() {
 		addOnClick($j('#l_' + sect), sect);
 	}
 	$j('#words').submit(function() { save_words(); return false; });
-	$j('#add_options').submit(function() { save_options(); return false; });
+	$j('#GUIp_options').submit(function() { save_options(); return false; });
 	$j('#set_default').click(function() { delete_custom_words(); return false; });
 }
 
