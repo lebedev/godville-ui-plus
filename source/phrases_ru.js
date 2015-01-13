@@ -541,7 +541,7 @@ window.GUIp_i18n = {
 	forbidden_informers_dead: 'смерть',
 	forbidden_informers_pvp: 'бой',
 	forbidden_informers_wanted_monster: 'монстр дня',
-	forbidden_informers_monster_with_capabilities: 'монстр со способностями',
+	forbidden_informers_special_monster: 'монстр со способностями',
 	forbidden_informers_tamable_monster: 'приручаемый монстр',
 	forbidden_informers_close_to_boss: 'близость к боссу в подземелье',
 	forbidden_informers_guild_quest: 'взятие квеста на смену гильдии',

@@ -217,7 +217,7 @@ return '<p>\n' +
 '							<input class="informer-checkbox" id="dead" name="dead" type="checkbox"><label for="dead">' + window.GUIp_i18n.forbidden_informers_dead + '</label><br>\n' +
 '							<input class="informer-checkbox" id="pvp" name="pvp" type="checkbox"><label for="pvp">' + window.GUIp_i18n.forbidden_informers_pvp + '</label><br>\n' +
 '							<input class="informer-checkbox" id="wanted_monster" name="wanted_monster" type="checkbox"><label for="wanted_monster">' + window.GUIp_i18n.forbidden_informers_wanted_monster + '</label><br>\n' +
-'							<input class="informer-checkbox" id="monster_with_capabilities" name="monster_with_capabilities" type="checkbox"><label for="monster_with_capabilities">' + window.GUIp_i18n.forbidden_informers_monster_with_capabilities + '</label><br>\n' +
+'							<input class="informer-checkbox" id="special_monster" name="special_monster" type="checkbox"><label for="special_monster">' + window.GUIp_i18n.forbidden_informers_special_monster + '</label><br>\n' +
 '							<input class="informer-checkbox" id="tamable_monster" name="tamable_monster" type="checkbox"><label for="tamable_monster">' + window.GUIp_i18n.forbidden_informers_tamable_monster + '</label><br>\n' +
 '							<input class="informer-checkbox" id="close_to_boss" name="close_to_boss" type="checkbox"><label for="close_to_boss">' + window.GUIp_i18n.forbidden_informers_close_to_boss + '</label><br>\n' +
 '							<input class="informer-checkbox" id="guild_quest" name="guild_quest" type="checkbox"><label for="guild_quest">' + window.GUIp_i18n.forbidden_informers_guild_quest + '</label><br>\n' +

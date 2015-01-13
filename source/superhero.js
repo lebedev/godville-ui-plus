@@ -1288,14 +1288,14 @@ var ui_improver = {
 		if (!ui_utils.isAlreadyImproved($('#news'))) {
 			ui_utils.addSayPhraseAfterLabel($('#news'), window.GUIp_i18n.enemy_label, window.GUIp_i18n.hit, 'hit', window.GUIp_i18n.ask7 + ui_data.char_sex[1] + window.GUIp_i18n.to_hit);
 		}
-		var isWantedMonster = false;
-		var isMonsterWithCapabilities = false;
-		var isTamableMonster = false;
+		var isWantedMonster = false,
+			isSpecialMonster = false,
+			isTamableMonster = false;
 		// Если герой дерется с монстром
 		if ($('#news .line')[0].style.display !== 'none') {
 			var currentMonster = $('#news .l_val').text();
 			isWantedMonster = this.wantedMonsters && currentMonster.match(this.wantedMonsters);
-			isMonsterWithCapabilities = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
+			isSpecialMonster = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
 
 			if (!window.so.state.has_pet) {
 				var hasArk = parseInt(window.so.state.stats.wood.value) >= 100;
@@ -1311,7 +1311,7 @@ var ui_improver = {
 		}
 
 		ui_informer.update('wanted monster', isWantedMonster);
-		ui_informer.update('monster with capabilities', isMonsterWithCapabilities);
+		ui_informer.update('special monster', isSpecialMonster);
 		ui_informer.update('tamable monster', isTamableMonster);
 	},
 
