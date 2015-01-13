@@ -119,7 +119,7 @@ if (guip_hash) {
 // formatting buttons
 var $reply_form = $id('post_body_editor');
 if ($reply_form) {
-	window.GUIp_addGlobalStyleURL(window.GUIp_getResource('forum.css'), 'forum_css');
+	window.GUIp_addCSSFromURL(window.GUIp_getResource('forum.css'), 'forum_css');
 	var formatting_buttons =
 		'<a class="formatting button bold" title="' + window.GUIp_i18n.bold_hint + '">' + window.GUIp_i18n.bold + '</a>' +
 		'<a class="formatting button underline" title="' + window.GUIp_i18n.underline_hint + '">' + window.GUIp_i18n.underline + '</a>' +

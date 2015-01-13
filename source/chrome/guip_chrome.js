@@ -2,14 +2,14 @@ window.GUIp_browser = 'Chrome';
 window.GUIp_getResource = function(res) {
 	return localStorage.GUIp_prefix + res;
 };
-window.GUIp_addGlobalStyleURL = function(url, id) {
-	var sel = document.createElement('link');
-	sel.setAttribute('type', 'text/css');
-	sel.setAttribute('href', url);
-	sel.setAttribute('media', 'screen');
-	sel.setAttribute('rel', 'stylesheet');
-	sel.setAttribute('id', id);
-	document.head.appendChild(sel);
+window.GUIp_addCSSFromURL = function(href, id) {
+	document.head.insertAdjacentHTML('beforeend', '<link id="' + id + '" type="text/css" href="' + href + '" rel="stylesheet" media="screen">');
+};
+window.GUIp_addCSSFromString = function(text) {
+	if (!document.getElementById('guip_user_css')) {
+		document.head.insertAdjacentHTML('beforeend', '<style id="guip_user_css" />');
+	}
+	document.getElementById('guip_user_css').innerHTML = text;
 };
 
 // object.watch polyfill

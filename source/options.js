@@ -140,6 +140,7 @@ function setForm() {
 	$j('#words').submit(function() { save_words(); return false; });
 	$j('#GUIp_options').submit(function() { save_options(); return false; });
 	$j('#set_default').click(function() { delete_custom_words(); return false; });
+	$j('#set_user_css').click(function() { set_user_css(); return false; });
 }
 
 function addOnClick($el, sect) {
@@ -338,6 +339,13 @@ function setText(sect) {
 	ImproveInProcess = false;
 }
 
+function set_user_css() {
+	$j('#gui_css_progress').show();
+	storage.set('UserCss', $j('#user_css').val());
+	storage.set('UserCssChanged', true);
+	$j('#gui_css_progress').fadeOut("slow");
+}
+
 // Restores select box state to saved value from localStorage.
 function restore_options() {
 	var i, r = new RegExp('^' + storage._get_key('Option:'));
@@ -423,6 +431,8 @@ function restore_options() {
 		$j('#voice_menu').hide();
 		$j('#GUIp_words').hide();
 	}
+
+	$j('#user_css').val(storage.get('UserCss') || '');
 }
 
 function improve_blocks() {
@@ -437,7 +447,7 @@ function set_theme_and_background() {
 	if (ui_s_css) {
 		ui_s_css.parentNode.removeChild(ui_s_css);
 	}
-	window.GUIp_addGlobalStyleURL('/stylesheets/' + storage.get('ui_s') + '.css', 'ui_s_css');
+	window.GUIp_addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'ui_s_css');
 	var background = storage.get('Option:useBackground');
 	if (background) {
 		if (background === 'cloud') {
@@ -468,7 +478,7 @@ var starterInt = setInterval(function() {
 		if (location.hash === "#ui_options") {
 			loadOptions();
 		}
-		window.GUIp_addGlobalStyleURL(window.GUIp_getResource('options.css'), 'options_css');
+		window.GUIp_addCSSFromURL(window.GUIp_getResource('options.css'), 'guip_options_css');
 		set_theme_and_background();
 		improve_blocks();
 		// Event and Listeners

@@ -625,7 +625,8 @@ window.GUIp_i18n = {
 	sub_hint: 'Сделать текст подстрочным',
 	monospace_hint: 'Сделать текст моноширинным',
 	monospace: 'мш',
-	broadcast: 'трансляция'
+	broadcast: 'трансляция',
+	user_css: 'Пользовательский CSS'
 };
 
 }

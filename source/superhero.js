@@ -173,8 +173,8 @@ var ui_utils = {
 						  .replace(/>/g, "&gt;");
 	},
 	addCSS: function () {
-		if ($('#ui_css').length === 0) {
-			window.GUIp_addGlobalStyleURL(window.GUIp_getResource('superhero.css'), 'guip_css');
+		if (!document.getElementById('ui_css')) {
+			window.GUIp_addCSSFromURL(window.GUIp_getResource('superhero.css'), 'guip_css');
 		}
 	},
 	getXHR: function(path, success_callback, fail_callback, extra_arg) {
@@ -1876,11 +1876,20 @@ var ui_improver = {
 				document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + window.so.state.stats.perm_link.value + '" target="_blank">' + window.GUIp_i18n.broadcast + '</a>');
 			}
 		}
+		if (this.isFirstTime || ui_storage.get('UserCssChanged') === true) {
+			ui_storage.set('UserCssChanged', false);
+			window.GUIp_addCSSFromString(ui_storage.get('UserCss'));
+		}
 
 		if (localStorage.ui_s !== ui_storage.get('ui_s')) {
 			ui_storage.set('ui_s', localStorage.ui_s || 'th_classic');
 			this.Shovel = false;
-			document.body.className = ui_storage.get('ui_s').replace('th_', '');
+			if (document.body.classList.contains('has_temple')) {
+				document.body.className = 'has_temple';
+			} else {
+				document.body.className = '';
+			}
+			document.body.classList.add(ui_storage.get('ui_s').replace('th_', ''));
 		}
 
 		if (ui_storage.get('Option:useBackground') === 'cloud') {
@@ -2354,7 +2363,7 @@ var ui_trycatcher = {
 
 var ui_starter = {
 	start: function() {
-		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_browser && window.GUIp_i18n) {
+		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_browser && window.GUIp_i18n && window.so.state) {
 			clearInterval(starterInt);
 			var start = new Date();
 			ui_data.init();

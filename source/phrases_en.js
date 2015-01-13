@@ -480,7 +480,8 @@ window.GUIp_i18n = {
 	sub_hint: 'Subscript',
 	monospace_hint: 'Monospace',
 	monospace: 'ms',
-	broadcast: 'broadcast'
+	broadcast: 'broadcast',
+	user_css: 'User CSS'
 };
 
 }
