@@ -2345,9 +2345,7 @@ var ui_starter = {
 			ui_informer.init();
 			ui_forum.init();
 			ui_improver.improve();
-			if (window.GUIp_locale === 'ru') {
-				ui_laying_timer.init();
-			}
+			ui_laying_timer.init();
 			ui_observers.init();
 			ui_improver.initSoundsOverride();
 			
