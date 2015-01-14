@@ -919,7 +919,6 @@ var ui_informer = {
 	},
 
 	clear_title: function() {
-
 		var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
 		var pm = 0;
 		if (!forbidden_title_notices.match('pm')) {
@@ -1557,7 +1556,7 @@ var ui_improver = {
 			ui_stats.setFromLabelCounter('Hero_HP', $('#m_info'), window.GUIp_i18n.health_label);
 			ui_stats.setFromLabelCounter('Hero_Gold', $('#m_info'), window.GUIp_i18n.gold_label, gold_parser);
 			ui_stats.setFromLabelCounter('Hero_Inv', $('#m_info'), window.GUIp_i18n.inventory_label);
-			ui_stats.set('Hero_Charges',$('#m_control .acc_val').text(), parseFloat);
+			ui_stats.set('Hero_Charges', $('#m_control .acc_val').text(), parseFloat);
 			ui_stats.setFromLabelCounter('Enemy_Gold', $('#o_info'), window.GUIp_i18n.gold_label, gold_parser);
 			ui_stats.setFromLabelCounter('Enemy_Inv', $('#o_info'), window.GUIp_i18n.inventory_label);
 			ui_stats.set('Hero_Alls_HP', this.GroupHP(true));
@@ -1834,10 +1833,14 @@ var ui_improver = {
 				step = first_sentence[0].match(this.jumpingDungeonRegExp) ? 2 : 1;
 				if (direction) {
 					switch(direction[0]) {
-					case 'север': y += step; break;
-					case 'восток': x -= step; break;
-					case 'юг': y -= step; break;
-					case 'запад': x += step; break;
+					case 'север':
+					case 'north': y += step; break;
+					case 'восток':
+					case 'east': x -= step; break;
+					case 'юг':
+					case 'south': y -= step; break;
+					case 'запад':
+					case 'west': x += step; break;
 					}
 				}
 			}
