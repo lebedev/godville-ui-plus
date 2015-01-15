@@ -39,7 +39,7 @@
 		} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
 			createScripts([scripts.jquery, scripts.guip_chrome, scripts.phrases_en, scripts.options_page, scripts.options]);
 		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-			createScripts([scripts.guip_chrome, scripts.phrases_en, scripts.forum.js]);
+			createScripts([scripts.guip_chrome, scripts.phrases_en, scripts.forum]);
 		}
 	}
 })();
