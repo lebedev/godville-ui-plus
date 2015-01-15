@@ -1540,14 +1540,15 @@ var ui_improver = {
 			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), window.GUIp_i18n.inventory_label);
 			ui_stats.set('Map_Charges', $('#m_control .acc_val').text(), parseFloat);
 			ui_stats.set('Map_Alls_HP', this.GroupHP(true));
-			if (ui_storage.get('Logger:LocationPrev') === 'Field') {
-				ui_storage.set('Logger:LocationPrev', 'Dungeon');
+			if (ui_storage.get('Logger:Location') === 'Field') {
+				ui_storage.set('Logger:Location', 'Dungeon');
 				ui_storage.set('Logger:Map_HP', ui_stats.get('Map_HP'));
 				ui_storage.set('Logger:Map_Gold', ui_stats.get('Map_Gold'));
 				ui_storage.set('Logger:Map_Inv', ui_stats.get('Map_Inv'));
 				ui_storage.set('Logger:Map_Charges',ui_stats.get('Map_Charges'));
 				ui_storage.set('Logger:Map_Alls_HP', ui_stats.get('Map_Alls_HP'));
 			}
+			ui_informer.update('low health', ui_stats.get('Map_HP') < 120);
 			return;
 		}
 		if (ui_data.isBattle) {
@@ -1569,10 +1570,11 @@ var ui_improver = {
 				ui_storage.set('Logger:Enemy_Inv', ui_stats.get('Enemy_Inv'));
 				ui_storage.set('Logger:Hero_Alls_HP', ui_stats.get('Hero_Alls_HP'));
 			}
+			ui_informer.update('low health', ui_stats.get('Hero_HP') < 120);
 			return;
 		}
-		if (ui_storage.get('Logger:LocationPrev') !== 'Field') {
-			ui_storage.set('Logger:LocationPrev', 'Field');
+		if (ui_storage.get('Logger:Location') !== 'Field') {
+			ui_storage.set('Logger:Location', 'Field');
 		}
 		var $box = $('#stats');
 		if (!ui_utils.isAlreadyImproved($('#stats'))) {
