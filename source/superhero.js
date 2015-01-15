@@ -846,18 +846,16 @@ var ui_informer = {
 	// устанавливает или удаляет флаг
 	update: function(flag, value) {
 		if (value && (flag === 'pvp' || !(ui_data.isBattle && !ui_data.isDungeon)) && !(ui_storage.get('Option:forbiddenInformers') &&
-			ui_storage.get('Option:forbiddenInformers').match(flag.replace(/= /g, '').replace(/> /g, '').replace(/ /g, '_')))) {
+			ui_storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))) {
 			if (!(flag in this.flags)) {
 				this.flags[flag] = true;
 				this.create_label(flag);
 				this.save();
 			}
-		} else {
-			if (flag in this.flags) {
-				delete this.flags[flag];
-				this.delete_label(flag);
-				this.save();
-			}
+		} else if (flag in this.flags) {
+			delete this.flags[flag];
+			this.delete_label(flag);
+			this.save();
 		}
 		if (!this.tref) {
 			this.tick();
@@ -1810,6 +1808,7 @@ var ui_improver = {
 		if (this.isFirstTime) {
 			ui_utils.getXHR('/duels/log/' + window.so.state.stats.perm_link.value, this.parseChronicles.bind(this));
 		}
+		ui_storage.set('Log:current', window.so.state.stats.perm_link.value);
 		ui_storage.set('Log:' + window.so.state.stats.perm_link.value + ':steps', $('#m_fight_log .block_title').text().match(/\d+/)[0]);
 		ui_storage.set('Log:' + window.so.state.stats.perm_link.value + ':map', JSON.stringify(window.so.state.d_map));
 	},

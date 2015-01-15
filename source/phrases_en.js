@@ -312,7 +312,7 @@ window.GUIp_i18n = {
 	pet_status_label: 'Status',
 	pet_level_label: 'Level',
 	gte_no_penalty: 'Gold can be converted to experience without penalty',
-	gte_minor_penalty: 'Gold van be converted to experience with 1/3 penalty',
+	gte_minor_penalty: 'Gold can be converted to experience with 1/3 penalty',
 	gte_major_penalty: 'Gold can be converted to experience with 2/3 penalty',
 	gte_unknown_penalty: 'Not enough data to determine the gold to experience conversion penalty. Will resolve after any conversion or in ',
 	error_message_title: 'Godville UI+ error!',

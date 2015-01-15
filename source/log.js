@@ -3,8 +3,8 @@
 
 	function updateButton() {
 		var i;
-		if (!isNaN(localStorage[godname_prefix + log + 'sentToLEM4']) && Date.now() - localStorage[godname_prefix + log + 'sentToLEM4'] < time_frame_seconds*1000) {
-			var time = time_frame_seconds - (Date.now() - localStorage[godname_prefix + log + 'sentToLEM4'])/1000,
+		if (!isNaN(localStorage[godname_prefix + log + 'sentToLEM' + request_limit]) && Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + request_limit] < time_frame_seconds*1000) {
+			var time = time_frame_seconds - (Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + request_limit])/1000,
 				minutes = Math.floor(time/60),
 				seconds = Math.floor(time%60);
 			seconds = seconds < 10 ? '0' + seconds : seconds;
@@ -12,7 +12,7 @@
 			button.setAttribute('disabled', 'disabled');
 		} else {
 			var tries = 0;
-			for (i = 0; i < (localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 4); i++) {
+			for (i = 0; i < request_limit; i++) {
 				if (isNaN(localStorage[godname_prefix + log + 'sentToLEM' + i]) || Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + i] > time_frame_seconds*1000) {
 					tries++;
 				}
@@ -23,7 +23,7 @@
 		// old entries deletion
 		var len, lines = [];
 		for (i = 0, len = localStorage.length; i < len; i++) {
-			if (localStorage.key(i).match(godname_prefix + 'Log:') && !localStorage.key(i).match(log)) {
+			if (localStorage.key(i).match(godname_prefix + 'Log:\\w{5}:') && !localStorage.key(i).match(log + '|' + localStorage[godname_prefix + 'Log:current'])) {
 				lines.push(localStorage.key(i));
 			}
 		}
@@ -101,11 +101,12 @@
 	var button = document.getElementById('send_to_LEM'),
 		match = document.getElementById('match'),
 		search_mode = document.getElementById('search_mode'),
-		time_frame_seconds = (localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 6)*60;
+		time_frame_seconds = (localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 15)*60,
+		request_limit = localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 5;
 	button.onclick = function(e) {
 		e.preventDefault();
-		if (isNaN(localStorage[godname_prefix + log + 'sentToLEM4']) || Date.now() - localStorage[godname_prefix + log + 'sentToLEM4'] > time_frame_seconds*1000) {
-			for (var i = (localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 4); i > 1; i--) {
+		if (isNaN(localStorage[godname_prefix + log + 'sentToLEM' + request_limit]) || Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + request_limit] > time_frame_seconds*1000) {
+			for (var i = request_limit; i > 1; i--) {
 				localStorage[godname_prefix + log + 'sentToLEM' + i] = localStorage[godname_prefix + log + 'sentToLEM' + (i - 1)];
 			}
 			localStorage[godname_prefix + log + 'sentToLEM1'] = Date.now();
