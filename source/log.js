@@ -105,20 +105,16 @@
 		request_limit = localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 5;
 	button.onclick = function(e) {
 		e.preventDefault();
-		if (isNaN(localStorage[godname_prefix + log + 'sentToLEM' + request_limit]) || Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + request_limit] > time_frame_seconds*1000) {
-			for (var i = request_limit; i > 1; i--) {
-				localStorage[godname_prefix + log + 'sentToLEM' + i] = localStorage[godname_prefix + log + 'sentToLEM' + (i - 1)];
-			}
-			localStorage[godname_prefix + log + 'sentToLEM1'] = Date.now();
-			updateButton();
-			this.form.submit();
-			document.getElementById('match').checked = false;
-			document.getElementById('match_partial').checked = false;
-			document.getElementById('medium').click();
-			document.getElementById('search_mode').style.display = "none";
-		} else {
-			return false;
+		for (var i = request_limit; i > 1; i--) {
+			localStorage[godname_prefix + log + 'sentToLEM' + i] = localStorage[godname_prefix + log + 'sentToLEM' + (i - 1)];
 		}
+		localStorage[godname_prefix + log + 'sentToLEM1'] = Date.now();
+		updateButton();
+		this.form.submit();
+		document.getElementById('match').checked = false;
+		document.getElementById('match_partial').checked = false;
+		document.getElementById('medium').click();
+		document.getElementById('search_mode').style.display = "none";
 	};
 
 	updateButton();
