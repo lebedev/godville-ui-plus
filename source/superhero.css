@@ -24,7 +24,8 @@ body {
 #diary .line,
 .panth_line,
 #no_skills,
-#send_feedback_form {
+#send_feedback_form .line,
+#trader .line {
 	text-align: center;
 }
 .l_val {
