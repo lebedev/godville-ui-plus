@@ -110,15 +110,14 @@ for (i = 0, len = unfollow_links.length; i < len; i++) {
 	unfollow_links[i].onclick = unfollow;
 }
 
-// scroll to a certain post #
-var guip_hash = location.hash.match(/#guip_(\d+)/);
-if (guip_hash) {
-	location.hash = $C('spacer')[+guip_hash[1]].id;
-}
-
-// formatting buttons
-var $reply_form = $id('post_body_editor');
-if ($reply_form) {
+if (isTopic) {
+	// scroll to a certain post #
+	var guip_hash = location.hash.match(/#guip_(\d+)/);
+	if (guip_hash) {
+		location.hash = $C('spacer')[+guip_hash[1]].id;
+	}
+	// formatting buttons
+	var $reply_form = $id('post_body_editor');
 	window.GUIp_addCSSFromURL(window.GUIp_getResource('forum.css'), 'forum_css');
 	var formatting_buttons =
 		'<a class="formatting button bold" title="' + window.GUIp_i18n.bold_hint + '">' + window.GUIp_i18n.bold + '</a>' +
@@ -143,9 +142,9 @@ if ($reply_form) {
 		se = editor.selectionEnd;
 		selection = window.getSelection().isCollapsed ? '' : window.getSelection().toString().trim();
 	};
-	var putSelectionTo = function(editor, pos) {
+	var putSelectionTo = function(editor, pos, quoting) {
 		editor.focus();
-		editor.selectionStart = editor.selectionEnd = pos + selection.length;
+		editor.selectionStart = editor.selectionEnd = pos + (quoting ? selection.length : 0);
 	};
 	var basic_formatting = function(left, right, editor) {
 		try {
@@ -157,7 +156,7 @@ if ($reply_form) {
 				se--;
 			}
 			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[^\wА-Яа-я]/) ? ' ' : '') + left + val.slice(ss, se) + selection + right + (val && val [se] && !val[se].match(/[^\wА-Яа-я]/) ? ' ' : '') + val.slice(se);
-			putSelectionTo(editor, se + left.length);
+			putSelectionTo(editor, se + left.length, true);
 			return false;
 		} catch(error) {
 			console.error(error);
@@ -170,7 +169,7 @@ if ($reply_form) {
 			nle = val && (val[se] && !val[se].match(/\n/) || !val[se]) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '') +
 			      selection && !selection[selection.length - 1].match(/\n/) ? '\n\n' : (selection[selection.length - 2] && !selection[selection.length - 2].match(/\n/) ? '\n' : '');
 			editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + selection + nle + val.slice(se);
-			putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0));
+			putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0), true);
 		} catch(error) {
 			console.error(error);
 		}
@@ -182,7 +181,7 @@ if ($reply_form) {
 			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
 			var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
 			editor.value = val.slice(0, ss) + nls + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + nle + val.slice(se);
-			putSelectionTo(editor, se + nls.length + (list_marker.length + 1)*count);
+			putSelectionTo(editor, se + nls.length + (list_marker.length + 1)*count, true);
 		} catch(error) {
 			console.error(error);
 		}
@@ -192,7 +191,7 @@ if ($reply_form) {
 			init(editor);
 			var pos = editor.selectionDirection === 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
-			putSelectionTo(editor, pos + 4);
+			putSelectionTo(editor, pos + 4, true);
 		} catch(error) {
 			console.error(error);
 		}
@@ -245,16 +244,38 @@ if ($reply_form) {
 			}
 		}, 10);
 	};
-	if (isTopic) {
-		window.Effect.old_toggle = window.Effect.toggle;
-		window.Effect.toggle = function(a, b) { set_pw_pb(a); window.Effect.old_toggle(a, b); };
-		window.Effect.old_BlindDown = window.Effect.BlindDown;
-		window.Effect.BlindDown = function(a, b) { set_pw_pb(a); window.Effect.old_BlindDown(a, b); };
-		window.EditForm.old_hide = window.EditForm.hide;
-		window.EditForm.hide = function() { pw.style.paddingBottom = '0px'; window.EditForm.old_hide(); };
-		window.EditForm.old_setReplyId = window.EditForm.setReplyId;
-		window.EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } window.EditForm.old_setReplyId(a); };
-	}
+	// page wrapper padding fix
+	window.Effect.old_toggle = window.Effect.toggle;
+	window.Effect.toggle = function(a, b) { set_pw_pb(a); window.Effect.old_toggle(a, b); };
+	window.Effect.old_BlindDown = window.Effect.BlindDown;
+	window.Effect.BlindDown = function(a, b) { set_pw_pb(a); window.Effect.old_BlindDown(a, b); };
+	window.EditForm.old_hide = window.EditForm.hide;
+	window.EditForm.hide = function() { pw.style.paddingBottom = '0px'; window.EditForm.old_hide(); };
+	window.EditForm.old_setReplyId = window.EditForm.setReplyId;
+	window.EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } window.EditForm.old_setReplyId(a); };
+
+	// godname paste fix
+	window.ReplyForm.add_name = function(name) {
+		try {
+			var editor;
+			if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
+				editor = document.getElementById('edit_body');
+			} else {
+				editor = document.getElementById('post_body');
+				if (document.getElementById('reply').style.display === 'none') {
+					ReplyForm.init();
+				}
+			}
+			init(editor);
+			var pos = editor.selectionDirection === 'backward' ? ss : se;
+			editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
+			setTimeout(function() {
+				putSelectionTo(editor, pos + name.length + 4, false);
+			}, 50);
+		} catch(error) {
+			console.error(error);
+		}
+	};
 }
 
 } catch(e) {
