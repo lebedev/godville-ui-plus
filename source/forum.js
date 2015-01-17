@@ -32,7 +32,10 @@ var storage = {
 		return value;
 	},
 	get: function(id) {
-		return localStorage[this._get_key(id)];
+		var value = localStorage[this._get_key(id)];
+		if (value === 'true') { return true; }
+		else if (value === 'false') { return false; }
+		else { return value; }
 	}
 };
 
@@ -276,6 +279,30 @@ if (isTopic) {
 			console.error(error);
 		}
 	};
+
+	// pictures autopaste
+	if (!storage.get('Option:disableLinksAutoreplace')) {
+		var links = document.querySelectorAll('.post .body a'),
+			imgs = [],
+			img_onerror = function(i) {
+				imgs[i] = undefined;
+				links[i].removeChild(links[i].firstElementChild);
+			},
+			img_onload = function(i) {
+				var hint = links[i].textContent;
+				links[i].outerHTML = '<div class="img_container"><a id="link' + i + '" href="' + links[i].href + '" target="_blank" alt="Откроется в новой вкладке"></a><div class="hint">' + hint + '</div></div>';
+				imgs[i].alt = hint;
+				var new_link = document.getElementById('link' + i);
+				new_link.appendChild(imgs[i]);
+			};
+		for (i = 0, len = links.length; i < len; i++) {
+			links[i].insertAdjacentHTML('beforeend', '<img src="http://godville.net/images/spinner.gif">');
+			imgs[i] = document.createElement('img');
+			imgs[i].onerror = img_onerror.bind(null, i);
+			imgs[i].onload = img_onload.bind(null, i);
+			imgs[i].src = links[i].href;
+		}
+	}
 }
 
 } catch(e) {

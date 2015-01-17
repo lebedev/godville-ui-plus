@@ -62,3 +62,10 @@
 #footer {
 	display: none;
 }
+
+.img_container {
+	text-align: center;
+}
+.img_container img {
+	max-width: 456px;
+}

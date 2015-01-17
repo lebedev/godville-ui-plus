@@ -430,6 +430,8 @@ window.GUIp_i18n = {
 	disable_pm_sound_desc: 'for those annoyed by a "ding"',
 	disable_arena_sound: 'Disable arena sounds',
 	disable_arena_sound_desc: 'arena, challenge, boss, dungeon',
+	disable_links_autoreplace: 'Disable links autoreplace by images',
+	disable_links_autoreplace_desc: 'in forum threads',
 	enable_debug_mode: 'Enable debugging mode',
 	enable_debug_mode_desc: 'just for developers',
 	apply: 'Apply',

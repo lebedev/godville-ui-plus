@@ -264,6 +264,15 @@ return '<p>\n' +
 '						<div class="g_desc">' + window.GUIp_i18n.disable_arena_sound_desc + '</div>\n' +
 '					</div>\n' +
 '					<div class="new_line">\n' +
+'						<label class="l_capt" for="disable_links_autoreplace">' + window.GUIp_i18n.disable_links_autoreplace + '</label>\n' +
+'						<div class="field_content">\n' +
+'							<input id="disable_links_autoreplace" name="disable_links_autoreplace" class="option-checkbox" type="checkbox">\n' +
+'						</div>\n' +
+'					</div>\n' +
+'					<div class="new_line">\n' +
+'						<div class="g_desc">' + window.GUIp_i18n.disable_links_autoreplace_desc + '</div>\n' +
+'					</div>\n' +
+'					<div class="new_line">\n' +
 '						<label class="l_capt" for="enable_debug_mode">' + window.GUIp_i18n.enable_debug_mode + '</label>\n' +
 '						<div class="field_content">\n' +
 '							<input id="enable_debug_mode" name="enable_debug_mode" class="option-checkbox" type="checkbox">\n' +

@@ -575,6 +575,8 @@ window.GUIp_i18n = {
 	disable_pm_sound_desc: 'для тех, кому "дзынь" бьет по ушам',
 	disable_arena_sound: 'Выключить звук арены',
 	disable_arena_sound_desc: 'арены, тренировки, босса, подземелья',
+	disable_links_autoreplace: 'Выключить замену ссылок картинками',
+	disable_links_autoreplace_desc: 'на форуме',
 	enable_debug_mode: 'Включить режим отладки',
 	enable_debug_mode_desc: 'чисто девелоперская штучка',
 	apply: 'Применить',
