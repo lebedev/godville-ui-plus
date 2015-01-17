@@ -11,6 +11,7 @@
 	}
 	var prefix = localStorage.GUIp_prefix = window.chrome.extension.getURL('');
 	var scripts = {
+		common: prefix + 'common.js',
 		superhero: prefix + 'superhero.js',
 		phrases_ru: prefix + 'phrases_ru.js',
 		phrases_en: prefix + 'phrases_en.js',
@@ -25,21 +26,21 @@
 		path = location.pathname;
 	if (site.match(/^https?:\/\/godville.net/)) {
 		if (path.match(/^\/superhero/)) {
-			createScripts([scripts.guip_chrome, scripts.phrases_ru, scripts.superhero]);
+			createScripts([scripts.common, scripts.guip_chrome, scripts.phrases_ru, scripts.superhero]);
 		} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-			createScripts([scripts.jquery, scripts.guip_chrome, scripts.phrases_ru, scripts.options_page, scripts.options]);
+			createScripts([scripts.common, scripts.jquery, scripts.guip_chrome, scripts.phrases_ru, scripts.options_page, scripts.options]);
 		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-			createScripts([scripts.guip_chrome, scripts.phrases_ru, scripts.forum]);
+			createScripts([scripts.common, scripts.guip_chrome, scripts.phrases_ru, scripts.forum]);
 		} else if (path.match(/^\/duels\/log\//)) {
 			createScripts([scripts.log]);
 		}
 	} else if (site.match(/^https?:\/\/godvillegame.com/)) {
 		if (path.match(/^\/superhero/)) {
-			createScripts([scripts.guip_chrome, scripts.phrases_en, scripts.superhero]);
+			createScripts([scripts.common, scripts.guip_chrome, scripts.phrases_en, scripts.superhero]);
 		} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-			createScripts([scripts.jquery, scripts.guip_chrome, scripts.phrases_en, scripts.options_page, scripts.options]);
+			createScripts([scripts.common, scripts.jquery, scripts.guip_chrome, scripts.phrases_en, scripts.options_page, scripts.options]);
 		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-			createScripts([scripts.guip_chrome, scripts.phrases_en, scripts.forum]);
+			createScripts([scripts.common, scripts.guip_chrome, scripts.phrases_en, scripts.forum]);
 		}
 	}
 })();
