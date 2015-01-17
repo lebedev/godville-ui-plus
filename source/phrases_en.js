@@ -195,12 +195,12 @@ window.GUIp_i18n = {
 	help_back_to_step_1: 'Back to step 1.',
 	help_console_1: 'If the bug persists — check, if your bug is already reported at the link below.',
 	help_console_2: 'If it is not in the list and there was no error message — open the console ' +
-		'(through the menu, or by presing <b>Ctrl+Shift+' + (window.GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
+		'(through the menu, or by presing <b>Ctrl+Shift+' + (window.GUIp_browser === 'Chrome' ? 'J' : 'K') + '</b>). ' +
 		'<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' +
-		(window.GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console.png" target="_blank" title="Opens in a new tab">Picture</a>.',
+		(window.GUIp_browser === 'Chrome' ? 'chrome' : 'firefox') + '_console.png" target="_blank" title="Opens in a new tab">Picture</a>.',
 	help_console_3: 'Try to find something that looks like an error message in the console ' +
 		'(<a href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/' +
-		(window.GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" target="_blank" title="Opens in a new tab">picture</a>). ' +
+		(window.GUIp_browser === 'Chrome' ? 'chrome' : 'firefox') + '_console_error.png" target="_blank" title="Opens in a new tab">picture</a>). ' +
 		'Provide this information to <b>Bad Luck</b> or post it in the forum as per links below.',
 	help_useful_links: 'Useful links: ' +
 		'<a href="/gods/Bad Luck" title="Opens in a new tab" target="about:blank">Bad Luck</a>, ' +
