@@ -1955,6 +1955,15 @@ var ui_improver = {
 		}
 		$msgs.addClass('improved');
 		$temp.remove();
+
+		// godnames in gc paste fix
+		$('.gc_fr_god:not(.improved)').unbind('click').click(function() {
+			var ta = this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('textarea'),
+				pos = ta.selectionDirection === 'backward' ? ta.selectionStart : ta.selectionEnd;
+			ta.value = ta.value.slice(0, pos) + '@' + this.textContent + ', ' + ta.value.slice(pos);
+			ta.focus();
+			ta.selectionStart = ta.selectionEnd = pos + this.textContent.length + 3;
+		}).addClass('improved');
 	},
 
 	improveAllies: function() {
