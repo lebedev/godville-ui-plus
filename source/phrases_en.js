@@ -481,7 +481,8 @@ window.GUIp_i18n = {
 	monospace_hint: 'Monospace',
 	monospace: 'ms',
 	broadcast: 'broadcast',
-	user_css: 'User CSS'
+	user_css: 'User CSS',
+	open_chat_with: 'Open chat with god/goddess '
 };
 
 }

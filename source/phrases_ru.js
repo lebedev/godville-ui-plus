@@ -626,7 +626,8 @@ window.GUIp_i18n = {
 	monospace_hint: 'Сделать текст моноширинным',
 	monospace: 'мш',
 	broadcast: 'трансляция',
-	user_css: 'Пользовательский CSS'
+	user_css: 'Пользовательский CSS',
+	open_chat_with: 'Открыть чат c богом/богиней '
 };
 
 }

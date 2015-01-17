@@ -2316,7 +2316,7 @@ var ui_observers = {
 					}
 					var god_name = mutation.target.querySelector('.l_val').textContent;
 					if (god_name.match(ui_improver.friendsRegexp)) {
-						hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="Открыть чат c богом/богиней ' + god_name + '">★</a>');
+						hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="' + window.GUIp_i18n.open_chat_with + god_name + '">★</a>');
 						document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = function(e) {
 							e.preventDefault();
 							e.stopPropagation();
