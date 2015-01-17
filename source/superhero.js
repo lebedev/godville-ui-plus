@@ -2409,7 +2409,7 @@ var ui_trycatcher = {
 
 var ui_starter = {
 	start: function() {
-		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_browser && window.GUIp_i18n && window.so.state) {
+		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_browser && window.GUIp_i18n && window.GUIp_addCSSFromURL && window.so.state) {
 			clearInterval(starterInt);
 			var start = new Date();
 			ui_data.init();

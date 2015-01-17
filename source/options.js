@@ -461,7 +461,7 @@ var def, $j, curr_sect, god_name,
 	ImproveInProcess = false;
 
 var starterInt = setInterval(function() {
-	if (window.jQuery && window.GUIp_browser && window.GUIp_i18n) {
+	if (window.jQuery && window.GUIp_browser && window.GUIp_i18n && window.GUIp_addCSSFromURL) {
 		$j = window.jQuery.noConflict();
 		def = window.GUIp_words();
 		clearInterval(starterInt);
