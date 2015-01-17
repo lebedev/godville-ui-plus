@@ -1,11 +1,6 @@
 (function() {
 'use strict';
-var starter = setInterval(GUIp_forum, 100);
-function GUIp_forum() {
-try {
 
-if (!window.GUIp_i18n || !window.GUIp_browser || !window.GUIp_addCSSFromURL) { return; }
-clearInterval(starter);
 var doc = document;
 var $id = function(id) {
 	return doc.getElementById(id);
@@ -22,6 +17,12 @@ var $Q = function(sel) {
 var $q = function(sel) {
 	return doc.querySelector(sel);
 };
+
+function GUIp_forum() {
+try {
+
+if (!window.GUIp_i18n || !window.GUIp_browser || !window.GUIp_addCSSFromURL) { return; }
+clearInterval(starter);
 
 var storage = {
 	_get_key: function(key) {
@@ -230,6 +231,7 @@ if (isTopic) {
 	});
 	editFormObserver.observe($id('content'), { childList: true, subtree: true });
 
+	// page wrapper padding fix
 	var pw_pb_int, step, old_height, pw = document.getElementById('page_wrapper');
 	var set_pw_pb = function(el) {
 		var form = document.getElementById(el) || el;
@@ -247,7 +249,6 @@ if (isTopic) {
 			}
 		}, 10);
 	};
-	// page wrapper padding fix
 	window.Effect.old_toggle = window.Effect.toggle;
 	window.Effect.toggle = function(a, b) { set_pw_pb(a); window.Effect.old_toggle(a, b); };
 	window.Effect.old_BlindDown = window.Effect.BlindDown;
@@ -266,7 +267,7 @@ if (isTopic) {
 			} else {
 				editor = document.getElementById('post_body');
 				if (document.getElementById('reply').style.display === 'none') {
-					ReplyForm.init();
+					window.ReplyForm.init();
 				}
 			}
 			init(editor);
@@ -309,4 +310,5 @@ if (isTopic) {
 	console.error(e);
 }
 }
+var starter = setInterval(GUIp_forum, 100);
 })();
