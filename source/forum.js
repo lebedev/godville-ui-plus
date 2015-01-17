@@ -1,6 +1,9 @@
 (function() {
 'use strict';
 
+var i, len, follow_links, isFollowed, links_containers, topic, unfollow_links,
+	isTopic, forum_topics, god_name, topics;
+
 var doc = document;
 var $id = function(id) {
 	return doc.getElementById(id);
@@ -17,13 +20,6 @@ var $Q = function(sel) {
 var $q = function(sel) {
 	return doc.querySelector(sel);
 };
-
-function GUIp_forum() {
-try {
-
-if (!window.GUIp_i18n || !window.GUIp_browser || !window.GUIp_addCSSFromURL) { return; }
-clearInterval(starter);
-
 var storage = {
 	_get_key: function(key) {
 		return "GUIp_" + god_name + ':' + key;
@@ -39,42 +35,37 @@ var storage = {
 		else { return value; }
 	}
 };
-
-var i, len, follow_links, isFollowed, links_containers, temp, topic, unfollow_links,
-	isTopic = location.pathname.match(/topic/) !== null,
-	forum_topics = 'Forum' + (isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
-									  : location.pathname.match(/forums\/show\/(\d+)/)[1]),
-	god_name = localStorage.GUIp_CurrentUser,
-	topics = JSON.parse(storage.get(forum_topics));
-
-if (isTopic) {
-	links_containers = $Q('#topic_mod');
-} else {
+var checkHash = function() {
+	// scroll to a certain post #
+	var guip_hash = location.hash.match(/#guip_(\d+)/);
+	if (guip_hash) {
+		location.hash = $C('spacer')[+guip_hash[1]].id;
+	}
+};
+var addSmallElements = function() {
 	// add missing <small> elements
-	temp = $Q('.c2');
+	var temp = $Q('.c2');
 	for (i = 0, len = temp.length; i < len; i++) {
 		if (!temp[i].querySelector('small')) {
 			temp[i].insertAdjacentHTML('beforeend', '<small />');
 		}
 	}
-
-	links_containers = $Q('.c2 small');
-}
-
-// add links
-for (i = 0, len = links_containers.length; i < len; i++) {
-	topic = isTopic ? location.pathname.match(/\d+/)[0]
-					: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
-	isFollowed = topics[topic] !== undefined;
-	links_containers[i].insertAdjacentHTML('beforeend',
-		(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? window.GUIp_i18n.Subscribe : window.GUIp_i18n.subscribe) + '</a>' +
-								 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? window.GUIp_i18n.Unsubscribe : window.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
-	);
-}
-
-// add click events to follow links
-follow_links = $Q('.follow');
-var follow = function(e) {
+};
+var addLinks = function() {
+	// add links
+	for (i = 0, len = links_containers.length; i < len; i++) {
+		topic = isTopic ? location.pathname.match(/\d+/)[0]
+						: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
+		isFollowed = topics[topic] !== undefined;
+		links_containers[i].insertAdjacentHTML('beforeend',
+			(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? window.GUIp_i18n.Subscribe : window.GUIp_i18n.subscribe) + '</a>' +
+									 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? window.GUIp_i18n.Unsubscribe : window.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
+		);
+	}
+	addClickToFollow();
+	addClickToUnfollow();
+};
+var followClick = function(e) {
 	try {
 		e.preventDefault();
 		var topic = isTopic ? location.pathname.match(/\d+/)[0]
@@ -90,13 +81,14 @@ var follow = function(e) {
 		console.error(error);
 	}
 };
-for (i = 0, len = follow_links.length; i < len; i++) {
-	follow_links[i].onclick = follow;
-}
-
-// add click events to unfollow links
-unfollow_links = $Q('.unfollow');
-var unfollow = function(e) {
+var addClickToFollow = function() {
+	// add click events to follow links
+	follow_links = $Q('.follow');
+	for (i = 0, len = follow_links.length; i < len; i++) {
+		follow_links[i].onclick = followClick;
+	}
+};
+var unfollowClick = function(e) {
 	try {
 		e.preventDefault();
 		var topic = isTopic ? location.pathname.match(/\d+/)[0]
@@ -110,16 +102,37 @@ var unfollow = function(e) {
 		console.error(error);
 	}
 };
-for (i = 0, len = unfollow_links.length; i < len; i++) {
-	unfollow_links[i].onclick = unfollow;
-}
+var addClickToUnfollow = function() {
+	// add click events to unfollow links
+	unfollow_links = $Q('.unfollow');
+	for (i = 0, len = unfollow_links.length; i < len; i++) {
+		unfollow_links[i].onclick = unfollowClick;
+	}
+};
+
+function GUIp_forum() {
+try {
+
+if (!window.GUIp_i18n || !window.GUIp_browser || !window.GUIp_addCSSFromURL) { return; }
+clearInterval(starter);
+
+isTopic = location.pathname.match(/topic/) !== null;
+forum_topics = 'Forum' + (isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
+								  : location.pathname.match(/forums\/show\/(\d+)/)[1]);
+god_name = localStorage.GUIp_CurrentUser;
+topics = JSON.parse(storage.get(forum_topics));
 
 if (isTopic) {
-	// scroll to a certain post #
-	var guip_hash = location.hash.match(/#guip_(\d+)/);
-	if (guip_hash) {
-		location.hash = $C('spacer')[+guip_hash[1]].id;
-	}
+	links_containers = $Q('#topic_mod');
+} else {
+	addSmallElements();
+	links_containers = $Q('.c2 small');
+}
+
+addLinks();
+
+if (isTopic) {
+	checkHash();
 	// formatting buttons
 	var $reply_form = $id('post_body_editor');
 	window.GUIp_addCSSFromURL(window.GUIp_getResource('forum.css'), 'forum_css');
@@ -200,24 +213,36 @@ if (isTopic) {
 			console.error(error);
 		}
 	};
-	var set_click_actions = function(id, container) {
-		temp = '#' + id + ' .formatting.';
+	var set_basic_formatting = function(temp, container) {
 		$q(temp + 'bold').onclick = basic_formatting.bind(this, '*', '*', container);
 		$q(temp + 'underline').onclick = basic_formatting.bind(this, '+', '+', container);
 		$q(temp + 'strike').onclick = basic_formatting.bind(this, '-', '-', container);
 		$q(temp + 'italic').onclick = basic_formatting.bind(this, '_', '_', container);
-		$q(temp + 'bq').onclick = quote_formatting.bind(this, 'bq. ', container);
-		$q(temp + 'bc').onclick = quote_formatting.bind(this, 'bc. ', container);
 		if (window.GUIp_locale === 'ru') {
 			$q(temp + 'godname').onclick = basic_formatting.bind(this, '"', '":пс', container);
 		}
 		$q(temp + 'link').onclick = basic_formatting.bind(this, '"', '":', container);
-		$q(temp + 'ul').onclick = list_formatting.bind(this, '*', container);
-		$q(temp + 'ol').onclick = list_formatting.bind(this, '#', container);
-		$q(temp + 'br').onclick = paste_br.bind(this, container);
 		$q(temp + 'sup').onclick = basic_formatting.bind(this, '^', '^', container);
 		$q(temp + 'sub').onclick = basic_formatting.bind(this, '~', '~', container);
 		$q(temp + 'monospace').onclick = basic_formatting.bind(this, '@', '@', container);
+	};
+	var set_quote_formatting = function(temp, container) {
+		$q(temp + 'bq').onclick = quote_formatting.bind(this, 'bq. ', container);
+		$q(temp + 'bc').onclick = quote_formatting.bind(this, 'bc. ', container);
+	};
+	var set_list_formatting = function(temp, container) {
+		$q(temp + 'ul').onclick = list_formatting.bind(this, '*', container);
+		$q(temp + 'ol').onclick = list_formatting.bind(this, '#', container);
+	};
+	var set_paste_br = function(temp, container) {
+		$q(temp + 'br').onclick = paste_br.bind(this, container);
+	};
+	var set_click_actions = function(id, container) {
+		var temp = '#' + id + ' .formatting.';
+		set_basic_formatting(temp, container);
+		set_quote_formatting(temp, container);
+		set_list_formatting(temp, container);
+		set_paste_br(temp, container);
 	};
 	set_click_actions('post_body_editor', $id('post_body'));
 	
