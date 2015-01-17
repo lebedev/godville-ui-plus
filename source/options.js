@@ -121,13 +121,10 @@ function loadOptions() {
 	}).attr('rows', 1);
 
 	$j('#GUIp_import').click(function() {
-		var options_string = window.prompt(window.GUIp_i18n.import_prompt);
-		if (options_string) {
-			storage.importOptions(options_string);
-		}
+		storage.importOptions($j('#guip_settings').val());
 	});
 	$j('#GUIp_export').click(function() {
-		window.prompt(window.GUIp_i18n.export_prompt, storage.exportOptions());
+		$j('#guip_settings').val(storage.exportOptions());
 	});
 
 	ImproveInProcess = false;

@@ -336,6 +336,9 @@ return '<p>\n' +
 '		<div class="bl_cell">\n' +
 '			<div class="bl_capt">' + window.GUIp_i18n.import_export_capt + '</div>\n' +
 '			<div class="bl_content" style="text-align: center; padding-top: 0.9em;">\n' +
+'				<div class="new_line">\n' +
+'					<textarea id="guip_settings" class="rounded_field" rows="1" wrap="virtual;" style="width: 98%; resize: none;"></textarea>\n' +
+'				</div>\n' +
 '				<input class="input_btn" type="submit" id="GUIp_import" value="' + window.GUIp_i18n.import + '">\n' +
 '				<input class="input_btn" type="submit" id="GUIp_export" value="' + window.GUIp_i18n.export + '">\n' +
 '			</div>\n' +
