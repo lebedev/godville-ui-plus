@@ -20,6 +20,9 @@
 			button.value = 'Отправить лог в скрипт ЛЕМа\nОсталось попыток: ' + tries;
 			button.removeAttribute('disabled');
 		}
+	}
+
+	function deleteOldEntries() {
 		// old entries deletion
 		var len, lines = [];
 		for (i = 0, len = localStorage.length; i < len; i++) {
@@ -118,7 +121,10 @@
 	};
 
 	updateButton();
-	setInterval(updateButton, 1000);
+	setInterval(function() {
+		updateButton();
+		deleteOldEntries();
+	}, 1000);
 	match.onchange = function() {
 		search_mode.style.display = search_mode.style.display === 'none' ? 'block' : 'none';
 	};
