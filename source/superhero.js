@@ -2009,8 +2009,8 @@ var ui_improver = {
 	},
 
 	chatsFix: function() {
-		var cells = document.querySelectorAll('.frDockCell');
-		for (var i = 0, len = cells.length; i < len; i++) {
+		var i, len, cells = document.querySelectorAll('.frDockCell');
+		for (i = 0, len = cells.length; i < len; i++) {
 			cells[i].classList.remove('left');
 			cells[i].style.zIndex = len - i;
 			if (cells[i].getBoundingClientRect().right < 350) {
@@ -2025,6 +2025,30 @@ var ui_improver = {
 		$('.reset_layout').css('padding-bottom', padding_bottom);
 		if (isBottom) {
 			window.scrollTo(0, window.scrollMaxY);
+		}
+		//"Shift+Enter → new line" improvement
+		var keypresses, handlers,
+		$tas = $('.frInputArea textarea:not(.improved)');
+		if ($tas.length) {
+			var new_keypress = function(handlers) {
+				return function(e) {
+					if (e.which === 13 && !e.shiftKey) {
+						for (var i = 0, len = handlers.length; i < len; i++) {
+							handlers[i](e);
+						}
+					}
+				};
+			};
+			for (i = 0, len = $tas.length; i < len; i++) {
+				keypresses = $._data($tas[i], 'events').keypress;
+				handlers = [];
+				for (var j = 0, klen = keypresses.length; j < klen; j++) {
+					handlers.push(keypresses[j].handler);
+				}
+				$tas.eq(i).unbind('keypress').keypress(new_keypress(handlers));
+			}
+			$tas.addClass('improved');
+			new_keypress = null;
 		}
 	},
 
@@ -2400,11 +2424,6 @@ var ui_starter = {
 			if (!ui_data.isBattle) {
 				$('html').mousemove(ui_improver.mouseMove);
 			}
-
-			// "Shift+Enter → new line" improvement by external-script
-			var shiftEnterScript = document.createElement('script');
-			shiftEnterScript.src = window.GUIp_getResource('shift_enter.js');
-			document.head.appendChild(shiftEnterScript);
 
 			// svg for #logger fade-out in FF
 			var is5c = document.getElementsByClassName('page_wrapper_5c').length;
