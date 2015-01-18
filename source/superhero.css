@@ -31,7 +31,8 @@ body {
 .l_val {
 	float: none;
 }
-#pet .l_val {
+#pet .l_val,
+#trader .l_val {
 	float: right;
 }
 .l_capt {
