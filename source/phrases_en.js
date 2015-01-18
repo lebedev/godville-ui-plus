@@ -1,7 +1,7 @@
 (function() {
 var starter = setInterval(initPhrases, 100);
 function initPhrases() {
-if (!window.GUIp_browser) { return; }
+if (!window.GUIp_browser || !window.GUIp_help_guide_link) { return; }
 clearInterval(starter);
 
 window.GUIp_words = function() {
@@ -192,9 +192,9 @@ window.GUIp_i18n = {
 	help_console_1: 'If the bug persists — check, if your bug is already reported at the link below.',
 	help_console_2: 'If it is not in the list and there was no error message — open the console (through the menu, ' +
 		'or by presing <b>Ctrl+Shift+' + (window.GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
-		window.GUIp_help_guide_link + window.GUIp_browser.toLower() + '_console.png" title="Opens in a new tab">Picture</a>.',
+		window.GUIp_help_guide_link + window.GUIp_browser.toLowerCase() + '_console.png" title="Opens in a new tab">Picture</a>.',
 	help_console_3: 'Try to find something that looks like an error message in the console (' +
-		window.GUIp_help_guide_link + window.GUIp_browser.toLower() + '_console_error.png" title="Opens in a new tab">picture</a>). ' +
+		window.GUIp_help_guide_link + window.GUIp_browser.toLowerCase() + '_console_error.png" title="Opens in a new tab">picture</a>). ' +
 		'Provide this information to <b>Bad Luck</b> or post it in the forum as per links below.',
 	help_useful_links: 'Useful links: ' +
 		'<a href="/gods/Bad Luck" title="Opens in a new tab" target="about:blank">Bad Luck</a>, ' +
