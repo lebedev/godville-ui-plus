@@ -311,11 +311,12 @@ if (isTopic) {
 		var links = document.querySelectorAll('.post .body a'),
 			imgs = [],
 			img_onerror = function(i) {
+				links[i].removeChild(links[i].getElementsByTagName('img')[0]);
 				imgs[i] = undefined;
-				links[i].removeChild(links[i].firstElementChild);
 			},
 			img_onload = function(i) {
-				var hint = links[i].textContent;
+				links[i].removeChild(links[i].getElementsByTagName('img')[0]);
+				var hint = links[i].innerHTML;
 				links[i].outerHTML = '<div class="img_container"><a id="link' + i + '" href="' + links[i].href + '" target="_blank" alt="Откроется в новой вкладке"></a><div class="hint">' + hint + '</div></div>';
 				imgs[i].alt = hint;
 				var new_link = document.getElementById('link' + i);
