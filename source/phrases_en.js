@@ -312,8 +312,7 @@ window.GUIp_i18n = {
 	error_message_title: 'Godville UI+ error!',
 	error_message_subtitle: 'We have encountered an error. Please copy the following information, and proceed as per the instrucions from the help window:',
 	error_message_text: 'Text of the error:',
-	error_message_object: 'Location of the error: object',
-	error_message_method: 'method',
+	error_message_stack_trace: 'Stack trace',
 	and: ' and ',
 	ui_help: 'ui+ help',
 	// options

@@ -459,8 +459,7 @@ window.GUIp_i18n = {
 	error_message_title: 'Ошибка в Godville UI+!',
 	error_message_subtitle: 'Произошла ошибка. Скопируйте следующую информацию и действуйте по инструции из окошка помощи:',
 	error_message_text: 'Текст ошибки:',
-	error_message_object: 'Место ошибки: объект',
-	error_message_method: 'метод',
+	error_message_stack_trace: 'Трассировка стека',
 	and: ' и ',
 	ui_help: 'help',
 	// options

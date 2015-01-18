@@ -2372,21 +2372,23 @@ var ui_observers = {
 };
       
 var ui_trycatcher = {
-	replacer: function(object_name, method_name, method) {
+	replace_with: function(method) {
 		return function() {
 			try {
 				return method.apply(this, arguments);
 			} catch (error) {
+				var name_message = error.name + ': ' + error.message,
+					stack = error.stack.replace(name_message, '').replace(/^\n|    at /g, '').replace(/(?:chrome-extension:\/\/\w+|@chrome:\/\/godville-ui-plus\/content)\/superhero.js:/g, '@');
 				console.error('Godville UI+ error log:\n' +
-							  error.message + '\n' +
-							  '↑ ошибка произошла в объекте ' + object_name + ', методе ' + method_name + "().");
+							  name_message + '\n' +
+							  window.GUIp_i18n.error_message_stack_trace + ': ' + stack);
 				if (!ui_utils.hasShownErrorMessage) {
 					ui_utils.hasShownErrorMessage = true;
 					ui_utils.showMessage('error', {
 						title: window.GUIp_i18n.error_message_title,
 						content: '<div>' + window.GUIp_i18n.error_message_subtitle + '</div>' +
-								 '<div>' + window.GUIp_i18n.error_message_text + ' <b>' + error.message + '</b>.</div>' +
-								 '<div>' + window.GUIp_i18n.error_message_object + ' <b>' + object_name + '</b>, ' + window.GUIp_i18n.error_message_method + ' <b>' + method_name + '()</b>.</div>',
+								 '<div>' + window.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
+								 '<div>' + window.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>',
 						callback: function() {
 							if (!ui_storage.get('helpDialogVisible')) {
 								ui_help_dialog.toggle();
@@ -2397,12 +2399,12 @@ var ui_trycatcher = {
 			}
 		};
 	},
-	process: function(object, object_name) {
+	process: function(object) {
 		var method_name, method;
 		for (method_name in object) {
 			method = object[method_name];
 			if (typeof method === "function") {
-				object[method_name] = this.replacer(object_name, method_name, method);
+				object[method_name] = this.replace_with(method);
 			}
 		}
 	}
@@ -2478,14 +2480,12 @@ var ui_starter = {
 
 // Main code
 var objects = [ui_data, ui_utils, ui_timeout, ui_help_dialog, ui_storage, ui_words,
-			   ui_stats, ui_logger, ui_informer, ui_forum, ui_improver, ui_observers, ui_starter],
-	object_names = ['ui_data', 'ui_utils', 'ui_timeout', 'ui_help_dialog', 'ui_storage', 'ui_words',
-					'ui_stats', 'ui_logger', 'ui_informer', 'ui_forum', 'ui_improver', 'ui_observers', 'ui_starter'];
+			   ui_stats, ui_logger, ui_informer, ui_forum, ui_improver, ui_observers, ui_starter];
 for (var i = 0, len = objects.length; i < len; i++) {
-	ui_trycatcher.process(objects[i], object_names[i]);
+	ui_trycatcher.process(objects[i]);
 }
 for (var observer in ui_observers) {
-	ui_trycatcher.process(ui_observers[observer], 'ui_observers.' + observer);
+	ui_trycatcher.process(ui_observers[observer]);
 }
 var starterInt = setInterval(ui_starter.start, 200);
 
