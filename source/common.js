@@ -7,3 +7,4 @@ window.GUIp_addCSSFromString = function(text) {
 	}
 	document.getElementById('guip_user_css').innerHTML = text;
 };
+window.GUIp_help_guide_link = '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/';
