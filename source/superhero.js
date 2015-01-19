@@ -1,25 +1,27 @@
 (function() {
 'use strict';
 
+var worker = window.wrappedJSObject || window;
+
 var ui_data = {
 	currentVersion: '$VERSION',
 // base variables initialization
 	init: function() {
-		this.isBattle = window.so.state.is_fighting();
-		this.isDungeon = window.so.state.fight_type() === 'dungeon';
-		this.god_name = window.so.state.stats.godname.value;
-		this.char_name = window.so.state.stats.name.value;
-		this.char_sex = window.so.state.stats.gender.value === 'male' ? window.GUIp_i18n.hero : window.GUIp_i18n.heroine;
+		this.isBattle = worker.so.state.is_fighting();
+		this.isDungeon = worker.so.state.fight_type() === 'dungeon';
+		this.god_name = worker.so.state.stats.godname.value;
+		this.char_name = worker.so.state.stats.name.value;
+		this.char_sex = worker.so.state.stats.gender.value === 'male' ? worker.GUIp_i18n.hero : worker.GUIp_i18n.heroine;
 		ui_storage.set('ui_s', '');
-		localStorage.GUIp_CurrentUser = this.god_name;
-		if (window.so.state.bricks_cnt() === 1000) {
+		worker.localStorage.GUIp_CurrentUser = this.god_name;
+		if (worker.so.state.bricks_cnt() === 1000) {
 			document.body.classList.add('has_temple');
 			this.hasTemple = true;
 		}
 
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
-			if (window.GUIp_locale === 'ru') {
+			if (worker.GUIp_locale === 'ru') {
 				ui_storage.set('Forum1', '{}');
 				ui_storage.set('Forum2', '{"2812": 0}');
 				ui_storage.set('Forum3', '{}');
@@ -29,8 +31,8 @@ var ui_data = {
 				ui_storage.set('ForumInformers', '{}');
 
 				// clear old data
-				localStorage.removeItem('GUIp_' + this.god_name + ':posts');
-				localStorage.removeItem('GUIp_Options:User');
+				worker.localStorage.removeItem('GUIp_' + this.god_name + ':posts');
+				worker.localStorage.removeItem('GUIp_Options:User');
 				var informer_flags = ui_storage.get('informer_flags') && JSON.parse(ui_storage.get('informer_flags')) || null;
 				if (informer_flags) {
 					delete informer_flags['new posts'];
@@ -46,13 +48,13 @@ var ui_data = {
 		}
 
 		if (!this.isBattle && !this.isDungeon) {
-			for (var i = 0, lines = [], len = localStorage.length; i < len; i++) {
-				if (localStorage.key(i).match(/Dungeon:/)) {
-					lines.push(localStorage.key(i));
+			for (var i = 0, lines = [], len = worker.localStorage.length; i < len; i++) {
+				if (worker.localStorage.key(i).match(/Dungeon:/)) {
+					lines.push(worker.localStorage.key(i));
 				}
 			}
 			for (i = 0, len = lines.length; i < len; i++) {
-				localStorage.removeItem(lines[i]);
+				worker.localStorage.removeItem(lines[i]);
 			}
 		}
 
@@ -105,7 +107,7 @@ var ui_utils = {
 	},
 // base phrase say algorythm
 	sayToHero: function(phrase) {
-		$('#god_phrase').val(phrase).change();
+		worker.$('#god_phrase').val(phrase).change();
 	},
 // checks if $elem already improved
 	isAlreadyImproved: function($elem) {
@@ -115,8 +117,8 @@ var ui_utils = {
 	},
 // finds a label with given name
 	findLabel: function($base_elem, label_name) {
-		return $('.l_capt', $base_elem).filter(function(index) {
-			return $(this).text() === label_name;
+		return worker.$('.l_capt', $base_elem).filter(function(index) {
+			return worker.$(this).text() === label_name;
 		});
 	},
 // finds a label with given name and appends given elem after it
@@ -125,7 +127,7 @@ var ui_utils = {
 	},
 // generic voice generator
 	getGenSayButton: function(title, section, hint) {
-		return $('<a title="' + hint + '">' + title + '</a>').click(function() {
+		return worker.$('<a title="' + hint + '">' + title + '</a>').click(function() {
 					 ui_utils.sayToHero(ui_words.longPhrase(section));
 					 ui_words.currentPhrase = "";
 					 return false;
@@ -154,7 +156,7 @@ var ui_utils = {
 	createInspectButton: function(item_name) {
 		var a = document.createElement('a');
 		a.className = 'inspect_button';
-		a.title = window.GUIp_i18n.ask1 + ui_data.char_sex[0] + window.GUIp_i18n.inspect + item_name;
+		a.title = worker.GUIp_i18n.ask1 + ui_data.char_sex[0] + worker.GUIp_i18n.inspect + item_name;
 		a.textContent = '?';
 		a.onclick = function() {
 			ui_utils.sayToHero(ui_words.inspectPhrase(item_name));
@@ -166,7 +168,7 @@ var ui_utils = {
 	createCraftButton: function(combo, combo_list, hint) {
 		var a = document.createElement('a');
 		a.className = 'craft_button ' + combo_list;
-		a.title = window.GUIp_i18n.ask2 + ui_data.char_sex[0] + window.GUIp_i18n.craft1 + hint + window.GUIp_i18n.craft2;
+		a.title = worker.GUIp_i18n.ask2 + ui_data.char_sex[0] + worker.GUIp_i18n.craft1 + hint + worker.GUIp_i18n.craft2;
 		a.innerHTML = combo;
 		a.onclick = function() {
 			var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
@@ -185,7 +187,7 @@ var ui_utils = {
 	},
 	addCSS: function () {
 		if (!document.getElementById('ui_css')) {
-			window.GUIp_addCSSFromURL(window.GUIp_getResource('superhero.css'), 'guip_css');
+			worker.GUIp_addCSSFromURL(worker.GUIp_getResource('superhero.css'), 'guip_css');
 		}
 	},
 	getXHR: function(path, success_callback, fail_callback, extra_arg) {
@@ -215,14 +217,14 @@ var ui_utils = {
 	},
 	showMessage: function(msg_no, msg) {
 		var id = 'msg' + msg_no,
-			$msg = $('<div id="' + id + '" class="hint_bar ui_msg">'+
+			$msg = worker.$('<div id="' + id + '" class="hint_bar ui_msg">'+
 						'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
 						'<div class="hint_bar_content">' + msg.content + '</div>'+
-						'<div class="hint_bar_close"><a id="' + id + '_close">' + window.GUIp_i18n.close + '</a></div>' +
-					 '</div>').insertAfter($('#menu_bar'));
-		$('#' + id + '_close').click(function() {
-			$('#' + id).fadeToggle(function() {
-				$('#' + id).remove();
+						'<div class="hint_bar_close"><a id="' + id + '_close">' + worker.GUIp_i18n.close + '</a></div>' +
+					 '</div>').insertAfter(worker.$('#menu_bar'));
+		worker.$('#' + id + '_close').click(function() {
+			worker.$('#' + id).fadeToggle(function() {
+				worker.$('#' + id).remove();
 				if (!isNaN(msg_no)) {
 					ui_storage.set('lastShownMessage', msg_no);
 				}
@@ -236,9 +238,9 @@ var ui_utils = {
 	},
 	inform: function() {
 		var last_shown = !isNaN(ui_storage.get('lastShownMessage')) ? +ui_storage.get('lastShownMessage') : -1;
-		for (var i = 0, len = this.messages[window.GUIp_locale].length; i < len; i++) {
-			if (this.messages[window.GUIp_locale][i].msg_no > last_shown) {
-				this.showMessage(this.messages[window.GUIp_locale][i].msg_no, this.messages[window.GUIp_locale][i]);
+		for (var i = 0, len = this.messages[worker.GUIp_locale].length; i < len; i++) {
+			if (this.messages[worker.GUIp_locale][i].msg_no > last_shown) {
+				this.showMessage(this.messages[worker.GUIp_locale][i].msg_no, this.messages[worker.GUIp_locale][i]);
 			}
 		}
 	},
@@ -277,13 +279,13 @@ var ui_utils = {
 		en: [{
 			msg_no: 0,
 			title: 'Godville UI+ greeting message',
-			get content() { return '<div>Greetings to a god' + (document.title.match('his') ? '' : 'dess') + ', using <b>Godville UI+</b> ' + (window.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + '.</div>' +
+			get content() { return '<div>Greetings to a god' + (document.title.match('his') ? '' : 'dess') + ', using <b>Godville UI+</b> ' + (worker.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + '.</div>' +
 				'<div style="text-align: justify; margin: 0.2em 0 0.3em;">&emsp;Please click <b>ui+ settings</b> button at the top of a page, or ' +
-				'open <b>UI+ settings</b> tab in the hero <b>profile</b> and familiarize yourself with the settings available in this ' + (window.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ', if you haven\'t done so yet.<br>' +
+				'open <b>UI+ settings</b> tab in the hero <b>profile</b> and familiarize yourself with the settings available in this ' + (worker.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ', if you haven\'t done so yet.<br>' +
 
 				'&emsp;In respect to forum informers, by default you are only subscribed to the topic for this addon, and most likely you can see it <i>in the upper left corner</i> right now.<br>' +
 
-				'&emsp;If you can\'t figure out some functions of the ' + (window.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask me (god <b>Bad&nbsp;Luck</b>) directly or in the forums.<br>' +
+				'&emsp;If you can\'t figure out some functions of the ' + (worker.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask me (god <b>Bad&nbsp;Luck</b>) directly or in the forums.<br>' +
 
 				'&emsp;Guides for handling errors can be found in the <i>help dialog</i> (which is open now), that can be shown or hidden by clicking <b style="text-decoration: underline;">ui+ help</b> in the top menu. ' +
 				'Links to everything mentioned above can also be found there.<br>' +
@@ -391,66 +393,56 @@ var ui_timeout = {
 //		HELP DIALOG
 // ------------------------
 var ui_help_dialog = {
-// appends element in ui dialog
-	append: function($append) {
-		this.content.append($append);
-	},
 // toggles ui dialog	
 	toggle: function(visible) {
 		ui_storage.set('helpDialogVisible', !ui_storage.get('helpDialogVisible'));
-		this.bar.slideToggle("slow");
+		worker.$('#ui_help_dialog').slideToggle("slow");
 	},
 // creates ui dialog	
 	create: function() {
-		this.bar = $('<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
-					 '<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, ' + window.GUIp_i18n.if_something_wrong_capt + '...</div>' + 
-					 '<div class="hint_bar_content" style="padding: 0.5em 0.8em;"></div>' + 
-					 '<div class="hint_bar_close"></div></div>');
-		if (ui_storage.get('helpDialogVisible')) { this.bar.show(); }
-		this.content = $('.hint_bar_content', this.bar);
-		this.append('<div style="text-align: left;">' +
-						'<div>' + window.GUIp_i18n.if_something_wrong + '</div>' +
-						'<ol>' +
-							'<li>' + window.GUIp_i18n.help_refresh + '</li>' +
-							'<li><div id="check_version" class="div_link" style="display: inline;">' + window.GUIp_i18n.help_check_version + '</div></li>' +
-							'<li class="update_required Chrome hidden">' + window.GUIp_i18n.help_update_chrome_1 + '</li>' +
-							'<li class="update_required Chrome hidden">' + window.GUIp_i18n.help_update_chrome_2 + '</li>' +
-							'<li class="update_required Firefox hidden">' + window.GUIp_i18n.help_update_firefox_1 + '</li>' +
-							'<li class="update_required Firefox hidden">' + window.GUIp_i18n.help_update_firefox_2 + '</li>' +
-							'<li class="update_required Chrome Firefox hidden">' + window.GUIp_i18n.help_back_to_step_1 + '</li>' +
-							'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_1 + '</li>' +
-							'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_2 + '</li>' +
-							'<li class="console Chrome Firefox hidden">' + window.GUIp_i18n.help_console_3 + '</li>' +
-						'</ol>' +
-						'<div>' + window.GUIp_i18n.help_useful_links + '</div>' +
-					'</div>');
-		if (ui_utils.isDebugMode) {
-			this.append($('<span>dump: </span>'));
-			this.append(this.getDumpButton('all'));
-			this.append($('<span>, </span>'));
-			this.append(this.getDumpButton('options', 'Option'));
-			this.append($('<span>, </span>'));
-			this.append(this.getDumpButton('stats', 'Stats'));
-			this.append($('<span>, </span>'));
-			this.append(this.getDumpButton('logger', 'Logger'));
-			this.append($('<span>, </span>'));
-			this.append(this.getDumpButton('forum', 'Forum'));
-			this.append($('<span>, </span>'));
-			this.append(this.getDumpButton('log', 'Log:'));
-			this.append('<br>');
-		}
-		$('.hint_bar_close', this.bar).append(this.getToggleButton(window.GUIp_i18n.close));
-		$('#menu_bar').after(this.bar);
-		$('#menu_bar ul').append('<li> | </li>')
-						 .append('<a href="user/profile#ui_options">' + window.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>')
-						 .append(this.getToggleButton('<strong>' + window.GUIp_i18n.ui_help + '</strong>'));
+		var menu_bar = document.querySelector('#menu_bar ul');
+		menu_bar.insertAdjacentHTML('beforeend', '<a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
+		this.addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
+		document.getElementById('menu_bar').insertAdjacentHTML('afterend',
+			'<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
+			'<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, ' + worker.GUIp_i18n.if_something_wrong_capt + '...</div>' + 
+			'<div class="hint_bar_content" style="padding: 0.5em 0.8em;">'+
+				'<div style="text-align: left;">' +
+					'<div>' + worker.GUIp_i18n.if_something_wrong + '</div>' +
+					'<ol>' +
+						'<li>' + worker.GUIp_i18n.help_refresh + '</li>' +
+						'<li><div id="check_version" class="div_link" style="display: inline;">' + worker.GUIp_i18n.help_check_version + '</div></li>' +
+						'<li class="update_required Chrome hidden">' + worker.GUIp_i18n.help_update_chrome_1 + '</li>' +
+						'<li class="update_required Chrome hidden">' + worker.GUIp_i18n.help_update_chrome_2 + '</li>' +
+						'<li class="update_required Firefox hidden">' + worker.GUIp_i18n.help_update_firefox_1 + '</li>' +
+						'<li class="update_required Firefox hidden">' + worker.GUIp_i18n.help_update_firefox_2 + '</li>' +
+						'<li class="update_required Chrome Firefox hidden">' + worker.GUIp_i18n.help_back_to_step_1 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + worker.GUIp_i18n.help_console_1 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + worker.GUIp_i18n.help_console_2 + '</li>' +
+						'<li class="console Chrome Firefox hidden">' + worker.GUIp_i18n.help_console_3 + '</li>' +
+					'</ol>' +
+					'<div>' + worker.GUIp_i18n.help_useful_links + '</div>' +
+				'</div>' +
+			'</div>' + 
+			'<div class="hint_bar_close"></div></div>'
+		);
 
-		$('#check_version').click(function() {
-			this.textContent = window.GUIp_i18n.getting_version_no;
+		if (ui_utils.isDebugMode) {
+			this.addDumpButton('<span>dump: </span>', 'all');
+			this.addDumpButton('<span>, </span>', 'options', 'Option');
+			this.addDumpButton('<span>, </span>', 'stats', 'Stats');
+			this.addDumpButton('<span>, </span>', 'logger', 'Logger');
+			this.addDumpButton('<span>, </span>', 'forum', 'Forum');
+			this.addDumpButton('<span>, </span>', 'log', 'Log:');
+		}
+		this.addToggleButton(document.getElementsByClassName('hint_bar_close')[0], worker.GUIp_i18n.close);
+		if (ui_storage.get('helpDialogVisible')) { worker.$('#ui_help_dialog').show(); }
+		document.getElementById('check_version').onclick = function() {
+			this.textContent = worker.GUIp_i18n.getting_version_no;
 			this.classList.remove('div_link');
-			ui_utils.getXHR('/forums/show/' + (window.GUIp_locale === 'ru' ? '2' : '1'), ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
+			ui_utils.getXHR('/forums/show/' + (worker.GUIp_locale === 'ru' ? '2' : '1'), ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
 			return false;
-		});
+		};
 	},
 	onXHRSuccess: function(xhr) {
 		var match;
@@ -462,27 +454,35 @@ var ui_help_dialog = {
 						   +temp_cur[1] >= +temp_last[1] &&
 						   +temp_cur[2] >= +temp_last[2] &&
 						   +temp_cur[3] >= +temp_last[3];
-			$('#check_version')[0].innerHTML = (isNewest ? window.GUIp_i18n.is_last_version : window.GUIp_i18n.is_not_last_version_1 + last_version + window.GUIp_i18n.is_not_last_version_2) + window.GUIp_i18n.proceed_to_next_step;
+			worker.$('#check_version')[0].innerHTML = (isNewest ? worker.GUIp_i18n.is_last_version : worker.GUIp_i18n.is_not_last_version_1 + last_version + worker.GUIp_i18n.is_not_last_version_2) + worker.GUIp_i18n.proceed_to_next_step;
 			if (!isNewest) {
-				$('#ui_help_dialog ol li.update_required.' + window.GUIp_browser).removeClass('hidden');
+				worker.$('#ui_help_dialog ol li.update_required.' + worker.GUIp_browser).removeClass('hidden');
 			} else {
-				$('#ui_help_dialog ol li.console.' + window.GUIp_browser).removeClass('hidden');
+				worker.$('#ui_help_dialog ol li.worker.console.' + worker.GUIp_browser).removeClass('hidden');
 			}
 		} else {
 			ui_help_dialog.onXHRFail();
 		}
 	},
 	onXHRFail: function() {
-		$('#check_version')[0].textContent = window.GUIp_i18n.getting_version_failed;
-		$('#ui_help_dialog ol li.' + window.GUIp_browser).removeClass('hidden');
+		worker.$('#check_version')[0].textContent = worker.GUIp_i18n.getting_version_failed;
+		worker.$('#ui_help_dialog ol li.' + worker.GUIp_browser).removeClass('hidden');
 	},
 // gets toggle button
-	getToggleButton: function(text) {
-		return $('<a>' + text + '</a>').click(function() {ui_help_dialog.toggle(); return false;});
+	addToggleButton: function(elem, text) {
+		elem.insertAdjacentHTML('beforeend', '<a class="close_button">' + text + '</a>');
+		elem.getElementsByClassName('close_button')[0].onclick = function() {
+			ui_help_dialog.toggle();
+			return false;
+		};
 	},
 // gets fump button with a given label and selector
-	getDumpButton: function(label, selector) {
-		return $('<a class="devel_link">' + label + '</a>').click(function() {ui_storage.dump(selector);});
+	addDumpButton: function(text, label, selector) {
+		var hint_bar_content = document.getElementsByClassName('hint_bar_content')[0];
+		hint_bar_content.insertAdjacentHTML('beforeend', text + '<a class="devel_link" id="dump_' + label + '">' + label + '</a>');
+		document.getElementById('dump_' + label).onclick = function() {
+			ui_storage.dump(selector);
+		};
 	}
 };
 
@@ -495,12 +495,12 @@ var ui_storage = {
 	},
 // stores a value
 	set: function(id, value) {
-		localStorage[this.get_key(id)] = value;
+		worker.localStorage[this.get_key(id)] = value;
 		return value;
 	},
 // reads a value
 	get: function(id) {
-		var val = localStorage[this.get_key(id)];
+		var val = worker.localStorage[this.get_key(id)];
 		if (val === 'true') { return true; }
 		if (val === 'false') { return false; }
 		return val;
@@ -524,71 +524,71 @@ var ui_storage = {
 	dump: function(selector) {
 		var lines = [];
 		var r = new RegExp('^GUIp_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
-		for (var i = 0; i < localStorage.length; i++) {
-			if (localStorage.key(i).match(r)) {
-				lines.push(localStorage.key(i) + " = " + localStorage[localStorage.key(i)]);
+		for (var i = 0; i < worker.localStorage.length; i++) {
+			if (worker.localStorage.key(i).match(r)) {
+				lines.push(worker.localStorage.key(i) + " = " + worker.localStorage[worker.localStorage.key(i)]);
 			}
 		}
 		lines.sort();
-		console.info("Godville UI+ log: Storage:\n" + lines.join("\n"));
+		worker.console.info("Godville UI+ log: Storage:\n" + lines.join("\n"));
 	},
 // resets saved options
 	clear: function() {
 		var i, len, key, keys = [],
 			r = new RegExp('^GUIp_.*');
-		for (i = 0, len = localStorage.length; i < len; i++) {
-			key = localStorage.key(i);
+		for (i = 0, len = worker.localStorage.length; i < len; i++) {
+			key = worker.localStorage.key(i);
 			if (key.match(r)) {
 				keys.push(key);
 			}
 		}
 		for (i = 0, len = keys.length; i < len; i++) {
-			localStorage.removeItem(keys[i]);
+			worker.localStorage.removeItem(keys[i]);
 		}
 		location.reload();
 		return "Storage cleared. Reloading...";
 	},
 	migrate: function() {
 		var i, len, lines = [];
-		if (!localStorage.GUIp_migrated) {
-			for (i = 0, len = localStorage.length; i < len; i++) {
-				if (localStorage.key(i).match(/^GM_/)) {
-					lines.push(localStorage.key(i));
+		if (!worker.localStorage.GUIp_migrated) {
+			for (i = 0, len = worker.localStorage.length; i < len; i++) {
+				if (worker.localStorage.key(i).match(/^GM_/)) {
+					lines.push(worker.localStorage.key(i));
 				}
 			}
 			for (i = 0, len = lines.length; i < len; i++) {
-				localStorage[lines[i].replace(/^GM_/, 'GUIp_')] = localStorage[lines[i]];
-				localStorage.removeItem(lines[i]);
+				worker.localStorage[lines[i].replace(/^GM_/, 'GUIp_')] = worker.localStorage[lines[i]];
+				worker.localStorage.removeItem(lines[i]);
 			}
-			localStorage.GUIp_migrated = '151114';
+			worker.localStorage.GUIp_migrated = '151114';
 		}
-		if (localStorage.GUIp_migrated === '151114' || localStorage.GUIp_migrated < '150113') {
+		if (worker.localStorage.GUIp_migrated === '151114' || worker.localStorage.GUIp_migrated < '150113') {
 			if (this.get('phrases_walk_n')) {
 				this.set('CustomPhrases:go_north', this.get('phrases_walk_n'));
-				localStorage.removeItem(this.get_key('phrases_walk_n'));
+				worker.localStorage.removeItem(this.get_key('phrases_walk_n'));
 			}
 			if (this.get('phrases_walk_e')) {
 				this.set('CustomPhrases:go_east', this.get('phrases_walk_e'));
-				localStorage.removeItem(this.get_key('phrases_walk_e'));
+				worker.localStorage.removeItem(this.get_key('phrases_walk_e'));
 			}
 			if (this.get('phrases_walk_s')) {
 				this.set('CustomPhrases:go_south', this.get('phrases_walk_s'));
-				localStorage.removeItem(this.get_key('phrases_walk_s'));
+				worker.localStorage.removeItem(this.get_key('phrases_walk_s'));
 			}
 			if (this.get('phrases_walk_w')) {
 				this.set('CustomPhrases:go_west', this.get('phrases_walk_w'));
-				localStorage.removeItem(this.get_key('phrases_walk_w'));
+				worker.localStorage.removeItem(this.get_key('phrases_walk_w'));
 			}
-			for (i = 0, len = localStorage.length; i < len; i++) {
-				if (localStorage.key(i).match(/:phrases_/)) {
-					lines.push(localStorage.key(i));
+			for (i = 0, len = worker.localStorage.length; i < len; i++) {
+				if (worker.localStorage.key(i).match(/:phrases_/)) {
+					lines.push(worker.localStorage.key(i));
 				}
 			}
 			for (i = 0, len = lines.length; i < len; i++) {
-				localStorage[lines[i].replace(/:phrases_/, ':CustomPhrases:')] = localStorage[lines[i]];
-				localStorage.removeItem(lines[i]);
+				worker.localStorage[lines[i].replace(/:phrases_/, ':CustomPhrases:')] = worker.localStorage[lines[i]];
+				worker.localStorage.removeItem(lines[i]);
 			}
-			localStorage.GUIp_migrated = '150113';
+			worker.localStorage.GUIp_migrated = '150113';
 		}
 	}
 };
@@ -600,7 +600,7 @@ var ui_words = {
 	currentPhrase: "",
 // gets words from phrases.js file and splits them into sections
 	init: function() {
-		this.base = window.GUIp_words();
+		this.base = worker.GUIp_words();
 		for (var sect in this.base.phrases) {
 			var text = ui_storage.get('CustomPhrases:' + sect);
 			if (text && text !== "") {
@@ -726,8 +726,8 @@ var ui_logger = {
 	Updating: false,
 	bar: null,
 	create: function() {
-		this.bar = $('<ul id="logger" style="mask: url(#fader_masking);"/>');
-		$('#menu_bar').after(this.bar);
+		this.bar = worker.$('<ul id="logger" style="mask: url(#fader_masking);"/>');
+		worker.$('#menu_bar').after(this.bar);
 		this.need_separator = false;
 	},
 
@@ -742,8 +742,8 @@ var ui_logger = {
 		// append string	
 		this.bar.append('<li class="' + klass + '" title="' + descr + '">' + str + '</li>');
 		this.bar.scrollLeft(10000); //Dirty fix
-		while ($('#logger li').position().left + $('#logger li').width() < 0 || $('#logger li')[0].className === "separator") {
-			$('#logger li:first').remove();
+		while (worker.$('#logger li').position().left + worker.$('#logger li').width() < 0 || worker.$('#logger li')[0].className === "separator") {
+			worker.$('#logger li:first').remove();
 		}
 	},
 
@@ -756,10 +756,10 @@ var ui_logger = {
 			// Добавление плюcа, минуса или стрелочки
 			var s;
 			if (diff < 0) {
-				if (name === 'exp' && ui_storage.get('Logger:Level') !== $('#hk_level .l_val').text()) {
+				if (name === 'exp' && ui_storage.get('Logger:Level') !== worker.$('#hk_level .l_val').text()) {
 					s = '→' + ui_stats.get(id);
-				} else if (name === 'tsk' && ui_storage.get('Stats:Task_Name') !== $('.q_name').text()) {
-					ui_storage.set('Stats:Task_Name', $('.q_name').text());
+				} else if (name === 'tsk' && ui_storage.get('Stats:Task_Name') !== worker.$('.q_name').text()) {
+					ui_storage.set('Stats:Task_Name', worker.$('.q_name').text());
 					s = '→' + ui_stats.get(id);
 				} else {
 					s = diff;
@@ -779,43 +779,43 @@ var ui_logger = {
 			this.bar.show();
 		}
 		if (ui_data.isDungeon) {
-			this.watchStatsValue('Map_HP', 'hp', window.GUIp_i18n.hero_health, 'hp');
-			this.watchStatsValue('Map_Inv', 'inv', window.GUIp_i18n.inventory, 'inv');
-			this.watchStatsValue('Map_Gold', 'gld', window.GUIp_i18n.gold, 'gold'); 
-			this.watchStatsValue('Map_Charges', 'ch', window.GUIp_i18n.charges, 'charges');
-			this.watchStatsValue('Map_Alls_HP', 'a:hp', window.GUIp_i18n.allies_health, 'charges');
+			this.watchStatsValue('Map_HP', 'hp', worker.GUIp_i18n.hero_health, 'hp');
+			this.watchStatsValue('Map_Inv', 'inv', worker.GUIp_i18n.inventory, 'inv');
+			this.watchStatsValue('Map_Gold', 'gld', worker.GUIp_i18n.gold, 'gold'); 
+			this.watchStatsValue('Map_Charges', 'ch', worker.GUIp_i18n.charges, 'charges');
+			this.watchStatsValue('Map_Alls_HP', 'a:hp', worker.GUIp_i18n.allies_health, 'charges');
 		}
 		if (ui_data.isBattle && !ui_data.isDungeon) {
-			this.watchStatsValue('Hero_HP', 'h:hp', window.GUIp_i18n.hero_health, 'hp');
-			this.watchStatsValue('Enemy_HP', 'e:hp', window.GUIp_i18n.enemy_health, 'death');
-			this.watchStatsValue('Hero_Alls_HP', 'a:hp', window.GUIp_i18n.allies_health, 'charges');
-			this.watchStatsValue('Hero_Inv', 'h:inv', window.GUIp_i18n.inventory, 'inv');
-			this.watchStatsValue('Hero_Gold', 'h:gld', window.GUIp_i18n.gold, 'gold');
-			this.watchStatsValue('Hero_Charges', 'h:ch', window.GUIp_i18n.charges, 'charges');
-			this.watchStatsValue('Enemy_Gold', 'e:gld', window.GUIp_i18n.gold, 'monster');
-			this.watchStatsValue('Enemy_Inv', 'e:inv', window.GUIp_i18n.inventory, 'monster');
+			this.watchStatsValue('Hero_HP', 'h:hp', worker.GUIp_i18n.hero_health, 'hp');
+			this.watchStatsValue('Enemy_HP', 'e:hp', worker.GUIp_i18n.enemy_health, 'death');
+			this.watchStatsValue('Hero_Alls_HP', 'a:hp', worker.GUIp_i18n.allies_health, 'charges');
+			this.watchStatsValue('Hero_Inv', 'h:inv', worker.GUIp_i18n.inventory, 'inv');
+			this.watchStatsValue('Hero_Gold', 'h:gld', worker.GUIp_i18n.gold, 'gold');
+			this.watchStatsValue('Hero_Charges', 'h:ch', worker.GUIp_i18n.charges, 'charges');
+			this.watchStatsValue('Enemy_Gold', 'e:gld', worker.GUIp_i18n.gold, 'monster');
+			this.watchStatsValue('Enemy_Inv', 'e:inv', worker.GUIp_i18n.inventory, 'monster');
 		}
-		this.watchStatsValue('Exp', 'exp', window.GUIp_i18n.exp);
-		this.watchStatsValue('Level', 'lvl', window.GUIp_i18n.level);
-		this.watchStatsValue('HP', 'hp', window.GUIp_i18n.health);
-		this.watchStatsValue('Godpower', 'gp', window.GUIp_i18n.godpower);
-		this.watchStatsValue('Charges', 'ch', window.GUIp_i18n.charges);
-		this.watchStatsValue('Task', 'tsk', window.GUIp_i18n.task);
-		this.watchStatsValue('Monster', 'mns', window.GUIp_i18n.monsters);
-		this.watchStatsValue('Inv', 'inv', window.GUIp_i18n.inventory);
-		this.watchStatsValue('Gold', 'gld', window.GUIp_i18n.gold);
-		this.watchStatsValue('Bricks', 'br', window.GUIp_i18n.bricks);
-		this.watchStatsValue('Logs', 'wd', window.GUIp_i18n.logs);
-		this.watchStatsValue('Savings', 'rtr', window.GUIp_i18n.savings);
-		this.watchStatsValue('Equip1', 'eq1', window.GUIp_i18n.weapon, 'equip');
-		this.watchStatsValue('Equip2', 'eq2', window.GUIp_i18n.shield, 'equip');
-		this.watchStatsValue('Equip3', 'eq3', window.GUIp_i18n.head, 'equip');
-		this.watchStatsValue('Equip4', 'eq4', window.GUIp_i18n.body, 'equip');
-		this.watchStatsValue('Equip5', 'eq5', window.GUIp_i18n.arms, 'equip');
-		this.watchStatsValue('Equip6', 'eq6', window.GUIp_i18n.legs, 'equip');
-		this.watchStatsValue('Equip7', 'eq7', window.GUIp_i18n.talisman, 'equip');
-		this.watchStatsValue('Death', 'death', window.GUIp_i18n.death_count);
-		this.watchStatsValue('Pet_Level', 'pet_level', window.GUIp_i18n.pet_level, 'monster');
+		this.watchStatsValue('Exp', 'exp', worker.GUIp_i18n.exp);
+		this.watchStatsValue('Level', 'lvl', worker.GUIp_i18n.level);
+		this.watchStatsValue('HP', 'hp', worker.GUIp_i18n.health);
+		this.watchStatsValue('Godpower', 'gp', worker.GUIp_i18n.godpower);
+		this.watchStatsValue('Charges', 'ch', worker.GUIp_i18n.charges);
+		this.watchStatsValue('Task', 'tsk', worker.GUIp_i18n.task);
+		this.watchStatsValue('Monster', 'mns', worker.GUIp_i18n.monsters);
+		this.watchStatsValue('Inv', 'inv', worker.GUIp_i18n.inventory);
+		this.watchStatsValue('Gold', 'gld', worker.GUIp_i18n.gold);
+		this.watchStatsValue('Bricks', 'br', worker.GUIp_i18n.bricks);
+		this.watchStatsValue('Logs', 'wd', worker.GUIp_i18n.logs);
+		this.watchStatsValue('Savings', 'rtr', worker.GUIp_i18n.savings);
+		this.watchStatsValue('Equip1', 'eq1', worker.GUIp_i18n.weapon, 'equip');
+		this.watchStatsValue('Equip2', 'eq2', worker.GUIp_i18n.shield, 'equip');
+		this.watchStatsValue('Equip3', 'eq3', worker.GUIp_i18n.head, 'equip');
+		this.watchStatsValue('Equip4', 'eq4', worker.GUIp_i18n.body, 'equip');
+		this.watchStatsValue('Equip5', 'eq5', worker.GUIp_i18n.arms, 'equip');
+		this.watchStatsValue('Equip6', 'eq6', worker.GUIp_i18n.legs, 'equip');
+		this.watchStatsValue('Equip7', 'eq7', worker.GUIp_i18n.talisman, 'equip');
+		this.watchStatsValue('Death', 'death', worker.GUIp_i18n.death_count);
+		this.watchStatsValue('Pet_Level', 'pet_level', worker.GUIp_i18n.pet_level, 'monster');
 		this.need_separator = true;
 	}
 };
@@ -831,8 +831,8 @@ var ui_informer = {
 		//title saver
 		this.title = document.title;
 		// container
-		this.container = $('<div id="informer_bar" />');
-		$('#main_wrapper').prepend(this.container);
+		document.getElementById('main_wrapper').insertAdjacentHTML('afterbegin', '<div id="informer_bar" />');
+		this.container = document.getElementById('informer_bar');
 		// load and draw labels
 		this.load();
 		for (var flag in this.flags) {
@@ -879,21 +879,19 @@ var ui_informer = {
 	},
 	
 	create_label: function(flag) {
-		var $label = $('<div>' + flag + '</div>').click(function() {
+		var id = flag.replace(/ /g, '_');
+		this.container.insertAdjacentHTML('beforeend', '<div id="' + id + '">' + flag + '</div>');
+		document.getElementById(id).onclick = function() {
 			ui_informer.hide(flag);
 			return false;
-		});
-		this.container.append($label);
+		};
 	},
 	
 	delete_label: function(flag) {
-		$('div', this.container)
-			.each(function() {
-						var $this = $(this);
-						if ($this.text() === flag) {
-							$this.remove();
-					 }
-				 });
+		var label = document.getElementById(flag.replace(/ /g, '_'));
+		if (label) {
+			this.container.removeChild(label);
+		}
 	},
 	
 	tick: function() {
@@ -963,8 +961,8 @@ var ui_informer = {
 			favicon = "images/favicon.ico";
 		}
 		document.title = sep + ' ' + arr.join('! ') + ' ' + sep;
-		$('link[rel="shortcut icon"]').remove();
-		$('head').append('<link rel="shortcut icon" href=' + favicon + ' />');		
+		worker.$('link[rel="shortcut icon"]').remove();
+		worker.$('head').append('<link rel="shortcut icon" href=' + favicon + ' />');		
 	}
 };
 
@@ -974,13 +972,12 @@ var ui_informer = {
 // ------------------------------------
 var ui_forum = {
 	init: function() {
-		this.container = $('<div id="forum_informer_bar" />');
-		$('body').prepend(this.container);
+		document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
 		this.check();
 		setInterval(this.check.bind(this), 300000);
 	},
 	check: function() {
-		for (var forum_no = 1; forum_no <= (window.GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
+		for (var forum_no = 1; forum_no <= (worker.GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
 			var current_forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
 				topics = [];
 			for (var topic in current_forum) {
@@ -1000,27 +997,30 @@ var ui_forum = {
 		}
 	},
 	set_informer: function(topic_no, topic_data, posts_count) {
-		var informer = $('#topic' + topic_no)[0];
+		var informer = document.getElementById('topic' + topic_no);
 		if (!informer) {
-			var $informer = $('<a id="topic' + topic_no + '" target="_blank"><span /><div class="fr_new_badge" /></a>').click(function(e) {
+			document.getElementById('forum_informer_bar').insertAdjacentHTML('beforeend',
+				'<a id="topic' + topic_no + '" target="_blank"><span></span><div class="fr_new_badge"></div></a>'
+			);
+			informer = document.getElementById('topic' + topic_no);
+			informer.onclick = function(e) {
 				if (e.which === 1) {
 					e.preventDefault();
 				}
-			}).bind('mouseup', function(e) {
+			};
+			informer.onmouseup = function(e) {
 				if (e.which === 1 || e.which === 2) {
 					var informers = JSON.parse(ui_storage.get('ForumInformers'));
 					delete informers[this.id.match(/\d+/)[0]];
 					ui_storage.set('ForumInformers', JSON.stringify(informers));
-					$(document).trigger("DOMNodeInserted");
-					$(this).slideToggle("fast", function() {
+					worker.$(document).trigger("DOMNodeInserted");
+					worker.$(this).slideToggle("fast", function() {
 						if (this.parentElement) {
 							this.parentElement.removeChild(this);
 						}
 					});
 				}
-			});
-			this.container.append($informer);
-			informer = $informer[0];
+			};
 		}
 		var page = Math.floor((posts_count - topic_data.diff)/25) + 1;
 		informer.href = '/forums/show_topic/' + topic_no + '?page=' + page + '#guip_' + (posts_count - topic_data.diff + 25 - page*25);
@@ -1103,18 +1103,18 @@ var ui_improver = {
 	softRefreshInt: 0,
 	hardRefreshInt: 0,
 	softRefresh: function() {
-		console.info('Godville UI+ log: Soft reloading...');
+		worker.console.info('Godville UI+ log: Soft reloading...');
 		document.getElementById('d_refresh').click();
 	},
 	hardRefresh: function() {
-		console.warn('Godville UI+ log: Hard reloading...');
+		worker.console.warn('Godville UI+ log: Hard reloading...');
 		location.reload();
 	},
 	improve: function() {
 		this.improveInProcess = true;
 		ui_informer.update('pvp', ui_data.isBattle && !ui_data.isDungeon);
-		ui_informer.update('arena available', window.so.state.arena_available());
-		ui_informer.update('dungeon available', window.so.state.dungeon_available());
+		ui_informer.update('arena available', worker.so.state.arena_available());
+		ui_informer.update('dungeon available', worker.so.state.dungeon_available());
 		if (this.isFirstTime) {
 			if (!ui_data.isBattle && !ui_data.isDungeon) {
 				this.improveDiary();
@@ -1175,8 +1175,8 @@ var ui_improver = {
 					} else if (!ui_utils.hasShownInfoMessage) {
 						ui_utils.hasShownInfoMessage = true;
 						ui_utils.showMessage('info', {
-							title: window.GUIp_i18n.unknown_item_type_title,
-							content: '<div>' + window.GUIp_i18n.unknown_item_type_content + '<b>"' + desc + '</b>"</div>'
+							title: worker.GUIp_i18n.unknown_item_type_title,
+							content: '<div>' + worker.GUIp_i18n.unknown_item_type_content + '<b>"' + desc + '</b>"</div>'
 						});
 					}
 					if (!(forbidden_craft && (forbidden_craft.match('usable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r'))))) {
@@ -1184,7 +1184,7 @@ var ui_improver = {
 						trophy_boldness[item_name] = true;
 					}
 				} else if (ui_words.isHealItem(items[i])) {
-					if (!ui_utils.isAlreadyImproved($(items[i]))) {
+					if (!ui_utils.isAlreadyImproved(worker.$(items[i]))) {
 						items[i].classList.add('heal_item');
 					}
 					if (!(forbidden_craft && (forbidden_craft.match('heal') || (forbidden_craft.match('b_r') && forbidden_craft.match('r_r'))))) {
@@ -1206,7 +1206,7 @@ var ui_improver = {
 							trophy_boldness[item_name] = false;
 						}
 					}
-					if (!ui_utils.isAlreadyImproved($(items[i]))) {
+					if (!ui_utils.isAlreadyImproved(worker.$(items[i]))) {
 						items[i].insertBefore(ui_utils.createInspectButton(item_name), null);
 					}
 				}
@@ -1230,20 +1230,20 @@ var ui_improver = {
 					if (trophy_list[i][0] === trophy_list[j][0]) {
 						if (trophy_boldness[trophy_list[i]] && trophy_boldness[trophy_list[j]]) {
 							if (!(forbidden_craft && forbidden_craft.match('b_b'))) {
-								this.b_b.push(trophy_list[i] + window.GUIp_i18n.and + trophy_list[j]);
-								this.b_b.push(trophy_list[j] + window.GUIp_i18n.and + trophy_list[i]);
+								this.b_b.push(trophy_list[i] + worker.GUIp_i18n.and + trophy_list[j]);
+								this.b_b.push(trophy_list[j] + worker.GUIp_i18n.and + trophy_list[i]);
 							}
 						} else if (!trophy_boldness[trophy_list[i]] && !trophy_boldness[trophy_list[j]]) {
 							if (!(forbidden_craft && forbidden_craft.match('r_r'))) {
-								this.r_r.push(trophy_list[i] + window.GUIp_i18n.and + trophy_list[j]);
-								this.r_r.push(trophy_list[j] + window.GUIp_i18n.and + trophy_list[i]);
+								this.r_r.push(trophy_list[i] + worker.GUIp_i18n.and + trophy_list[j]);
+								this.r_r.push(trophy_list[j] + worker.GUIp_i18n.and + trophy_list[i]);
 							}
 						} else {
 							if (!(forbidden_craft && forbidden_craft.match('b_r'))) {
 								if (trophy_boldness[trophy_list[i]]) {
-									this.b_r.push(trophy_list[i] + window.GUIp_i18n.and + trophy_list[j]);
+									this.b_r.push(trophy_list[i] + worker.GUIp_i18n.and + trophy_list[j]);
 								} else {
-									this.b_r.push(trophy_list[j] + window.GUIp_i18n.and + trophy_list[i]);
+									this.b_r.push(trophy_list[j] + worker.GUIp_i18n.and + trophy_list[i]);
 								}
 							}
 						}
@@ -1254,12 +1254,12 @@ var ui_improver = {
 			}
 		}
 
-		if (!ui_utils.isAlreadyImproved($('#inventory'))) {
+		if (!ui_utils.isAlreadyImproved(worker.$('#inventory'))) {
 			var inv_content = document.querySelector('#inventory .block_content');
-			inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + window.GUIp_i18n.craft_verb + ':</span>');
-			inv_content.insertBefore(ui_utils.createCraftButton(window.GUIp_i18n.b_b, 'b_b', window.GUIp_i18n.b_b_hint), null);
-			inv_content.insertBefore(ui_utils.createCraftButton(window.GUIp_i18n.b_r, 'b_r', window.GUIp_i18n.b_r_hint), null);
-			inv_content.insertBefore(ui_utils.createCraftButton(window.GUIp_i18n.r_r, 'r_r', window.GUIp_i18n.r_r_hint), null);
+			inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + worker.GUIp_i18n.craft_verb + ':</span>');
+			inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.b_b, 'b_b', worker.GUIp_i18n.b_b_hint), null);
+			inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.b_r, 'b_r', worker.GUIp_i18n.b_r_hint), null);
+			inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.r_r, 'r_r', worker.GUIp_i18n.r_r_hint), null);
 		}
 	},
 
@@ -1267,73 +1267,73 @@ var ui_improver = {
 		// Add links and show timeout bar after saying
 		if (this.isFirstTime) {
 			if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
-				$('#voice_submit').attr('disabled', 'disabled');
+				worker.$('#voice_submit').attr('disabled', 'disabled');
 			}
-			$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
-				if (!ui_data.isBattle && $(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout.bar.style.width))) {
-					$('#voice_submit').removeAttr('disabled');
+			worker.$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
+				if (!ui_data.isBattle && worker.$(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout.bar.style.width))) {
+					worker.$('#voice_submit').removeAttr('disabled');
 				} else if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
-					$('#voice_submit').attr('disabled', 'disabled');
+					worker.$('#voice_submit').attr('disabled', 'disabled');
 				}
 			}).on('click', '.gv_text.div_link', function() {
-				$('#god_phrase').change();
+				worker.$('#god_phrase').change();
 			});
 		}
-		var $box = $('#cntrl');
+		var $box = worker.$('#cntrl');
 		if (!ui_utils.isAlreadyImproved($box)) {
-			$('.gp_label').addClass('l_capt');
-			$('.gp_val').addClass('l_val');
-			if (ui_data.isDungeon && $('#map').length) {
-				var isContradictions = $('#map')[0].textContent.match(/Противоречия|Disobedience/);
-				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.east, (isContradictions ? 'go_west' : 'go_east'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_east);
-				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_west);
-				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_south);
-				ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), window.GUIp_i18n.ask3 + ui_data.char_sex[0] + window.GUIp_i18n.go_north);
-				if ($('#map')[0].textContent.match(/Бессилия|Anti-influence/)) {
-					$('#actions').hide();
+			worker.$('.gp_label').addClass('l_capt');
+			worker.$('.gp_val').addClass('l_val');
+			if (ui_data.isDungeon && worker.$('#map').length) {
+				var isContradictions = worker.$('#map')[0].textContent.match(/Противоречия|Disobedience/);
+				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.east, (isContradictions ? 'go_west' : 'go_east'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_east);
+				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_west);
+				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_south);
+				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_north);
+				if (worker.$('#map')[0].textContent.match(/Бессилия|Anti-influence/)) {
+					worker.$('#actions').hide();
 				}
 			} else {
 				if (ui_data.isBattle) {
-					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.defend, 'defend', window.GUIp_i18n.ask4 + ui_data.char_sex[0] + window.GUIp_i18n.to_defend);
-					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.pray, 'pray', window.GUIp_i18n.ask5 + ui_data.char_sex[0] + window.GUIp_i18n.to_pray);
-					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.heal, 'heal', window.GUIp_i18n.ask6 + ui_data.char_sex[1] + window.GUIp_i18n.to_heal);
-					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.hit, 'hit', window.GUIp_i18n.ask7 + ui_data.char_sex[1] + window.GUIp_i18n.to_hit);
+					ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.defend, 'defend', worker.GUIp_i18n.ask4 + ui_data.char_sex[0] + worker.GUIp_i18n.to_defend);
+					ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
+					ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
+					ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
 				} else {
-					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.sacrifice, 'sacrifice', window.GUIp_i18n.ask8 + ui_data.char_sex[1] + window.GUIp_i18n.to_sacrifice);
-					ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.godpower_label, window.GUIp_i18n.pray, 'pray', window.GUIp_i18n.ask5 + ui_data.char_sex[0] + window.GUIp_i18n.to_pray);
-					$('#voice_submit').click(function() {
+					ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.sacrifice, 'sacrifice', worker.GUIp_i18n.ask8 + ui_data.char_sex[1] + worker.GUIp_i18n.to_sacrifice);
+					ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
+					worker.$('#voice_submit').click(function() {
 						ui_improver.voiceSubmitted = true;
 					});
 				}
 			}
 			//hide_charge_button
-			var charge_button = $('#cntrl .hch_link');
+			var charge_button = worker.$('#cntrl .hch_link');
 			if (charge_button.length) {
 				charge_button[0].style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
 			}
 		}
 		
 		// Save stats
-		ui_stats.setFromLabelCounter('Godpower', $box, window.GUIp_i18n.godpower_label);
-		ui_informer.update('full godpower', $('#cntrl .p_val').width() === $('#cntrl .p_bar').width());
+		ui_stats.setFromLabelCounter('Godpower', $box, worker.GUIp_i18n.godpower_label);
+		ui_informer.update('full godpower', worker.$('#cntrl .p_val').width() === worker.$('#cntrl .p_bar').width());
 	},
 
 // ----------- Вести с полей ----------------
 	improveNews: function() {
-		if (!ui_utils.isAlreadyImproved($('#news'))) {
-			ui_utils.addSayPhraseAfterLabel($('#news'), window.GUIp_i18n.enemy_label, window.GUIp_i18n.hit, 'hit', window.GUIp_i18n.ask7 + ui_data.char_sex[1] + window.GUIp_i18n.to_hit);
+		if (!ui_utils.isAlreadyImproved(worker.$('#news'))) {
+			ui_utils.addSayPhraseAfterLabel(worker.$('#news'), worker.GUIp_i18n.enemy_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
 		}
 		var isWantedMonster = false,
 			isSpecialMonster = false,
 			isTamableMonster = false;
 		// Если герой дерется с монстром
-		if ($('#news .line')[0].style.display !== 'none') {
-			var currentMonster = $('#news .l_val').text();
+		if (worker.$('#news .line')[0].style.display !== 'none') {
+			var currentMonster = worker.$('#news .l_val').text();
 			isWantedMonster = this.wantedMonsters && currentMonster.match(this.wantedMonsters);
 			isSpecialMonster = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
 
-			if (!window.so.state.has_pet) {
-				var hasArk = parseInt(window.so.state.stats.wood.value) >= 100;
+			if (!worker.so.state.has_pet) {
+				var hasArk = parseInt(worker.so.state.stats.wood.value) >= 100;
 				var pet, hero_level = ui_stats.get('Level');
 				for (var i = 0; i < ui_words.base.pets.length; i++) {
 					pet = ui_words.base.pets[i];
@@ -1375,44 +1375,44 @@ var ui_improver = {
 	improveMap: function() {
 		if (this.isFirstTime) {
 			document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
-				'<div class="guip_legend"><div class="dmc warning"></div><div> - ' + window.GUIp_i18n.boss_warning_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc boss"></div><div> - ' + window.GUIp_i18n.boss_slay_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc bonusGodpower"></div><div> - ' + window.GUIp_i18n.small_prayer_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc bonusHealth"></div><div> - ' + window.GUIp_i18n.small_healing_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc trapUnknown"></div><div> - ' + window.GUIp_i18n.unknown_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc trapTrophy"></div><div> - ' + window.GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc trapLowDamage"></div><div> - ' + window.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc trapModerateDamage"></div><div> - ' + window.GUIp_i18n.moderate_damage_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc trapMoveLoss"></div><div> - ' + window.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc warning trapMoveLoss"></div><div> - ' + window.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
-				'<div class="guip_legend"><div class="dmc boss trapMoveLoss"></div><div> - ' + window.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
+				'<div class="guip_legend"><div class="dmc warning"></div><div> - ' + worker.GUIp_i18n.boss_warning_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc boss"></div><div> - ' + worker.GUIp_i18n.boss_slay_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc bonusGodpower"></div><div> - ' + worker.GUIp_i18n.small_prayer_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc bonusHealth"></div><div> - ' + worker.GUIp_i18n.small_healing_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapUnknown"></div><div> - ' + worker.GUIp_i18n.unknown_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapTrophy"></div><div> - ' + worker.GUIp_i18n.trophy_loss_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapLowDamage"></div><div> - ' + worker.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapModerateDamage"></div><div> - ' + worker.GUIp_i18n.moderate_damage_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc warning trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
+				'<div class="guip_legend"><div class="dmc boss trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
 			);
 		}
-		if ($('#map .dml').length) {
+		if (worker.$('#map .dml').length) {
 			if (ui_storage.get('Option:relocateMap')) {
-				if (!$('#a_central_block #map').length) {
-					$('#map').insertBefore($('#m_control'));
-					$('#m_control').appendTo($('#a_right_block'));
-					if (window.GUIp_locale === 'ru') {
-						$('#m_control .block_title').text('Пульт');
+				if (!worker.$('#a_central_block #map').length) {
+					worker.$('#map').insertBefore(worker.$('#m_control'));
+					worker.$('#m_control').appendTo(worker.$('#a_right_block'));
+					if (worker.GUIp_locale === 'ru') {
+						worker.$('#m_control .block_title').text('Пульт');
 					}
 				}
 			} else {
-				if (!$('#a_right_block #map').length) {
-					$('#m_control').insertBefore($('#map'));
-					$('#map').appendTo($('#a_right_block'));
-					if (window.GUIp_locale === 'ru') {
-						$('#m_control .block_title').text('Пульт вмешательства в личную жизнь');
+				if (!worker.$('#a_right_block #map').length) {
+					worker.$('#m_control').insertBefore(worker.$('#map'));
+					worker.$('#map').appendTo(worker.$('#a_right_block'));
+					if (worker.GUIp_locale === 'ru') {
+						worker.$('#m_control .block_title').text('Пульт вмешательства в личную жизнь');
 					}
 				}
 			}
 			var i, j,
-				$box = $('#cntrl .voice_generator'),
-				$boxML = $('#map .dml'),
-				$boxMC = $('#map .dmc'),
+				$box = worker.$('#cntrl .voice_generator'),
+				$boxML = worker.$('#map .dml'),
+				$boxMC = worker.$('#map .dmc'),
 				kRow = $boxML.length,
 				kColumn = $boxML[0].textContent.length,
-				isJumping = $('#map')[0].textContent.match(/Прыгучести|Jumping/),
+				isJumping = worker.$('#map')[0].textContent.match(/Прыгучести|Jumping/),
 				MaxMap = 0,	// Счетчик указателей
 				MapArray = []; // Карта возможного клада
 			for (i = 0; i < kRow; i++) {
@@ -1535,10 +1535,10 @@ var ui_improver = {
 		};
 
 		if (ui_data.isDungeon) {
-			ui_stats.setFromLabelCounter('Map_HP', $('#m_info'), window.GUIp_i18n.health_label);
-			ui_stats.setFromLabelCounter('Map_Gold', $('#m_info'), window.GUIp_i18n.gold_label, gold_parser);
-			ui_stats.setFromLabelCounter('Map_Inv', $('#m_info'), window.GUIp_i18n.inventory_label);
-			ui_stats.set('Map_Charges', $('#m_control .acc_val').text(), parseFloat);
+			ui_stats.setFromLabelCounter('Map_HP', worker.$('#m_info'), worker.GUIp_i18n.health_label);
+			ui_stats.setFromLabelCounter('Map_Gold', worker.$('#m_info'), worker.GUIp_i18n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Map_Inv', worker.$('#m_info'), worker.GUIp_i18n.inventory_label);
+			ui_stats.set('Map_Charges', worker.$('#m_control .acc_val').text(), parseFloat);
 			ui_stats.set('Map_Alls_HP', this.GroupHP(true));
 			if (ui_storage.get('Logger:Location') === 'Field') {
 				ui_storage.set('Logger:Location', 'Dungeon');
@@ -1552,12 +1552,12 @@ var ui_improver = {
 			return;
 		}
 		if (ui_data.isBattle) {
-			ui_stats.setFromLabelCounter('Hero_HP', $('#m_info'), window.GUIp_i18n.health_label);
-			ui_stats.setFromLabelCounter('Hero_Gold', $('#m_info'), window.GUIp_i18n.gold_label, gold_parser);
-			ui_stats.setFromLabelCounter('Hero_Inv', $('#m_info'), window.GUIp_i18n.inventory_label);
-			ui_stats.set('Hero_Charges', $('#m_control .acc_val').text(), parseFloat);
-			ui_stats.setFromLabelCounter('Enemy_Gold', $('#o_info'), window.GUIp_i18n.gold_label, gold_parser);
-			ui_stats.setFromLabelCounter('Enemy_Inv', $('#o_info'), window.GUIp_i18n.inventory_label);
+			ui_stats.setFromLabelCounter('Hero_HP', worker.$('#m_info'), worker.GUIp_i18n.health_label);
+			ui_stats.setFromLabelCounter('Hero_Gold', worker.$('#m_info'), worker.GUIp_i18n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Hero_Inv', worker.$('#m_info'), worker.GUIp_i18n.inventory_label);
+			ui_stats.set('Hero_Charges', worker.$('#m_control .acc_val').text(), parseFloat);
+			ui_stats.setFromLabelCounter('Enemy_Gold', worker.$('#o_info'), worker.GUIp_i18n.gold_label, gold_parser);
+			ui_stats.setFromLabelCounter('Enemy_Inv', worker.$('#o_info'), worker.GUIp_i18n.inventory_label);
 			ui_stats.set('Hero_Alls_HP', this.GroupHP(true));
 			ui_stats.set('Enemy_HP', this.GroupHP(false));
 			if (this.isFirstTime) {
@@ -1576,46 +1576,46 @@ var ui_improver = {
 		if (ui_storage.get('Logger:Location') !== 'Field') {
 			ui_storage.set('Logger:Location', 'Field');
 		}
-		var $box = $('#stats');
-		if (!ui_utils.isAlreadyImproved($('#stats'))) {
+		var $box = worker.$('#stats');
+		if (!ui_utils.isAlreadyImproved(worker.$('#stats'))) {
 			// Add links
-			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.level_label, window.GUIp_i18n.study, 'exp', window.GUIp_i18n.ask9 + ui_data.char_sex[1] + window.GUIp_i18n.to_study);
-			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.health_label, window.GUIp_i18n.heal, 'heal', window.GUIp_i18n.ask6 + ui_data.char_sex[1] + window.GUIp_i18n.to_heal);
-			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.gold_label, window.GUIp_i18n.dig, 'dig', window.GUIp_i18n.ask10 + ui_data.char_sex[1] + window.GUIp_i18n.to_dig);
-			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.task_label, window.GUIp_i18n.cancel_task, 'cancel_task', window.GUIp_i18n.ask11 + ui_data.char_sex[0] + window.GUIp_i18n.to_cancel_task);
-			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.task_label, window.GUIp_i18n.do_task, 'do_task', window.GUIp_i18n.ask12 + ui_data.char_sex[1] + window.GUIp_i18n.to_do_task);
-			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.death_label, window.GUIp_i18n.die, 'die', window.GUIp_i18n.ask13 + ui_data.char_sex[0] + window.GUIp_i18n.to_die);
+			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.level_label, worker.GUIp_i18n.study, 'exp', worker.GUIp_i18n.ask9 + ui_data.char_sex[1] + worker.GUIp_i18n.to_study);
+			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.health_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
+			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.gold_label, worker.GUIp_i18n.dig, 'dig', worker.GUIp_i18n.ask10 + ui_data.char_sex[1] + worker.GUIp_i18n.to_dig);
+			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.task_label, worker.GUIp_i18n.cancel_task, 'cancel_task', worker.GUIp_i18n.ask11 + ui_data.char_sex[0] + worker.GUIp_i18n.to_cancel_task);
+			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.task_label, worker.GUIp_i18n.do_task, 'do_task', worker.GUIp_i18n.ask12 + ui_data.char_sex[1] + worker.GUIp_i18n.to_do_task);
+			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.death_label, worker.GUIp_i18n.die, 'die', worker.GUIp_i18n.ask13 + ui_data.char_sex[0] + worker.GUIp_i18n.to_die);
 		}
-		if (!$('#hk_distance .voice_generator').length) {
-			ui_utils.addSayPhraseAfterLabel($box, window.GUIp_i18n.milestones_label, $('#main_wrapper.page_wrapper_5c').length ? '回' : window.GUIp_i18n.return, 'town', window.GUIp_i18n.ask14 + ui_data.char_sex[0] + window.GUIp_i18n.to_return);
+		if (!worker.$('#hk_distance .voice_generator').length) {
+			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.milestones_label, worker.$('#main_wrapper.page_wrapper_5c').length ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return);
 		}
 
-		ui_stats.setFromProgressBar('Exp', $('#hk_level .p_bar'));
-		ui_stats.setFromProgressBar('Task', $('#hk_quests_completed .p_bar'));
-		ui_stats.setFromLabelCounter('Level', $box, window.GUIp_i18n.level_label);
-		ui_stats.setFromLabelCounter('Monster', $box, window.GUIp_i18n.monsters_label);
-		ui_stats.setFromLabelCounter('Death', $box, window.GUIp_i18n.death_label);
-		ui_stats.setFromLabelCounter('Bricks', $box, window.GUIp_i18n.bricks_label, parseFloat);
-		ui_stats.setFromLabelCounter('Logs', $box, window.GUIp_i18n.logs_label, parseFloat);
-		ui_stats.setFromLabelCounter('Savings', $box, window.GUIp_i18n.savings_label, gold_parser);
-		ui_stats.set('Charges', $('#control .acc_val').text(), parseFloat);
-		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, window.GUIp_i18n.inventory_label) || $('#inventory li:not(.improved)').length || $('#inventory li:hidden').length) {
+		ui_stats.setFromProgressBar('Exp', worker.$('#hk_level .p_bar'));
+		ui_stats.setFromProgressBar('Task', worker.$('#hk_quests_completed .p_bar'));
+		ui_stats.setFromLabelCounter('Level', $box, worker.GUIp_i18n.level_label);
+		ui_stats.setFromLabelCounter('Monster', $box, worker.GUIp_i18n.monsters_label);
+		ui_stats.setFromLabelCounter('Death', $box, worker.GUIp_i18n.death_label);
+		ui_stats.setFromLabelCounter('Bricks', $box, worker.GUIp_i18n.bricks_label, parseFloat);
+		ui_stats.setFromLabelCounter('Logs', $box, worker.GUIp_i18n.logs_label, parseFloat);
+		ui_stats.setFromLabelCounter('Savings', $box, worker.GUIp_i18n.savings_label, gold_parser);
+		ui_stats.set('Charges', worker.$('#control .acc_val').text(), parseFloat);
+		if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, worker.GUIp_i18n.inventory_label) || worker.$('#inventory li:not(.improved)').length || worker.$('#inventory li:hidden').length) {
 			this.inventoryChanged = true;
 		}
-		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, window.GUIp_i18n.gold_label, gold_parser) >= (ui_data.hasTemple ? 10000 : 3000));
-		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, window.GUIp_i18n.health_label) === 0);
-		ui_informer.update('guild quest', $('.q_name').text().match(/членом гильдии|member of the guild/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
-		ui_informer.update('mini quest', $('.q_name').text().match(/\((мини|mini)\)/) && !$('.q_name').text().match(/\((отменено|cancelled)\)/));
+		ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, worker.GUIp_i18n.gold_label, gold_parser) >= (ui_data.hasTemple ? 10000 : 3000));
+		ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, worker.GUIp_i18n.health_label) === 0);
+		ui_informer.update('guild quest', worker.$('.q_name').text().match(/членом гильдии|member of the guild/) && !worker.$('.q_name').text().match(/\((отменено|cancelled)\)/));
+		ui_informer.update('mini quest', worker.$('.q_name').text().match(/\((мини|mini)\)/) && !worker.$('.q_name').text().match(/\((отменено|cancelled)\)/));
 
 		//Shovel pictogramm start
-		var $digVoice = $('#hk_gold_we .voice_generator');
-		//$('#hk_gold_we .l_val').text('где-то 20 монет');
+		var $digVoice = worker.$('#hk_gold_we .voice_generator');
+		//worker.$('#hk_gold_we .l_val').text('где-то 20 монет');
 		if (this.isFirstTime) {
-			$digVoice.css('background-image', 'url(' + window.GUIp_getResource('images/shovel.png') + ')');
+			$digVoice.css('background-image', 'url(' + worker.GUIp_getResource('images/shovel.png') + ')');
 		}
-		if ($('#hk_gold_we .l_val').text().length > 16 - 2*$('.page_wrapper_5c').length) {
+		if (worker.$('#hk_gold_we .l_val').text().length > 16 - 2*worker.$('.page_wrapper_5c').length) {
 			$digVoice[0].classList.add('shovel');
-			if ($('#hk_gold_we .l_val').text().length > 20 - 3*$('.page_wrapper_5c').length) {
+			if (worker.$('#hk_gold_we .l_val').text().length > 20 - 3*worker.$('.page_wrapper_5c').length) {
 				$digVoice[0].classList.add('compact');
 			} else {
 				$digVoice[0].classList.remove('compact');
@@ -1628,44 +1628,44 @@ var ui_improver = {
 // ---------- Pet --------------
 	improvePet: function() {
 		if (ui_data.isBattle) { return; }
-		if (window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value) {
-			if (!ui_utils.isAlreadyImproved($('#pet'))) {
-				$('#pet .block_title').after($('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
+		if (worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value) {
+			if (!ui_utils.isAlreadyImproved(worker.$('#pet'))) {
+				worker.$('#pet .block_title').after(worker.$('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 			} 
-			$('#pet_badge').text(ui_utils.findLabel($('#pet'), window.GUIp_i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, ''));
-			if ($('#pet .block_content')[0].style.display === 'none') {
-				$('#pet_badge').show(); 
+			worker.$('#pet_badge').text(ui_utils.findLabel(worker.$('#pet'), worker.GUIp_i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, ''));
+			if (worker.$('#pet .block_content')[0].style.display === 'none') {
+				worker.$('#pet_badge').show(); 
 			}
 			else {
-				$('#pet_badge').hide();
+				worker.$('#pet_badge').hide();
 			}
 		} else {
-			if ($('#pet_badge').length === 1) {
-				$('#pet_badge').hide();
+			if (worker.$('#pet_badge').length === 1) {
+				worker.$('#pet_badge').hide();
 			}
 		}
 		// bruise informer
-		ui_informer.update('pet knocked out', window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value);
+		ui_informer.update('pet knocked out', worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value);
 
-		ui_stats.setFromLabelCounter('Pet_Level', $('#pet'), window.GUIp_i18n.pet_level_label);
+		ui_stats.setFromLabelCounter('Pet_Level', worker.$('#pet'), worker.GUIp_i18n.pet_level_label);
 	},
 // ---------- Equipment --------------
 	improveEquip: function() {
 		// Save stats
 		var seq = 0;
 		for (var i = 7; i >= 1;) {
-			ui_stats.set('Equip' + i--, parseInt($('#eq_' + i + ' .eq_level').text()));
-			seq += parseInt($('#eq_' + i + ' .eq_level').text()) || 0;
+			ui_stats.set('Equip' + i--, parseInt(worker.$('#eq_' + i + ' .eq_level').text()));
+			seq += parseInt(worker.$('#eq_' + i + ' .eq_level').text()) || 0;
 		}
-		if (!ui_utils.isAlreadyImproved($('#equipment'))) {
-			$('#equipment .block_title').after($('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
+		if (!ui_utils.isAlreadyImproved(worker.$('#equipment'))) {
+			worker.$('#equipment .block_title').after(worker.$('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 		}
-		$('#equip_badge').text((seq / 7).toFixed(1));
+		worker.$('#equip_badge').text((seq / 7).toFixed(1));
 	},
 // ---------- Group HP --------------
 	GroupHP: function(flag) {		
 		var seq = 0;
-		var $box = flag ? $('#alls .opp_h') : $('#opps .opp_h');
+		var $box = flag ? worker.$('#alls .opp_h') : worker.$('#opps .opp_h');
 		var GroupCount = $box.length;
 		if (GroupCount > 0) {
 			for (var i = 0; i < GroupCount; i++) {
@@ -1679,40 +1679,40 @@ var ui_improver = {
 // ---------- Pantheons --------------	
 	improvePantheons: function() {
 		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
-			if (!$('#pantheons.arena_link_relocated').length) {
-				$('#pantheons').addClass('arena_link_relocated');
-				$('.arena_link_wrap').insertBefore($('#pantheons_content')).addClass('p_group_sep').css('padding-top', 0);
+			if (!worker.$('#pantheons.arena_link_relocated').length) {
+				worker.$('#pantheons').addClass('arena_link_relocated');
+				worker.$('.arena_link_wrap').insertBefore(worker.$('#pantheons_content')).addClass('p_group_sep').css('padding-top', 0);
 			}
-		} else if ($('#pantheons.arena_link_relocated').length) {
-			$('#pantheons').removeClass('arena_link_relocated').removeClass('both');
-			$('.arena_link_wrap').insertBefore($('#control .arena_msg')).removeClass('p_group_sep').css('padding-top', '0.5em');
+		} else if (worker.$('#pantheons.arena_link_relocated').length) {
+			worker.$('#pantheons').removeClass('arena_link_relocated').removeClass('both');
+			worker.$('.arena_link_wrap').insertBefore(worker.$('#control .arena_msg')).removeClass('p_group_sep').css('padding-top', '0.5em');
 		}
 		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('chf')) {
-			if (!$('#pantheons.chf_link_relocated').length) {
-				$('#pantheons').addClass('chf_link_relocated');
-				$('.chf_link_wrap:first').insertBefore($('#pantheons_content'));
-				$('#pantheons .chf_link_wrap').addClass('p_group_sep');
+			if (!worker.$('#pantheons.chf_link_relocated').length) {
+				worker.$('#pantheons').addClass('chf_link_relocated');
+				worker.$('.chf_link_wrap:first').insertBefore(worker.$('#pantheons_content'));
+				worker.$('#pantheons .chf_link_wrap').addClass('p_group_sep');
 			}
-		} else if ($('#pantheons.chf_link_relocated').length) {
-			$('#pantheons').removeClass('chf_link_relocated').removeClass('both');
-			$('.chf_link_wrap').removeClass('p_group_sep');
-			$('#pantheons .chf_link_wrap').insertAfter($('#control .arena_msg'));
+		} else if (worker.$('#pantheons.chf_link_relocated').length) {
+			worker.$('#pantheons').removeClass('chf_link_relocated').removeClass('both');
+			worker.$('.chf_link_wrap').removeClass('p_group_sep');
+			worker.$('#pantheons .chf_link_wrap').insertAfter(worker.$('#control .arena_msg'));
 		}/*
 		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('cvs')) {
-			if (!$('#pantheons.cvs_link_relocated').length) {
-				$('#pantheons').addClass('cvs_link_relocated');
-				$('.chf_link_wrap:first').insertBefore($('#pantheons_content'));
-				$('#pantheons .chf_link_wrap').addClass('p_group_sep');
+			if (!worker.$('#pantheons.cvs_link_relocated').length) {
+				worker.$('#pantheons').addClass('cvs_link_relocated');
+				worker.$('.chf_link_wrap:first').insertBefore(worker.$('#pantheons_content'));
+				worker.$('#pantheons .chf_link_wrap').addClass('p_group_sep');
 			}
-		} else if ($('#pantheons.cvs_link_relocated').length) {
-			$('#pantheons').removeClass('cvs_link_relocated').removeClass('both');
-			$('.chf_link_wrap').removeClass('p_group_sep');
-			$('#pantheons .chf_link_wrap').insertAfter($('#control .arena_msg'));
+		} else if (worker.$('#pantheons.cvs_link_relocated').length) {
+			worker.$('#pantheons').removeClass('cvs_link_relocated').removeClass('both');
+			worker.$('.chf_link_wrap').removeClass('p_group_sep');
+			worker.$('#pantheons .chf_link_wrap').insertAfter(worker.$('#control .arena_msg'));
 		}	*/
-		if ($('#pantheons.arena_link_relocated.chf_link_relocated:not(.both)').length) {
-			$('#pantheons').addClass('both');
-			$('#pantheons .chf_link_wrap').insertBefore($('#pantheons_content'));
-			$('.arena_link_wrap').removeClass('p_group_sep');
+		if (worker.$('#pantheons.arena_link_relocated.chf_link_relocated:not(.both)').length) {
+			worker.$('#pantheons').addClass('both');
+			worker.$('#pantheons .chf_link_wrap').insertBefore(worker.$('#pantheons_content'));
+			worker.$('.arena_link_wrap').removeClass('p_group_sep');
 		}
 	},
 // ---------- Diary --------------		
@@ -1725,13 +1725,13 @@ var ui_improver = {
 				$msgs[i].classList.add('parsed');
 			}
 		} else {
-			var newMessages = $('#diary .d_msg:not(.parsed)');
+			var newMessages = worker.$('#diary .d_msg:not(.parsed)');
 			if (newMessages.length) {
 				if (this.voiceSubmitted) {
 					if (newMessages.length - document.querySelectorAll('#diary .d_msg:not(.parsed) .vote_links_b').length >= 2) {
 						ui_timeout.start();
 					}
-					$('#god_phrase').change();
+					worker.$('#god_phrase').change();
 					this.voiceSubmitted = false;
 				}
 				newMessages.addClass('parsed');
@@ -1749,7 +1749,7 @@ var ui_improver = {
 	},
 	getDungeonPhrases: function() {
 		if (!ui_storage.get('Dungeon:bossPhrases')) {
-			ui_utils.getXHR('/gods/' + (window.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), this.parseDungeonPhrases.bind(this));
+			ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), this.parseDungeonPhrases.bind(this));
 		} else {
 			for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
 				this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(ui_storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
@@ -1808,11 +1808,11 @@ var ui_improver = {
 			this.colorDungeonMap();
 		}
 		if (this.isFirstTime) {
-			ui_utils.getXHR('/duels/log/' + window.so.state.stats.perm_link.value, this.parseChronicles.bind(this));
+			ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, this.parseChronicles.bind(this));
 		}
-		ui_storage.set('Log:current', window.so.state.stats.perm_link.value);
-		ui_storage.set('Log:' + window.so.state.stats.perm_link.value + ':steps', $('#m_fight_log .block_title').text().match(/\d+/)[0]);
-		ui_storage.set('Log:' + window.so.state.stats.perm_link.value + ':map', JSON.stringify(window.so.state.d_map));
+		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
+		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', worker.$('#m_fight_log .block_title').text().match(/\d+/)[0]);
+		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 	},
 
 	colorDungeonMap: function() {
@@ -1874,28 +1874,28 @@ var ui_improver = {
 	whenWindowResize: function() {
 		this.chatsFix();
 		//body widening
-		$('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
+		worker.$('body').width(worker.$(worker).width() < worker.$('#main_wrapper').width() ? worker.$('#main_wrapper').width() : '');
 	},
 
 	improveInterface: function() {
 		if (this.isFirstTime) {
-			$('a[href=#]').removeAttr('href');
+			worker.$('a[href=#]').removeAttr('href');
 			this.whenWindowResize();
-			$(window).resize((function() {
+			worker.$(worker).resize((function() {
 				clearInterval(this.windowResizeInt);
 				this.windowResizeInt = setTimeout(this.whenWindowResize.bind(this), 250);
 			}).bind(this));
 			if (ui_data.isBattle) {
-				document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + window.so.state.stats.perm_link.value + '" target="_blank">' + window.GUIp_i18n.broadcast + '</a>');
+				document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + worker.so.state.stats.perm_link.value + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
 			}
 		}
 		if (this.isFirstTime || ui_storage.get('UserCssChanged') === true) {
 			ui_storage.set('UserCssChanged', false);
-			window.GUIp_addCSSFromString(ui_storage.get('UserCss'));
+			worker.GUIp_addCSSFromString(ui_storage.get('UserCss'));
 		}
 
-		if (localStorage.ui_s !== ui_storage.get('ui_s')) {
-			ui_storage.set('ui_s', localStorage.ui_s || 'th_classic');
+		if (worker.localStorage.ui_s !== ui_storage.get('ui_s')) {
+			ui_storage.set('ui_s', worker.localStorage.ui_s || 'th_classic');
 			this.Shovel = false;
 			if (document.body.classList.contains('has_temple')) {
 				document.body.className = 'has_temple';
@@ -1906,8 +1906,8 @@ var ui_improver = {
 		}
 
 		if (ui_storage.get('Option:useBackground') === 'cloud') {
-			if ($('body').css('background-image') !== 'url(' + window.GUIp_getResource("images/background.jpg") + ')') {
-				$('body').css('background-image', 'url(' + window.GUIp_getResource("images/background.jpg") + ')');
+			if (worker.$('body').css('background-image') !== 'url(' + worker.GUIp_getResource("images/background.jpg") + ')') {
+				worker.$('body').css('background-image', 'url(' + worker.GUIp_getResource("images/background.jpg") + ')');
 			}
 		} else if (ui_storage.get('Option:useBackground')) {
 			//Mini-hash to check if that is the same background
@@ -1919,11 +1919,11 @@ var ui_improver = {
 			}
 			if (hash !== this.hash) {
 				this.hash = hash;
-				$('body').css('background-image', 'url(' + ui_utils.escapeHTML(str) + ')');
+				worker.$('body').css('background-image', 'url(' + ui_utils.escapeHTML(str) + ')');
 			}
 		} else {
-			if ($('body').css('background-image')) {
-				$('body').css('background-image', '');
+			if (worker.$('body').css('background-image')) {
+				worker.$('body').css('background-image', '');
 			}
 		}
 	},
@@ -1942,22 +1942,22 @@ var ui_improver = {
 		}
 
 		// links replace
-		var $cur_msg, $msgs = $('.fr_msg_l:not(.improved)'),
-			$temp = $('<div id="temp" />');
-		$('body').append($temp);
+		var $cur_msg, $msgs = worker.$('.fr_msg_l:not(.improved)'),
+			$temp = worker.$('<div id="temp" />');
+		worker.$('body').append($temp);
 		for (i = 1, len = $msgs.length; i < len; i++) {
 			$cur_msg = $msgs.eq(i);
-			$temp.append($('.fr_msg_meta', $cur_msg)).append($('.fr_msg_delete', $cur_msg));
+			$temp.append(worker.$('.fr_msg_meta', $cur_msg)).append(worker.$('.fr_msg_delete', $cur_msg));
 			var text = $cur_msg.text();
 			$cur_msg.empty();
 			$cur_msg.append(ui_utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t ]+)/g, '<a href="$1" target="_blank" title="Откроется в новой вкладке">$1</a>'));
-			$cur_msg.append($('.fr_msg_meta', $temp)).append($('.fr_msg_delete', $temp));
+			$cur_msg.append(worker.$('.fr_msg_meta', $temp)).append(worker.$('.fr_msg_delete', $temp));
 		}
 		$msgs.addClass('improved');
 		$temp.remove();
 
 		// godnames in gc paste fix
-		$('.gc_fr_god:not(.improved)').unbind('click').click(function() {
+		worker.$('.gc_fr_god:not(.improved)').unbind('click').click(function() {
 			var ta = this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('textarea'),
 				pos = ta.selectionDirection === 'backward' ? ta.selectionStart : ta.selectionEnd;
 			ta.value = ta.value.slice(0, pos) + '@' + this.textContent + ', ' + ta.value.slice(pos);
@@ -1967,7 +1967,7 @@ var ui_improver = {
 
 		//"Shift+Enter → new line" improvement
 		var keypresses, handlers,
-		$tas = $('.frInputArea textarea:not(.improved)');
+		$tas = worker.$('.frInputArea textarea:not(.improved)');
 		if ($tas.length) {
 			var new_keypress = function(handlers) {
 				return function(e) {
@@ -1979,7 +1979,7 @@ var ui_improver = {
 				};
 			};
 			for (i = 0, len = $tas.length; i < len; i++) {
-				keypresses = $._data($tas[i], 'events').keypress;
+				keypresses = worker.$._data($tas[i], 'events').keypress;
 				handlers = [];
 				for (var j = 0, klen = keypresses.length; j < klen; j++) {
 					handlers.push(keypresses[j].handler);
@@ -2014,31 +2014,31 @@ var ui_improver = {
 	},
 
 	checkButtonsVisibility: function() {
-		$('.arena_link_wrap,.chf_link_wrap,.cvs_link_wrap', $('#pantheons')).hide();
+		worker.$('.arena_link_wrap,.chf_link_wrap,.cvs_link_wrap', worker.$('#pantheons')).hide();
 		if (ui_storage.get('Stats:Godpower') >= 50) {
-			$('#pantheons .chf_link_wrap').show();
-			$('#pantheons .cvs_link_wrap').show();
-			$('#pantheons .arena_link_wrap').show();
+			worker.$('#pantheons .chf_link_wrap').show();
+			worker.$('#pantheons .cvs_link_wrap').show();
+			worker.$('#pantheons .arena_link_wrap').show();
 		}
-		$('.craft_button,.inspect_button,.voice_generator').hide();
+		worker.$('.craft_button,.inspect_button,.voice_generator').hide();
 		if (ui_storage.get('Stats:Godpower') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
-			$('.voice_generator, .inspect_button').show();
+			worker.$('.voice_generator, .inspect_button').show();
 			if (ui_storage.get('Option:disableDieButton')) {
-				$('#hk_death_count .voice_generator').hide();
+				worker.$('#hk_death_count .voice_generator').hide();
 			}
-			if (this.b_b.length) { $('.b_b').show(); }
-			if (this.b_r.length) { $('.b_r').show(); }
-			if (this.r_r.length) { $('.r_r').show(); }
-			if ($('.b_b:visible, .b_r:visible, .r_r:visible').length) { $('span.craft_button').show(); }
-			//if ($('.f_news').text() !== 'Возвращается к заданию...')fc
+			if (this.b_b.length) { worker.$('.b_b').show(); }
+			if (this.b_r.length) { worker.$('.b_r').show(); }
+			if (this.r_r.length) { worker.$('.r_r').show(); }
+			if (worker.$('.b_b:visible, .b_r:visible, .r_r:visible').length) { worker.$('span.craft_button').show(); }
+			//if (worker.$('.f_news').text() !== 'Возвращается к заданию...')fc
 			if (!ui_data.isBattle) {
-				if ($('#hk_distance .l_capt').text().match(/Город|Current Town/) || $('.f_news').text().match('дорогу') || $('#news .line')[0].style.display !== 'none') { $('#hk_distance .voice_generator').hide(); }
-				//if (ui_storage.get('Stats:Godpower') === 100) $('#control .voice_generator').hide();
-				if ($('#control .p_val').width() === $('#control .p_bar').width() || $('#news .line')[0].style.display !== 'none') { $('#control .voice_generator')[0].style.display = 'none'; }
-				if ($('#hk_distance .l_capt').text().match(/Город|Current Town/)) { $('#control .voice_generator')[1].style.display = 'none'; }
+				if (worker.$('#hk_distance .l_capt').text().match(/Город|Current Town/) || worker.$('.f_news').text().match('дорогу') || worker.$('#news .line')[0].style.display !== 'none') { worker.$('#hk_distance .voice_generator').hide(); }
+				//if (ui_storage.get('Stats:Godpower') === 100) worker.$('#control .voice_generator').hide();
+				if (worker.$('#control .p_val').width() === worker.$('#control .p_bar').width() || worker.$('#news .line')[0].style.display !== 'none') { worker.$('#control .voice_generator')[0].style.display = 'none'; }
+				if (worker.$('#hk_distance .l_capt').text().match(/Город|Current Town/)) { worker.$('#control .voice_generator')[1].style.display = 'none'; }
 			}
-			if ($('#hk_quests_completed .q_name').text().match(/\(выполнено\)/)) { $('#hk_quests_completed .voice_generator').hide(); }
-			if ($('#hk_health .p_val').width() === $('#hk_health .p_bar').width()) { $('#hk_health .voice_generator').hide(); }
+			if (worker.$('#hk_quests_completed .q_name').text().match(/\(выполнено\)/)) { worker.$('#hk_quests_completed .voice_generator').hide(); }
+			if (worker.$('#hk_health .p_val').width() === worker.$('#hk_health .p_bar').width()) { worker.$('#hk_health .voice_generator').hide(); }
 		}
 	},
 
@@ -2052,24 +2052,24 @@ var ui_improver = {
 			}
 		}
 		//padding for page settings link
-		var padding_bottom = $('.frDockCell:first').length ? Math.floor($('.frDockCell:first').position().top + $('.frDockCell').height()) : 0,
-			isBottom = window.scrollY >= window.scrollMaxY - 10;
+		var padding_bottom = worker.$('.frDockCell:first').length ? Math.floor(worker.$('.frDockCell:first').position().top + worker.$('.frDockCell').height()) : 0,
+			isBottom = worker.scrollY >= worker.scrollMaxY - 10;
 		padding_bottom = Math.floor(padding_bottom*10)/10 + 10;
 		padding_bottom = (padding_bottom < 0) ? 0 : padding_bottom + 'px';
-		$('.reset_layout').css('padding-bottom', padding_bottom);
+		worker.$('.reset_layout').css('padding-bottom', padding_bottom);
 		if (isBottom) {
-			window.scrollTo(0, window.scrollMaxY);
+			worker.scrollTo(0, worker.scrollMaxY);
 		}
 	},
 
 	initSoundsOverride: function() {
-		if (window.so && window.so.a_notify) {
-			window.so.a_notify_orig = window.so.a_notify;
-			window.so.a_notify = function() {
+		if (worker.so && worker.so.a_notify) {
+			worker.so.a_notify_orig = worker.so.a_notify;
+			worker.so.a_notify = function() {
 				if (ui_storage.get('Option:disableArenaSound')) {
-					if(($(document.activeElement).is("input") || $(document.activeElement).is("textarea")) &&
-						$(document.activeElement).attr("id") !== "god_phrase" &&
-						$(document.activeElement).val().length > 3) {
+					if((worker.$(document.activeElement).is("input") || worker.$(document.activeElement).is("textarea")) &&
+						worker.$(document.activeElement).attr("id") !== "god_phrase" &&
+						worker.$(document.activeElement).val().length > 3) {
 						var readyness = confirm(Loc.duel_switch_confirm);
 						if (!readyness)  {
 							return false;
@@ -2079,15 +2079,15 @@ var ui_improver = {
 						document.location.href = document.location.pathname;
 					}, 3e3);
 				} else {
-					window.so.a_notify_orig();
+					worker.so.a_notify_orig();
 				}
 			};
 		}
-		if (window.so && window.so.play_sound) {
-			window.so.play_sound_orig = window.so.play_sound;
-			window.so.play_sound = function(a, b) {
+		if (worker.so && worker.so.play_sound) {
+			worker.so.play_sound_orig = worker.so.play_sound;
+			worker.so.play_sound = function(a, b) {
 				if (!(ui_storage.get('Option:disablePmSound') && a === 'msg.mp3')) {
-					window.so.play_sound_orig(a, b);
+					worker.so.play_sound_orig(a, b);
 				}
 			};
 		}
@@ -2122,7 +2122,7 @@ var ui_laying_timer = {
 	init: function() {
 		if (ui_data.hasTemple && !ui_data.isBattle && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
 			document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
-			for (var key in window) {
+			for (var key in worker) {
 				if (key.match(/^diary/)) {
 					this.third_eye = key;
 					break;
@@ -2137,8 +2137,8 @@ var ui_laying_timer = {
 			latestFromStorage = ui_storage.get('thirdEyeLatestEntry') && new Date(ui_storage.get('thirdEyeLatestEntry')),
 			earliestFromStorage = ui_storage.get('thirdEyeEarliestEntry') && new Date(ui_storage.get('thirdEyeEarliestEntry')),
 			lastLayingFromStorage = ui_storage.get('thirdEyeLastLayingEntry') && new Date(ui_storage.get('thirdEyeLastLayingEntry'));
-		for (var msg in window[this.third_eye]) {
-			temp = new Date(window[this.third_eye][msg].time);
+		for (var msg in worker[this.third_eye]) {
+			temp = new Date(worker[this.third_eye][msg].time);
 			if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/)) {
 				lastLaying = temp > lastLaying ? temp : lastLaying;
 			}
@@ -2173,28 +2173,28 @@ var ui_laying_timer = {
 			if (hours < 0) {
 				$timer.textContent = '✓';
 				$timer.classList.add('green');
-				$timer.title = window.GUIp_i18n.gte_no_penalty;
+				$timer.title = worker.GUIp_i18n.gte_no_penalty;
 			} else {
 				$timer.textContent = (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 				if (hours >= 12) {
 					$timer.classList.add('red');
-					$timer.title = window.GUIp_i18n.gte_major_penalty;
+					$timer.title = worker.GUIp_i18n.gte_major_penalty;
 				} else {
 					$timer.classList.add('yellow');
-					$timer.title = window.GUIp_i18n.gte_minor_penalty;
+					$timer.title = worker.GUIp_i18n.gte_minor_penalty;
 				}
 			}
 		} else {
 			if (Math.floor((Date.now() - earliest)/1000/60/60) >= 24) {
 				$timer.textContent = '✓';
 				$timer.classList.add('green');
-				$timer.title = window.GUIp_i18n.gte_no_penalty;
+				$timer.title = worker.GUIp_i18n.gte_no_penalty;
 			} else {
 				hours = Math.floor(24 - (Date.now() - earliest)/1000/60/60);
 				minutes = Math.floor(60 - (Date.now() - earliest)/1000/60%60);
 				$timer.textContent = '?';
 				$timer.classList.add('grey');
-				$timer.title = window.GUIp_i18n.gte_unknown_penalty + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
+				$timer.title = worker.GUIp_i18n.gte_unknown_penalty + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes);
 			}
 		}
 	}
@@ -2350,7 +2350,7 @@ var ui_observers = {
 					}
 					var god_name = mutation.target.querySelector('.l_val').textContent;
 					if (god_name.match(ui_improver.friendsRegexp)) {
-						hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="' + window.GUIp_i18n.open_chat_with + god_name + '">★</a>');
+						hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="' + worker.GUIp_i18n.open_chat_with + god_name + '">★</a>');
 						document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = function(e) {
 							e.preventDefault();
 							e.stopPropagation();
@@ -2378,17 +2378,17 @@ var ui_trycatcher = {
 				return method.apply(this, arguments);
 			} catch (error) {
 				var name_message = error.name + ': ' + error.message,
-					stack = error.stack.replace(name_message, '').replace(/^\n|    at /g, '').replace(/(?:chrome-extension:\/\/\w+|@chrome:\/\/godville-ui-plus\/content)\/superhero.js:/g, '@');
-				console.error('Godville UI+ error log:\n' +
+					stack = error.stack.replace(name_message, '').replace(/^\n|    at /g, '').replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1');
+				worker.console.error('Godville UI+ error log:\n' +
 							  name_message + '\n' +
-							  window.GUIp_i18n.error_message_stack_trace + ': ' + stack);
+							  worker.GUIp_i18n.error_message_stack_trace + ': ' + stack);
 				if (!ui_utils.hasShownErrorMessage) {
 					ui_utils.hasShownErrorMessage = true;
 					ui_utils.showMessage('error', {
-						title: window.GUIp_i18n.error_message_title,
-						content: '<div>' + window.GUIp_i18n.error_message_subtitle + '</div>' +
-								 '<div>' + window.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
-								 '<div>' + window.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>',
+						title: worker.GUIp_i18n.error_message_title,
+						content: '<div>' + worker.GUIp_i18n.error_message_subtitle + '</div>' +
+								 '<div>' + worker.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
+								 '<div>' + worker.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>',
 						callback: function() {
 							if (!ui_storage.get('helpDialogVisible')) {
 								ui_help_dialog.toggle();
@@ -2412,12 +2412,14 @@ var ui_trycatcher = {
 
 var ui_starter = {
 	start: function() {
-		if ($ && ($('#m_info').length || $('#stats').length) && window.GUIp_browser && window.GUIp_i18n && window.GUIp_addCSSFromURL && window.so.state) {
+		if (worker.$ && (worker.$('#m_info').length || worker.$('#stats').length) && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && worker.so.state) {
 			clearInterval(starterInt);
 			var start = new Date();
 			ui_data.init();
 			ui_storage.migrate();
-			ui_utils.addCSS();
+			if (worker.GUIp_browser === 'Chrome') {
+				ui_utils.addCSS();
+			}
 			ui_utils.inform();
 			ui_words.init();
 			ui_logger.create();
@@ -2431,10 +2433,10 @@ var ui_starter = {
 			ui_improver.initSoundsOverride();
 			
 			// Event and listeners
-			$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
+			worker.$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
 
 			if (!ui_data.isBattle) {
-				$('html').mousemove(ui_improver.mouseMove);
+				worker.$('html').mousemove(ui_improver.mouseMove);
 			}
 
 			// svg for #logger fade-out in FF
@@ -2454,7 +2456,7 @@ var ui_starter = {
 			);
 
 			if (ui_utils.isDebugMode) {
-				window.GUIp = {
+				worker.GUIp = {
 					data: ui_data,
 					utils: ui_utils,
 					timeout: ui_timeout,
@@ -2473,7 +2475,7 @@ var ui_starter = {
 			}
 
 			var finish = new Date();
-			console.info('Godville UI+ log: Initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
+			worker.console.info('Godville UI+ log: Initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
 		}
 	}
 };

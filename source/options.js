@@ -1,6 +1,8 @@
 (function() {
 'use strict';
 
+var worker = window.wrappedJSObject || window;
+
 var storage = {
 	_get_key: function(key) {
 		return "GUIp_" + god_name + ':' + key;
@@ -25,10 +27,10 @@ var storage = {
 			for (var key in options) {
 				this.set(key, options[key]);
 			}
-			window.alert(window.GUIp_i18n.import_success);
+			worker.alert(worker.GUIp_i18n.import_success);
 			location.reload();
 		} catch(e) {
-			window.alert(window.GUIp_i18n.import_fail);
+			worker.alert(worker.GUIp_i18n.import_fail);
 		}
 	},
 	exportOptions: function() {
@@ -47,7 +49,7 @@ function addMenu() {
 	if (god_name === "") { return; }
 	ImproveInProcess = true;
 	if ($j('#ui_options').length === 0) {
-		$j('#profile_main p:first').append(' | <a id="ui_options" href="#ui_options">' + window.GUIp_i18n.ui_options + '</a>');
+		$j('#profile_main p:first').append(' | <a id="ui_options" href="#ui_options">' + worker.GUIp_i18n.ui_options + '</a>');
 		$j('#ui_options').click(function() {
 			loadOptions();
 		});
@@ -62,7 +64,7 @@ function loadOptions() {
 	}
 	ImproveInProcess = true;
 	$j('#profile_main').empty();
-	$j('#profile_main').append(window.getOptionsPage());
+	$j('#profile_main').append(worker.getOptionsPage());
 	setForm();
 	restore_options();
 	$j('#forbidden_informers').click(function() {
@@ -225,17 +227,17 @@ function save_options() {
 					storage.set('Option:useBackground', e.target.result);
 				};
 				reader.readAsDataURL(custom_file);
-				$j('#cb_status').text(window.GUIp_i18n.bg_status_file);
+				$j('#cb_status').text(worker.GUIp_i18n.bg_status_file);
 				$j('#cb_status').css('color', 'green');
 			} else if (custom_link) {
-				$j('#cb_status').text(window.GUIp_i18n.bg_status_link);
+				$j('#cb_status').text(worker.GUIp_i18n.bg_status_link);
 				$j('#cb_status').css('color', 'green');
 				storage.set('Option:useBackground', custom_link);
 			} else if (storage.get('Option:useBackground') && storage.get('Option:useBackground') !== 'cloud') {
-				$j('#cb_status').text(window.GUIp_i18n.bg_status_same);
+				$j('#cb_status').text(worker.GUIp_i18n.bg_status_same);
 				$j('#cb_status').css('color', 'blue');
 			} else {
-				$j('#cb_status').text(window.GUIp_i18n.bg_status_error);
+				$j('#cb_status').text(worker.GUIp_i18n.bg_status_error);
 				$j('#cb_status').css('color', 'red');
 				setTimeout(function() {
 					$j('#cloud_background').click();
@@ -444,11 +446,11 @@ function set_theme_and_background() {
 	if (ui_s_css) {
 		ui_s_css.parentNode.removeChild(ui_s_css);
 	}
-	window.GUIp_addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'ui_s_css');
+	worker.GUIp_addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'ui_s_css');
 	var background = storage.get('Option:useBackground');
 	if (background) {
 		if (background === 'cloud') {
-			document.body.style.backgroundImage = 'url(' + window.GUIp_getResource('images/background.jpg') + ')';
+			document.body.style.backgroundImage = 'url(' + worker.GUIp_getResource('images/background.jpg') + ')';
 		} else {
 			document.body.style.backgroundImage =  'url(' + background + ')';
 		}
@@ -461,9 +463,9 @@ var def, $j, curr_sect, god_name,
 	ImproveInProcess = false;
 
 var starterInt = setInterval(function() {
-	if (window.jQuery && window.GUIp_browser && window.GUIp_i18n && window.GUIp_addCSSFromURL) {
-		$j = window.jQuery.noConflict();
-		def = window.GUIp_words();
+	if (worker.jQuery && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL) {
+		$j = worker.jQuery.noConflict();
+		def = worker.GUIp_words();
 		clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
 		if (god_name) {
@@ -475,12 +477,12 @@ var starterInt = setInterval(function() {
 		if (location.hash === "#ui_options") {
 			loadOptions();
 		}
-		window.GUIp_addCSSFromURL(window.GUIp_getResource('options.css'), 'guip_options_css');
+		worker.GUIp_addCSSFromURL(worker.GUIp_getResource('options.css'), 'guip_options_css');
 		set_theme_and_background();
 		improve_blocks();
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
-			if (!$j('#profile_main p:first').text().match(window.GUIp_i18n.ui_options.replace('+', '\\+'))) {
+			if (!$j('#profile_main p:first').text().match(worker.GUIp_i18n.ui_options.replace('+', '\\+'))) {
 				setTimeout(addMenu, 0);
 			}
 			improve_blocks();

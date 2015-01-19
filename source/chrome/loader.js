@@ -17,7 +17,7 @@
 		phrases_en: prefix + 'phrases_en.js',
 		guip_chrome: prefix + 'guip_chrome.js',
 		jquery: '//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js',
-		options_page: prefix + 'options-page.js',
+		options_page: prefix + 'options_page.js',
 		options: prefix + 'options.js',
 		forum: prefix + 'forum.js',
 		log: prefix + 'log.js'

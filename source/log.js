@@ -1,10 +1,11 @@
 (function() {
 	'use strict';
 
+	var worker = window.wrappedJSObject || window;
 	function updateButton() {
 		var i;
-		if (!isNaN(localStorage[godname_prefix + log + 'sentToLEM' + request_limit]) && Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + request_limit] < time_frame_seconds*1000) {
-			var time = time_frame_seconds - (Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + request_limit])/1000,
+		if (!isNaN(worker.localStorage[godname_prefix + log + 'sentToLEM' + request_limit]) && Date.now() - worker.localStorage[godname_prefix + log + 'sentToLEM' + request_limit] < time_frame_seconds*1000) {
+			var time = time_frame_seconds - (Date.now() - worker.localStorage[godname_prefix + log + 'sentToLEM' + request_limit])/1000,
 				minutes = Math.floor(time/60),
 				seconds = Math.floor(time%60);
 			seconds = seconds < 10 ? '0' + seconds : seconds;
@@ -13,7 +14,7 @@
 		} else {
 			var tries = 0;
 			for (i = 0; i < request_limit; i++) {
-				if (isNaN(localStorage[godname_prefix + log + 'sentToLEM' + i]) || Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + i] > time_frame_seconds*1000) {
+				if (isNaN(worker.localStorage[godname_prefix + log + 'sentToLEM' + i]) || Date.now() - worker.localStorage[godname_prefix + log + 'sentToLEM' + i] > time_frame_seconds*1000) {
 					tries++;
 				}
 			}
@@ -25,14 +26,14 @@
 	function deleteOldEntries() {
 		// old entries deletion
 		var len, lines = [];
-		for (i = 0, len = localStorage.length; i < len; i++) {
-			if (localStorage.key(i).match(godname_prefix + 'Log:\\w{5}:') && !localStorage.key(i).match(log + '|' + localStorage[godname_prefix + 'Log:current'])) {
-				lines.push(localStorage.key(i));
+		for (i = 0, len = worker.localStorage.length; i < len; i++) {
+			if (worker.localStorage.key(i).match(godname_prefix + 'Log:\\w{5}:') && !worker.localStorage.key(i).match(log + '|' + worker.localStorage[godname_prefix + 'Log:current'])) {
+				lines.push(worker.localStorage.key(i));
 			}
 		}
 		for (i = 0, len = lines.length; i < len; i++) {
-			if (isNaN(localStorage[lines[i]]) || Date.now() - localStorage[lines[i]] > time_frame_seconds*1000) {
-				localStorage.removeItem(lines[i]);
+			if (isNaN(worker.localStorage[lines[i]]) || Date.now() - worker.localStorage[lines[i]] > time_frame_seconds*1000) {
+				worker.localStorage.removeItem(lines[i]);
 			}
 		}
 	}
@@ -41,11 +42,11 @@
 		return;
 	}
 
-	var godname_prefix = 'GUIp_' + localStorage.GUIp_CurrentUser + ':',
+	var godname_prefix = 'GUIp_' + worker.localStorage.GUIp_CurrentUser + ':',
 		log = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':',
 		steps = +document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья \(шаг (\d+)\)/)[1];
-	if (!document.querySelector('#dmap') && steps === +localStorage[godname_prefix + log + 'steps']) {
-		var map = JSON.parse(localStorage[godname_prefix + log + 'map']),
+	if (!document.querySelector('#dmap') && steps === +worker.localStorage[godname_prefix + log + 'steps']) {
+		var map = JSON.parse(worker.localStorage[godname_prefix + log + 'map']),
 			map_elem = '<div id="hero2"><div class="box"><fieldset style="min-width:0;"><legend>Карта</legend><div id="dmap" class="new_line">';
 		for (var i = 0, ilen = map.length; i < ilen; i++) {
 			map_elem += '<div class="dml" style="width:' + (map[0].length * 21) + 'px;">';
@@ -62,7 +63,7 @@
 		$box.insertAdjacentHTML('beforeend', '<span>Кнопка работает только при другом порядке записей.</span>');
 		return;
 	}
-	var steps_min = localStorage[godname_prefix + 'LEMRestrictions:FirstRequest'] || 12;
+	var steps_min = worker.localStorage[godname_prefix + 'LEMRestrictions:FirstRequest'] || 12;
 	if (steps < steps_min) {
 		$box.insertAdjacentHTML('beforeend', '<span>Кнопка появится на ' + steps_min + '+ шаге.</span>');
 		return;
@@ -92,26 +93,26 @@
 			'<input type="submit" id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
 		'</form>');
 	document.querySelector('#fight_text').value = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' +
-												  document.getElementsByTagName('html')[0].innerHTML.replace(/<(?:script|style)[\S\s]+?<\/(?:script|style)>/g, '')
-																									.replace(/onclick="[^"]+?"/g, '')
-																									.replace(/"javascript[^"]+"/g, '""')
-																									.replace(/<form[\s\S]+?<\/form>/g, '')
-																									.replace(/<iframe[\s\S]+?<\/iframe>/g, '')
-																									.replace(/\t/g, '')
-																									.replace(/ {2,}/g, ' ')
-																									.replace(/\n{2,}/g, '\n') +
+														 document.getElementsByTagName('html')[0].innerHTML.replace(/<(?:script|style)[\S\s]+?<\/(?:script|style)>/g, '')
+																												  .replace(/onclick="[^"]+?"/g, '')
+																												  .replace(/"javascript[^"]+"/g, '""')
+																												  .replace(/<form[\s\S]+?<\/form>/g, '')
+																												  .replace(/<iframe[\s\S]+?<\/iframe>/g, '')
+																												  .replace(/\t/g, '')
+																												  .replace(/ {2,}/g, ' ')
+																												  .replace(/\n{2,}/g, '\n') +
 												  '</html>';
 	var button = document.getElementById('send_to_LEM'),
 		match = document.getElementById('match'),
 		search_mode = document.getElementById('search_mode'),
-		time_frame_seconds = (localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 15)*60,
-		request_limit = localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 5;
+		time_frame_seconds = (worker.localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 15)*60,
+		request_limit = worker.localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 5;
 	button.onclick = function(e) {
 		e.preventDefault();
 		for (var i = request_limit; i > 1; i--) {
-			localStorage[godname_prefix + log + 'sentToLEM' + i] = localStorage[godname_prefix + log + 'sentToLEM' + (i - 1)];
+			worker.localStorage[godname_prefix + log + 'sentToLEM' + i] = worker.localStorage[godname_prefix + log + 'sentToLEM' + (i - 1)];
 		}
-		localStorage[godname_prefix + log + 'sentToLEM1'] = Date.now();
+		worker.localStorage[godname_prefix + log + 'sentToLEM1'] = Date.now();
 		updateButton();
 		this.form.submit();
 		document.getElementById('match').checked = false;

@@ -1,10 +1,11 @@
 (function() {
+var worker = window.wrappedJSObject || window;
 var starter = setInterval(initPhrases, 100);
 function initPhrases() {
-if (!window.GUIp_browser || !window.GUIp_help_guide_link) { return; }
+if (!worker.GUIp_browser || !worker.GUIp_help_guide_link) { return; }
 clearInterval(starter);
 
-window.GUIp_words = function() {
+worker.GUIp_words = function() {
 	return {
 	// Этот параметр показывает текущую версию файла
 	// Меняется только при _структурных_ изменениях.
@@ -154,9 +155,9 @@ window.GUIp_words = function() {
 	};
 };
 
-window.GUIp_locale = 'en';
+worker.GUIp_locale = 'en';
 
-window.GUIp_i18n = {
+worker.GUIp_i18n = {
 	// superhero
 	hero: ['hero', 'hero'],
 	heroine: ['heroine', 'heroine'],
@@ -180,21 +181,21 @@ window.GUIp_i18n = {
 	help_refresh: 'Refresh the page. If this does not help — move on to the next step.',
 	help_check_version: 'Click here to check if you have the latest version.',
 	help_update_chrome_1: 'Open Chrome settings (2). ' +
-		window.GUIp_help_guide_link + 'chrome_manual_update_1.png" title="Opens in a new tab">Picture</a>.',
+		worker.GUIp_help_guide_link + 'chrome_manual_update_1.png" title="Opens in a new tab">Picture</a>.',
 	help_update_chrome_2: 'Choose "Extensions" (3), check "Developer mode" (4), click "Update extensions" button (5), ' +
 		'which will appear, wait until the browser will refresh the extension,  uncheck the box (6). ' +
-		window.GUIp_help_guide_link + 'chrome_manual_update_2.png" title="Opens in a new tab">Picture</a>.',
+		worker.GUIp_help_guide_link + 'chrome_manual_update_2.png" title="Opens in a new tab">Picture</a>.',
 	help_update_firefox_1: 'Open Firefox add-ons page (2 or <b>Ctrl+Shift+A</b>). ' +
-		window.GUIp_help_guide_link + 'firefox_manual_update_1.png" title="Opens in a new tab">Picture</a>.',
+		worker.GUIp_help_guide_link + 'firefox_manual_update_1.png" title="Opens in a new tab">Picture</a>.',
 	help_update_firefox_2: 'Click the "gear" (3), then "Check for updates" (4), wait a few seconds and allow to restart the browser. ' +
-		window.GUIp_help_guide_link + 'firefox_manual_update_2.png" title="Opens in a new tab">Picture</a>.',
+		worker.GUIp_help_guide_link + 'firefox_manual_update_2.png" title="Opens in a new tab">Picture</a>.',
 	help_back_to_step_1: 'Back to step 1.',
 	help_console_1: 'If the bug persists — check, if your bug is already reported at the link below.',
 	help_console_2: 'If it is not in the list and there was no error message — open the console (through the menu, ' +
-		'or by presing <b>Ctrl+Shift+' + (window.GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
-		window.GUIp_help_guide_link + window.GUIp_browser.toLowerCase() + '_console.png" title="Opens in a new tab">Picture</a>.',
+		'or by presing <b>Ctrl+Shift+' + (worker.GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
+		worker.GUIp_help_guide_link + worker.GUIp_browser.toLowerCase() + '_worker.console.png" title="Opens in a new tab">Picture</a>.',
 	help_console_3: 'Try to find something that looks like an error message in the console (' +
-		window.GUIp_help_guide_link + window.GUIp_browser.toLowerCase() + '_console_error.png" title="Opens in a new tab">picture</a>). ' +
+		worker.GUIp_help_guide_link + worker.GUIp_browser.toLowerCase() + '_console_error.png" title="Opens in a new tab">picture</a>). ' +
 		'Provide this information to <b>Bad Luck</b> or post it in the forum as per links below.',
 	help_useful_links: 'Useful links: ' +
 		'<a href="/gods/Bad Luck" title="Opens in a new tab" target="about:blank">Bad Luck</a>, ' +

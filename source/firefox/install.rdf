@@ -14,6 +14,7 @@
                    em:id="godville-ui-plus@badluck.dicey"
                    em:name="Godville UI+"
                    em:version="$VERSION"
+                   em:bootstrap="true"
                    em:description="Godville.net UI improvements"
                    em:icon64URL="chrome://godville-ui-plus/content/icon64.png"
                    em:creator="Badluck"

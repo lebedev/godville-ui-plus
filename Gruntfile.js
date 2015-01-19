@@ -13,7 +13,7 @@ module.exports = function(grunt) {
       firefox: {
         files: [
           {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
-          {expand: true, flatten: true, src: 'source/*', dest: '<%= compile_path %>/firefox/content', filter: 'isFile'},
+          {expand: true, flatten: true, src: 'source/*', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data', filter: 'isFile'},
           {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content'}
         ]
       },
@@ -24,10 +24,10 @@ module.exports = function(grunt) {
           }
         },
         files: [
-          {expand: true, cwd: 'source/firefox', src: 'install.rdf', dest: '<%= compile_path %>/firefox/'},
           {expand: true, cwd: 'source/chrome', src: 'manifest.json', dest: '<%= compile_path %>/chrome/'},
-          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/content'},
-          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/chrome/'}
+          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/chrome/'},
+          {expand: true, cwd: 'source/firefox', src: ['install.rdf', 'harness-options.json'], dest: '<%= compile_path %>/firefox/'},
+          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data'}
         ]
       }
     },
@@ -79,7 +79,14 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      all: ['Gruntfile.js', 'source/**/*.js']
+      all: {
+        src: [
+          'Gruntfile.js',
+          'source/**/*.js',
+          '!source/firefox/resources/godville-ui-plus/data/jquery-1.10.2.min.js',
+          '!source/firefox/bootstrap.js'
+        ]
+      }
     },
     prompt: {
       version: {

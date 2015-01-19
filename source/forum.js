@@ -1,6 +1,8 @@
 (function() {
 'use strict';
 
+var worker = window.wrappedJSObject || window;
+
 var i, len, follow_links, isFollowed, links_containers, topic, unfollow_links,
 	isTopic, forum_topics, god_name, topics;
 
@@ -58,8 +60,8 @@ var addLinks = function() {
 						: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
 		isFollowed = topics[topic] !== undefined;
 		links_containers[i].insertAdjacentHTML('beforeend',
-			(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? window.GUIp_i18n.Subscribe : window.GUIp_i18n.subscribe) + '</a>' +
-									 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? window.GUIp_i18n.Unsubscribe : window.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
+			(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? worker.GUIp_i18n.Subscribe : worker.GUIp_i18n.subscribe) + '</a>' +
+									 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? worker.GUIp_i18n.Unsubscribe : worker.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
 		);
 	}
 	addClickToFollow();
@@ -78,7 +80,7 @@ var followClick = function(e) {
 		this.style.display = 'none';
 		this.parentElement.querySelector('.unfollow').style.display = 'inline';
 	} catch(error) {
-		console.error(error);
+		worker.console.error(error);
 	}
 };
 var addClickToFollow = function() {
@@ -99,7 +101,7 @@ var unfollowClick = function(e) {
 		this.style.display = 'none';
 		this.parentElement.querySelector('.follow').style.display = 'inline';
 	} catch(error) {
-		console.error(error);
+		worker.console.error(error);
 	}
 };
 var addClickToUnfollow = function() {
@@ -113,7 +115,7 @@ var addClickToUnfollow = function() {
 function GUIp_forum() {
 try {
 
-if (!window.GUIp_i18n || !window.GUIp_browser || !window.GUIp_addCSSFromURL) { return; }
+if (!worker.GUIp_i18n || !worker.GUIp_browser || !worker.GUIp_addCSSFromURL) { return; }
 clearInterval(starter);
 
 isTopic = location.pathname.match(/topic/) !== null;
@@ -135,29 +137,29 @@ if (isTopic) {
 	checkHash();
 	// formatting buttons
 	var $reply_form = $id('post_body_editor');
-	window.GUIp_addCSSFromURL(window.GUIp_getResource('forum.css'), 'forum_css');
+	worker.GUIp_addCSSFromURL(worker.GUIp_getResource('forum.css'), 'forum_css');
 	var formatting_buttons =
-		'<a class="formatting button bold" title="' + window.GUIp_i18n.bold_hint + '">' + window.GUIp_i18n.bold + '</a>' +
-		'<a class="formatting button underline" title="' + window.GUIp_i18n.underline_hint + '">' + window.GUIp_i18n.underline + '</a>' +
-		'<a class="formatting button strike" title="' + window.GUIp_i18n.strike_hint + '">' + window.GUIp_i18n.strike + '</a>' +
-		'<a class="formatting button italic" title="' + window.GUIp_i18n.italic_hint + '">' + window.GUIp_i18n.italic + '</a>' +
-		'<blockquote class="formatting bq" title="' + window.GUIp_i18n.quote_hint + '">bq.</blockquote>' +
-		'<pre class="formatting bc" title="' + window.GUIp_i18n.code_hint + '"><code>bc.</code></pre>' +
-		(window.GUIp_locale === 'ru' ? '<a class="formatting button godname" title="Вставить ссылку на бога"></a>' : '') +
-		'<a class="formatting button link" title="' + window.GUIp_i18n.link_hint + '">a</a>' +
-		'<a class="formatting button ul" title="' + window.GUIp_i18n.unordered_list_hint + '">•</a>' +
-		'<a class="formatting button ol" title="' + window.GUIp_i18n.ordered_list_hint + '">1.</a>' +
-		'<a class="formatting button br" title="' + window.GUIp_i18n.br_hint + '">\\n</a>' +
-		'<a class="formatting button sup" title="' + window.GUIp_i18n.sup_hint + '">X<sup>2</sup></a>' +
-		'<a class="formatting button sub" title="' + window.GUIp_i18n.sub_hint + '">X<sub>2</sub></a>' +
-		'<a class="formatting button monospace" title="' + window.GUIp_i18n.monospace_hint + '"><code>' + window.GUIp_i18n.monospace + '</code></a>';
+		'<a class="formatting button bold" title="' + worker.GUIp_i18n.bold_hint + '">' + worker.GUIp_i18n.bold + '</a>' +
+		'<a class="formatting button underline" title="' + worker.GUIp_i18n.underline_hint + '">' + worker.GUIp_i18n.underline + '</a>' +
+		'<a class="formatting button strike" title="' + worker.GUIp_i18n.strike_hint + '">' + worker.GUIp_i18n.strike + '</a>' +
+		'<a class="formatting button italic" title="' + worker.GUIp_i18n.italic_hint + '">' + worker.GUIp_i18n.italic + '</a>' +
+		'<blockquote class="formatting bq" title="' + worker.GUIp_i18n.quote_hint + '">bq.</blockquote>' +
+		'<pre class="formatting bc" title="' + worker.GUIp_i18n.code_hint + '"><code>bc.</code></pre>' +
+		(worker.GUIp_locale === 'ru' ? '<a class="formatting button godname" title="Вставить ссылку на бога"></a>' : '') +
+		'<a class="formatting button link" title="' + worker.GUIp_i18n.link_hint + '">a</a>' +
+		'<a class="formatting button ul" title="' + worker.GUIp_i18n.unordered_list_hint + '">•</a>' +
+		'<a class="formatting button ol" title="' + worker.GUIp_i18n.ordered_list_hint + '">1.</a>' +
+		'<a class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '">\\n</a>' +
+		'<a class="formatting button sup" title="' + worker.GUIp_i18n.sup_hint + '">X<sup>2</sup></a>' +
+		'<a class="formatting button sub" title="' + worker.GUIp_i18n.sub_hint + '">X<sub>2</sub></a>' +
+		'<a class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '"><code>' + worker.GUIp_i18n.monospace + '</code></a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
 	var val, ss, se, nls, nle, selection;
 	var init = function(editor) {
 		val = editor.value;
 		ss = editor.selectionStart;
 		se = editor.selectionEnd;
-		selection = window.getSelection().isCollapsed ? '' : window.getSelection().toString().trim();
+		selection = worker.getSelection().isCollapsed ? '' : worker.getSelection().toString().trim();
 	};
 	var putSelectionTo = function(editor, pos, quoting) {
 		editor.focus();
@@ -176,7 +178,7 @@ if (isTopic) {
 			putSelectionTo(editor, se + left.length, true);
 			return false;
 		} catch(error) {
-			console.error(error);
+			worker.console.error(error);
 		}
 	};
 	var quote_formatting = function(quotation, editor) {
@@ -188,7 +190,7 @@ if (isTopic) {
 			editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + selection + nle + val.slice(se);
 			putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0), true);
 		} catch(error) {
-			console.error(error);
+			worker.console.error(error);
 		}
 	};
 	var list_formatting = function(list_marker, editor) {
@@ -200,7 +202,7 @@ if (isTopic) {
 			editor.value = val.slice(0, ss) + nls + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + nle + val.slice(se);
 			putSelectionTo(editor, se + nls.length + (list_marker.length + 1)*count, true);
 		} catch(error) {
-			console.error(error);
+			worker.console.error(error);
 		}
 	};
 	var paste_br = function(editor) {
@@ -210,7 +212,7 @@ if (isTopic) {
 			editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
 			putSelectionTo(editor, pos + 4, true);
 		} catch(error) {
-			console.error(error);
+			worker.console.error(error);
 		}
 	};
 	var set_basic_formatting = function(temp, container) {
@@ -218,7 +220,7 @@ if (isTopic) {
 		$q(temp + 'underline').onclick = basic_formatting.bind(this, '+', '+', container);
 		$q(temp + 'strike').onclick = basic_formatting.bind(this, '-', '-', container);
 		$q(temp + 'italic').onclick = basic_formatting.bind(this, '_', '_', container);
-		if (window.GUIp_locale === 'ru') {
+		if (worker.GUIp_locale === 'ru') {
 			$q(temp + 'godname').onclick = basic_formatting.bind(this, '"', '":пс', container);
 		}
 		$q(temp + 'link').onclick = basic_formatting.bind(this, '"', '":', container);
@@ -270,21 +272,21 @@ if (isTopic) {
 				var diff = (parseFloat(getComputedStyle(form).height) || 0) - old_height;
 				old_height += diff;
 				pw.style.paddingBottom = ((parseFloat(pw.style.paddingBottom) || 0) + diff) + 'px';
-				window.scrollTo(0, window.scrollY + diff);
+				worker.scrollTo(0, worker.scrollY + diff);
 			}
 		}, 10);
 	};
-	window.Effect.old_toggle = window.Effect.toggle;
-	window.Effect.toggle = function(a, b) { set_pw_pb(a); window.Effect.old_toggle(a, b); };
-	window.Effect.old_BlindDown = window.Effect.BlindDown;
-	window.Effect.BlindDown = function(a, b) { set_pw_pb(a); window.Effect.old_BlindDown(a, b); };
-	window.EditForm.old_hide = window.EditForm.hide;
-	window.EditForm.hide = function() { pw.style.paddingBottom = '0px'; window.EditForm.old_hide(); };
-	window.EditForm.old_setReplyId = window.EditForm.setReplyId;
-	window.EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } window.EditForm.old_setReplyId(a); };
+	worker.Effect.old_toggle = worker.Effect.toggle;
+	worker.Effect.toggle = function(a, b) { set_pw_pb(a); worker.Effect.old_toggle(a, b); };
+	worker.Effect.old_BlindDown = worker.Effect.BlindDown;
+	worker.Effect.BlindDown = function(a, b) { set_pw_pb(a); worker.Effect.old_BlindDown(a, b); };
+	worker.EditForm.old_hide = worker.EditForm.hide;
+	worker.EditForm.hide = function(dummy) { pw.style.paddingBottom = '0px'; worker.EditForm.old_hide(); };
+	worker.EditForm.old_setReplyId = worker.EditForm.setReplyId;
+	worker.EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } worker.EditForm.old_setReplyId(a); };
 
 	// godname paste fix
-	window.ReplyForm.add_name = function(name) {
+	worker.ReplyForm.add_name = function(name) {
 		try {
 			var editor;
 			if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
@@ -292,7 +294,7 @@ if (isTopic) {
 			} else {
 				editor = document.getElementById('post_body');
 				if (document.getElementById('reply').style.display === 'none') {
-					window.ReplyForm.init();
+					worker.ReplyForm.init();
 				}
 			}
 			init(editor);
@@ -302,7 +304,7 @@ if (isTopic) {
 				putSelectionTo(editor, pos + name.length + 4, false);
 			}, 50);
 		} catch(error) {
-			console.error(error);
+			worker.console.error(error);
 		}
 	};
 
@@ -333,7 +335,7 @@ if (isTopic) {
 }
 
 } catch(e) {
-	console.error(e);
+	worker.console.error(e);
 }
 }
 var starter = setInterval(GUIp_forum, 100);
