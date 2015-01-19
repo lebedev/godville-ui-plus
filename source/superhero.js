@@ -401,7 +401,7 @@ var ui_help_dialog = {
 // creates ui dialog	
 	create: function() {
 		var menu_bar = document.querySelector('#menu_bar ul');
-		menu_bar.insertAdjacentHTML('beforeend', '<a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
+		menu_bar.insertAdjacentHTML('beforeend', '<li> | </li><a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
 		this.addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
 		document.getElementById('menu_bar').insertAdjacentHTML('afterend',
 			'<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
