@@ -5,16 +5,17 @@ module.exports = function(grunt) {
     copy: {
       chrome: {
         files: [
-          {expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome', filter: 'isFile'},
-          {expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales'},
-          {expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome'}
+          {expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome/', filter: 'isFile'},
+          {expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/'},
+          {expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/'}
         ]
       },
       firefox: {
         files: [
           {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
-          {expand: true, flatten: true, src: 'source/*', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data', filter: 'isFile'},
-          {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content'}
+          {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/', filter: 'isFile'},
+          {expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile'},
+          {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/'}
         ]
       },
       version: {
@@ -24,10 +25,10 @@ module.exports = function(grunt) {
           }
         },
         files: [
-          {expand: true, cwd: 'source/chrome', src: 'manifest.json', dest: '<%= compile_path %>/chrome/'},
+          {expand: true, cwd: 'source/chrome/', src: 'manifest.json', dest: '<%= compile_path %>/chrome/'},
           {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/chrome/'},
-          {expand: true, cwd: 'source/firefox', src: ['install.rdf', 'harness-options.json'], dest: '<%= compile_path %>/firefox/'},
-          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data'}
+          {expand: true, cwd: 'source/firefox/', src: ['install.rdf', 'harness-options.json'], dest: '<%= compile_path %>/firefox/'},
+          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'}
         ]
       }
     },
@@ -107,10 +108,12 @@ module.exports = function(grunt) {
                 } else {
                   var new_version = value.split('.'),
                       old_version = grunt.config('old_version').split('.');
-                  return +new_version[0] > +old_version[0] ||
-                         +new_version[1] > +old_version[1] ||
-                         +new_version[2] > +old_version[2] ||
-                         +new_version[3] > +old_version[3];
+
+                  return +old_version[0] < +new_version[0] ? true :
+                         +old_version[1] < +new_version[1] ? true :
+                         +old_version[2] < +new_version[2] ? true :
+                         +old_version[3] < +new_version[3] ? true :
+                         false;
                 }
               }
             }
@@ -147,8 +150,8 @@ module.exports = function(grunt) {
     grunt.task.run([
       'jshint',
       'copy',
-      'compress:firefox',
-      'clean:firefox'
+      'compress:firefox'//,
+      //'clean:firefox'
     ]);
   });
 
