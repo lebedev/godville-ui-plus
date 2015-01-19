@@ -450,10 +450,7 @@ var ui_help_dialog = {
 			var temp_cur = ui_data.currentVersion.split('.'),
 				last_version = match[1],
 				temp_last = last_version.split('.'),
-				isNewest = +temp_cur[0] >= +temp_last[0] &&
-						   +temp_cur[1] >= +temp_last[1] &&
-						   +temp_cur[2] >= +temp_last[2] &&
-						   +temp_cur[3] >= +temp_last[3];
+				isNewest = +temp_cur[0] < +temp_last[0] ? false : +temp_cur[1] < +temp_last[1] ? false : +temp_cur[2] < +temp_last[2] ? false : +temp_cur[3] < +temp_last[3] ? false : true;
 			worker.$('#check_version')[0].innerHTML = (isNewest ? worker.GUIp_i18n.is_last_version : worker.GUIp_i18n.is_not_last_version_1 + last_version + worker.GUIp_i18n.is_not_last_version_2) + worker.GUIp_i18n.proceed_to_next_step;
 			if (!isNewest) {
 				worker.$('#ui_help_dialog ol li.update_required.' + worker.GUIp_browser).removeClass('hidden');
