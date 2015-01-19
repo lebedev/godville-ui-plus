@@ -150,8 +150,8 @@ module.exports = function(grunt) {
     grunt.task.run([
       'jshint',
       'copy',
-      'compress:firefox'//,
-      //'clean:firefox'
+      'compress:firefox',
+      'clean:firefox'
     ]);
   });
 

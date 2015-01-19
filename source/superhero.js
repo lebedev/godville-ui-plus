@@ -2414,9 +2414,7 @@ var ui_starter = {
 			var start = new Date();
 			ui_data.init();
 			ui_storage.migrate();
-			if (worker.GUIp_browser === 'Chrome') {
-				ui_utils.addCSS();
-			}
+			ui_utils.addCSS();
 			ui_utils.inform();
 			ui_words.init();
 			ui_logger.create();
