@@ -2275,8 +2275,8 @@ var ui_observers = {
 				clearInterval(ui_improver.softRefreshInt);
 				clearInterval(ui_improver.hardRefreshInt);
 				if (!ui_storage.get('Option:disablePageRefresh')) {
-					ui_improver.softRefreshInt = setInterval(ui_improver.softRefresh, (ui_data.isBattle || ui_data.isDungeon ? 5e3 : 9e4));
-					ui_improver.hardRefreshInt = setInterval(ui_improver.hardRefresh, (ui_data.isBattle || ui_data.isDungeon ? 15e3 : 27e4));
+					ui_improver.softRefreshInt = setInterval(ui_improver.softRefresh, (ui_data.isBattle || ui_data.isDungeon) ? 5e3 : 9e4);
+					ui_improver.hardRefreshInt = setInterval(ui_improver.hardRefresh, (ui_data.isBattle || ui_data.isDungeon) ? 15e3 : 27e4);
 				}
 			}
 		},
