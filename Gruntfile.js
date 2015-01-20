@@ -109,11 +109,13 @@ module.exports = function(grunt) {
                   var new_version = value.split('.'),
                       old_version = grunt.config('old_version').split('.');
 
-                  return +old_version[0] < +new_version[0] ? true :
-                         +old_version[1] < +new_version[1] ? true :
-                         +old_version[2] < +new_version[2] ? true :
-                         +old_version[3] < +new_version[3] ? true :
-                         false;
+                  return +old_version[0] < +new_version[0] ? false :
+                         +old_version[0] > +new_version[0] ? true :
+                         +old_version[1] < +new_version[1] ? false :
+                         +old_version[1] > +new_version[1] ? true :
+                         +old_version[2] < +new_version[2] ? false :
+                         +old_version[2] > +new_version[2] ? true :
+                         +old_version[3] < +new_version[3] ? false : true;
                 }
               }
             }
