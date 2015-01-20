@@ -69,6 +69,7 @@
 .img_container img {
 	max-width: 456px;
 }
-.post ul .img_container {
+.post ul .img_container,
+.post ol .img_container {
 	margin-left: -40px;
 }
