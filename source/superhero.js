@@ -461,7 +461,7 @@ var ui_help_dialog = {
 			if (!isNewest) {
 				worker.$('#ui_help_dialog ol li.update_required.' + worker.GUIp_browser).removeClass('hidden');
 			} else {
-				worker.$('#ui_help_dialog ol li.worker.console.' + worker.GUIp_browser).removeClass('hidden');
+				worker.$('#ui_help_dialog ol li.console.' + worker.GUIp_browser).removeClass('hidden');
 			}
 		} else {
 			ui_help_dialog.onXHRFail();
