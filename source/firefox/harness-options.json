@@ -9,8 +9,8 @@
  "mainPath": "godville-ui-plus/main", 
  "manifest": {
   "godville-ui-plus/main": {
-   "docsSHA256": null, 
-   "jsSHA256": "2af0bc41d1daaec50fee076e7064591cb196c6b278e6398bc67428e64a0306d5", 
+   "docsSHA256": "a1fdf60f9f0330f2ecb42ef584bb499e2e05fd14d9dd14bbf915cfb2fe49a16b",
+   "jsSHA256": "24f04ee5e4bce14cdc2b46595cb40beb4b3699eed09e130ef596ba6b51de3b33",
    "moduleName": "main", 
    "packageName": "godville-ui-plus", 
    "requirements": {
@@ -35,14 +35,14 @@
    "name": "addon-sdk"
   }, 
   "godville-ui-plus": {
-   "author": "Badluck", 
    "description": "Godville.net and godvillegame.com UI improvements", 
+   "license": "MIT",
    "main": "main", 
    "name": "godville-ui-plus", 
-   "version": "$VERSION",
    "permissions": {
     "unsafe-content-script": true
-   }
+   },
+   "version": "$VERSION"
   }
  }, 
  "name": "godville-ui-plus", 
