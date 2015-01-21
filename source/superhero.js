@@ -19,6 +19,11 @@ var ui_data = {
 			this.hasTemple = true;
 		}
 
+		// init mobile cookies
+		worker.document.cookie = 'm_f=1';
+		worker.document.cookie = 'm_pp=1';
+		worker.document.cookie = 'm_fl=1';
+
 		// init forum data
 		if (!ui_storage.get('Forum1')) {
 			if (worker.GUIp_locale === 'ru') {
