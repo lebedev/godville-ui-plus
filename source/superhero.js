@@ -2096,7 +2096,7 @@ var ui_improver = {
 		}
 	},
 
-	mouseMove: function() {
+	activity: function() {
 		if (!ui_logger.Updating) {
 			ui_logger.Updating = true;
 			setTimeout(function() {
@@ -2437,7 +2437,7 @@ var ui_starter = {
 			worker.$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
 
 			if (!ui_data.isBattle) {
-				worker.$('html').mousemove(ui_improver.mouseMove);
+				worker.onmousemove = worker.onscroll = worker.ontouchmove = ui_improver.activity;
 			}
 
 			// svg for #logger fade-out in FF
