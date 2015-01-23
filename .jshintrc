@@ -1,4 +1,4 @@
 {
-"-W100" : true,
-"moz" : true
+	"-W100": true,
+	"esnext": true
 }
