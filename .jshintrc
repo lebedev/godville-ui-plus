@@ -1,5 +1,4 @@
 {
-	"-W100": true,
-	moz: true,
-	forin: false
+"-W100" : true,
+"moz" : true
 }
