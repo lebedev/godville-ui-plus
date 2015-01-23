@@ -1,0 +1,6 @@
+{
+	enforceall: true,
+	"-W100": true,
+	moz: true,
+	forin: false
+}
