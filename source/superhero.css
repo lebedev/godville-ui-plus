@@ -627,7 +627,7 @@ body.has_temple.nightly #hk_health .p_bar:before  {
 	background: #555;
 }
 #hk_inventory_num .p_bar:before {
-	left: 36%;
+	left: 33%;
 }
 #hk_inventory_num .p_bar:after {
 	left: 50%;
