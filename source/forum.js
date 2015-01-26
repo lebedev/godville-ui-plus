@@ -4,7 +4,7 @@
 var worker = window.wrappedJSObject || window;
 
 var i, len, follow_links, isFollowed, links_containers, topic, unfollow_links,
-	isTopic, forum_topics, god_name, topics;
+	isTopic, forum_topics, god_name, topics, elem;
 
 var doc = document;
 var $id = function(id) {
@@ -155,7 +155,7 @@ if (isTopic) {
 		'<a class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '"><code>' + worker.GUIp_i18n.monospace + '</code></a>';
 	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
 	var val, ss, se, nls, nle, selection;
-	var init = function(editor) {
+	var init_editor = function(editor) {
 		val = editor.value;
 		ss = editor.selectionStart;
 		se = editor.selectionEnd;
@@ -165,17 +165,17 @@ if (isTopic) {
 		editor.focus();
 		editor.selectionStart = editor.selectionEnd = pos + (quoting ? selection.length : 0);
 	};
-	var basic_formatting = function(left, right, editor) {
+	var basic_formatting = function(left_and_right, editor) {
 		try {
-			init(editor);
+			init_editor(editor);
 			while (ss < se && val[ss].match(/[^\wА-Яа-я]/)) {
 				ss++;
 			}
 			while (ss < se && val[se - 1].match(/[^\wА-Яа-я]/)) {
 				se--;
 			}
-			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[^\wА-Яа-я]/) ? ' ' : '') + left + val.slice(ss, se) + selection + right + (val && val [se] && !val[se].match(/[^\wА-Яа-я]/) ? ' ' : '') + val.slice(se);
-			putSelectionTo(editor, se + left.length, true);
+			editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[^\wА-Яа-я]/) ? ' ' : '') + left_and_right[0] + val.slice(ss, se) + selection + left_and_right[1] + (val && val [se] && !val[se].match(/[^\wА-Яа-я]/) ? ' ' : '') + val.slice(se);
+			putSelectionTo(editor, se + left_and_right[0].length, true);
 			return false;
 		} catch(error) {
 			worker.console.error(error);
@@ -183,7 +183,7 @@ if (isTopic) {
 	};
 	var quote_formatting = function(quotation, editor) {
 		try {
-			init(editor);
+			init_editor(editor);
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
 			nle = val && (val[se] && !val[se].match(/\n/) || !val[se]) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '') +
 			      selection && !selection[selection.length - 1].match(/\n/) ? '\n\n' : (selection[selection.length - 2] && !selection[selection.length - 2].match(/\n/) ? '\n' : '');
@@ -195,7 +195,7 @@ if (isTopic) {
 	};
 	var list_formatting = function(list_marker, editor) {
 		try {
-			init(editor);
+			init_editor(editor);
 			nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '';
 			nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
 			var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
@@ -205,9 +205,9 @@ if (isTopic) {
 			worker.console.error(error);
 		}
 	};
-	var paste_br = function(editor) {
+	var paste_br = function(dummy, editor) {
 		try {
-			init(editor);
+			init_editor(editor);
 			var pos = editor.selectionDirection === 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
 			putSelectionTo(editor, pos + 4, true);
@@ -215,36 +215,29 @@ if (isTopic) {
 			worker.console.error(error);
 		}
 	};
-	var set_basic_formatting = function(temp, container) {
-		$q(temp + 'bold').onclick = basic_formatting.bind(this, '*', '*', container);
-		$q(temp + 'underline').onclick = basic_formatting.bind(this, '+', '+', container);
-		$q(temp + 'strike').onclick = basic_formatting.bind(this, '-', '-', container);
-		$q(temp + 'italic').onclick = basic_formatting.bind(this, '_', '_', container);
-		if (worker.GUIp_locale === 'ru') {
-			$q(temp + 'godname').onclick = basic_formatting.bind(this, '"', '":пс', container);
-		}
-		$q(temp + 'link').onclick = basic_formatting.bind(this, '"', '":', container);
-		$q(temp + 'sup').onclick = basic_formatting.bind(this, '^', '^', container);
-		$q(temp + 'sub').onclick = basic_formatting.bind(this, '~', '~', container);
-		$q(temp + 'monospace').onclick = basic_formatting.bind(this, '@', '@', container);
-	};
-	var set_quote_formatting = function(temp, container) {
-		$q(temp + 'bq').onclick = quote_formatting.bind(this, 'bq. ', container);
-		$q(temp + 'bc').onclick = quote_formatting.bind(this, 'bc. ', container);
-	};
-	var set_list_formatting = function(temp, container) {
-		$q(temp + 'ul').onclick = list_formatting.bind(this, '*', container);
-		$q(temp + 'ol').onclick = list_formatting.bind(this, '#', container);
-	};
-	var set_paste_br = function(temp, container) {
-		$q(temp + 'br').onclick = paste_br.bind(this, container);
-	};
 	var set_click_actions = function(id, container) {
-		var temp = '#' + id + ' .formatting.';
-		set_basic_formatting(temp, container);
-		set_quote_formatting(temp, container);
-		set_list_formatting(temp, container);
-		set_paste_br(temp, container);
+		var temp = '#' + id + ' .formatting.',
+			buttons = [
+				{ class: 'bold', func: basic_formatting, params: ['*', '*'] },
+				{ class: 'underline', func: basic_formatting, params: ['+', '+'] },
+				{ class: 'strike', func: basic_formatting, params: ['-', '-'] },
+				{ class: 'italic', func: basic_formatting, params: ['_', '_'] },
+				{ class: 'godname', func: basic_formatting, params: ['"', '":пс'] },
+				{ class: 'link', func: basic_formatting, params: ['"', '":'] },
+				{ class: 'sup', func: basic_formatting, params: ['^', '^'] },
+				{ class: 'sub', func: basic_formatting, params: ['~', '~'] },
+				{ class: 'monospace', func: basic_formatting, params: ['@', '@'] },
+				{ class: 'bq', func: quote_formatting, params: 'bq. ' },
+				{ class: 'bc', func: quote_formatting, params: 'bc. ' },
+				{ class: 'ul', func: list_formatting, params: '*' },
+				{ class: 'ol', func: list_formatting, params: '#' },
+				{ class: 'br', func: paste_br, params: null },
+			];
+		for (i = 0, len = buttons.length; i < len; i++) {
+			if ((elem = $q(temp + buttons[i].class))) {
+				elem.onclick = buttons[i].func.bind(this, buttons[i].params, container);
+			}
+		}
 	};
 	set_click_actions('post_body_editor', $id('post_body'));
 	
@@ -297,7 +290,7 @@ if (isTopic) {
 					worker.ReplyForm.init();
 				}
 			}
-			init(editor);
+			init_editor(editor);
 			var pos = editor.selectionDirection === 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
 			setTimeout(function() {
