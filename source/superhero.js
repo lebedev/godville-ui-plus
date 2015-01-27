@@ -1953,7 +1953,7 @@ var ui_improver = {
 			$temp.append(worker.$('.fr_msg_meta', $cur_msg)).append(worker.$('.fr_msg_delete', $cur_msg));
 			var text = $cur_msg.text();
 			$cur_msg.empty();
-			$cur_msg.append(ui_utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t ]+)/g, '<a href="$1" target="_blank" title="Откроется в новой вкладке">$1</a>'));
+			$cur_msg.append(ui_utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t ]+)/g, '<a href="$1" target="_blank" title="' + worker.GUIp_i18n.open_in_a_new_tab + '">$1</a>'));
 			$cur_msg.append(worker.$('.fr_msg_meta', $temp)).append(worker.$('.fr_msg_delete', $temp));
 		}
 		$msgs.addClass('improved');
