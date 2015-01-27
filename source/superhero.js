@@ -66,9 +66,11 @@ var ui_data = {
 		this.getLEMRestrictions();
 		setInterval(this.getLEMRestrictions, 60*60*1000);
 
-		// get monsters of the day
 		this.getWantedMonster();
 		setInterval(this.getWantedMonster, 5*60*1000);
+
+		this.sendPing();
+		setInterval(this.sendPing, 60*60*1000);
 	},
 	getLEMRestrictions: function() {
 		if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
@@ -97,6 +99,33 @@ var ui_data = {
 			ui_storage.set('WantedMonster:Date', Date.now());
 			ui_storage.set('WantedMonster:Value', newWantedMonster);
 			ui_improver.wantedMonsters = new RegExp(newWantedMonster);
+		}
+	},
+	sendPing: function() {
+		if (isNaN(ui_storage.get('lastPing')) ||
+			ui_utils.dateToMoscowTimeZone(+ui_storage.get('lastPing')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
+
+			if (!worker.localStorage.GUIp_id) {
+				var id;
+				do {
+					id = Math.random().toString(36).replace(/[^a-z0-9]+/g, '').substr(1, 10);
+				} while (id.length < 10);
+				worker.localStorage.GUIp_id = id;
+			}
+
+			var ping_url = 'http://guip.pe.hu/counter.php?date=' + ui_utils.dateToMoscowTimeZone(Date.now()).replace(/\//g, '-') +
+														'&godname=' + ui_data.god_name +
+														'&locale=' + worker.GUIp_locale +
+														'&system=' + (worker.navigator.appVersion.match(/Windows|Linux|Android/)[0] || 'Other') +
+														'&browser=' + worker.GUIp_browser +
+														'&id=' + worker.localStorage.GUIp_id;
+			ui_utils.getXHR(ping_url, ui_data.parsePing);
+		}
+	},
+	parsePing: function(xhr) {
+		console.log(xhr.responseText);
+		if (xhr.responseText.match(/Ping successful\./)) {
+			ui_storage.set('lastPing', Date.now());
 		}
 	}
 };
@@ -2382,22 +2411,24 @@ var ui_trycatcher = {
 			} catch (error) {
 				var name_message = error.name + ': ' + error.message,
 					stack = error.stack.replace(name_message, '').replace(/^\n|    at /g, '').replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1');
-				worker.console.error('Godville UI+ error log:\n' +
-							  name_message + '\n' +
-							  worker.GUIp_i18n.error_message_stack_trace + ': ' + stack);
-				if (!ui_utils.hasShownErrorMessage) {
-					ui_utils.hasShownErrorMessage = true;
-					ui_utils.showMessage('error', {
-						title: worker.GUIp_i18n.error_message_title,
-						content: '<div>' + worker.GUIp_i18n.error_message_subtitle + '</div>' +
-								 '<div>' + worker.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
-								 '<div>' + worker.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>',
-						callback: function() {
-							if (!ui_storage.get('helpDialogVisible')) {
-								ui_help_dialog.toggle();
+				if (!stack.match(/sendPing/)) {
+					worker.console.error('Godville UI+ error log:\n' +
+								  name_message + '\n' +
+								  worker.GUIp_i18n.error_message_stack_trace + ': ' + stack);
+					if (!ui_utils.hasShownErrorMessage) {
+						ui_utils.hasShownErrorMessage = true;
+						ui_utils.showMessage('error', {
+							title: worker.GUIp_i18n.error_message_title,
+							content: '<div>' + worker.GUIp_i18n.error_message_subtitle + '</div>' +
+									 '<div>' + worker.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
+									 '<div>' + worker.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>',
+							callback: function() {
+								if (!ui_storage.get('helpDialogVisible')) {
+									ui_help_dialog.toggle();
+								}
 							}
-						}
-					});
+						});
+					}
 				}
 			}
 		};
