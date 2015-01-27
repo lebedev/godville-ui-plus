@@ -178,17 +178,19 @@ var autopaste_pictures = function() {
 			img_onload = function(i) {
 				links[i].removeChild(links[i].getElementsByTagName('img')[0]);
 				var hint = links[i].innerHTML;
-				links[i].outerHTML = '<div class="img_container"><a id="link' + i + '" href="' + links[i].href + '" target="_blank" alt="Откроется в новой вкладке"></a><div class="hint">' + hint + '</div></div>';
+				links[i].outerHTML = '<div class="img_container"><a id="link' + i + '" href="' + links[i].href + '" target="_blank" alt="' + worker.GUIp_i18n.open_in_a_new_tab + '"></a><div class="hint">' + hint + '</div></div>';
 				imgs[i].alt = hint;
 				var new_link = document.getElementById('link' + i);
 				new_link.appendChild(imgs[i]);
 			};
 		for (i = 0, len = links.length; i < len; i++) {
-			links[i].insertAdjacentHTML('beforeend', '<img src="http://godville.net/images/spinner.gif">');
-			imgs[i] = document.createElement('img');
-			imgs[i].onerror = img_onerror.bind(null, i);
-			imgs[i].onload = img_onload.bind(null, i);
-			imgs[i].src = links[i].href;
+			if (links[i].href.match(/jpe?g|png|gif/)) {
+				links[i].insertAdjacentHTML('beforeend', '<img src="http://godville.net/images/spinner.gif">');
+				imgs[i] = document.createElement('img');
+				imgs[i].onerror = img_onerror.bind(null, i);
+				imgs[i].onload = img_onload.bind(null, i);
+				imgs[i].src = links[i].href;
+			}
 		}
 	}
 };

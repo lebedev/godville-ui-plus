@@ -478,7 +478,8 @@ worker.GUIp_i18n = {
 	monospace: 'ms',
 	broadcast: 'broadcast',
 	user_css: 'User CSS',
-	open_chat_with: 'Open chat with god/goddess '
+	open_chat_with: 'Open chat with god/goddess ',
+	open_in_a_new_tab: 'Open in a new tab'
 };
 
 }

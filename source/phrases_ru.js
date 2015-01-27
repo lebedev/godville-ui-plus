@@ -625,7 +625,8 @@ worker.GUIp_i18n = {
 	monospace: 'мш',
 	broadcast: 'трансляция',
 	user_css: 'Пользовательский CSS',
-	open_chat_with: 'Открыть чат c богом/богиней '
+	open_chat_with: 'Открыть чат c богом/богиней ',
+	open_in_a_new_tab: 'Открыть в новой вкладке'
 };
 
 }
