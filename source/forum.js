@@ -41,7 +41,8 @@ var checkHash = function() {
 	// scroll to a certain post #
 	var guip_hash = location.hash.match(/#guip_(\d+)/);
 	if (guip_hash) {
-		location.hash = $C('spacer')[+guip_hash[1]].id;
+		var post = $C('spacer')[+guip_hash[1]];
+		location.hash = post ? post.id : '';
 	}
 };
 var addSmallElements = function() {
