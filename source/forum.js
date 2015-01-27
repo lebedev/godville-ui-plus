@@ -4,7 +4,7 @@
 var worker = window.wrappedJSObject || window;
 
 var i, len, follow_links, isFollowed, links_containers, topic, unfollow_links,
-	isTopic, forum_topics, god_name, topics, elem, pw_pb_int, val, ss, se, nls, nle, selection;
+	isTopic, forum_topics, god_name, topics, elem, pw, pw_pb_int, val, ss, se, nls, nle, selection;
 
 var doc = document;
 var $id = function(id) {
@@ -114,9 +114,9 @@ var addClickToUnfollow = function() {
 };
 
 var set_pw_pb = function(el) {
-	var form = document.getElementById(el) || el;
-	old_height = parseFloat(getComputedStyle(form).height) || 0;
-	step = 0;
+	var form = document.getElementById(el) || el,
+		old_height = parseFloat(getComputedStyle(form).height) || 0,
+		step = 0;
 	clearInterval(pw_pb_int);
 	pw_pb_int = setInterval(function() {
 		if (step++ >= 100) {
@@ -131,8 +131,7 @@ var set_pw_pb = function(el) {
 };
 
 var fix_page_wrapper_padding = function() {
-	var pw_pb_int, step, old_height, pw = document.getElementById('page_wrapper');
-
+	pw = document.getElementById('page_wrapper');
 	worker.Effect.old_toggle = worker.Effect.toggle;
 	worker.Effect.toggle = function(a, b) { set_pw_pb(a); worker.Effect.old_toggle(a, b); };
 	worker.Effect.old_BlindDown = worker.Effect.BlindDown;
