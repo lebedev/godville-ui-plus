@@ -203,22 +203,17 @@ var ui_utils = {
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState < 4) {
 				return;
-			}
-			if (xhr.readyState === 4) {
-				if (xhr.status === 200) {
-					if (success_callback) {
-						success_callback(xhr);
-					}
-				} else {
-					if (fail_callback) {
-						fail_callback(xhr);
-					}
+			} else if (xhr.status === 200) {
+				if (success_callback) {
+					success_callback(xhr);
 				}
+			} else if (fail_callback) {
+				fail_callback(xhr);
 			}
 		};
 
 		xhr.open('GET', path, true);
-		xhr.send('');
+		xhr.send();
 	},
 	showMessage: function(msg_no, msg) {
 		var id = 'msg' + msg_no,
