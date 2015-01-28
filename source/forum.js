@@ -23,26 +23,18 @@ var $q = function(sel) {
 	return doc.querySelector(sel);
 };
 var storage = {
-	_get_key: function(key) {
+	_getKey: function(key) {
 		return "GUIp_" + god_name + ':' + key;
 	},
 	set: function(id, value) {
-		localStorage[this._get_key(id)] = value;
+		localStorage[this._getKey(id)] = value;
 		return value;
 	},
 	get: function(id) {
-		var value = localStorage[this._get_key(id)];
+		var value = localStorage[this._getKey(id)];
 		if (value === 'true') { return true; }
 		else if (value === 'false') { return false; }
 		else { return value; }
-	}
-};
-var checkHash = function() {
-	// scroll to a certain post #
-	var guip_hash = location.hash.match(/#guip_(\d+)/);
-	if (guip_hash) {
-		var post = $C('spacer')[+guip_hash[1]];
-		location.hash = post ? post.id : '';
 	}
 };
 var addSmallElements = function() {
@@ -65,10 +57,10 @@ var addLinks = function() {
 									 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? worker.GUIp_i18n.Unsubscribe : worker.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
 		);
 	}
-	addClickToFollow();
-	addClickToUnfollow();
+	addOnclickToFollow();
+	addOnclickToUnfollow();
 };
-var followClick = function(e) {
+var followOnclick = function(e) {
 	try {
 		e.preventDefault();
 		var topic = isTopic ? location.pathname.match(/\d+/)[0]
@@ -84,14 +76,14 @@ var followClick = function(e) {
 		worker.console.error(error);
 	}
 };
-var addClickToFollow = function() {
+var addOnclickToFollow = function() {
 	// add click events to follow links
 	follow_links = $Q('.follow');
 	for (i = 0, len = follow_links.length; i < len; i++) {
-		follow_links[i].onclick = followClick;
+		follow_links[i].onclick = followOnclick;
 	}
 };
-var unfollowClick = function(e) {
+var unfollowOnclick = function(e) {
 	try {
 		e.preventDefault();
 		var topic = isTopic ? location.pathname.match(/\d+/)[0]
@@ -105,15 +97,107 @@ var unfollowClick = function(e) {
 		worker.console.error(error);
 	}
 };
-var addClickToUnfollow = function() {
+var addOnclickToUnfollow = function() {
 	// add click events to unfollow links
 	unfollow_links = $Q('.unfollow');
 	for (i = 0, len = unfollow_links.length; i < len; i++) {
-		unfollow_links[i].onclick = unfollowClick;
+		unfollow_links[i].onclick = unfollowOnclick;
 	}
 };
 
-var set_pw_pb = function(el) {
+var checkHash = function() {
+	// scroll to a certain post #
+	var guip_hash = location.hash.match(/#guip_(\d+)/);
+	if (guip_hash) {
+		var post = $C('spacer')[+guip_hash[1]];
+		location.hash = post ? post.id : '';
+	}
+};
+var initEditor = function(editor) {
+	val = editor.value;
+	ss = editor.selectionStart;
+	se = editor.selectionEnd;
+	selection = worker.getSelection().isCollapsed ? '' : worker.getSelection().toString().trim();
+};
+var putSelectionTo = function(editor, pos, quoting) {
+	editor.focus();
+	editor.selectionStart = editor.selectionEnd = pos + (quoting ? selection.length : 0);
+};
+var basicFormatting = function(left_and_right, editor) {
+	try {
+		initEditor(editor);
+		while (ss < se && val[ss].match(/[^\wА-Яа-я]/)) {
+			ss++;
+		}
+		while (ss < se && val[se - 1].match(/[^\wА-Яа-я]/)) {
+			se--;
+		}
+		editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[^\wА-Яа-я]/) ? ' ' : '') + left_and_right[0] + val.slice(ss, se) + selection + left_and_right[1] + (val && val [se] && !val[se].match(/[^\wА-Яа-я]/) ? ' ' : '') + val.slice(se);
+		putSelectionTo(editor, se + left_and_right[0].length, true);
+		return false;
+	} catch(error) {
+		worker.console.error(error);
+	}
+};
+var quoteFormatting = function(quotation, editor) {
+	try {
+		initEditor(editor);
+		nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
+		nle = val && (val[se] && !val[se].match(/\n/) || !val[se]) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '') +
+		      selection && !selection[selection.length - 1].match(/\n/) ? '\n\n' : (selection[selection.length - 2] && !selection[selection.length - 2].match(/\n/) ? '\n' : '');
+		editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + selection + nle + val.slice(se);
+		putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0), true);
+	} catch(error) {
+		worker.console.error(error);
+	}
+};
+var listFormatting = function(list_marker, editor) {
+	try {
+		initEditor(editor);
+		nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '';
+		nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
+		var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
+		editor.value = val.slice(0, ss) + nls + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + nle + val.slice(se);
+		putSelectionTo(editor, se + nls.length + (list_marker.length + 1)*count, true);
+	} catch(error) {
+		worker.console.error(error);
+	}
+};
+var pasteBr = function(dummy, editor) {
+	try {
+		initEditor(editor);
+		var pos = editor.selectionDirection === 'backward' ? ss : se;
+		editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
+		putSelectionTo(editor, pos + 4, true);
+	} catch(error) {
+		worker.console.error(error);
+	}
+};
+var setClickActions = function(id, container) {
+	var temp = '#' + id + ' .formatting.',
+		buttons = [
+			{ class: 'bold', func: basicFormatting, params: ['*', '*'] },
+			{ class: 'underline', func: basicFormatting, params: ['+', '+'] },
+			{ class: 'strike', func: basicFormatting, params: ['-', '-'] },
+			{ class: 'italic', func: basicFormatting, params: ['_', '_'] },
+			{ class: 'godname', func: basicFormatting, params: ['"', '":пс'] },
+			{ class: 'link', func: basicFormatting, params: ['"', '":'] },
+			{ class: 'sup', func: basicFormatting, params: ['^', '^'] },
+			{ class: 'sub', func: basicFormatting, params: ['~', '~'] },
+			{ class: 'monospace', func: basicFormatting, params: ['@', '@'] },
+			{ class: 'bq', func: quoteFormatting, params: 'bq. ' },
+			{ class: 'bc', func: quoteFormatting, params: 'bc. ' },
+			{ class: 'ul', func: listFormatting, params: '*' },
+			{ class: 'ol', func: listFormatting, params: '#' },
+			{ class: 'br', func: pasteBr, params: null },
+		];
+	for (i = 0, len = buttons.length; i < len; i++) {
+		if ((elem = $q(temp + buttons[i].class))) {
+			elem.onclick = buttons[i].func.bind(this, buttons[i].params, container);
+		}
+	}
+};
+var setPageWrapperPaddingBottom = function(el) {
 	var form = document.getElementById(el) || el,
 		old_height = parseFloat(getComputedStyle(form).height) || 0,
 		step = 0;
@@ -129,20 +213,18 @@ var set_pw_pb = function(el) {
 		}
 	}, 10);
 };
-
-var fix_page_wrapper_padding = function() {
+var fixPageWrapperPadding = function() {
 	pw = document.getElementById('page_wrapper');
 	worker.Effect.old_toggle = worker.Effect.toggle;
-	worker.Effect.toggle = function(a, b) { set_pw_pb(a); worker.Effect.old_toggle(a, b); };
+	worker.Effect.toggle = function(a, b) { setPageWrapperPaddingBottom(a); worker.Effect.old_toggle(a, b); };
 	worker.Effect.old_BlindDown = worker.Effect.BlindDown;
-	worker.Effect.BlindDown = function(a, b) { set_pw_pb(a); worker.Effect.old_BlindDown(a, b); };
+	worker.Effect.BlindDown = function(a, b) { setPageWrapperPaddingBottom(a); worker.Effect.old_BlindDown(a, b); };
 	worker.EditForm.old_hide = worker.EditForm.hide;
 	worker.EditForm.hide = function(dummy) { pw.style.paddingBottom = '0px'; worker.EditForm.old_hide(); };
 	worker.EditForm.old_setReplyId = worker.EditForm.setReplyId;
 	worker.EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } worker.EditForm.old_setReplyId(a); };
 };
-
-var fix_godname_paste = function() {
+var fixGodnamePaste = function() {
 	worker.ReplyForm.add_name = function(name) {
 		try {
 			var editor;
@@ -154,7 +236,7 @@ var fix_godname_paste = function() {
 					worker.ReplyForm.init();
 				}
 			}
-			init_editor(editor);
+			initEditor(editor);
 			var pos = editor.selectionDirection === 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
 			setTimeout(function() {
@@ -165,16 +247,15 @@ var fix_godname_paste = function() {
 		}
 	};
 };
-
-var autopaste_pictures = function() {
+var picturesAutoreplace = function() {
 	if (!storage.get('Option:disableLinksAutoreplace')) {
 		var links = document.querySelectorAll('.post .body a'),
 			imgs = [],
-			img_onerror = function(i) {
+			onerror = function(i) {
 				links[i].removeChild(links[i].getElementsByTagName('img')[0]);
 				imgs[i] = undefined;
 			},
-			img_onload = function(i) {
+			onload = function(i) {
 				links[i].removeChild(links[i].getElementsByTagName('img')[0]);
 				var hint = links[i].innerHTML;
 				links[i].outerHTML = '<div class="img_container"><a id="link' + i + '" href="' + links[i].href + '" target="_blank" alt="' + worker.GUIp_i18n.open_in_a_new_tab + '"></a><div class="hint">' + hint + '</div></div>';
@@ -186,100 +267,52 @@ var autopaste_pictures = function() {
 			if (links[i].href.match(/jpe?g|png|gif/)) {
 				links[i].insertAdjacentHTML('beforeend', '<img src="http://godville.net/images/spinner.gif">');
 				imgs[i] = document.createElement('img');
-				imgs[i].onerror = img_onerror.bind(null, i);
-				imgs[i].onload = img_onload.bind(null, i);
+				imgs[i].onerror = onerror.bind(null, i);
+				imgs[i].onload = onload.bind(null, i);
 				imgs[i].src = links[i].href;
 			}
 		}
 	}
 };
+var improveTopic = function() {
+	checkHash();
+	// formatting buttons
+	var $reply_form = $id('post_body_editor');
+	worker.GUIp_addCSSFromURL(worker.GUIp_getResource('forum.css'), 'forum_css');
+	var formatting_buttons =
+		'<a class="formatting button bold" title="' + worker.GUIp_i18n.bold_hint + '">' + worker.GUIp_i18n.bold + '</a>' +
+		'<a class="formatting button underline" title="' + worker.GUIp_i18n.underline_hint + '">' + worker.GUIp_i18n.underline + '</a>' +
+		'<a class="formatting button strike" title="' + worker.GUIp_i18n.strike_hint + '">' + worker.GUIp_i18n.strike + '</a>' +
+		'<a class="formatting button italic" title="' + worker.GUIp_i18n.italic_hint + '">' + worker.GUIp_i18n.italic + '</a>' +
+		'<blockquote class="formatting bq" title="' + worker.GUIp_i18n.quote_hint + '">bq.</blockquote>' +
+		'<pre class="formatting bc" title="' + worker.GUIp_i18n.code_hint + '"><code>bc.</code></pre>' +
+		(worker.GUIp_locale === 'ru' ? '<a class="formatting button godname" title="Вставить ссылку на бога"></a>' : '') +
+		'<a class="formatting button link" title="' + worker.GUIp_i18n.link_hint + '">a</a>' +
+		'<a class="formatting button ul" title="' + worker.GUIp_i18n.unordered_list_hint + '">•</a>' +
+		'<a class="formatting button ol" title="' + worker.GUIp_i18n.ordered_list_hint + '">1.</a>' +
+		'<a class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '">\\n</a>' +
+		'<a class="formatting button sup" title="' + worker.GUIp_i18n.sup_hint + '">X<sup>2</sup></a>' +
+		'<a class="formatting button sub" title="' + worker.GUIp_i18n.sub_hint + '">X<sub>2</sub></a>' +
+		'<a class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '"><code>' + worker.GUIp_i18n.monospace + '</code></a>';
+	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
+	setClickActions('post_body_editor', $id('post_body'));
 
-var init_editor = function(editor) {
-	val = editor.value;
-	ss = editor.selectionStart;
-	se = editor.selectionEnd;
-	selection = worker.getSelection().isCollapsed ? '' : worker.getSelection().toString().trim();
-};
-var putSelectionTo = function(editor, pos, quoting) {
-	editor.focus();
-	editor.selectionStart = editor.selectionEnd = pos + (quoting ? selection.length : 0);
-};
-var basic_formatting = function(left_and_right, editor) {
-	try {
-		init_editor(editor);
-		while (ss < se && val[ss].match(/[^\wА-Яа-я]/)) {
-			ss++;
-		}
-		while (ss < se && val[se - 1].match(/[^\wА-Яа-я]/)) {
-			se--;
-		}
-		editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[^\wА-Яа-я]/) ? ' ' : '') + left_and_right[0] + val.slice(ss, se) + selection + left_and_right[1] + (val && val [se] && !val[se].match(/[^\wА-Яа-я]/) ? ' ' : '') + val.slice(se);
-		putSelectionTo(editor, se + left_and_right[0].length, true);
-		return false;
-	} catch(error) {
-		worker.console.error(error);
-	}
-};
-var quote_formatting = function(quotation, editor) {
-	try {
-		init_editor(editor);
-		nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
-		nle = val && (val[se] && !val[se].match(/\n/) || !val[se]) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '') +
-		      selection && !selection[selection.length - 1].match(/\n/) ? '\n\n' : (selection[selection.length - 2] && !selection[selection.length - 2].match(/\n/) ? '\n' : '');
-		editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + selection + nle + val.slice(se);
-		putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0), true);
-	} catch(error) {
-		worker.console.error(error);
-	}
-};
-var list_formatting = function(list_marker, editor) {
-	try {
-		init_editor(editor);
-		nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n' : '';
-		nle = val && val[se] && !val[se].match(/\n/) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '');
-		var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
-		editor.value = val.slice(0, ss) + nls + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + nle + val.slice(se);
-		putSelectionTo(editor, se + nls.length + (list_marker.length + 1)*count, true);
-	} catch(error) {
-		worker.console.error(error);
-	}
-};
-var paste_br = function(dummy, editor) {
-	try {
-		init_editor(editor);
-		var pos = editor.selectionDirection === 'backward' ? ss : se;
-		editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
-		putSelectionTo(editor, pos + 4, true);
-	} catch(error) {
-		worker.console.error(error);
-	}
-};
-var set_click_actions = function(id, container) {
-	var temp = '#' + id + ' .formatting.',
-		buttons = [
-			{ class: 'bold', func: basic_formatting, params: ['*', '*'] },
-			{ class: 'underline', func: basic_formatting, params: ['+', '+'] },
-			{ class: 'strike', func: basic_formatting, params: ['-', '-'] },
-			{ class: 'italic', func: basic_formatting, params: ['_', '_'] },
-			{ class: 'godname', func: basic_formatting, params: ['"', '":пс'] },
-			{ class: 'link', func: basic_formatting, params: ['"', '":'] },
-			{ class: 'sup', func: basic_formatting, params: ['^', '^'] },
-			{ class: 'sub', func: basic_formatting, params: ['~', '~'] },
-			{ class: 'monospace', func: basic_formatting, params: ['@', '@'] },
-			{ class: 'bq', func: quote_formatting, params: 'bq. ' },
-			{ class: 'bc', func: quote_formatting, params: 'bc. ' },
-			{ class: 'ul', func: list_formatting, params: '*' },
-			{ class: 'ol', func: list_formatting, params: '#' },
-			{ class: 'br', func: paste_br, params: null },
-		];
-	for (i = 0, len = buttons.length; i < len; i++) {
-		if ((elem = $q(temp + buttons[i].class))) {
-			elem.onclick = buttons[i].func.bind(this, buttons[i].params, container);
-		}
-	}
+	var editFormObserver = new MutationObserver(function(mutations) {
+		mutations.forEach(function() {
+			if ($id('edit_body_editor') && !$q('#edit_body_editor .formatting.button.bold')) {
+				$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
+				setClickActions('edit_body_editor', $id('edit_body'));
+			}
+		});
+	});
+	editFormObserver.observe($id('content'), { childList: true, subtree: true });
+
+	fixPageWrapperPadding();
+	fixGodnamePaste();
+	picturesAutoreplace();
 };
 
-function GUIp_forum() {
+var GUIp_forum = function() {
 try {
 
 if (!worker.GUIp_i18n || !worker.GUIp_browser || !worker.GUIp_addCSSFromURL) { return; }
@@ -301,46 +334,12 @@ if (isTopic) {
 addLinks();
 
 if (isTopic) {
-	checkHash();
-	// formatting buttons
-	var $reply_form = $id('post_body_editor');
-	worker.GUIp_addCSSFromURL(worker.GUIp_getResource('forum.css'), 'forum_css');
-	var formatting_buttons =
-		'<a class="formatting button bold" title="' + worker.GUIp_i18n.bold_hint + '">' + worker.GUIp_i18n.bold + '</a>' +
-		'<a class="formatting button underline" title="' + worker.GUIp_i18n.underline_hint + '">' + worker.GUIp_i18n.underline + '</a>' +
-		'<a class="formatting button strike" title="' + worker.GUIp_i18n.strike_hint + '">' + worker.GUIp_i18n.strike + '</a>' +
-		'<a class="formatting button italic" title="' + worker.GUIp_i18n.italic_hint + '">' + worker.GUIp_i18n.italic + '</a>' +
-		'<blockquote class="formatting bq" title="' + worker.GUIp_i18n.quote_hint + '">bq.</blockquote>' +
-		'<pre class="formatting bc" title="' + worker.GUIp_i18n.code_hint + '"><code>bc.</code></pre>' +
-		(worker.GUIp_locale === 'ru' ? '<a class="formatting button godname" title="Вставить ссылку на бога"></a>' : '') +
-		'<a class="formatting button link" title="' + worker.GUIp_i18n.link_hint + '">a</a>' +
-		'<a class="formatting button ul" title="' + worker.GUIp_i18n.unordered_list_hint + '">•</a>' +
-		'<a class="formatting button ol" title="' + worker.GUIp_i18n.ordered_list_hint + '">1.</a>' +
-		'<a class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '">\\n</a>' +
-		'<a class="formatting button sup" title="' + worker.GUIp_i18n.sup_hint + '">X<sup>2</sup></a>' +
-		'<a class="formatting button sub" title="' + worker.GUIp_i18n.sub_hint + '">X<sub>2</sub></a>' +
-		'<a class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '"><code>' + worker.GUIp_i18n.monospace + '</code></a>';
-	$reply_form.insertAdjacentHTML('afterbegin', formatting_buttons);
-	set_click_actions('post_body_editor', $id('post_body'));
-
-	var editFormObserver = new MutationObserver(function(mutations) {
-		mutations.forEach(function() {
-			if ($id('edit_body_editor') && !$q('#edit_body_editor .formatting.button.bold')) {
-				$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
-				set_click_actions('edit_body_editor', $id('edit_body'));
-			}
-		});
-	});
-	editFormObserver.observe($id('content'), { childList: true, subtree: true });
-
-	fix_page_wrapper_padding();
-	fix_godname_paste();
-	autopaste_pictures();
+	improveTopic();
 }
 
 } catch(e) {
 	worker.console.error(e);
 }
-}
+};
 var starter = setInterval(GUIp_forum, 100);
 })();
