@@ -130,7 +130,7 @@ function startup(data, reasonCode) {
 
     // We need to map tests folder when we run sdk tests whose package name
     // is stripped
-    if (name == 'addon-sdk')
+    if (name === 'addon-sdk')
       paths['tests/'] = prefixURI + name + '/tests/';
 
     let useBundledSDK = options['force-use-bundled-sdk'];
@@ -304,7 +304,7 @@ function shutdown(data, reasonCode) {
     unload = null;
 
     // Don't waste time cleaning up if the application is shutting down
-    if (reason != "shutdown") {
+    if (reason !== "shutdown") {
       // Avoid leaking all modules when something goes wrong with one particular
       // module. Do not clean it up immediatly in order to allow executing some
       // actions on addon disabling.
