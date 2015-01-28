@@ -422,12 +422,12 @@ var ui_timeout = {
 //		HELP DIALOG
 // ------------------------
 var ui_help_dialog = {
-// toggles ui dialog	
+// toggles ui dialog
 	toggle: function(visible) {
 		ui_storage.set('helpDialogVisible', !ui_storage.get('helpDialogVisible'));
 		worker.$('#ui_help_dialog').slideToggle("slow");
 	},
-// creates ui dialog	
+// creates ui dialog
 	create: function() {
 		var menu_bar = document.querySelector('#menu_bar ul');
 		menu_bar.insertAdjacentHTML('beforeend', '<li> | </li><a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
@@ -679,7 +679,7 @@ var ui_words = {
 	usableItemType: function(desc) {
 		return this.base.usable_items.descriptions.indexOf(desc);
 	},
-	
+
 	isHealItem: function(item) {
 		return item.style.fontStyle === "italic";
 	},
@@ -687,7 +687,7 @@ var ui_words = {
 	isUsableItem: function(item) {
 		return item.textContent.match(/\(@\)/);
 	},
-	
+
 	isBoldItem: function(item) {
 		return item.style.fontWeight === 700 || item.style.fontWeight === "bold";
 	},
@@ -726,16 +726,16 @@ var ui_stats = {
 	get: function(key) {
 		return ui_storage.get('Stats:' + key);
 	},
-	
+
 	set: function(key, value) {
 		return ui_storage.set('Stats:' + key, value);
 	},
-	
-	setFromProgressBar: function(id, $elem) {	
+
+	setFromProgressBar: function(id, $elem) {
 		var value = $elem.attr('title').replace(/[^0-9]/g, '');
 		return this.set(id, value);
 	},
-	
+
 	setFromLabelCounter: function(id, $container, label, parser) {
 		parser = parser || parseInt;
 		var $label = ui_utils.findLabel($container, label);
@@ -771,7 +771,7 @@ var ui_logger = {
 				this.bar.append('<li class="separator">|</li>');
 			}
 		}
-		// append string	
+		// append string
 		this.bar.append('<li class="' + klass + '" title="' + descr + '">' + str + '</li>');
 		this.bar.scrollLeft(10000); //Dirty fix
 		while (worker.$('#logger li').position().left + worker.$('#logger li').width() < 0 || worker.$('#logger li')[0].className === "separator") {
@@ -905,11 +905,11 @@ var ui_informer = {
 		if (!fl || fl === "") { fl = '{}'; }
 		this.flags = JSON.parse(fl);
 	},
-	
+
 	save: function() {
 		ui_storage.set('informer_flags', JSON.stringify(this.flags));
 	},
-	
+
 	create_label: function(flag) {
 		var id = flag.replace(/ /g, '_');
 		this.container.insertAdjacentHTML('beforeend', '<div id="' + id + '">' + flag + '</div>');
@@ -918,14 +918,14 @@ var ui_informer = {
 			return false;
 		};
 	},
-	
+
 	delete_label: function(flag) {
 		var label = document.getElementById(flag.replace(/ /g, '_'));
 		if (label) {
 			this.container.removeChild(label);
 		}
 	},
-	
+
 	tick: function() {
 		// пройти по всем флагам и выбрать те, которые надо показывать
 		var to_show = [];
@@ -981,7 +981,7 @@ var ui_informer = {
 		document.head.removeChild(document.querySelector('link[rel="shortcut icon"]'));
 		document.head.insertAdjacentHTML('beforeend', '<link rel="shortcut icon" href="images/favicon.ico" />');
 	},
-	
+
 	update_title: function(arr) {
 		this.odd_tick = ! this.odd_tick;
 		var sep, favicon;
@@ -994,7 +994,7 @@ var ui_informer = {
 		}
 		document.title = sep + ' ' + arr.join('! ') + ' ' + sep;
 		worker.$('link[rel="shortcut icon"]').remove();
-		worker.$('head').append('<link rel="shortcut icon" href=' + favicon + ' />');		
+		worker.$('head').append('<link rel="shortcut icon" href=' + favicon + ' />');
 	}
 };
 
@@ -1176,7 +1176,7 @@ var ui_improver = {
 		this.isFirstTime = false;
 		this.improveInProcess = false;
 	},
-	
+
 	improveLoot: function() {
 		var i, j, len, items = document.querySelectorAll('#inventory li'),
 			flags = new Array(ui_words.base.usable_items.types.length),
@@ -1344,7 +1344,7 @@ var ui_improver = {
 				charge_button[0].style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
 			}
 		}
-		
+
 		// Save stats
 		ui_stats.setFromLabelCounter('Godpower', $box, worker.GUIp_i18n.godpower_label);
 		ui_informer.update('full godpower', worker.$('#cntrl .p_val').width() === worker.$('#cntrl .p_bar').width());
@@ -1695,7 +1695,7 @@ var ui_improver = {
 		worker.$('#equip_badge').text((seq / 7).toFixed(1));
 	},
 // ---------- Group HP --------------
-	GroupHP: function(flag) {		
+	GroupHP: function(flag) {
 		var seq = 0;
 		var $box = flag ? worker.$('#alls .opp_h') : worker.$('#opps .opp_h');
 		var GroupCount = $box.length;
@@ -1708,7 +1708,7 @@ var ui_improver = {
 		}
 		return seq; 
 	},
-// ---------- Pantheons --------------	
+// ---------- Pantheons --------------
 	improvePantheons: function() {
 		if (ui_storage.get('Option:relocateDuelButtons') !== undefined && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
 			if (!worker.$('#pantheons.arena_link_relocated').length) {
@@ -1747,7 +1747,7 @@ var ui_improver = {
 			worker.$('.arena_link_wrap').removeClass('p_group_sep');
 		}
 	},
-// ---------- Diary --------------		
+// ---------- Diary --------------
 	improveDiary: function() {
 		if (ui_data.isBattle) { return; }
 		var i, len;
@@ -1881,7 +1881,7 @@ var ui_improver = {
 		if (this.old_chronicles && this.old_chronicles.length) {
 			for (i = this.old_chronicles.length - 1; i >= 0; i--) {
 				if (this.old_chronicles[i].classList) {
-					for (j = 0, len2 = this.old_chronicles[i].classList.length; j < len2; j++) {	
+					for (j = 0, len2 = this.old_chronicles[i].classList.length; j < len2; j++) {
 						document.querySelectorAll('#map .dml')[y].children[x].classList.add(this.old_chronicles[i].classList[j]);
 					}
 				}
@@ -1959,7 +1959,7 @@ var ui_improver = {
 			}
 		}
 	},
-	
+
 	improveChat: function() {
 		var i, len;
 
@@ -2463,7 +2463,7 @@ var ui_starter = {
 			ui_laying_timer.init();
 			ui_observers.init();
 			ui_improver.initSoundsOverride();
-			
+
 			// Event and listeners
 			worker.$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
 
@@ -2522,5 +2522,4 @@ for (var observer in ui_observers) {
 	ui_trycatcher.process(ui_observers[observer]);
 }
 var starterInt = setInterval(ui_starter.start, 200);
-
 })();

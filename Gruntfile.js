@@ -12,6 +12,7 @@ module.exports = function(grunt) {
       },
       firefox: {
         files: [
+          {expand: true, cwd: '<%= compile_path %>/chrome/', src: 'forum.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'},
           {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
           {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/', filter: 'isFile'},
           {expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile'},
@@ -27,9 +28,21 @@ module.exports = function(grunt) {
         files: [
           {expand: true, cwd: 'source/chrome/', src: 'manifest.json', dest: '<%= compile_path %>/chrome/'},
           {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/chrome/'},
+
           {expand: true, cwd: 'source/firefox/', src: ['install.rdf', 'harness-options.json'], dest: '<%= compile_path %>/firefox/'},
           {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'}
         ]
+      }
+    },
+    concat: {
+      forum_chrome: {
+        options: {
+          banner: "(function() {\n" +
+                  "'use strict';\n\n",
+          footer: "\n\n})();"
+        },
+        src: ['source/forum/forum_init.js', 'source/forum/forum_improve_topic.js', 'source/forum/forum_main.js'],
+        dest: '<%= compile_path %>/chrome/forum.js'
       }
     },
     clean: {
@@ -53,7 +66,7 @@ module.exports = function(grunt) {
         files: [
           {expand: true, cwd: '<%= compile_path %>/firefox', src: '**'}
         ]
-      }      
+      }
     },
     exec: {
       token_request: {
@@ -136,6 +149,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -151,6 +165,7 @@ module.exports = function(grunt) {
     grunt.config.set('new_version', new_version.join('.'));
     grunt.task.run([
       'jshint',
+      'concat',
       'copy',
       'compress:firefox',
       'clean:firefox'
@@ -166,6 +181,7 @@ module.exports = function(grunt) {
         'jshint',
         'exec:sign',
         'prompt',
+        'concat',
         'copy',
         'process_chrome',
         'process_firefox'

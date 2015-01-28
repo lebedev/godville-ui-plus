@@ -25,7 +25,8 @@ body {
 .panth_line,
 #no_skills,
 #send_feedback_form .line,
-#trader .line {
+#trader .line,
+#invites .line {
 	text-align: center;
 }
 .l_val {

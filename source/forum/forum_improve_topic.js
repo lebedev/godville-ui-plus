@@ -1,110 +1,4 @@
-(function() {
-'use strict';
-
-var worker = window.wrappedJSObject || window;
-
-var i, len, follow_links, isFollowed, links_containers, topic, unfollow_links,
-	isTopic, forum_topics, god_name, topics, elem, pw, pw_pb_int, val, ss, se, nls, nle, selection;
-
-var doc = document;
-var $id = function(id) {
-	return doc.getElementById(id);
-};
-var $C = function(classname) {
-	return doc.getElementsByClassName(classname);
-};
-var $c = function(classname) {
-	return doc.getElementsByClassName(classname)[0];
-};
-var $Q = function(sel) {
-	return doc.querySelectorAll(sel);
-};
-var $q = function(sel) {
-	return doc.querySelector(sel);
-};
-var storage = {
-	_getKey: function(key) {
-		return "GUIp_" + god_name + ':' + key;
-	},
-	set: function(id, value) {
-		localStorage[this._getKey(id)] = value;
-		return value;
-	},
-	get: function(id) {
-		var value = localStorage[this._getKey(id)];
-		if (value === 'true') { return true; }
-		else if (value === 'false') { return false; }
-		else { return value; }
-	}
-};
-var addSmallElements = function() {
-	// add missing <small> elements
-	var temp = $Q('.c2');
-	for (i = 0, len = temp.length; i < len; i++) {
-		if (!temp[i].querySelector('small')) {
-			temp[i].insertAdjacentHTML('beforeend', '<small />');
-		}
-	}
-};
-var addLinks = function() {
-	// add links
-	for (i = 0, len = links_containers.length; i < len; i++) {
-		topic = isTopic ? location.pathname.match(/\d+/)[0]
-						: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
-		isFollowed = topics[topic] !== undefined;
-		links_containers[i].insertAdjacentHTML('beforeend',
-			(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? worker.GUIp_i18n.Subscribe : worker.GUIp_i18n.subscribe) + '</a>' +
-									 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? worker.GUIp_i18n.Unsubscribe : worker.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
-		);
-	}
-	addOnclickToFollow();
-	addOnclickToUnfollow();
-};
-var followOnclick = function(e) {
-	try {
-		e.preventDefault();
-		var topic = isTopic ? location.pathname.match(/\d+/)[0]
-							: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-			posts = isTopic ? +$c('subtitle').textContent.match(/\d+/)[0]
-							: +this.parentElement.parentElement.nextElementSibling.textContent,
-			topics = JSON.parse(storage.get(forum_topics));
-		topics[topic] = posts;
-		storage.set(forum_topics, JSON.stringify(topics));
-		this.style.display = 'none';
-		this.parentElement.querySelector('.unfollow').style.display = 'inline';
-	} catch(error) {
-		worker.console.error(error);
-	}
-};
-var addOnclickToFollow = function() {
-	// add click events to follow links
-	follow_links = $Q('.follow');
-	for (i = 0, len = follow_links.length; i < len; i++) {
-		follow_links[i].onclick = followOnclick;
-	}
-};
-var unfollowOnclick = function(e) {
-	try {
-		e.preventDefault();
-		var topic = isTopic ? location.pathname.match(/\d+/)[0]
-							: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-			topics = JSON.parse(storage.get(forum_topics));
-		delete topics[topic];
-		storage.set(forum_topics, JSON.stringify(topics));
-		this.style.display = 'none';
-		this.parentElement.querySelector('.follow').style.display = 'inline';
-	} catch(error) {
-		worker.console.error(error);
-	}
-};
-var addOnclickToUnfollow = function() {
-	// add click events to unfollow links
-	unfollow_links = $Q('.unfollow');
-	for (i = 0, len = unfollow_links.length; i < len; i++) {
-		unfollow_links[i].onclick = unfollowOnclick;
-	}
-};
-
+// topic improve functions
 var checkHash = function() {
 	// scroll to a certain post #
 	var guip_hash = location.hash.match(/#guip_(\d+)/);
@@ -276,7 +170,7 @@ var picturesAutoreplace = function() {
 };
 var improveTopic = function() {
 	checkHash();
-	// formatting buttons
+
 	var $reply_form = $id('post_body_editor');
 	worker.GUIp_addCSSFromURL(worker.GUIp_getResource('forum.css'), 'forum_css');
 	var formatting_buttons =
@@ -311,35 +205,3 @@ var improveTopic = function() {
 	fixGodnamePaste();
 	picturesAutoreplace();
 };
-
-var GUIp_forum = function() {
-try {
-
-if (!worker.GUIp_i18n || !worker.GUIp_browser || !worker.GUIp_addCSSFromURL) { return; }
-clearInterval(starter);
-
-isTopic = location.pathname.match(/topic/) !== null;
-forum_topics = 'Forum' + (isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
-								  : location.pathname.match(/forums\/show\/(\d+)/)[1]);
-god_name = localStorage.GUIp_CurrentUser;
-topics = JSON.parse(storage.get(forum_topics));
-
-if (isTopic) {
-	links_containers = $Q('#topic_mod');
-} else {
-	addSmallElements();
-	links_containers = $Q('.c2 small');
-}
-
-addLinks();
-
-if (isTopic) {
-	improveTopic();
-}
-
-} catch(e) {
-	worker.console.error(e);
-}
-};
-var starter = setInterval(GUIp_forum, 100);
-})();
