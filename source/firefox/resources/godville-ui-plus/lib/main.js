@@ -19,7 +19,7 @@ pageMod.PageMod({
 });
 
 pageMod.PageMod({
-	include: /https?:\/\/godville.net\/duels\/log\/.*/,
+	include: /https?:\/\/godville.net\/(?:duels\/log|hero\/duel_perm_link)\/.*/,
 	contentScriptFile: ['./log.js'],
 	contentScriptWhen: 'end'
 });
