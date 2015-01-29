@@ -1,22 +1,26 @@
 // ui_starter
+ui_starter._init = function() {
+	ui_data.init();
+	ui_storage.migrate();
+	ui_utils.addCSS();
+	ui_utils.inform();
+	ui_words.init();
+	ui_logger.create();
+	ui_timeout.create();
+	ui_help_dialog.create();
+	ui_informer.init();
+	ui_forum.init();
+	ui_improver.improve();
+	ui_laying_timer.init();
+	ui_observers.init();
+	ui_improver.initSoundsOverride();
+};
 ui_starter.start = function() {
 	if (worker.$ && (worker.$('#m_info').length || worker.$('#stats').length) && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && worker.so.state) {
 		clearInterval(starterInt);
 		var start = new Date();
-		ui_data.init();
-		ui_storage.migrate();
-		ui_utils.addCSS();
-		ui_utils.inform();
-		ui_words.init();
-		ui_logger.create();
-		ui_timeout.create();
-		ui_help_dialog.create();
-		ui_informer.init();
-		ui_forum.init();
-		ui_improver.improve();
-		ui_laying_timer.init();
-		ui_observers.init();
-		ui_improver.initSoundsOverride();
+
+		this._init();
 
 		// Event and listeners
 		worker.$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
