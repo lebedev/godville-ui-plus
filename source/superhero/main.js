@@ -7,4 +7,4 @@ for (var i = 0, len = objects.length; i < len; i++) {
 for (var observer in ui_observers) {
 	ui_trycatcher.process(ui_observers[observer]);
 }
-var starterInt = setInterval(ui_starter.start.bind(ui_starter), 200);
+var starterInt = worker.setInterval(ui_starter.start.bind(ui_starter), 200);

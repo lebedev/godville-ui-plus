@@ -59,7 +59,7 @@ function addMenu() {
 
 function loadOptions() {
 	if (!(localStorage.GUIp_CurrentUser || $j('#profile_main').length)) {
-		setTimeout(function() {loadOptions();}, 100);
+		worker.setTimeout(function() {loadOptions();}, 100);
 		return;
 	}
 	ImproveInProcess = true;
@@ -239,13 +239,13 @@ function save_options() {
 			} else {
 				$j('#cb_status').text(worker.GUIp_i18n.bg_status_error);
 				$j('#cb_status').css('color', 'red');
-				setTimeout(function() {
+				worker.setTimeout(function() {
 					$j('#cloud_background').click();
 				}, 150);
 				storage.set('Option:useBackground', 'cloud');
 			}
 			$j('#cb_status').fadeIn();
-			setTimeout(function() {
+			worker.setTimeout(function() {
 				$j('#cb_status').fadeOut();
 			}, 1000);
 		}
@@ -462,11 +462,11 @@ function set_theme_and_background() {
 var def, $j, curr_sect, god_name,
 	ImproveInProcess = false;
 
-var starterInt = setInterval(function() {
+var starterInt = worker.setInterval(function() {
 	if (worker.jQuery && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL) {
 		$j = worker.jQuery.noConflict();
 		def = worker.GUIp_words();
-		clearInterval(starterInt);
+		worker.clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
 		if (god_name) {
 			localStorage.GUIp_CurrentUser = god_name;
@@ -483,7 +483,7 @@ var starterInt = setInterval(function() {
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
 			if (!$j('#profile_main p:first').text().match(worker.GUIp_i18n.ui_options.replace('+', '\\+'))) {
-				setTimeout(addMenu, 0);
+				worker.setTimeout(addMenu, 0);
 			}
 			improve_blocks();
 		});

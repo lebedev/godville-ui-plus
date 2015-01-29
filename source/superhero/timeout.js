@@ -5,7 +5,7 @@ ui_timeout._finishtDate = 0;
 ui_timeout._tickInt = 0;
 ui_timeout._tick = function() {
 	if (Date.now() > this._finishDate) {
-		clearInterval(this._tickInt);
+		worker.clearInterval(this._tickInt);
 		if (this.bar.style.transitionDuration) {
 			this.bar.style.transitionDuration = '';
 		}
@@ -21,12 +21,12 @@ ui_timeout.create = function() {
 };
 // starts timeout bar
 ui_timeout.start = function() {
-	clearInterval(this._tickInt);
+	worker.clearInterval(this._tickInt);
 	this.bar.style.transitionDuration = '';
 	this.bar.classList.remove('running');
-	setTimeout(this._delayedStart, 10);
+	worker.setTimeout(this._delayedStart, 10);
 	this._finishtDate = Date.now() + this.timeout*1000;
-	this._tickInt = setInterval(this._tick.bind(this), 100);
+	this._tickInt = worker.setInterval(this._tick.bind(this), 100);
 	ui_utils.setVoiceSubmitState(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice'), true);
 };
 ui_timeout._delayedStart = function() {

@@ -9,7 +9,7 @@ ui_laying_timer.init = function() {
 			}
 		}
 		this.tick();
-		setInterval(this.tick.bind(this), 60000);
+		worker.setInterval(this.tick.bind(this), 60000);
 	}
 };
 ui_laying_timer.tick = function() {

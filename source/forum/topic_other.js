@@ -11,10 +11,10 @@ var setPageWrapperPaddingBottom = function(el) {
 	var form = document.getElementById(el) || el,
 		old_height = parseFloat(getComputedStyle(form).height) || 0,
 		step = 0;
-	clearInterval(pw_pb_int);
-	pw_pb_int = setInterval(function() {
+	worker.clearInterval(pw_pb_int);
+	pw_pb_int = worker.setInterval(function() {
 		if (step++ >= 100) {
-			clearInterval(pw_pb_int);
+			worker.clearInterval(pw_pb_int);
 		} else {
 			var diff = (parseFloat(getComputedStyle(form).height) || 0) - old_height;
 			old_height += diff;
@@ -49,7 +49,7 @@ var fixGodnamePaste = function() {
 			initEditor(editor);
 			var pos = editor.selectionDirection === 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
-			setTimeout(function() {
+			worker.setTimeout(function() {
 				putSelectionTo(editor, pos + name.length + 4, false);
 			}, 50);
 		} catch(error) {

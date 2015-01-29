@@ -17,7 +17,7 @@ ui_starter._init = function() {
 };
 ui_starter.start = function() {
 	if (worker.$ && (worker.$('#m_info').length || worker.$('#stats').length) && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && worker.so.state) {
-		clearInterval(starterInt);
+		worker.clearInterval(starterInt);
 		var start = new Date();
 
 		this._init();

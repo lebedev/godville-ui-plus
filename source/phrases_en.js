@@ -1,9 +1,9 @@
 (function() {
 var worker = window.wrappedJSObject || window;
-var starter = setInterval(initPhrases, 100);
+var starter = worker.setInterval(initPhrases, 100);
 function initPhrases() {
 if (!worker.GUIp_browser || !worker.GUIp_help_guide_link) { return; }
-clearInterval(starter);
+worker.clearInterval(starter);
 
 worker.GUIp_words = function() {
 	return {

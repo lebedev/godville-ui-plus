@@ -122,7 +122,7 @@ ui_utils.showMessage = function(msg_no, msg) {
 		return false;
 	});
 
-	setTimeout(function() {
+	worker.setTimeout(function() {
 		$msg.fadeToggle(1500, msg.callback);
 	}, 1000);
 };

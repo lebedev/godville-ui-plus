@@ -777,8 +777,8 @@ ui_improver.improveInterface = function() {
 		worker.$('a[href=#]').removeAttr('href');
 		this.whenWindowResize();
 		worker.$(worker).resize((function() {
-			clearInterval(this.windowResizeInt);
-			this.windowResizeInt = setTimeout(this.whenWindowResize.bind(this), 250);
+			worker.clearInterval(this.windowResizeInt);
+			this.windowResizeInt = worker.setTimeout(this.whenWindowResize.bind(this), 250);
 		}).bind(this));
 		if (ui_data.isBattle) {
 			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + worker.so.state.stats.perm_link.value + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
@@ -965,7 +965,7 @@ ui_improver.initSoundsOverride = function() {
 						return false;
 					}
 				}
-				setTimeout(function() {
+				worker.setTimeout(function() {
 					document.location.href = document.location.pathname;
 				}, 3e3);
 			} else {
@@ -985,7 +985,7 @@ ui_improver.initSoundsOverride = function() {
 ui_improver.activity = function() {
 	if (!ui_logger.Updating) {
 		ui_logger.Updating = true;
-		setTimeout(function() {
+		worker.setTimeout(function() {
 			ui_logger.Updating = false;
 		}, 500);
 		ui_logger.update();
@@ -994,7 +994,7 @@ ui_improver.activity = function() {
 ui_improver.nodeInsertion = function() {
 	if (!this.improveInProcess) {
 		this.improveInProcess = true;
-		setTimeout(this.nodeInsertionDelay.bind(this), 50);
+		worker.setTimeout(this.nodeInsertionDelay.bind(this), 50);
 	}
 };
 ui_improver.nodeInsertionDelay = function() {
