@@ -1,6 +1,6 @@
 // ui_storage
 ui_storage._get_key = function(key) {
-	return "GUIp_" + ui_data.god_name + ':' + key;
+	return 'GUIp_' + ui_data.god_name + ':' + key;
 };
 // gets diff with a value
 ui_storage._diff = function(id, value) {
@@ -35,11 +35,11 @@ ui_storage.dump = function(selector) {
 	var r = new RegExp('^GUIp_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
 	for (var i = 0; i < worker.localStorage.length; i++) {
 		if (worker.localStorage.key(i).match(r)) {
-			lines.push(worker.localStorage.key(i) + " = " + worker.localStorage[worker.localStorage.key(i)]);
+			lines.push(worker.localStorage.key(i) + ' = ' + worker.localStorage[worker.localStorage.key(i)]);
 		}
 	}
 	lines.sort();
-	worker.console.info("Godville UI+ log: Storage:\n" + lines.join("\n"));
+	worker.console.info('Godville UI+ log: Storage:\n' + lines.join('\n'));
 };
 // resets saved options
 ui_storage.clear = function(what) {
@@ -58,46 +58,35 @@ ui_storage.clear = function(what) {
 	}
 	location.reload();
 };
+ui_storage._rename = function(from, to) {
+	for (i = 0, len = worker.localStorage.length; i < len; i++) {
+		if (worker.localStorage.key(i).match(from)) {
+			keys.push(worker.localStorage.key(i));
+		}
+	}
+	for (i = 0, len = keys.length; i < len; i++) {
+		worker.localStorage[keys[i].replace(from, to)] = worker.localStorage[keys[i]];
+		worker.localStorage.removeItem(keys[i]);
+	}
+};
+ui_storage._rename_nesw = function(from, to) {
+	if (this.get('phrases_walk_' + from)) {
+		this.set('CustomPhrases:go_' + to, this.get('phrases_walk_' + from));
+		worker.localStorage.removeItem(this._get_key('phrases_walk_' + from));
+	}
+};
 ui_storage.migrate = function() {
-	var i, len, lines = [];
+	var i, len, keys = [];
 	if (!worker.localStorage.GUIp_migrated) {
-		for (i = 0, len = worker.localStorage.length; i < len; i++) {
-			if (worker.localStorage.key(i).match(/^GM_/)) {
-				lines.push(worker.localStorage.key(i));
-			}
-		}
-		for (i = 0, len = lines.length; i < len; i++) {
-			worker.localStorage[lines[i].replace(/^GM_/, 'GUIp_')] = worker.localStorage[lines[i]];
-			worker.localStorage.removeItem(lines[i]);
-		}
+		this._rename(/^GM/, 'GUIp_');
 		worker.localStorage.GUIp_migrated = '151114';
 	}
 	if (worker.localStorage.GUIp_migrated === '151114' || worker.localStorage.GUIp_migrated < '150113') {
-		if (this.get('phrases_walk_n')) {
-			this.set('CustomPhrases:go_north', this.get('phrases_walk_n'));
-			worker.localStorage.removeItem(this._get_key('phrases_walk_n'));
-		}
-		if (this.get('phrases_walk_e')) {
-			this.set('CustomPhrases:go_east', this.get('phrases_walk_e'));
-			worker.localStorage.removeItem(this._get_key('phrases_walk_e'));
-		}
-		if (this.get('phrases_walk_s')) {
-			this.set('CustomPhrases:go_south', this.get('phrases_walk_s'));
-			worker.localStorage.removeItem(this._get_key('phrases_walk_s'));
-		}
-		if (this.get('phrases_walk_w')) {
-			this.set('CustomPhrases:go_west', this.get('phrases_walk_w'));
-			worker.localStorage.removeItem(this._get_key('phrases_walk_w'));
-		}
-		for (i = 0, len = worker.localStorage.length; i < len; i++) {
-			if (worker.localStorage.key(i).match(/:phrases_/)) {
-				lines.push(worker.localStorage.key(i));
-			}
-		}
-		for (i = 0, len = lines.length; i < len; i++) {
-			worker.localStorage[lines[i].replace(/:phrases_/, ':CustomPhrases:')] = worker.localStorage[lines[i]];
-			worker.localStorage.removeItem(lines[i]);
-		}
+		this._rename_nesw('n', 'north');
+		this._rename_nesw('e', 'east');
+		this._rename_nesw('s', 'south');
+		this._rename_nesw('w', 'west');
+		this._rename(/:phrases_/, ':CustomPhrases:');
 		worker.localStorage.GUIp_migrated = '150113';
 	}
 };
