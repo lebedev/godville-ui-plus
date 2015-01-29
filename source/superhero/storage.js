@@ -43,7 +43,20 @@ ui_storage.dump = function(selector) {
 };
 // resets saved options
 ui_storage.clear = function(what) {
-	if (!what.match(/^(?:GUIp|Godville|All)$/)) { return; }
+	if (!what || !what.match(/^(?:GUIp|Godville|All)$/)) {
+		if (worker.GUIp_locale === 'ru') {
+			worker.console.log('Godville UI+: использование storage.clean:\n' +
+							   'storage.clean("GUIp") для удаление только настроек Godville UI+\n' +
+							   'storage.clean("Godville") для удаления настроек Годвилля, сохранив настройки Godville UI+\n' +
+							   'storage.clean("All") для удаления всех настроек');
+		} else {
+			worker.console.log('Godville UI+: storage.clean usage:\n' +
+							   'storage.clean("GUIp") to remove Godville UI+ setting only\n' +
+							   'storage.clean("Godville") to remove Godville setting and keep Godville UI+ settings\n' +
+							   'storage.clean("All") to remove all setting');
+		}
+		return;
+	}
 	var i, len, key, keys = [];
 	for (i = 0, len = worker.localStorage.length; i < len; i++) {
 		key = worker.localStorage.key(i);
