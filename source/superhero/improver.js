@@ -193,14 +193,10 @@ ui_improver.improveLoot = function() {
 ui_improver.improveVoiceDialog = function() {
 	// Add links and show timeout bar after saying
 	if (this.isFirstTime) {
-		if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
-			worker.$('#voice_submit').attr('disabled', 'disabled');
-		}
+		ui_utils.setVoiceSubmitState(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty'), true);
 		worker.$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
-			if (!ui_data.isBattle && worker.$(this).val() && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout.bar.style.width))) {
-				worker.$('#voice_submit').removeAttr('disabled');
-			} else if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) {
-				worker.$('#voice_submit').attr('disabled', 'disabled');
+			if (!ui_utils.setVoiceSubmitState(this.value && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice') && parseInt(ui_timeout.bar.style.width)), false)) {
+				ui_utils.setVoiceSubmitState(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty'), true);
 			}
 		}).on('click', '.gv_text.div_link', function() {
 			worker.$('#god_phrase').change();

@@ -10,9 +10,7 @@ ui_timeout._tick = function() {
 			this.bar.style.transitionDuration = '';
 		}
 		this.bar.classList.remove('running');
-		if (!ui_data.isBattle && !(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) || document.querySelector('#god_phrase').value) {
-			document.querySelector('#voice_submit').removeAttribute('disabled');
-		}
+		ui_utils.setVoiceSubmitState(!(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) || document.querySelector('#god_phrase').value, false);
 	}
 };
 // creates timeout bar element
@@ -29,9 +27,7 @@ ui_timeout.start = function() {
 	setTimeout(this._delayedStart, 10);
 	this._finishtDate = Date.now() + this.timeout*1000;
 	this._tickInt = setInterval(this._tick.bind(this), 100);
-	if (!ui_data.isBattle && ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice')) {
-		document.querySelector('#voice_submit').setAttribute('disabled', 'disabled');
-	}
+	ui_utils.setVoiceSubmitState(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice'), true);
 };
 ui_timeout._delayedStart = function() {
 	var customTimeout = ui_storage.get('Option:voiceTimeout');
