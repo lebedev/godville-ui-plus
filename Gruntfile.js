@@ -21,7 +21,7 @@ module.exports = function(grunt) {
       },
       version: {
         options: {
-          process: function (content, srcpath) {
+          process: function(content, srcpath) {
             return content.replace(/\$VERSION/g, grunt.config('new_version'));
           }
         },
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
           banner: "(function() {\n" +
                   "'use strict';\n\n",
           footer: "\n\n})();",
-          process: function (content, srcpath) {
+          process: function(content, srcpath) {
             return content.replace(/\$VERSION/g, grunt.config('new_version'));
           }
         },
