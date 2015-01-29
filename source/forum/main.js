@@ -5,7 +5,7 @@ var GUIp_forum = function() {
 	try {
 
 		if (!worker.GUIp_i18n || !worker.GUIp_browser || !worker.GUIp_addCSSFromURL) { return; }
-		clearInterval(starter);
+		worker.clearInterval(starter);
 
 		isTopic = location.pathname.match(/topic/) !== null;
 		forum_topics = 'Forum' + (isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
@@ -32,4 +32,4 @@ var GUIp_forum = function() {
 		worker.console.error(e);
 	}
 };
-var starter = setInterval(GUIp_forum, 100);
+var starter = worker.setInterval(GUIp_forum, 100);

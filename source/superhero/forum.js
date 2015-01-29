@@ -2,7 +2,7 @@
 ui_forum.init = function() {
 	document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
 	this._check();
-	setInterval(this._check.bind(this), 300000);
+	worker.setInterval(this._check.bind(this), 300000);
 };
 ui_forum._check = function() {
 	for (var forum_no = 1; forum_no <= (worker.GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
@@ -10,7 +10,7 @@ ui_forum._check = function() {
 			topics = [];
 		for (var topic in current_forum) {
 			// to prevent simultaneous ForumInformers access
-			setTimeout(ui_utils.getXHR.bind(this, '/forums/show/' + forum_no, this._parse.bind(this), undefined, forum_no), 500*forum_no);
+			worker.setTimeout(ui_utils.getXHR.bind(this, '/forums/show/' + forum_no, this._parse.bind(this), undefined, forum_no), 500*forum_no);
 			break;
 		}
 	}

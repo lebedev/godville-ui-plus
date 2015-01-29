@@ -59,13 +59,13 @@ ui_data.init = function() {
 	}
 
 	this._getLEMRestrictions();
-	setInterval(this._getLEMRestrictions, 60*60*1000);
+	worker.setInterval(this._getLEMRestrictions, 60*60*1000);
 
 	this._getWantedMonster();
-	setInterval(this._getWantedMonster, 5*60*1000);
+	worker.setInterval(this._getWantedMonster, 5*60*1000);
 
 	this._sendPing();
-	setInterval(this._sendPing, 60*60*1000);
+	worker.setInterval(this._sendPing, 60*60*1000);
 };
 ui_data._getLEMRestrictions = function() {
 	if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {

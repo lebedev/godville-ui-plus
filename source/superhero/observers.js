@@ -73,11 +73,11 @@ ui_observers.refresher = {
 			cl = tgt.className;
 		if (!(id && id.match(/logger|pet_badge|equip_badge/)) &&
 			!(cl && cl.match(/voice_generator|inspect_button|m_hover|craft_button/))) {
-			clearInterval(ui_improver.softRefreshInt);
-			clearInterval(ui_improver.hardRefreshInt);
+			worker.clearInterval(ui_improver.softRefreshInt);
+			worker.clearInterval(ui_improver.hardRefreshInt);
 			if (!ui_storage.get('Option:disablePageRefresh')) {
-				ui_improver.softRefreshInt = setInterval(ui_improver.softRefresh, (ui_data.isBattle || ui_data.isDungeon) ? 5e3 : 9e4);
-				ui_improver.hardRefreshInt = setInterval(ui_improver.hardRefresh, (ui_data.isBattle || ui_data.isDungeon) ? 15e3 : 27e4);
+				ui_improver.softRefreshInt = worker.setInterval(ui_improver.softRefresh, (ui_data.isBattle || ui_data.isDungeon) ? 5e3 : 9e4);
+				ui_improver.hardRefreshInt = worker.setInterval(ui_improver.hardRefresh, (ui_data.isBattle || ui_data.isDungeon) ? 15e3 : 27e4);
 			}
 		}
 	},
@@ -120,8 +120,8 @@ ui_observers.map_colorization = {
 	},
 	func: function(mutation) {
 		if (mutation.addedNodes.length) {
-			clearTimeout(ui_improver.mapColorizationTmt);
-			ui_improver.mapColorizationTmt = setTimeout(ui_improver.colorDungeonMap.bind(ui_improver), 50);
+			worker.clearTimeout(ui_improver.mapColorizationTmt);
+			ui_improver.mapColorizationTmt = worker.setTimeout(ui_improver.colorDungeonMap.bind(ui_improver), 50);
 		}
 	},
 	observers: [],
@@ -160,7 +160,7 @@ ui_observers.allies_parse = {
 				if (match) {
 					ui_observers.allies_parse.observers[ui_improver.currentAlly - 1].disconnect();
 				}
-				setTimeout(ui_improver.improveAllies.bind(ui_improver), 0);
+				worker.setTimeout(ui_improver.improveAllies.bind(ui_improver), 0);
 			}
 		}
 	},

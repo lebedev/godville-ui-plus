@@ -50,7 +50,7 @@ ui_informer._tick = function() {
 	// если есть чё, показать или вернуть стандартный заголовок
 	if (to_show.length > 0) {
 		this._update_title(to_show);
-		this.tref = setTimeout(this._tick.bind(this), 700);
+		this.tref = worker.setTimeout(this._tick.bind(this), 700);
 	} else {
 		this._clear_title();
 		this.tref = undefined;

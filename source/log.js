@@ -122,7 +122,7 @@
 	};
 
 	updateButton();
-	setInterval(function() {
+	worker.setInterval(function() {
 		updateButton();
 		deleteOldEntries();
 	}, 1000);
