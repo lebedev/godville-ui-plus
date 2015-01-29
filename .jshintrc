@@ -1,5 +1,5 @@
 {
 	"-W100": true,
 	"esnext": true,
-	"eqeqeq": true,
+	"eqeqeq": true
 }
