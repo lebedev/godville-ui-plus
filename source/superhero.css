@@ -187,7 +187,8 @@ body.nightly .ui_msg {
 #logger .death { color: red; }
 #logger .bricks { color: goldenrod; font-weight: bold; }
 #logger .logs { color: saddlebrown; font-weight: bold; }
-#logger .charges { color: blue; }
+#logger .charges,
+#logger .allies { color: blue; }
 #logger .savings { color: darkorange; }
 #logger {
 	display: block;
