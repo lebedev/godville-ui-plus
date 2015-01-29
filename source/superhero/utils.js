@@ -226,3 +226,15 @@ ui_utils.dateToMoscowTimeZone = function(date) {
 		  (temp.getMonth() + 1 < 10 ? '0' : '') + (temp.getMonth() + 1) + '/' +
 		  (temp.getDate() < 10 ? '0' : '') + temp.getDate();
 };
+ui_utils.setVoiceSubmitState = function(condition, disable) {
+	if (!ui_data.isBattle && condition) {
+		var voice_submit = document.getElementById('voice_submit');
+		if (disable) {
+			voice_submit.setAttribute('disabled', 'disabled');
+		} else {
+			voice_submit.removeAttribute('disabled');
+		}
+		return true;
+	}
+	return false;
+};
