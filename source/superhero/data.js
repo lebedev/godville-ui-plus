@@ -64,8 +64,8 @@ ui_data.init = function() {
 	this._getWantedMonster();
 	worker.setInterval(this._getWantedMonster, 5*60*1000);
 
-	this._sendPing();
-	worker.setInterval(this._sendPing, 60*60*1000);
+	/*this._sendPing();
+	worker.setInterval(this._sendPing, 60*60*1000);*/
 };
 ui_data._getLEMRestrictions = function() {
 	if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
@@ -96,7 +96,7 @@ ui_data._parseWantedMonster = function(xhr) {
 		ui_improver.wantedMonsters = new RegExp(newWantedMonster);
 	}
 };
-ui_data._sendPing = function() {
+/*ui_data._sendPing = function() {
 	if (isNaN(ui_storage.get('lastPing')) ||
 		ui_utils.dateToMoscowTimeZone(+ui_storage.get('lastPing')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
 
@@ -121,4 +121,4 @@ ui_data._parsePing = function(xhr) {
 	if (xhr.responseText.match(/Ping successful\./)) {
 		ui_storage.set('lastPing', Date.now());
 	}
-};
+};*/
