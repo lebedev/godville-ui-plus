@@ -463,7 +463,7 @@ ui_improver.improveStats = function() {
 			ui_storage.set('Logger:Map_Charges',ui_stats.get('Map_Charges'));
 			ui_storage.set('Logger:Map_Alls_HP', ui_stats.get('Map_Alls_HP'));
 		}
-		ui_informer.update('low health', +ui_stats.get('Map_HP') < 130);
+		//ui_informer.update('low health', +ui_stats.get('Map_HP') < 130);
 		return;
 	}
 	if (ui_data.isBattle) {
@@ -485,7 +485,7 @@ ui_improver.improveStats = function() {
 			ui_storage.set('Logger:Enemy_Inv', ui_stats.get('Enemy_Inv'));
 			ui_storage.set('Logger:Hero_Alls_HP', ui_stats.get('Hero_Alls_HP'));
 		}
-		ui_informer.update('low health', +ui_stats.get('Hero_HP') < 130);
+		//ui_informer.update('low health', +ui_stats.get('Hero_HP') < 130);
 		return;
 	}
 	if (ui_storage.get('Logger:Location') !== 'Field') {
