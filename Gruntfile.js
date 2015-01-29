@@ -12,7 +12,7 @@ module.exports = function(grunt) {
       },
       firefox: {
         files: [
-          {expand: true, cwd: '<%= compile_path %>/chrome/', src: 'forum.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'},
+          {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'},
           {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
           {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/', filter: 'isFile'},
           {expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile'},
@@ -35,14 +35,42 @@ module.exports = function(grunt) {
       }
     },
     concat: {
-      forum_chrome: {
+      forum: {
         options: {
           banner: "(function() {\n" +
                   "'use strict';\n\n",
           footer: "\n\n})();"
         },
-        src: ['source/forum/forum_init.js', 'source/forum/forum_topic_formatting_buttons.js', 'source/forum/forum_topic_other.js', 'source/forum/forum_main.js'],
+        src: ['source/forum/init.js',
+              'source/forum/topic_formatting_buttons.js',
+              'source/forum/topic_other.js',
+              'source/forum/main.js'],
         dest: '<%= compile_path %>/chrome/forum.js'
+      },
+      superhero: {
+        options: {
+          banner: "(function() {\n" +
+                  "'use strict';\n\n",
+          footer: "\n\n})();"
+        },
+        src: ['source/superhero/init.js',
+              'source/superhero/data.js',
+              'source/superhero/utils.js',
+              'source/superhero/timeout.js',
+              'source/superhero/help_dialog.js',
+              'source/superhero/storage.js',
+              'source/superhero/words.js',
+              'source/superhero/stats.js',
+              'source/superhero/logger.js',
+              'source/superhero/informer.js',
+              'source/superhero/forum.js',
+              'source/superhero/improver.js',
+              'source/superhero/laying_timer.js',
+              'source/superhero/observers.js',
+              'source/superhero/trycatcher.js',
+              'source/superhero/starter.js',
+              'source/superhero/main.js'],
+        dest: '<%= compile_path %>/chrome/superhero.js'
       }
     },
     clean: {
@@ -94,9 +122,6 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: {
-//        options: {
-//          maxcomplexity: 30
-//        },
         src: [
           'Gruntfile.js',
           'source/**/*.js',
