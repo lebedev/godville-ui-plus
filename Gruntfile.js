@@ -94,6 +94,9 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: {
+//        options: {
+//          maxcomplexity: 30
+//        },
         src: [
           'Gruntfile.js',
           'source/**/*.js',

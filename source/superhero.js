@@ -433,8 +433,8 @@ var ui_help_dialog = {
 		menu_bar.insertAdjacentHTML('beforeend', '<li> | </li><a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
 		this.addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
 		document.getElementById('menu_bar').insertAdjacentHTML('afterend',
-			'<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' + 
-			'<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, ' + worker.GUIp_i18n.if_something_wrong_capt + '...</div>' + 
+			'<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' +
+			'<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, ' + worker.GUIp_i18n.if_something_wrong_capt + '...</div>' +
 			'<div class="hint_bar_content" style="padding: 0.5em 0.8em;">'+
 				'<div style="text-align: left;">' +
 					'<div>' + worker.GUIp_i18n.if_something_wrong + '</div>' +
@@ -452,7 +452,7 @@ var ui_help_dialog = {
 					'</ol>' +
 					'<div>' + worker.GUIp_i18n.help_useful_links + '</div>' +
 				'</div>' +
-			'</div>' + 
+			'</div>' +
 			'<div class="hint_bar_close"></div></div>'
 		);
 
@@ -813,7 +813,7 @@ var ui_logger = {
 		if (ui_data.isDungeon) {
 			this.watchStatsValue('Map_HP', 'hp', worker.GUIp_i18n.hero_health, 'hp');
 			this.watchStatsValue('Map_Inv', 'inv', worker.GUIp_i18n.inventory, 'inv');
-			this.watchStatsValue('Map_Gold', 'gld', worker.GUIp_i18n.gold, 'gold'); 
+			this.watchStatsValue('Map_Gold', 'gld', worker.GUIp_i18n.gold, 'gold');
 			this.watchStatsValue('Map_Charges', 'ch', worker.GUIp_i18n.charges, 'charges');
 			this.watchStatsValue('Map_Alls_HP', 'a:hp', worker.GUIp_i18n.allies_health, 'charges');
 		}
@@ -1478,7 +1478,7 @@ var ui_improver = {
 							$box[3].style.visibility = '';	//	Восток
 						}
 					}
-				} 
+				}
 				//	Ищем указатели
 				for (var sj = 0; sj < kColumn; sj++) {
 					var ik, jk,
@@ -1528,7 +1528,7 @@ var ui_improver = {
 							for (jk = 0; jk < kColumn; jk++) {
 								MapThermo[ik][jk] = ($boxML[ik].textContent[jk] === '#' || ((Math.abs(jk - sj) + Math.abs(ik - si)) > ThermoMaxStep)) ? -1 : 0;
 							}
-						} 
+						}
 						//	Запускаем итерацию
 						this.MapIteration(MapThermo, si, sj, 0, kRow, kColumn);
 						//	Метим возможный клад
@@ -1543,10 +1543,10 @@ var ui_improver = {
 						}
 					}
 					// На будущее
-					// ↻ ↺ ↬ ↫   
+					// ↻ ↺ ↬ ↫
 				}
 			}
-			//	Отрисовываем возможный клад 
+			//	Отрисовываем возможный клад
 			if (MaxMap !== 0) {
 				for (i = 0; i < kRow; i++) {
 					for (j = 0; j < kColumn; j++) {
@@ -1663,10 +1663,10 @@ var ui_improver = {
 		if (worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value) {
 			if (!ui_utils.isAlreadyImproved(worker.$('#pet'))) {
 				worker.$('#pet .block_title').after(worker.$('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
-			} 
+			}
 			worker.$('#pet_badge').text(ui_utils.findLabel(worker.$('#pet'), worker.GUIp_i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, ''));
 			if (worker.$('#pet .block_content')[0].style.display === 'none') {
-				worker.$('#pet_badge').show(); 
+				worker.$('#pet_badge').show();
 			}
 			else {
 				worker.$('#pet_badge').hide();
@@ -1706,7 +1706,7 @@ var ui_improver = {
 				}
 			}
 		}
-		return seq; 
+		return seq;
 	},
 // ---------- Pantheons --------------
 	improvePantheons: function() {
@@ -2402,7 +2402,7 @@ var ui_observers = {
 		target: ['#popover_opp_all0', '#popover_opp_all1', '#popover_opp_all2', '#popover_opp_all3', '#popover_opp_all4']
 	}
 };
-      
+
 var ui_trycatcher = {
 	replace_with: function(method) {
 		return function() {
