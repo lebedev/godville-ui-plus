@@ -51,7 +51,10 @@ module.exports = function(grunt) {
         options: {
           banner: "(function() {\n" +
                   "'use strict';\n\n",
-          footer: "\n\n})();"
+          footer: "\n\n})();",
+          process: function (content, srcpath) {
+            return content.replace(/\$VERSION/g, grunt.config('new_version'));
+          }
         },
         src: ['source/superhero/init.js',
               'source/superhero/data.js',
