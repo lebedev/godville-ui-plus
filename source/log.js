@@ -43,7 +43,7 @@
 	}
 
 	var godname_prefix = 'GUIp_' + worker.localStorage.GUIp_CurrentUser + ':',
-		log = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':',
+		log = 'Log:' + location.href.match(/(?:duels\/log|hero\/duel_perm_link)\/([^\?]+)/)[1] + ':',
 		steps = +document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья \(шаг (\d+)\)/)[1];
 	if (!document.querySelector('#dmap') && steps === +worker.localStorage[godname_prefix + log + 'steps']) {
 		var map = JSON.parse(worker.localStorage[godname_prefix + log + 'map']),

@@ -21,7 +21,7 @@
 		options: prefix + 'options.js',
 		forum: prefix + 'forum.js',
 		log: prefix + 'log.js'
-	};	
+	};
 	var site = location.href,
 		path = location.pathname;
 	if (site.match(/^https?:\/\/godville.net/)) {
