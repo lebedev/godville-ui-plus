@@ -169,7 +169,7 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: 'source/**/*',
+        files: ['source/**/*', 'Gruntfile.js'],
         tasks: 'debug',
         options: {
           spawn: false,
