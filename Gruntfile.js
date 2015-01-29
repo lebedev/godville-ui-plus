@@ -41,7 +41,7 @@ module.exports = function(grunt) {
                   "'use strict';\n\n",
           footer: "\n\n})();"
         },
-        src: ['source/forum/forum_init.js', 'source/forum/forum_improve_topic.js', 'source/forum/forum_main.js'],
+        src: ['source/forum/forum_init.js', 'source/forum/forum_topic_formatting_buttons.js', 'source/forum/forum_topic_other.js', 'source/forum/forum_main.js'],
         dest: '<%= compile_path %>/chrome/forum.js'
       }
     },

@@ -23,6 +23,8 @@ var GUIp_forum = function() {
 		addLinks();
 
 		if (isTopic) {
+			worker.GUIp_addCSSFromURL(worker.GUIp_getResource('forum.css'), 'forum_css');
+			addFormattingButtons();
 			improveTopic();
 		}
 
