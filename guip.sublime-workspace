@@ -1,0 +1,1124 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"_",
+				"_fieldWatchers ([])"
+			],
+			[
+				"_g",
+				"_getPMTitleNotice (fn)"
+			],
+			[
+				"ui_",
+				"ui_storage (obj)"
+			],
+			[
+				"u",
+				"ui_logger (obj)"
+			],
+			[
+				"ui",
+				"ui_forum (obj)"
+			],
+			[
+				"o",
+				"obj_a (obj)"
+			],
+			[
+				"ob",
+				"obj_b (obj)"
+			],
+			[
+				"ui_u",
+				"ui_utils (obj)"
+			],
+			[
+				"g",
+				"getXHR (fn)"
+			],
+			[
+				"ge",
+				"getXHR (fn)"
+			],
+			[
+				"_p",
+				"_parseLEMRestrictions (fn)"
+			],
+			[
+				"che",
+				"_check (fn)"
+			],
+			[
+				"sa",
+				"sayToHero"
+			],
+			[
+				"G",
+				"GUIp_migrated"
+			],
+			[
+				"method",
+				"method_name (?)"
+			],
+			[
+				"do",
+				"document"
+			],
+			[
+				"local",
+				"localStorage"
+			],
+			[
+				"margin",
+				"margin-left"
+			],
+			[
+				"inf",
+				"informer"
+			],
+			[
+				"forum",
+				"forum_informer_bar"
+			],
+			[
+				"afte",
+				"afterbegin"
+			],
+			[
+				"ber",
+				"beforeend"
+			],
+			[
+				"getEle",
+				"getElementById"
+			],
+			[
+				"menu",
+				"menu_bar"
+			],
+			[
+				"be",
+				"beforeend"
+			],
+			[
+				"insertA",
+				"insertAdjacentHTML"
+			],
+			[
+				"get",
+				"getElementsByClassName"
+			],
+			[
+				"getD",
+				"getDumpButton"
+			],
+			[
+				"GUIp",
+				"GUIp_browser"
+			],
+			[
+				"superhero",
+				"superhero_run"
+			],
+			[
+				"de",
+				"defaultView"
+			],
+			[
+				"loca",
+				"location"
+			],
+			[
+				"b",
+				"boxMC"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"parse",
+				"parseFloat"
+			],
+			[
+				"old",
+				"old_height"
+			],
+			[
+				"new",
+				"new_height"
+			],
+			[
+				"padding",
+				"padding-bottom"
+			],
+			[
+				"add",
+				"addClass"
+			],
+			[
+				"is",
+				"isDungeon"
+			],
+			[
+				"isF",
+				"isFirstTime"
+			],
+			[
+				"re",
+				"removeItem"
+			],
+			[
+				"tra",
+				"trapMoveLoss"
+			],
+			[
+				"trap",
+				"trapModerateDamage"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"bl",
+				"block_title"
+			],
+			[
+				"insert",
+				"insertAdjacentHTML"
+			],
+			[
+				"rem",
+				"removeAttr"
+			],
+			[
+				"lo",
+				"localStorage"
+			],
+			[
+				"map",
+				"map_elem"
+			],
+			[
+				"ui_s",
+				"ui_storage"
+			],
+			[
+				"check",
+				"checkRu"
+			],
+			[
+				"wm",
+				"wm"
+			],
+			[
+				"op",
+				"options"
+			],
+			[
+				"option",
+				"options_page"
+			],
+			[
+				"un",
+				"unsubscribe"
+			],
+			[
+				"s",
+				"subscribe"
+			],
+			[
+				"GU",
+				"GUIp_i18n"
+			],
+			[
+				"can",
+				"cancel_task"
+			],
+			[
+				"GUI",
+				"GUIp_locale"
+			],
+			[
+				"exp",
+				"exp"
+			],
+			[
+				"help",
+				"help_update_1"
+			],
+			[
+				"charges",
+				"charges"
+			],
+			[
+				"date",
+				"dateToMoscowTimeZone"
+			],
+			[
+				"set",
+				"setAttribute"
+			],
+			[
+				"q",
+				"quotation"
+			],
+			[
+				"W",
+				"W"
+			],
+			[
+				"name",
+				"nameStr"
+			],
+			[
+				"im",
+				"improveDiary"
+			],
+			[
+				"ch",
+				"chronicles"
+			],
+			[
+				"th",
+				"third_eye"
+			],
+			[
+				"ui_l",
+				"ui_laying_timer"
+			],
+			[
+				"m_",
+				"m_infl"
+			],
+			[
+				"res",
+				"responseText"
+			],
+			[
+				"url",
+				"url"
+			],
+			[
+				"bac",
+				"background"
+			],
+			[
+				"back",
+				"background_desc"
+			],
+			[
+				"use",
+				"useBackground"
+			],
+			[
+				"X",
+				"x"
+			],
+			[
+				"sub",
+				"sub"
+			],
+			[
+				"marg",
+				"margin-right"
+			],
+			[
+				"boss",
+				"bossWarnings"
+			],
+			[
+				"inse",
+				"insertAdjacentHTML"
+			],
+			[
+				"pa",
+				"parentNode"
+			],
+			[
+				"j",
+				"j"
+			],
+			[
+				"dun",
+				"dungeonPhrases"
+			],
+			[
+				"trophy",
+				"trophyLoss"
+			],
+			[
+				"dungeon",
+				"getDungeonPhrases"
+			],
+			[
+				"motto",
+				"motto_field"
+			],
+			[
+				"cos",
+				"console"
+			],
+			[
+				"diba",
+				"disableDieButton"
+			],
+			[
+				"qu",
+				"querySelector"
+			],
+			[
+				"remove",
+				"removeChild"
+			],
+			[
+				"qy",
+				"querySelectorAll"
+			],
+			[
+				"hidden",
+				"hidden_popovers"
+			],
+			[
+				"ope",
+				"openChatWith"
+			],
+			[
+				"current",
+				"currentAllyObserver"
+			],
+			[
+				"curr",
+				"currentAlly"
+			],
+			[
+				"all",
+				"alliesCount"
+			],
+			[
+				"go",
+				"god_name"
+			],
+			[
+				"isDe",
+				"isDeveloper"
+			],
+			[
+				"post",
+				"post_body_editor"
+			],
+			[
+				"con",
+				"containers"
+			],
+			[
+				"eb",
+				"eb"
+			],
+			[
+				"c",
+				"c"
+			],
+			[
+				"paddin",
+				"padding"
+			],
+			[
+				"window",
+				"windowResizeInt"
+			],
+			[
+				"k",
+				"kColumn"
+			],
+			[
+				"bW",
+				"bossWarningsExpirationDate"
+			],
+			[
+				"improve",
+				"improveChronicles"
+			],
+			[
+				"impr",
+				"improveDiaryField"
+			],
+			[
+				"backg",
+				"background-position"
+			],
+			[
+				"conta",
+				"contains"
+			],
+			[
+				"sh",
+				"shovel"
+			],
+			[
+				"dig",
+				"digVoice"
+			],
+			[
+				"friends",
+				"friendsRegexp"
+			],
+			[
+				"fri",
+				"friends"
+			],
+			[
+				"friend",
+				"friendsRegex"
+			],
+			[
+				"class",
+				"classList"
+			],
+			[
+				"clear",
+				"clearInterval"
+			],
+			[
+				"craft",
+				"craft_button"
+			],
+			[
+				"ins",
+				"inspect_button"
+			],
+			[
+				"voice",
+				"voice_generator"
+			],
+			[
+				"del",
+				"delayedStart"
+			],
+			[
+				"voi",
+				"voice_timeout_choice"
+			],
+			[
+				"ui_im",
+				"ui_improver"
+			],
+			[
+				"appe",
+				"appendChild"
+			],
+			[
+				"_tick",
+				"_tickInt"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "source/superhero/data.js",
+			"settings":
+			{
+				"buffer_size": 4977,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: ip",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: i",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 424.0
+	},
+	"console":
+	{
+		"height": 183.0,
+		"history":
+		[
+			"TernJS: reload",
+			"import urllib.request,os; pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Stuff/Codein/godville/godville-ui-plus",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero"
+	],
+	"file_history":
+	[
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/logger.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/help.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/informer.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/starter.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/data.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/main.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/trycatcher.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/utils.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/main.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/Gruntfile.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/forum.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/help_dialog.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/improver.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/laying_timer.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/observers.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/stats.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/storage.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/timeout.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/words.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/.git/info/exclude",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/init.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/.tern-project",
+		"/D/test/b.js",
+		"/D/test/.tern-project",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/test/b.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/test/a.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/init.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/stuff.txt",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/.tern-project",
+		"/C/Users/Angly/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/D/Stuff/Codein/godville/godville-ui-plus/.tern-project",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/.tern-project",
+		"/D/Stuff/Codein/godville/godville-ui-plus/guip.sublime-project",
+		"/C/Users/Angly/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/chrome/logo48.png",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/bootstrap.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero.css",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/phrases_ru.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/harness-options.json",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/icon.png",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/phrases_en.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/options_page.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/options.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/options.css",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/log.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/topic_other.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/topic_formatting_buttons.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum.css",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/resources/godville-ui-plus/lib/main.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/locales.json",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/install.rdf",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/chrome/manifest.json",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/superhero.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/phrases_en.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/resources/godville-ui-plus/data/jquery-1.10.2.min.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/chrome/loader.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/superhero/observers",
+		"/D/Stuff/Codein/godville/godville-ui-plus/.jshintrc",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/forum_init.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/common.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/forum_topic_other.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/forum_improve_topic.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/forum_topic_formatting_buttons.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/forum/forum_main.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/firefox/resources/godville-ui-plus/data/forum.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/package.json",
+		"/D/Stuff/Codein/godville/godville-ui-plus/publish/counter.php",
+		"/D/adblock_plus-2.6.7-sm+tb+fx+an/chrome/content/ui/sendReport.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/publish/masks.cgi.txt",
+		"/D/counter.php",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/superhero.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/lib/main.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/package.json",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/install.rdf",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/content.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/harness-options.jso_",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/lib/sdk/tabs/tab-fennec.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/lib/sdk/event/target.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/lib/sdk/tabs/utils.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/content.css",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/sample/install.rdf",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/test.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/todo",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/resources/godville-ui-plus/data/superhero.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/resources/godville-ui-plus/data/common.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/resources/godville-ui-plus/data/forum.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/resources/godville-ui-plus/data/log.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/resources/godville-ui-plus/data/options.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/resources/godville-ui-plus/data/options_page.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/resources/godville-ui-plus/data/phrases_en.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/resources/godville-ui-plus/data/phrases_ru.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/common.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/forum.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/log.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/options-page.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/options.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/options_page.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/debug/chrome/phrases_ru.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/phrases_ru.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/phrases_en.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/options_page.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/options.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/log.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/jquery-1.10.2.min.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/guip_firefox.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/forum.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/common.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/harness-options.json",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/locales.json",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus/chrome.manifest",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/godville-ui-plus.xpi",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/options-page.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/content/guip_firefox.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/sample/harness-options.json",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/sample/bootstrap.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/sample/defaults/preferences/prefs.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/content/footer.js_part",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/sample/resources/sample/lib/main.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/superhero.css",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/en.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/addon-sdk-1.17/sample/data/ru.js",
+		"/D/guip_restartless/content/godville-ui-plus.js",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/firefox/content/header.js_part",
+		"/D/Stuff/Codein/godville/godville-ui-plus/source/chrome/common_run.js",
+		"/D/guip_restartless/chrome.manifest",
+		"/D/guip_restartless/bootstrap.js"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"D:\\Stuff\\Codein\\godville\\godville-ui-plus\\source\\",
+			"D:\\Stuff\\Codein\\godville\\godville-ui-plus\\",
+			"D:\\Stuff\\Codein\\godville\\godville-ui-plus\\source\\",
+			"D:\\Stuff\\Codein\\godville\\godville-ui-plus\\",
+			"D:\\Stuff\\Codein\\godville\\godville-ui-plus\\source",
+			"D:\\Stuff\\Codein\\godville\\godville-ui-plus\\",
+			"D:\\Stuff\\Codein\\godville\\godville-ui-plus\\source",
+			"D:\\Stuff\\Codein\\sibneuro\\sibneuro-glioms\\",
+			"D:\\Stuff\\Codein\\sibneuro\\sibneuro-glioms\\sources",
+			"D:\\Stuff\\Codein\\godville\\godville-ui-plus\\source"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"ui_help.toggle",
+			"p.toggleDialog",
+			"ui_help.toggle",
+			"ui_help_dialog",
+			"onXHRSuccess",
+			"onXHRFail",
+			"ui_help_dialog.toggle",
+			"ui_help_dialog.addDumpButton",
+			"ui_help_dialog.addToggleButton",
+			"menu_bar",
+			"len",
+			" i",
+			"i ",
+			"var ui_(\\w+);\\n\\n.*\\n.*\\n.*\\n.*\\n\\}",
+			"var ui_(\\w+);\\n\\n.*\\n.*\\n.*\\n.*\\n\\}\\n",
+			"ui_(\\w+)",
+			"ui_",
+			" $",
+			"\\t+$",
+			"[\\t ]+$",
+			"\\s+$",
+			" ",
+			"process",
+			"new_version",
+			"low ",
+			"worker",
+			"clea",
+			"((?:set|clear)(?:Interval|Timeout))",
+			"([^.])((?:set|clear)(?:Interval|Timeout))",
+			"((?:set|clear)(?:Interval|Timeout))",
+			"([^.])((?:set|clear)(?:Interval|Timeout))",
+			"[^.]((?:set|clear)(?:Interval|Timeout))",
+			"[^.]",
+			"ударо",
+			"setVoiceInputState",
+			"voice_su",
+			"voice_",
+			"lines",
+			"toggle",
+			"this.tic",
+			"this._chec",
+			"tick",
+			"get_key",
+			"lo_",
+			"var ui",
+			"ui_forum.set_informer",
+			"this.parse",
+			"ui_forum.set_informer",
+			"this.parse",
+			"ui_forum.parse",
+			"ui_forum.process",
+			"ui_forum.check",
+			"ui_forum.init",
+			"ui_words.longPhrase",
+			"longPhrase",
+			"hasShownInfoMessage",
+			"update_title",
+			"clear_title",
+			"ui_informer.clear_title",
+			"ui_informer.tick",
+			"delete_label",
+			"create_label",
+			"ui_informer.create_label",
+			"this.sa",
+			"ui_informer.save",
+			"ui_informer.hide",
+			"ui_informer.update",
+			"ui_informer.load",
+			"charges",
+			"watchStatsValue",
+			"ui_logger.watchStatsValue",
+			"appendStr",
+			"ui_logger.appendStr",
+			"ui_stats.set",
+			"ui_stats.set\\(",
+			"ui_stats.set(",
+			"ui_storage.clear",
+			"ui_storage.dump",
+			"ui_storage.set_with_diff",
+			"ui_storage.diff",
+			"ui_storage.get_key",
+			"storage",
+			"ui_words.isBoldItem",
+			"ui_words.isUsableItem",
+			"ui_words.isHealItem",
+			"usableItemType",
+			"improveLoo",
+			"improveIn",
+			"isCategoryItem",
+			"ui_words.isCategoryItem",
+			"ui_words.craftPhrase",
+			"ui_words.inspectPhrase",
+			"ui_words.longPhrase",
+			"ui_words.randomPhrase",
+			"extra_arg",
+			"\\},",
+			"([^ ])= function",
+			"isDeb",
+			"is",
+			": function",
+			": ",
+			"var worker = unsafeWindow ? unsafeWindow : window;",
+			"var worker = window.wrappedJSObject || window;",
+			"process",
+			"ui_(utils|timeout|help_dialog|storage|words|stats|logger|informer|forum|improver|observers|starter|trycatcher)",
+			"ui_(utils|timeout|help_dialog|storage|words|stats|logger|informer|forum|improver|observers|starter)",
+			"ui_data",
+			"var ui_",
+			" $",
+			"options",
+			"$reply_form",
+			"clean",
+			"temp",
+			"\\t+$",
+			"\\t$",
+			"^\\t$",
+			"id",
+			"reason",
+			"startup",
+			"!=",
+			"==",
+			"215",
+			"function (\\S+?)\\(",
+			"var (\\S+?) = function",
+			"var (\\w+?) = function",
+			"addClickToUnfollow",
+			"followClick",
+			"addClickToFollow"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"ui_help.toggleDialog",
+			"ui_help",
+			"var ui_$1 = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: \"$1\"}) : worker.GUIp.$1 = {};",
+			"\"$1.js\"",
+			"\"$1\"",
+			"",
+			"unsafeWindow",
+			"$1worker.$2",
+			"setVoiceSubmitState",
+			"keys",
+			"};",
+			"$1 = function",
+			"= function",
+			"var worker = window.wrappedJSObject || window;",
+			"var worker = unsafeWindow ? unsafeWindow : window;",
+			"worker.GUIp_$1",
+			"worker.GUIp_data",
+			"worker.GUIp_",
+			"",
+			"var $1 = function\\(",
+			"function $1",
+			"addOnclickToUnfollow",
+			"followOnclick",
+			"addOnclickToFollow",
+			"setPageWrapperPaddingBottom",
+			"fixGodnamePaste",
+			"fixPageWrapperPadding",
+			"picturesAutoreplace",
+			"autoreplacePictures",
+			"initEditor",
+			"basicFormatting",
+			"quoteFormatting",
+			"listFormatting",
+			"pasteBr",
+			"setClickActions",
+			"id",
+			"\"",
+			"init_editor(",
+			"\\\\",
+			"document",
+			"window.wrappedJSObject || window",
+			"window.wrappedJSObject",
+			"document",
+			"clearInterval",
+			"localStorage",
+			"clearTimeout",
+			"setTimeout",
+			"clearInterval",
+			"setInterval",
+			"worker.console.",
+			"$1worker.document",
+			"$1worker.localStorage",
+			"worker.clearInterval",
+			"worker.clearTimeout",
+			"worker.setTimeout",
+			"worker.setInterval",
+			"worker",
+			"$1worker.$(",
+			"worker.$(",
+			"$1worker.",
+			"$1worker",
+			"$1worker.document",
+			"$1worker.localStorage",
+			"worker",
+			"$1worker.setInter",
+			"$1worker.document",
+			"$1worker.localStorage",
+			"$1worker",
+			"$1worker.document",
+			"worker.",
+			"end",
+			"'",
+			"window.$(",
+			"$1window.clearInterval",
+			"$1window.localStorage",
+			"window.localStorage",
+			"Location",
+			"sentToLEM' + request_limit",
+			"ui_data.hasTemple",
+			"go_south",
+			"go_north",
+			"go_east",
+			"go_west",
+			"trapMoveLoss",
+			"trapModerateDamage",
+			"trapLowDamage",
+			"trapGold",
+			"trapTrophy",
+			"trapUnknown",
+			"bonusHealth",
+			"boss",
+			"bonusGodpower",
+			"warning",
+			"prefix",
+			"scripts",
+			"guip_scripts",
+			"prefix + '",
+			"window.GUIp_i18n",
+			"window.GUIp_",
+			"window.chrome",
+			"gift_box",
+			"wanted_monster",
+			"exclamation",
+			"usable",
+			"exclamation",
+			"Exclamation",
+			"use_exclamations",
+			"i18n",
+			"Field",
+			"Charge",
+			"godname_prefix + log + 'sent",
+			"godname_prefix + log",
+			"godname_prefix + log +",
+			"' +\\n'",
+			"\\\\'",
+			"' +\\n'",
+			"\\\\'",
+			"' +\\n'",
+			"\\\\'",
+			"' +\\n'",
+			"\\\\'",
+			"' +\\n'",
+			"\\\\'",
+			"' +\\n'",
+			"\\\\'",
+			"\\'",
+			"' +\\n'",
+			"2"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "source/superhero/data.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4977,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2113,
+								2113
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 360.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "guip.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"D:\\test\\test.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 624.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
