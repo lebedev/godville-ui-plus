@@ -1,4 +1,12 @@
 // ui_laying_timer
+var ui_laying_timer;
+
+if (window.wrappedJSObject) {
+	ui_laying_timer = createObjectIn(worker.GUIp, {defineAs: "laying_timer"});
+} else {
+	ui_laying_timer = worker.GUIp.laying_timer = {};
+}
+
 ui_laying_timer.init = function() {
 	if (ui_data.hasTemple && !ui_data.isBattle && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
 		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');

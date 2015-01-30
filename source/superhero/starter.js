@@ -1,4 +1,12 @@
 // ui_starter
+var ui_starter;
+
+if (window.wrappedJSObject) {
+	ui_starter = createObjectIn(worker.GUIp, {defineAs: "starter"});
+} else {
+	ui_starter = worker.GUIp.starter = {};
+}
+
 ui_starter._init = function() {
 	ui_data.init();
 	ui_storage.migrate();

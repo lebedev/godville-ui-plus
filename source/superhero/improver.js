@@ -1,4 +1,12 @@
 // ui_improver
+var ui_improver;
+
+if (window.wrappedJSObject) {
+	ui_improver = createObjectIn(worker.GUIp, {defineAs: "improver"});
+} else {
+	ui_improver = worker.GUIp.improver = {};
+}
+
 ui_improver.inventoryChanged = true;
 ui_improver.improveInProcess = true;
 ui_improver.isFirstTime = true;

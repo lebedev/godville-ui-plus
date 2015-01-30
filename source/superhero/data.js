@@ -1,4 +1,12 @@
 // ui_data
+var ui_data;
+
+if (window.wrappedJSObject) {
+	ui_data = createObjectIn(worker.GUIp, {defineAs: "data"});
+} else {
+	ui_data = worker.GUIp.data = {};
+}
+
 // base variables initialization
 ui_data.init = function() {
 	this.currentVersion = '$VERSION';

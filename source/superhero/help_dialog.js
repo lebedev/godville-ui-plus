@@ -1,4 +1,12 @@
 // ui_help_dialog
+var ui_help_dialog;
+
+if (window.wrappedJSObject) {
+	ui_help_dialog = createObjectIn(worker.GUIp, {defineAs: "help_dialog"});
+} else {
+	ui_help_dialog = worker.GUIp.help_dialog = {};
+}
+
 // creates ui dialog
 ui_help_dialog.create = function() {
 	var menu_bar = document.querySelector('#menu_bar ul');

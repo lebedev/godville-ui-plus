@@ -1,4 +1,12 @@
 // ui_timeout
+var ui_timeout;
+
+if (window.wrappedJSObject) {
+	ui_timeout = createObjectIn(worker.GUIp, {defineAs: "timeout"});
+} else {
+	ui_timeout = worker.GUIp.timeout = {};
+}
+
 ui_timeout.bar = null;
 ui_timeout.timeout = 0;
 ui_timeout._finishtDate = 0;

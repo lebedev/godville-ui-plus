@@ -1,4 +1,12 @@
 // ui_logger
+var ui_logger;
+
+if (window.wrappedJSObject) {
+	ui_logger = createObjectIn(worker.GUIp, {defineAs: "logger"});
+} else {
+	ui_logger = worker.GUIp.logger = {};
+}
+
 ui_logger.create = function() {
 	this.updating = false;
 	this.bar = worker.$('<ul id="logger" style="mask: url(#fader_masking);"/>');
