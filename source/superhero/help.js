@@ -43,22 +43,22 @@ ui_help._createHelpDialog = function() {
 ui_help._createButtons = function() {
 	var menu_bar = document.querySelector('#menu_bar ul');
 	menu_bar.insertAdjacentHTML('beforeend', '<li> | </li><a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
-	this.addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
+	this._addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
 	if (ui_storage.get('Option:enableDebugMode')) {
-		this.addDumpButton('<span>dump: </span>', 'all');
-		this.addDumpButton('<span>, </span>', 'options', 'Option');
-		this.addDumpButton('<span>, </span>', 'stats', 'Stats');
-		this.addDumpButton('<span>, </span>', 'logger', 'Logger');
-		this.addDumpButton('<span>, </span>', 'forum', 'Forum');
-		this.addDumpButton('<span>, </span>', 'log', 'Log:');
+		this._addDumpButton('<span>dump: </span>', 'all');
+		this._addDumpButton('<span>, </span>', 'options', 'Option');
+		this._addDumpButton('<span>, </span>', 'stats', 'Stats');
+		this._addDumpButton('<span>, </span>', 'logger', 'Logger');
+		this._addDumpButton('<span>, </span>', 'forum', 'Forum');
+		this._addDumpButton('<span>, </span>', 'log', 'Log:');
 	}
-	this.addToggleButton(document.getElementsByClassName('hint_bar_close')[0], worker.GUIp_i18n.close);
+	this._addToggleButton(document.getElementsByClassName('hint_bar_close')[0], worker.GUIp_i18n.close);
 };
 // gets toggle button
 ui_help._addToggleButton = function(elem, text) {
 	elem.insertAdjacentHTML('beforeend', '<a class="close_button">' + text + '</a>');
 	elem.getElementsByClassName('close_button')[0].onclick = function() {
-		ui_helui_help.toggleDialog();
+		ui_help.toggleDialog();
 		return false;
 	};
 };
