@@ -37,14 +37,16 @@ ui_data._initVariables = function() {
 };
 ui_data._initForumData = function() {
 	if (!ui_storage.get('Forum1')) {
+		ui_storage.set('Forum1', '{}');
+		ui_storage.set('Forum2', '{}');
+		ui_storage.set('Forum3', '{}');
+		ui_storage.set('Forum4', '{}');
+		ui_storage.set('ForumInformers', '{}');
+
 		if (worker.GUIp_locale === 'ru') {
-			ui_storage.set('Forum1', '{}');
 			ui_storage.set('Forum2', '{"2812": 0}');
-			ui_storage.set('Forum3', '{}');
-			ui_storage.set('Forum4', '{}');
 			ui_storage.set('Forum5', '{}');
 			ui_storage.set('Forum6', '{}');
-			ui_storage.set('ForumInformers', '{}');
 
 			// clear old data
 			worker.localStorage.removeItem('GUIp_' + this.god_name + ':posts');
@@ -56,10 +58,6 @@ ui_data._initForumData = function() {
 			}
 		} else {
 			ui_storage.set('Forum1', '{"2800": 0}');
-			ui_storage.set('Forum2', '{}');
-			ui_storage.set('Forum3', '{}');
-			ui_storage.set('Forum4', '{}');
-			ui_storage.set('ForumInformers', '{}');
 		}
 	}
 };
