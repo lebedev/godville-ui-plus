@@ -59,14 +59,14 @@ ui_forum._set_informer = function(topic_no, topic_data, posts_count) {
 	informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
 };
 ui_forum._parse = function(xhr) {
-	var i, diff, temp, old_diff,
+	var diff, temp, old_diff,
 		forum = JSON.parse(ui_storage.get('Forum' + xhr.extra_arg)),
 		informers = JSON.parse(ui_storage.get('ForumInformers')),
 		topics = [];
 	for (var topic in forum) {
 		topics.push(topic);
 	}
-	for (i = 0, len = topics.length; i < len; i++) {
+	for (var i = 0, len = topics.length; i < len; i++) {
 		temp = xhr.responseText.match(new RegExp("show_topic\\/" + topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topics[i]));
 		if (temp) {
 			diff = +temp[2] - forum[topics[i]];
@@ -74,15 +74,11 @@ ui_forum._parse = function(xhr) {
 				forum[topics[i]] = +temp[2];
 				if (diff > 0) {
 					if (temp[3] !== ui_data.god_name) {
-						if (!informers[topics[i]]) {
-							//create
-							informers[topics[i]] = {diff: diff, name: temp[1].replace(/&quot;/g, '"')};
-						} else {
-							//update
-							old_diff = informers[topics[i]].diff;
+						old_diff = informers[topics[i]] ? informers[topics[i]].diff : 0;
+						if (old_diff) {
 							delete informers[topics[i]];
-							informers[topics[i]] = {diff: old_diff + diff, name: temp[1].replace(/&quot;/g, '"')};
 						}
+						informers[topics[i]] = {diff: old_diff + diff, name: temp[1].replace(/&quot;/g, '"')};
 					} else {
 						delete informers[topics[i]];
 					}
