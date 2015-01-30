@@ -6,6 +6,46 @@ ui_logger.create = function() {
 	this.bar = worker.$('<ul id="logger" style="mask: url(#fader_masking);"/>');
 	worker.$('#menu_bar').after(this.bar);
 	this.need_separator = false;
+	this.dungeonWatchers = [
+		['Map_HP', 'hp', worker.GUIp_i18n.hero_health, 'hp'],
+		['Map_Inv', 'inv', worker.GUIp_i18n.inventory, 'inv'],
+		['Map_Gold', 'gld', worker.GUIp_i18n.gold, 'gold'],
+		['Map_Charges', 'ch', worker.GUIp_i18n.charges, 'charges'],
+		['Map_Alls_HP', 'a:hp', worker.GUIp_i18n.allies_health, 'allies']
+	];
+	this.battleWatchers = [
+		['Hero_HP', 'h:hp', worker.GUIp_i18n.hero_health, 'hp'],
+		['Enemy_HP', 'e:hp', worker.GUIp_i18n.enemy_health, 'death'],
+		['Hero_Alls_HP', 'a:hp', worker.GUIp_i18n.allies_health, 'allies'],
+		['Hero_Inv', 'h:inv', worker.GUIp_i18n.inventory, 'inv'],
+		['Hero_Gold', 'h:gld', worker.GUIp_i18n.gold, 'gold'],
+		['Hero_Charges', 'ch', worker.GUIp_i18n.charges, 'charges'],
+		['Enemy_Gold', 'e:gld', worker.GUIp_i18n.gold, 'monster'],
+		['Enemy_Inv', 'e:inv', worker.GUIp_i18n.inventory, 'monster']
+	];
+	this.fieldWatchers = [
+		['Exp', 'exp', worker.GUIp_i18n.exp],
+		['Level', 'lvl', worker.GUIp_i18n.level],
+		['HP', 'hp', worker.GUIp_i18n.health],
+		['Godpower', 'gp', worker.GUIp_i18n.godpower],
+		['Charges', 'ch', worker.GUIp_i18n.charges],
+		['Task', 'tsk', worker.GUIp_i18n.task],
+		['Monster', 'mns', worker.GUIp_i18n.monsters],
+		['Inv', 'inv', worker.GUIp_i18n.inventory],
+		['Gold', 'gld', worker.GUIp_i18n.gold],
+		['Bricks', 'br', worker.GUIp_i18n.bricks],
+		['Logs', 'wd', worker.GUIp_i18n.logs],
+		['Savings', 'rtr', worker.GUIp_i18n.savings],
+		['Equip1', 'eq1', worker.GUIp_i18n.weapon, 'equip'],
+		['Equip2', 'eq2', worker.GUIp_i18n.shield, 'equip'],
+		['Equip3', 'eq3', worker.GUIp_i18n.head, 'equip'],
+		['Equip4', 'eq4', worker.GUIp_i18n.body, 'equip'],
+		['Equip5', 'eq5', worker.GUIp_i18n.arms, 'equip'],
+		['Equip6', 'eq6', worker.GUIp_i18n.legs, 'equip'],
+		['Equip7', 'eq7', worker.GUIp_i18n.talisman, 'equip'],
+		['Death', 'death', worker.GUIp_i18n.death_count],
+		['Pet_Level', 'pet_level', worker.GUIp_i18n.pet_level, 'monster']
+	];
 };
 ui_logger._appendStr = function(id, klass, str, descr) {
 	// append separator if needed
@@ -44,46 +84,6 @@ ui_logger._watchStatsValue = function(id, name, descr, klass) {
 		this._appendStr(id, klass, name + s, descr);
 	}
 };
-ui_logger._dungeonWatchers = [
-	['Map_HP', 'hp', worker.GUIp_i18n.hero_health, 'hp'],
-	['Map_Inv', 'inv', worker.GUIp_i18n.inventory, 'inv'],
-	['Map_Gold', 'gld', worker.GUIp_i18n.gold, 'gold'],
-	['Map_Charges', 'ch', worker.GUIp_i18n.charges, 'charges'],
-	['Map_Alls_HP', 'a:hp', worker.GUIp_i18n.allies_health, 'allies']
-];
-ui_logger._battleWatchers = [
-	['Hero_HP', 'h:hp', worker.GUIp_i18n.hero_health, 'hp'],
-	['Enemy_HP', 'e:hp', worker.GUIp_i18n.enemy_health, 'death'],
-	['Hero_Alls_HP', 'a:hp', worker.GUIp_i18n.allies_health, 'allies'],
-	['Hero_Inv', 'h:inv', worker.GUIp_i18n.inventory, 'inv'],
-	['Hero_Gold', 'h:gld', worker.GUIp_i18n.gold, 'gold'],
-	['Hero_Charges', 'ch', worker.GUIp_i18n.charges, 'charges'],
-	['Enemy_Gold', 'e:gld', worker.GUIp_i18n.gold, 'monster'],
-	['Enemy_Inv', 'e:inv', worker.GUIp_i18n.inventory, 'monster']
-];
-ui_logger._fieldWatchers = [
-	['Exp', 'exp', worker.GUIp_i18n.exp],
-	['Level', 'lvl', worker.GUIp_i18n.level],
-	['HP', 'hp', worker.GUIp_i18n.health],
-	['Godpower', 'gp', worker.GUIp_i18n.godpower],
-	['Charges', 'ch', worker.GUIp_i18n.charges],
-	['Task', 'tsk', worker.GUIp_i18n.task],
-	['Monster', 'mns', worker.GUIp_i18n.monsters],
-	['Inv', 'inv', worker.GUIp_i18n.inventory],
-	['Gold', 'gld', worker.GUIp_i18n.gold],
-	['Bricks', 'br', worker.GUIp_i18n.bricks],
-	['Logs', 'wd', worker.GUIp_i18n.logs],
-	['Savings', 'rtr', worker.GUIp_i18n.savings],
-	['Equip1', 'eq1', worker.GUIp_i18n.weapon, 'equip'],
-	['Equip2', 'eq2', worker.GUIp_i18n.shield, 'equip'],
-	['Equip3', 'eq3', worker.GUIp_i18n.head, 'equip'],
-	['Equip4', 'eq4', worker.GUIp_i18n.body, 'equip'],
-	['Equip5', 'eq5', worker.GUIp_i18n.arms, 'equip'],
-	['Equip6', 'eq6', worker.GUIp_i18n.legs, 'equip'],
-	['Equip7', 'eq7', worker.GUIp_i18n.talisman, 'equip'],
-	['Death', 'death', worker.GUIp_i18n.death_count],
-	['Pet_Level', 'pet_level', worker.GUIp_i18n.pet_level, 'monster']
-];
 ui_logger._updateWatchers = function(watchersList) {
 	for (var i = 0, len = watchersList.length; i < len; i++) {
 		this._watchStatsValue.apply(this, watchersList[i]);
@@ -97,11 +97,11 @@ ui_logger.update = function() {
 		this.bar.show();
 	}
 	if (ui_data.isDungeon) {
-		this._updateWatchers(this._dungeonWatchers);
+		this._updateWatchers(this.dungeonWatchers);
 	} else if (ui_data.isBattle) {
-		this._updateWatchers(this._battleWatchers);
+		this._updateWatchers(this.battleWatchers);
 	} else {
-		this._updateWatchers(this._fieldWatchers);
+		this._updateWatchers(this.fieldWatchers);
 	}
 	this.need_separator = true;
 };
