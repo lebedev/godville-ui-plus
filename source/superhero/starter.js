@@ -9,7 +9,7 @@ ui_starter._init = function() {
 	ui_words.init();
 	ui_logger.create();
 	ui_timeout.create();
-	ui_help_dialog.create();
+	ui_help.init();
 	ui_informer.init();
 	ui_forum.init();
 	ui_improver.improve();

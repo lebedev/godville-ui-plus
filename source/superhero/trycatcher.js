@@ -21,7 +21,7 @@ ui_trycatcher.replace_with = function(method) {
 								 '<div>' + worker.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>',
 						callback: function() {
 							if (!ui_storage.get('helpDialogVisible')) {
-								ui_help_dialog.toggle();
+								ui_help.toggleDialog();
 							}
 						}
 					});

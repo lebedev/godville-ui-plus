@@ -60,7 +60,7 @@ module.exports = function(grunt) {
               'source/superhero/data.js',
               'source/superhero/utils.js',
               'source/superhero/timeout.js',
-              'source/superhero/help_dialog.js',
+              'source/superhero/help.js',
               'source/superhero/storage.js',
               'source/superhero/words.js',
               'source/superhero/stats.js',

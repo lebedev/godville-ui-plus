@@ -158,7 +158,7 @@ ui_utils.messages = {
 		},
 		callback: function() {
 			if (!ui_storage.get('helpDialogVisible')) {
-				ui_help_dialog.toggle();
+				ui_help.toggleDialog();
 			}
 		}
 	}
@@ -186,7 +186,7 @@ ui_utils.messages = {
 		},
 		callback: function() {
 			if (!ui_storage.get('helpDialogVisible')) {
-				ui_help_dialog.toggle();
+				ui_help.toggleDialog();
 			}
 		}
 	},

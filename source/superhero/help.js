@@ -1,13 +1,14 @@
-// ui_help_dialog
-var ui_help_dialog = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "help_dialog"}) : worker.GUIp.help_dialog = {};
+// ui_help
+var ui_help = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "help"}) : worker.GUIp.help = {};
 
+ui_help.init = function() {
+	this._createHelpDialog();
+	this._createButtons();
+};
 // creates ui dialog
-ui_help_dialog.create = function() {
-	var menu_bar = document.querySelector('#menu_bar ul');
-	menu_bar.insertAdjacentHTML('beforeend', '<li> | </li><a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
-	this.addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
+ui_help._createHelpDialog = function() {
 	document.getElementById('menu_bar').insertAdjacentHTML('afterend',
-		'<div id="ui_help_dialog" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' +
+		'<div id="ui_help" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' +
 		'<div class="hint_bar_capt"><b>Godville UI+ (v' + ui_data.currentVersion + ')</b>, ' + worker.GUIp_i18n.if_something_wrong_capt + '...</div>' +
 		'<div class="hint_bar_content" style="padding: 0.5em 0.8em;">'+
 			'<div style="text-align: left;">' +
@@ -30,6 +31,19 @@ ui_help_dialog.create = function() {
 		'<div class="hint_bar_close"></div></div>'
 	);
 
+	document.getElementById('check_version').onclick = function() {
+		this.textContent = worker.GUIp_i18n.getting_version_no;
+		this.classList.remove('div_link');
+		ui_utils.getXHR('/forums/show/' + (worker.GUIp_locale === 'ru' ? '2' : '1'), ui_help.onXHRSuccess, ui_help.onXHRFail);
+		return false;
+	};
+
+	if (ui_storage.get('helpDialogVisible')) { worker.$('#ui_help').show(); }
+};
+ui_help._createButtons = function() {
+	var menu_bar = document.querySelector('#menu_bar ul');
+	menu_bar.insertAdjacentHTML('beforeend', '<li> | </li><a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
+	this.addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
 	if (ui_storage.get('Option:enableDebugMode')) {
 		this.addDumpButton('<span>dump: </span>', 'all');
 		this.addDumpButton('<span>, </span>', 'options', 'Option');
@@ -39,19 +53,24 @@ ui_help_dialog.create = function() {
 		this.addDumpButton('<span>, </span>', 'log', 'Log:');
 	}
 	this.addToggleButton(document.getElementsByClassName('hint_bar_close')[0], worker.GUIp_i18n.close);
-	if (ui_storage.get('helpDialogVisible')) { worker.$('#ui_help_dialog').show(); }
-	document.getElementById('check_version').onclick = function() {
-		this.textContent = worker.GUIp_i18n.getting_version_no;
-		this.classList.remove('div_link');
-		ui_utils.getXHR('/forums/show/' + (worker.GUIp_locale === 'ru' ? '2' : '1'), ui_help_dialog.onXHRSuccess, ui_help_dialog.onXHRFail);
+};
+// gets toggle button
+ui_help._addToggleButton = function(elem, text) {
+	elem.insertAdjacentHTML('beforeend', '<a class="close_button">' + text + '</a>');
+	elem.getElementsByClassName('close_button')[0].onclick = function() {
+		ui_helui_help.toggleDialog();
 		return false;
 	};
 };
-ui_help_dialog.toggle = function(visible) {
-	ui_storage.set('helpDialogVisible', !ui_storage.get('helpDialogVisible'));
-	worker.$('#ui_help_dialog').slideToggle("slow");
+// gets fump button with a given label and selector
+ui_help._addDumpButton = function(text, label, selector) {
+	var hint_bar_content = document.getElementsByClassName('hint_bar_content')[0];
+	hint_bar_content.insertAdjacentHTML('beforeend', text + '<a class="devel_link" id="dump_' + label + '">' + label + '</a>');
+	document.getElementById('dump_' + label).onclick = function() {
+		ui_storage.dump(selector);
+	};
 };
-ui_help_dialog.onXHRSuccess = function(xhr) {
+ui_help.onXHRSuccess = function(xhr) {
 	var match;
 	if ((match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/))) {
 		var temp_cur = ui_data.currentVersion.split('.'),
@@ -66,31 +85,19 @@ ui_help_dialog.onXHRSuccess = function(xhr) {
 					   +temp_cur[3] < +temp_last[3] ? false : true;
 		worker.$('#check_version')[0].innerHTML = (isNewest ? worker.GUIp_i18n.is_last_version : worker.GUIp_i18n.is_not_last_version_1 + last_version + worker.GUIp_i18n.is_not_last_version_2) + worker.GUIp_i18n.proceed_to_next_step;
 		if (!isNewest) {
-			worker.$('#ui_help_dialog ol li.update_required.' + worker.GUIp_browser).removeClass('hidden');
+			worker.$('#ui_help ol li.update_required.' + worker.GUIp_browser).removeClass('hidden');
 		} else {
-			worker.$('#ui_help_dialog ol li.console.' + worker.GUIp_browser).removeClass('hidden');
+			worker.$('#ui_help ol li.console.' + worker.GUIp_browser).removeClass('hidden');
 		}
 	} else {
-		ui_help_dialog.onXHRFail();
+		ui_help.onXHRFail();
 	}
 };
-ui_help_dialog.onXHRFail = function() {
+ui_help.onXHRFail = function() {
 	worker.$('#check_version')[0].textContent = worker.GUIp_i18n.getting_version_failed;
-	worker.$('#ui_help_dialog ol li.' + worker.GUIp_browser).removeClass('hidden');
+	worker.$('#ui_help ol li.' + worker.GUIp_browser).removeClass('hidden');
 };
-// gets toggle button
-ui_help_dialog.addToggleButton = function(elem, text) {
-	elem.insertAdjacentHTML('beforeend', '<a class="close_button">' + text + '</a>');
-	elem.getElementsByClassName('close_button')[0].onclick = function() {
-		ui_help_dialog.toggle();
-		return false;
-	};
-};
-// gets fump button with a given label and selector
-ui_help_dialog.addDumpButton = function(text, label, selector) {
-	var hint_bar_content = document.getElementsByClassName('hint_bar_content')[0];
-	hint_bar_content.insertAdjacentHTML('beforeend', text + '<a class="devel_link" id="dump_' + label + '">' + label + '</a>');
-	document.getElementById('dump_' + label).onclick = function() {
-		ui_storage.dump(selector);
-	};
+ui_help.toggleDialog = function(visible) {
+	ui_storage.set('helpDialogVisible', !ui_storage.get('helpDialogVisible'));
+	worker.$('#ui_help').slideToggle("slow");
 };
