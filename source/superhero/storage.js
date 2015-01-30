@@ -1,11 +1,5 @@
 // ui_storage
-var ui_storage;
-
-if (window.wrappedJSObject) {
-	ui_storage = createObjectIn(worker.GUIp, {defineAs: "storage"});
-} else {
-	ui_storage = worker.GUIp.storage = {};
-}
+var ui_storage = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "storage"}) : worker.GUIp.storage = {};
 
 ui_storage._get_key = function(key) {
 	return 'GUIp_' + ui_data.god_name + ':' + key;

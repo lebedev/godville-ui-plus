@@ -1,11 +1,5 @@
 // ui_words
-var ui_words;
-
-if (window.wrappedJSObject) {
-	ui_words = createObjectIn(worker.GUIp, {defineAs: "words"});
-} else {
-	ui_words = worker.GUIp.words = {};
-}
+var ui_words = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "words"}) : worker.GUIp.words = {};
 
 ui_words.currentPhrase = '';
 // gets words from phrases.js file and splits them into sections

@@ -1,11 +1,5 @@
 // ui_trycatcher
-var ui_trycatcher;
-
-if (window.wrappedJSObject) {
-	ui_trycatcher = createObjectIn(worker.GUIp, {defineAs: "trycatcher"});
-} else {
-	ui_trycatcher = worker.GUIp.trycatcher = {};
-}
+var ui_trycatcher = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "trycatcher"}) : worker.GUIp.trycatcher = {};
 
 ui_trycatcher.replace_with = function(method) {
 	return function() {

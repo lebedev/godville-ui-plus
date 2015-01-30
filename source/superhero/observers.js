@@ -1,11 +1,5 @@
 // ui_observers
-var ui_observers;
-
-if (window.wrappedJSObject) {
-	ui_observers = createObjectIn(worker.GUIp, {defineAs: "observers"});
-} else {
-	ui_observers = worker.GUIp.observers = {};
-}
+var ui_observers = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "observers"}) : worker.GUIp.observers = {};
 
 ui_observers.init = function() {
 	for (var key in this) {

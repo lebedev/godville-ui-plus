@@ -1,11 +1,5 @@
 // ui_informer
-var ui_informer;
-
-if (window.wrappedJSObject) {
-	ui_informer = createObjectIn(worker.GUIp, {defineAs: "informer"});
-} else {
-	ui_informer = worker.GUIp.informer = {};
-}
+var ui_informer = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "informer"}) : worker.GUIp.informer = {};
 
 ui_informer.init = function() {
 	//title saver

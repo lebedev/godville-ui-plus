@@ -1,11 +1,5 @@
 // ui_utils
-var ui_utils;
-
-if (window.wrappedJSObject) {
-	ui_utils = createObjectIn(worker.GUIp, {defineAs: "utils"});
-} else {
-	ui_utils = worker.GUIp.utils = {};
-}
+var ui_utils = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "utils"}) : worker.GUIp.utils = {};
 
 ui_utils.hasShownErrorMessage = false;
 ui_utils.hasShownInfoMessage = false;

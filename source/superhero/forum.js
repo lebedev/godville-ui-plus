@@ -1,11 +1,5 @@
 // ui_forum
-var ui_forum;
-
-if (window.wrappedJSObject) {
-	ui_forum = createObjectIn(worker.GUIp, {defineAs: "forum"});
-} else {
-	ui_forum = worker.GUIp.forum = {};
-}
+var ui_forum = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "forum"}) : worker.GUIp.forum = {};
 
 ui_forum.init = function() {
 	document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');

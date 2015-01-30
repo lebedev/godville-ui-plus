@@ -1,11 +1,5 @@
 // ui_stats
-var ui_stats;
-
-if (window.wrappedJSObject) {
-	ui_stats = createObjectIn(worker.GUIp, {defineAs: "stats"});
-} else {
-	ui_stats = worker.GUIp.stats = {};
-}
+var ui_stats = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "stats"}) : worker.GUIp.stats = {};
 
 ui_stats.get = function(key) {
 	return ui_storage.get('Stats:' + key);

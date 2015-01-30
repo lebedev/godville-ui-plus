@@ -1,11 +1,5 @@
 // ui_logger
-var ui_logger;
-
-if (window.wrappedJSObject) {
-	ui_logger = createObjectIn(worker.GUIp, {defineAs: "logger"});
-} else {
-	ui_logger = worker.GUIp.logger = {};
-}
+var ui_logger = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "logger"}) : worker.GUIp.logger = {};
 
 ui_logger.create = function() {
 	this.updating = false;
