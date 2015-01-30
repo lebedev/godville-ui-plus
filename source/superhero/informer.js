@@ -60,41 +60,35 @@ ui_informer._tick = function() {
 };
 ui_informer._clear_title = function() {
 	var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
-	var pm = 0;
-	if (!forbidden_title_notices.match('pm')) {
-		var pm_badge = document.querySelector('.fr_new_badge_pos');
-		if (pm_badge && pm_badge.style.display !== 'none') {
-			pm = +pm_badge.textContent;
-		}
-		var stars = document.querySelectorAll('.msgDock .fr_new_msg');
-		for (var i = 0, len = stars.length; i < len; i++) {
-			if (!stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent.match(/Гильдсовет|Guild Council/)) {
-				pm++;
-			}
-		}
-	}
-	pm = pm ? '[' + pm + ']' : '';
-
-	var gm = false;
-	if (!forbidden_title_notices.match('gm')) {
-		gm = document.getElementsByClassName('gc_new_badge')[0].style.display !== 'none';
-	}
-	gm = gm ? '[g]' : '';
-
-	var fi = 0;
-	if (!forbidden_title_notices.match('fi')) {
-		for (var topic in JSON.parse(ui_storage.get('ForumInformers'))) {
-			fi++;
-		}
-	}
-	fi = fi ? '[f]' : '';
-
-	document.title = pm + gm + fi + (pm || gm || fi ? ' ' : '') + this.title;
+	var titleNotices = (!forbidden_title_notices.match('pm') ? this._getPMTitleNotice() : '') +
+					   (!forbidden_title_notices.match('gm') ? this._getGMTitleNotice() : '') +
+					   (!forbidden_title_notices.match('fi') ? this._getFITitleNotice() : '');
+	document.title = (titleNotices ? titleNotices + ' ' : '') + this.title;
 	document.head.removeChild(document.querySelector('link[rel="shortcut icon"]'));
 	document.head.insertAdjacentHTML('beforeend', '<link rel="shortcut icon" href="images/favicon.ico" />');
 };
+ui_informer._getPMTitleNotice = function() {
+	var pm = 0,
+		pm_badge = document.querySelector('.fr_new_badge_pos');
+	if (pm_badge && pm_badge.style.display !== 'none') {
+		pm = +pm_badge.textContent;
+	}
+	var stars = document.querySelectorAll('.msgDock .fr_new_msg');
+	for (var i = 0, len = stars.length; i < len; i++) {
+		if (!stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent.match(/Гильдсовет|Guild Council/)) {
+			pm++;
+		}
+	}
+	return pm ? '[' + pm + ']' : '';
+};
+ui_informer._getGMTitleNotice = function() {
+	return document.getElementsByClassName('gc_new_badge')[0].style.display !== 'none' ? '[g]' : '';
+};
+ui_informer._getFITitleNotice = function() {
+	return document.querySelector('#forum_informer_bar a') ? '[f]' : '';
+};
 ui_informer._update_title = function(arr) {
-	this.odd_tick = ! this.odd_tick;
+	this.odd_tick = !this.odd_tick;
 	var sep, favicon;
 	if (this.odd_tick) {
 		sep = '...';
