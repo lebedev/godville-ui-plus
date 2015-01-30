@@ -3,6 +3,25 @@ var ui_data = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "d
 
 // base variables initialization
 ui_data.init = function() {
+	this._initVariables();
+	this._initForumData();
+	this._clearOldDungeonData();
+
+	// init mobile cookies
+	worker.document.cookie = 'm_f=1';
+	worker.document.cookie = 'm_pp=1';
+	worker.document.cookie = 'm_fl=1';
+
+	this._getLEMRestrictions();
+	worker.setInterval(this._getLEMRestrictions, 60*60*1000);
+
+	this._getWantedMonster();
+	worker.setInterval(this._getWantedMonster, 5*60*1000);
+
+	/*this._sendPing();
+	worker.setInterval(this._sendPing, 60*60*1000);*/
+};
+ui_data._initVariables = function() {
 	this.currentVersion = '$VERSION';
 	this.isBattle = worker.so.state.is_fighting();
 	this.isDungeon = worker.so.state.fight_type() === 'dungeon';
@@ -15,13 +34,8 @@ ui_data.init = function() {
 		document.body.classList.add('has_temple');
 		this.hasTemple = true;
 	}
-
-	// init mobile cookies
-	worker.document.cookie = 'm_f=1';
-	worker.document.cookie = 'm_pp=1';
-	worker.document.cookie = 'm_fl=1';
-
-	// init forum data
+};
+ui_data._initForumData = function() {
 	if (!ui_storage.get('Forum1')) {
 		if (worker.GUIp_locale === 'ru') {
 			ui_storage.set('Forum1', '{}');
@@ -48,7 +62,8 @@ ui_data.init = function() {
 			ui_storage.set('ForumInformers', '{}');
 		}
 	}
-
+};
+ui_data._clearOldDungeonData = function() {
 	if (!this.isBattle && !this.isDungeon) {
 		for (var i = 0, lines = [], len = worker.localStorage.length; i < len; i++) {
 			if (worker.localStorage.key(i).match(/Dungeon:/)) {
@@ -59,15 +74,6 @@ ui_data.init = function() {
 			worker.localStorage.removeItem(lines[i]);
 		}
 	}
-
-	this._getLEMRestrictions();
-	worker.setInterval(this._getLEMRestrictions, 60*60*1000);
-
-	this._getWantedMonster();
-	worker.setInterval(this._getWantedMonster, 5*60*1000);
-
-	/*this._sendPing();
-	worker.setInterval(this._sendPing, 60*60*1000);*/
 };
 ui_data._getLEMRestrictions = function() {
 	if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
