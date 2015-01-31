@@ -132,7 +132,7 @@ ui_utils.inform = function() {
 	var last_shown = !isNaN(ui_storage.get('lastShownMessage')) ? +ui_storage.get('lastShownMessage') : -1;
 	for (var i = 0, len = this.messages[worker.GUIp_locale].length; i < len; i++) {
 		if (this.messages[worker.GUIp_locale][i].msg_no > last_shown) {
-			this.showMessage(this.messages[worker.GUIp_locale][i].msg_no, this.messages[worker.GUIp_locale][i]);
+			ui_utils.showMessage(this.messages[worker.GUIp_locale][i].msg_no, this.messages[worker.GUIp_locale][i]);
 		}
 	}
 };

@@ -35,7 +35,7 @@ ui_trycatcher.process = function(object) {
 	for (method_name in object) {
 		method = object[method_name];
 		if (typeof method === "function") {
-			object[method_name] = this.replace_with(method);
+			object[method_name] = ui_trycatcher.replace_with(method);
 		}
 	}
 };

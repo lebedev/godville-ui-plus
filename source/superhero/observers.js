@@ -4,7 +4,7 @@ var ui_observers = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineA
 ui_observers.init = function() {
 	for (var key in this) {
 		if (this[key].condition) {
-			this.start(this[key]);
+			ui_observers.start(this[key]);
 		}
 	}
 };
@@ -15,7 +15,7 @@ ui_observers.start = function(obj) {
 	for (var i = 0, len = obj.target.length; i < len; i++) {
 		var target = document.querySelector(obj.target[i]);
 		if (target) {
-			var observer = new MutationObserver(this.process_mutations.bind(this, obj.func));
+			var observer = new MutationObserver(ui_observers.process_mutations.bind(this, obj.func));
 			observer.observe(target, obj.config);
 			obj.observers.push(observer);
 		}

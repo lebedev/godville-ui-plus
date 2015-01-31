@@ -22,7 +22,7 @@ ui_starter.start = function() {
 		worker.clearInterval(starterInt);
 		var start = new Date();
 
-		this._init();
+		ui_starter._init();
 
 		// Event and listeners
 		worker.$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));

@@ -3,23 +3,23 @@ var ui_data = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "d
 
 // base variables initialization
 ui_data.init = function() {
-	this._initVariables();
-	this._initForumData();
-	this._clearOldDungeonData();
+	ui_data._initVariables();
+	ui_data._initForumData();
+	ui_data._clearOldDungeonData();
 
 	// init mobile cookies
 	worker.document.cookie = 'm_f=1';
 	worker.document.cookie = 'm_pp=1';
 	worker.document.cookie = 'm_fl=1';
 
-	this._getLEMRestrictions();
-	worker.setInterval(this._getLEMRestrictions, 60*60*1000);
+	ui_data._getLEMRestrictions();
+	worker.setInterval(ui_data._getLEMRestrictions, 60*60*1000);
 
-	this._getWantedMonster();
-	worker.setInterval(this._getWantedMonster, 5*60*1000);
+	ui_data._getWantedMonster();
+	worker.setInterval(ui_data._getWantedMonster, 5*60*1000);
 
-	/*this._sendPing();
-	worker.setInterval(this._sendPing, 60*60*1000);*/
+	/*ui_data._sendPing();
+	worker.setInterval(ui_data._sendPing, 60*60*1000);*/
 };
 ui_data._initVariables = function() {
 	this.currentVersion = '$VERSION';

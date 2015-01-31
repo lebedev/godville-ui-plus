@@ -9,13 +9,13 @@ ui_stats.set = function(key, value) {
 };
 ui_stats.setFromProgressBar = function(id, $elem) {
 	var value = $elem.attr('title').replace(/[^0-9]/g, '');
-	return this.set(id, value);
+	return ui_stats.set(id, value);
 };
 ui_stats.setFromLabelCounter = function(id, $container, label, parser) {
 	parser = parser || parseInt;
 	var $label = ui_utils.findLabel($container, label);
 	var $field = $label.siblings('.l_val');
 	var value = parser($field.text());
-	if (id === 'Bricks' || id === 'Logs') { return this.set(id, Math.floor(value*10 + 0.5)); }
-	else { return this.set(id, value); }
+	if (id === 'Bricks' || id === 'Logs') { return ui_stats.set(id, Math.floor(value*10 + 0.5)); }
+	else { return ui_stats.set(id, value); }
 };

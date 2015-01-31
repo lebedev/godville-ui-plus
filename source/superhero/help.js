@@ -2,8 +2,8 @@
 var ui_help = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "help"}) : worker.GUIp.help = {};
 
 ui_help.init = function() {
-	this._createHelpDialog();
-	this._createButtons();
+	ui_help._createHelpDialog();
+	ui_help._createButtons();
 };
 // creates ui dialog
 ui_help._createHelpDialog = function() {
@@ -43,16 +43,16 @@ ui_help._createHelpDialog = function() {
 ui_help._createButtons = function() {
 	var menu_bar = document.querySelector('#menu_bar ul');
 	menu_bar.insertAdjacentHTML('beforeend', '<li> | </li><a href="user/profile#ui_options">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
-	this._addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
+	ui_help._addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
 	if (ui_storage.get('Option:enableDebugMode')) {
-		this._addDumpButton('<span>dump: </span>', 'all');
-		this._addDumpButton('<span>, </span>', 'options', 'Option');
-		this._addDumpButton('<span>, </span>', 'stats', 'Stats');
-		this._addDumpButton('<span>, </span>', 'logger', 'Logger');
-		this._addDumpButton('<span>, </span>', 'forum', 'Forum');
-		this._addDumpButton('<span>, </span>', 'log', 'Log:');
+		ui_help._addDumpButton('<span>dump: </span>', 'all');
+		ui_help._addDumpButton('<span>, </span>', 'options', 'Option');
+		ui_help._addDumpButton('<span>, </span>', 'stats', 'Stats');
+		ui_help._addDumpButton('<span>, </span>', 'logger', 'Logger');
+		ui_help._addDumpButton('<span>, </span>', 'forum', 'Forum');
+		ui_help._addDumpButton('<span>, </span>', 'log', 'Log:');
 	}
-	this._addToggleButton(document.getElementsByClassName('hint_bar_close')[0], worker.GUIp_i18n.close);
+	ui_help._addToggleButton(document.getElementsByClassName('hint_bar_close')[0], worker.GUIp_i18n.close);
 };
 // gets toggle button
 ui_help._addToggleButton = function(elem, text) {

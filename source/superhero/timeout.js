@@ -26,9 +26,9 @@ ui_timeout.start = function() {
 	worker.clearInterval(this._tickInt);
 	this.bar.style.transitionDuration = '';
 	this.bar.classList.remove('running');
-	worker.setTimeout(this._delayedStart, 10);
+	worker.setTimeout(ui_timeout._delayedStart, 10);
 	this._finishtDate = Date.now() + this.timeout*1000;
-	this._tickInt = worker.setInterval(this._tick.bind(this), 100);
+	this._tickInt = worker.setInterval(ui_timeout._tick.bind(this), 100);
 	ui_utils.setVoiceSubmitState(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice'), true);
 };
 ui_timeout._delayedStart = function() {

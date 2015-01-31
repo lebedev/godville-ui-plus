@@ -3,8 +3,8 @@ var ui_forum = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "
 
 ui_forum.init = function() {
 	document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
-	this._check();
-	worker.setInterval(this._check.bind(this), 300000);
+	ui_forum._check();
+	worker.setInterval(ui_forum._check.bind(ui_forum), 300000);
 };
 ui_forum._check = function() {
 	for (var forum_no = 1; forum_no <= (worker.GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
@@ -12,7 +12,7 @@ ui_forum._check = function() {
 			topics = [];
 		for (var topic in current_forum) {
 			// to prevent simultaneous ForumInformers access
-			worker.setTimeout(ui_utils.getXHR.bind(this, '/forums/show/' + forum_no, this._parse.bind(this), undefined, forum_no), 500*forum_no);
+			worker.setTimeout(ui_utils.getXHR.bind(ui_forum, '/forums/show/' + forum_no, ui_forum._parse.bind(ui_forum), undefined, forum_no), 500*forum_no);
 			break;
 		}
 	}
@@ -22,7 +22,7 @@ ui_forum._process = function(forum_no) {
 		topics = JSON.parse(ui_storage.get('Forum' + forum_no));
 	for (var topic in topics) {
 		if (informers[topic]) {
-			this._set_informer(topic, informers[topic], topics[topic]);
+			ui_forum._set_informer(topic, informers[topic], topics[topic]);
 		}
 	}
 };
@@ -88,5 +88,5 @@ ui_forum._parse = function(xhr) {
 	}
 	ui_storage.set('ForumInformers', JSON.stringify(informers));
 	ui_storage.set('Forum' + xhr.extra_arg, JSON.stringify(forum));
-	this._process(xhr.extra_arg);
+	ui_forum._process(xhr.extra_arg);
 };

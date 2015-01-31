@@ -7,7 +7,7 @@ ui_storage._get_key = function(key) {
 // gets diff with a value
 ui_storage._diff = function(id, value) {
 	var diff = null;
-	var old = this.get(id);
+	var old = ui_storage.get(id);
 	if (old !== null) {
 		diff = value - old;
 	}
@@ -15,20 +15,20 @@ ui_storage._diff = function(id, value) {
 };
 // stores a value
 ui_storage.set = function(id, value) {
-	worker.localStorage[this._get_key(id)] = value;
+	worker.localStorage[ui_storage._get_key(id)] = value;
 	return value;
 };
 // reads a value
 ui_storage.get = function(id) {
-	var val = worker.localStorage[this._get_key(id)];
+	var val = worker.localStorage[ui_storage._get_key(id)];
 	if (val === 'true') { return true; }
 	if (val === 'false') { return false; }
 	return val;
 };
 // stores value and gets diff with old
 ui_storage.set_with_diff = function(id, value) {
-	var diff = this._diff(id, value);
-	this.set(id, value);
+	var diff = ui_storage._diff(id, value);
+	ui_storage.set(id, value);
 	return diff;
 };
 // dumps all values related to current god_name
@@ -85,23 +85,23 @@ ui_storage._rename = function(from, to) {
 	}
 };
 ui_storage._rename_nesw = function(from, to) {
-	if (this.get('phrases_walk_' + from)) {
-		this.set('CustomPhrases:go_' + to, this.get('phrases_walk_' + from));
-		worker.localStorage.removeItem(this._get_key('phrases_walk_' + from));
+	if (ui_storage.get('phrases_walk_' + from)) {
+		ui_storage.set('CustomPhrases:go_' + to, ui_storage.get('phrases_walk_' + from));
+		worker.localStorage.removeItem(ui_storage._get_key('phrases_walk_' + from));
 	}
 };
 ui_storage.migrate = function() {
 	var i, len, keys = [];
 	if (!worker.localStorage.GUIp_migrated) {
-		this._rename(/^GM/, 'GUIp_');
+		ui_storage._rename(/^GM/, 'GUIp_');
 		worker.localStorage.GUIp_migrated = '151114';
 	}
 	if (worker.localStorage.GUIp_migrated === '151114' || worker.localStorage.GUIp_migrated < '150113') {
-		this._rename_nesw('n', 'north');
-		this._rename_nesw('e', 'east');
-		this._rename_nesw('s', 'south');
-		this._rename_nesw('w', 'west');
-		this._rename(/:phrases_/, ':CustomPhrases:');
+		ui_storage._rename_nesw('n', 'north');
+		ui_storage._rename_nesw('e', 'east');
+		ui_storage._rename_nesw('s', 'south');
+		ui_storage._rename_nesw('w', 'west');
+		ui_storage._rename(/:phrases_/, ':CustomPhrases:');
 		worker.localStorage.GUIp_migrated = '150113';
 	}
 };

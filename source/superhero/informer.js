@@ -8,14 +8,14 @@ ui_informer.init = function() {
 	document.getElementById('main_wrapper').insertAdjacentHTML('afterbegin', '<div id="informer_bar" />');
 	this.container = document.getElementById('informer_bar');
 	// load and draw labels
-	this._load();
+	ui_informer._load();
 	for (var flag in this.flags) {
 		if (this.flags[flag]) {
-			this._create_label(flag);
+			ui_informer._create_label(flag);
 		}
 	}
 	// run flicker
-	this._tick();
+	ui_informer._tick();
 };
 ui_informer._load = function() {
 	var fl = ui_storage.get('informer_flags');
@@ -51,18 +51,18 @@ ui_informer._tick = function() {
 
 	// если есть чё, показать или вернуть стандартный заголовок
 	if (to_show.length > 0) {
-		this._update_title(to_show);
-		this.tref = worker.setTimeout(this._tick.bind(this), 700);
+		ui_informer._update_title(to_show);
+		this.tref = worker.setTimeout(ui_informer._tick.bind(ui_informer), 700);
 	} else {
-		this._clear_title();
+		ui_informer._clear_title();
 		this.tref = undefined;
 	}
 };
 ui_informer._clear_title = function() {
 	var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
-	var titleNotices = (!forbidden_title_notices.match('pm') ? this._getPMTitleNotice() : '') +
-					   (!forbidden_title_notices.match('gm') ? this._getGMTitleNotice() : '') +
-					   (!forbidden_title_notices.match('fi') ? this._getFITitleNotice() : '');
+	var titleNotices = (!forbidden_title_notices.match('pm') ? ui_informer._getPMTitleNotice() : '') +
+					   (!forbidden_title_notices.match('gm') ? ui_informer._getGMTitleNotice() : '') +
+					   (!forbidden_title_notices.match('fi') ? ui_informer._getFITitleNotice() : '');
 	document.title = (titleNotices ? titleNotices + ' ' : '') + this.title;
 	document.head.removeChild(document.querySelector('link[rel="shortcut icon"]'));
 	document.head.insertAdjacentHTML('beforeend', '<link rel="shortcut icon" href="images/favicon.ico" />');
@@ -106,20 +106,20 @@ ui_informer.update = function(flag, value) {
 		ui_storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))) {
 		if (!(flag in this.flags)) {
 			this.flags[flag] = true;
-			this._create_label(flag);
-			this._save();
+			ui_informer._create_label(flag);
+			ui_informer._save();
 		}
 	} else if (flag in this.flags) {
 		delete this.flags[flag];
-		this._delete_label(flag);
-		this._save();
+		ui_informer._delete_label(flag);
+		ui_informer._save();
 	}
 	if (!this.tref) {
-		this._tick();
+		ui_informer._tick();
 	}
 };
 ui_informer.hide = function(flag) {
 	this.flags[flag] = false;
-	this._delete_label(flag);
-	this._save();
+	ui_informer._delete_label(flag);
+	ui_informer._save();
 };

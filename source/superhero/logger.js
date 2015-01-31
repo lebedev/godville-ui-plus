@@ -81,12 +81,12 @@ ui_logger._watchStatsValue = function(id, name, descr, klass) {
 		} else {
 			s = '+' + diff;
 		}
-		this._appendStr(id, klass, name + s, descr);
+		ui_logger._appendStr(id, klass, name + s, descr);
 	}
 };
 ui_logger._updateWatchers = function(watchersList) {
 	for (var i = 0, len = watchersList.length; i < len; i++) {
-		this._watchStatsValue.apply(this, watchersList[i]);
+		ui_logger._watchStatsValue.apply(this, watchersList[i]);
 	}
 };
 ui_logger.update = function() {
@@ -97,11 +97,11 @@ ui_logger.update = function() {
 		this.bar.show();
 	}
 	if (ui_data.isDungeon) {
-		this._updateWatchers(this.dungeonWatchers);
+		ui_logger._updateWatchers(this.dungeonWatchers);
 	} else if (ui_data.isBattle) {
-		this._updateWatchers(this.battleWatchers);
+		ui_logger._updateWatchers(this.battleWatchers);
 	} else {
-		this._updateWatchers(this.fieldWatchers);
+		ui_logger._updateWatchers(this.fieldWatchers);
 	}
 	this.need_separator = true;
 };

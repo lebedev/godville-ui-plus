@@ -48,30 +48,30 @@ ui_improver.improve = function() {
 	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
 	if (this.isFirstTime) {
 		if (!ui_data.isBattle && !ui_data.isDungeon) {
-			this.improveDiary();
-			this.improveLoot();
+			ui_improver.improveDiary();
+			ui_improver.improveLoot();
 		}
 		if (ui_data.isDungeon) {
-			this.getDungeonPhrases();
+			ui_improver.getDungeonPhrases();
 		}
 	}
-	this.improveStats();
-	this.improvePet();
-	this.improveVoiceDialog();
+	ui_improver.improveStats();
+	ui_improver.improvePet();
+	ui_improver.improveVoiceDialog();
 	if (!ui_data.isBattle) {
-		this.improveNews();
-		this.improveEquip();
-		this.improvePantheons();
+		ui_improver.improveNews();
+		ui_improver.improveEquip();
+		ui_improver.improvePantheons();
 	}
 	if (ui_data.isDungeon) {
-		this.improveMap();
+		ui_improver.improveMap();
 	}
-	this.improveInterface();
-	this.improveChat();
+	ui_improver.improveInterface();
+	ui_improver.improveChat();
 	if (this.isFirstTime && (ui_data.isBattle || ui_data.isDungeon)) {
-		this.improveAllies();
+		ui_improver.improveAllies();
 	}
-	this.checkButtonsVisibility();
+	ui_improver.checkButtonsVisibility();
 	this.isFirstTime = false;
 	this.improveInProcess = false;
 };
@@ -283,7 +283,7 @@ ui_improver.MapIteration = function(MapThermo, iPointer, jPointer, step, kRow, k
 					if (MapThermo[iNext][jNext] !== -1) {
 						if (MapThermo[iNext][jNext] > step || MapThermo[iNext][jNext] === 0) {
 							MapThermo[iNext][jNext] = step;
-							this.MapIteration(MapThermo, iNext, jNext, step, kRow, kColumn);
+							ui_improver.MapIteration(MapThermo, iNext, jNext, step, kRow, kColumn);
 						}
 					}
 				}
@@ -417,7 +417,7 @@ ui_improver.improveMap = function() {
 						}
 					}
 					//	Запускаем итерацию
-					this.MapIteration(MapThermo, si, sj, 0, kRow, kColumn);
+					ui_improver.MapIteration(MapThermo, si, sj, 0, kRow, kColumn);
 					//	Метим возможный клад
 					for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++) {
 						for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++) {
@@ -456,7 +456,7 @@ ui_improver.improveStats = function() {
 		ui_stats.setFromLabelCounter('Map_Gold', worker.$('#m_info'), worker.GUIp_i18n.gold_label, gold_parser);
 		ui_stats.setFromLabelCounter('Map_Inv', worker.$('#m_info'), worker.GUIp_i18n.inventory_label);
 		ui_stats.set('Map_Charges', worker.$('#m_control .acc_val').text(), parseFloat);
-		ui_stats.set('Map_Alls_HP', this.GroupHP(true));
+		ui_stats.set('Map_Alls_HP', ui_improver.GroupHP(true));
 		if (ui_storage.get('Logger:Location') === 'Field') {
 			ui_storage.set('Logger:Location', 'Dungeon');
 			ui_storage.set('Logger:Map_HP', ui_stats.get('Map_HP'));
@@ -475,8 +475,8 @@ ui_improver.improveStats = function() {
 		ui_stats.set('Hero_Charges', worker.$('#m_control .acc_val').text(), parseFloat);
 		ui_stats.setFromLabelCounter('Enemy_Gold', worker.$('#o_info'), worker.GUIp_i18n.gold_label, gold_parser);
 		ui_stats.setFromLabelCounter('Enemy_Inv', worker.$('#o_info'), worker.GUIp_i18n.inventory_label);
-		ui_stats.set('Hero_Alls_HP', this.GroupHP(true));
-		ui_stats.set('Enemy_HP', this.GroupHP(false));
+		ui_stats.set('Hero_Alls_HP', ui_improver.GroupHP(true));
+		ui_stats.set('Enemy_HP', ui_improver.GroupHP(false));
 		if (this.isFirstTime) {
 			ui_storage.set('Logger:Hero_HP', ui_stats.get('Hero_HP'));
 			ui_storage.set('Logger:Hero_Gold', ui_stats.get('Hero_Gold'));
@@ -645,16 +645,16 @@ ui_improver.parseDungeonPhrases = function(xhr) {
 		this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(temp);
 		ui_storage.set('Dungeon:' + this.dungeonPhrases[i] + 'Phrases', temp);
 	}
-	this.improveChronicles();
+	ui_improver.improveChronicles();
 };
 ui_improver.getDungeonPhrases = function() {
 	if (!ui_storage.get('Dungeon:bossPhrases')) {
-		ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), this.parseDungeonPhrases.bind(this));
+		ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), ui_improver.parseDungeonPhrases.bind(ui_improver));
 	} else {
 		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
 			this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(ui_storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
 		}
-		this.improveChronicles();
+		ui_improver.improveChronicles();
 	}
 };
 ui_improver.parseChronicles = function(xhr) {
@@ -705,10 +705,10 @@ ui_improver.improveChronicles = function() {
 		// informer
 		ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent === '▼' ? document.querySelectorAll('#m_fight_log .d_line.warning:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.warning:last-child').length);
 
-		this.colorDungeonMap();
+		ui_improver.colorDungeonMap();
 	}
 	if (this.isFirstTime) {
-		ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, this.parseChronicles.bind(this));
+		ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
 	}
 	ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
 	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', worker.$('#m_fight_log .block_title').text().match(/\d+/)[0]);
@@ -770,18 +770,18 @@ ui_improver.colorDungeonMap = function() {
 	}
 };
 ui_improver.whenWindowResize = function() {
-	this.chatsFix();
+	ui_improver.chatsFix();
 	//body widening
 	worker.$('body').width(worker.$(worker).width() < worker.$('#main_wrapper').width() ? worker.$('#main_wrapper').width() : '');
 };
 ui_improver.improveInterface = function() {
 	if (this.isFirstTime) {
 		worker.$('a[href=#]').removeAttr('href');
-		this.whenWindowResize();
+		ui_improver.whenWindowResize();
 		worker.$(worker).resize((function() {
 			worker.clearInterval(this.windowResizeInt);
-			this.windowResizeInt = worker.setTimeout(this.whenWindowResize.bind(this), 250);
-		}).bind(this));
+			this.windowResizeInt = worker.setTimeout(ui_improver.whenWindowResize.bind(ui_improver), 250);
+		}).bind(ui_improver));
 		if (ui_data.isBattle) {
 			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + worker.so.state.stats.perm_link.value + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
 		}
@@ -996,11 +996,11 @@ ui_improver.activity = function() {
 ui_improver.nodeInsertion = function() {
 	if (!this.improveInProcess) {
 		this.improveInProcess = true;
-		worker.setTimeout(this.nodeInsertionDelay.bind(this), 50);
+		worker.setTimeout(ui_improver.nodeInsertionDelay.bind(ui_improver), 50);
 	}
 };
 ui_improver.nodeInsertionDelay = function() {
-	this.improve();
+	ui_improver.improve();
 	if (ui_data.isBattle) {
 		ui_logger.update();
 	}
