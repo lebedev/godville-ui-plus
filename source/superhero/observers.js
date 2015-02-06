@@ -9,7 +9,9 @@ ui_observers.init = function() {
 	}
 };
 ui_observers.process_mutations = function(obj_func, mutations) {
-	mutations.forEach(obj_func);
+	for (var i = 0, len = mutations.length; i < len; i++) {
+		obj_func(mutations[i]);
+	}
 };
 ui_observers.start = function(obj) {
 	for (var i = 0, len = obj.target.length; i < len; i++) {
