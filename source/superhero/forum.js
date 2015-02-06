@@ -43,10 +43,10 @@ ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
 				var informers = JSON.parse(ui_storage.get('ForumInformers'));
 				delete informers[this.id.match(/\d+/)[0]];
 				ui_storage.set('ForumInformers', JSON.stringify(informers));
-				worker.$(document).trigger("DOMNodeInserted");
 				worker.$(this).slideToggle("fast", function() {
 					if (this.parentElement) {
 						this.parentElement.removeChild(this);
+						ui_informer.clearTitle();
 					}
 				});
 			}
