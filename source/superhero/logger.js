@@ -67,7 +67,7 @@ ui_logger._watchStatsValue = function(id, name, descr, klass) {
 	var s, diff = ui_storage.set_with_diff('Logger:' + id, ui_stats.get(id));
 	if (diff) {
 		// Если нужно, то преобразовываем в число с одним знаком после запятой
-		//if (parseInt(diff) !== diff) { diff = diff.toFixed(1); }
+		if (parseInt(diff) !== diff) { diff = diff.toFixed(1); }
 		// Добавление плюcа, минуса или стрелочки
 		if (diff < 0) {
 			if (name === 'exp' && ui_storage.get('Logger:Level') !== worker.$('#hk_level .l_val').text()) {
