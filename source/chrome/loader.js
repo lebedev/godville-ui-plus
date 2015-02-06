@@ -1,12 +1,11 @@
 (function() {
 	function createScripts(urls) {
 		for (var i = 0, len = urls.length; i < len; i++) {
-			var head = document.head;
 			var scr = document.createElement('script');
 			scr.type = 'text/javascript';
 			scr.src = urls[i];
 			scr.id = 'godville-ui-plus';
-			head.appendChild(scr);
+			document.head.appendChild(scr);
 		}
 	}
 	var prefix = localStorage.GUIp_prefix = window.chrome.extension.getURL('');
