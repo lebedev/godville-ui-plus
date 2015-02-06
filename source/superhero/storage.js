@@ -74,7 +74,7 @@ ui_storage.clear = function(what) {
 	location.reload();
 };
 ui_storage._rename = function(from, to) {
-	for (i = 0, len = worker.localStorage.length, keys = []; i < len; i++) {
+	for (var i = 0, len = worker.localStorage.length, keys = []; i < len; i++) {
 		if (worker.localStorage.key(i).match(from)) {
 			keys.push(worker.localStorage.key(i));
 		}
