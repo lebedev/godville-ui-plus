@@ -4,7 +4,7 @@ var ui_forum = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "
 ui_forum.init = function() {
 	document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
 	ui_forum._check();
-	worker.setInterval(ui_forum._check.bind(ui_forum), 300000);
+	worker.setInterval(ui_forum._check.bind(ui_forum), 5*60*1000);
 };
 ui_forum._check = function() {
 	for (var forum_no = 1; forum_no <= (worker.GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
@@ -22,11 +22,11 @@ ui_forum._process = function(forum_no) {
 		topics = JSON.parse(ui_storage.get('Forum' + forum_no));
 	for (var topic in topics) {
 		if (informers[topic]) {
-			ui_forum._set_informer(topic, informers[topic], topics[topic]);
+			ui_forum._setInformer(topic, informers[topic], topics[topic]);
 		}
 	}
 };
-ui_forum._set_informer = function(topic_no, topic_data, posts_count) {
+ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
 	var informer = document.getElementById('topic' + topic_no);
 	if (!informer) {
 		document.getElementById('forum_informer_bar').insertAdjacentHTML('beforeend',

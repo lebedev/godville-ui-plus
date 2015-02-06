@@ -11,7 +11,7 @@ ui_informer.init = function() {
 	ui_informer._load();
 	for (var flag in this.flags) {
 		if (this.flags[flag]) {
-			ui_informer._create_label(flag);
+			ui_informer._createLabel(flag);
 		}
 	}
 	// run flicker
@@ -25,7 +25,7 @@ ui_informer._load = function() {
 ui_informer._save = function() {
 	ui_storage.set('informer_flags', JSON.stringify(this.flags));
 };
-ui_informer._create_label = function(flag) {
+ui_informer._createLabel = function(flag) {
 	var id = flag.replace(/ /g, '_');
 	this.container.insertAdjacentHTML('beforeend', '<div id="' + id + '">' + flag + '</div>');
 	document.getElementById(id).onclick = function() {
@@ -33,7 +33,7 @@ ui_informer._create_label = function(flag) {
 		return false;
 	};
 };
-ui_informer._delete_label = function(flag) {
+ui_informer._deleteLabel = function(flag) {
 	var label = document.getElementById(flag.replace(/ /g, '_'));
 	if (label) {
 		this.container.removeChild(label);
@@ -51,20 +51,24 @@ ui_informer._tick = function() {
 
 	// если есть чё, показать или вернуть стандартный заголовок
 	if (to_show.length > 0) {
-		ui_informer._update_title(to_show);
+		ui_informer._updateTitle(to_show);
 		this.tref = worker.setTimeout(ui_informer._tick.bind(ui_informer), 700);
 	} else {
-		ui_informer._clear_title();
+		ui_informer.clearTitle();
 		this.tref = undefined;
 	}
 };
-ui_informer._clear_title = function() {
+ui_informer.clearTitle = function() {
 	var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
 	var titleNotices = (!forbidden_title_notices.match('pm') ? ui_informer._getPMTitleNotice() : '') +
 					   (!forbidden_title_notices.match('gm') ? ui_informer._getGMTitleNotice() : '') +
 					   (!forbidden_title_notices.match('fi') ? ui_informer._getFITitleNotice() : '');
 	document.title = (titleNotices ? titleNotices + ' ' : '') + this.title;
-	document.head.removeChild(document.querySelector('link[rel="shortcut icon"]'));
+
+	var sc = document.querySelector('link[rel="shortcut icon"]');
+	if (sc) {
+		document.head.removeChild(sc);
+	}
 	document.head.insertAdjacentHTML('beforeend', '<link rel="shortcut icon" href="images/favicon.ico" />');
 };
 ui_informer._getPMTitleNotice = function() {
@@ -87,7 +91,7 @@ ui_informer._getGMTitleNotice = function() {
 ui_informer._getFITitleNotice = function() {
 	return document.querySelector('#forum_informer_bar a') ? '[f]' : '';
 };
-ui_informer._update_title = function(arr) {
+ui_informer._updateTitle = function(arr) {
 	this.odd_tick = !this.odd_tick;
 	var sep, favicon;
 	if (this.odd_tick) {
@@ -106,12 +110,12 @@ ui_informer.update = function(flag, value) {
 		ui_storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))) {
 		if (!(flag in this.flags)) {
 			this.flags[flag] = true;
-			ui_informer._create_label(flag);
+			ui_informer._createLabel(flag);
 			ui_informer._save();
 		}
 	} else if (flag in this.flags) {
 		delete this.flags[flag];
-		ui_informer._delete_label(flag);
+		ui_informer._deleteLabel(flag);
 		ui_informer._save();
 	}
 	if (!this.tref) {
@@ -120,6 +124,6 @@ ui_informer.update = function(flag, value) {
 };
 ui_informer.hide = function(flag) {
 	this.flags[flag] = false;
-	ui_informer._delete_label(flag);
+	ui_informer._deleteLabel(flag);
 	ui_informer._save();
 };
