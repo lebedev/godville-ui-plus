@@ -379,7 +379,7 @@ worker.GUIp_i18n = {
 	forbidden_craft_r_r: 'regular + regular',
 	forbidden_craft_usable: 'including <b>activatable</b>',
 	forbidden_craft_heal: 'including healing',
-	disable_page_refresh: 'Enable automatic page refresh',
+	disable_page_refresh: 'Disable automatic page refresh',
 	disable_page_refresh_desc: 'when the hero page hangs (approved by the devs)',
 	disable_laying_timer: 'Remove experience conversion timer',
 	disable_laying_timer_desc: 'for those who are tired of it',
