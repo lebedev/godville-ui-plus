@@ -14,7 +14,8 @@
 			"moduleName": "main",
 			"packageName": "godville-ui-plus",
 			"requirements": {
-				"sdk/page-mod": "sdk/page-mod"
+				"sdk/page-mod": "sdk/page-mod",
+				"sdk/self": "sdk/self"
 			},
 			"sectionName": "lib"
 		}
