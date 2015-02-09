@@ -161,7 +161,7 @@ ui_utils.messages = {
 				ui_help.toggleDialog();
 			}
 		}
-	}
+	},
 	/*{
 		msg_no: 7, // 0..6 are used
 		title: 'Godville UI+: Заголовок',

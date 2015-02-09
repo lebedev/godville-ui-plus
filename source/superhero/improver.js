@@ -684,7 +684,7 @@ ui_improver.parseChronicles = function(xhr) {
 			if (direction) {
 				entry.direction = direction[0];
 			}
-			for (var j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
+			for (var j = 0, len2 = this.dungeonPhrases.length - 1; j < len2; j++) {
 				if (matches[i].match(this[this.dungeonPhrases[j] + 'RegExp'])) {
 					if (!entry.classList) {
 						entry.classList = [];
@@ -692,6 +692,51 @@ ui_improver.parseChronicles = function(xhr) {
 					entry.classList.push(this.dungeonPhrases[j]);
 				}
 			}
+			/*if (matches[i].match(this.pointerSignRegExp)) {
+				if (!entry.classList) {
+					entry.classList = [];
+				}
+				entry.classList.push('pointer');
+				var middle = matches[i].replace(/offered to trust h.. gut feeling\./, '')
+									   .match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
+				var pointers = middle.match(this.pointerRegExp);
+				for (j = 0, len2 = pointers.length; j < len2; j++) {
+					var pointerClass;
+					switch (pointers[j]) {
+					case 'северо-восток':
+					case 'north-east': pointerClass = 'north-east'; break;
+					case 'северо-запад':
+					case 'north-west': pointerClass = 'north-west'; break;
+					case 'юго-восток':
+					case 'south-east': pointerClass = 'south-east'; break;
+					case 'юго-запад':
+					case 'south-west': pointerClass = 'south-west'; break;
+					case 'север':
+					case 'north': pointerClass = 'north'; break;
+					case 'восток':
+					case 'east': pointerClass = 'east'; break;
+					case 'юг':
+					case 'south': pointerClass = 'south'; break;
+					case 'запад':
+					case 'west': pointerClass = 'west'; break;
+					case 'очень холодно':
+					case 'very cold':
+					case 'freezing': pointerClass = 'freezing'; break;
+					case 'холодно':
+					case 'cold': pointerClass = 'cold'; break;
+					case 'свежо':
+					case 'mild': pointerClass = 'mild'; break;
+					case 'тепло':
+					case 'warm': pointerClass = 'warm'; break;
+					case 'горячо':
+					case 'hot': pointerClass = 'hot'; break;
+					case 'очень горячо':
+					case 'very hot':
+					case 'burning': pointerClass = 'burning'; break;
+					}
+					entry.classList.push(pointerClass);
+				}
+			}*/
 			this.old_chronicles.push(entry);
 		}
 	}
@@ -709,27 +754,54 @@ ui_improver.improveChronicles = function() {
 			if (chronicles[i].textContent.match(this.pointerSignRegExp)) {
 				chronicles[i].parentNode.classList.add('pointer');
 				var middle = chronicles[i].textContent.replace(/offered to trust h.. gut feeling\./, '')
-													  .match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
-				var pointers = middle.match(this.pointerRegExp);
-				for (j = 0, len2 = pointers.length; j < len2; j++) {
+													  .match(/^.*?\.(.*)[.!?].*?[.!?]$/);
+				if (!middle) {
+						ui_utils.showMessage('info', {
+							title: 'Инфа по багу 2. ОТПРАВЬТЕ ЭТУ ИНФУ БЭДЛАКУ ВО ЧТО БЫ ТО НИ СТАЛО.',
+							content: '<div>' +
+								'0. ' + worker.GUIp_browser +  '<br>' +
+								'1. jumping: ' + this.jumpingDungeonRegExp + '<br>' +
+								'2. pointerSignRegExp: ' + this.pointerSignRegExp + '<br>' +
+								'3. entry with pointerSign: ' + chronicles[i].textContent + '<br>' +
+								'4. match: ' + chronicles[i].textContent.match(this.pointerSignRegExp) + '<br>' +
+								'5. issue: null middle<br>' +
+								'6. !!match[0]: ' + !!chronicles[i].textContent.match(this.pointerSignRegExp)[0] + '</div>'
+						});
+				} else {
+					var pointers = middle[1] ? middle[1].match(this.pointerRegExp) : null;
+					if (!pointers) {
+						ui_utils.showMessage('info', {
+							title: 'Инфа по багу 2. ОТПРАВЬТЕ ЭТУ ИНФУ БЭДЛАКУ ВО ЧТО БЫ ТО НИ СТАЛО.',
+							content: '<div>' +
+								'0. ' + worker.GUIp_browser +  '<br>' +
+								'1. jumping: ' + this.jumpingDungeonRegExp + '<br>' +
+								'2. pointerSignRegExp: ' + this.pointerSignRegExp + '<br>' +
+								'3. entry with pointerSign: ' + chronicles[i].textContent + '<br>' +
+								'4. match: ' + chronicles[i].textContent.match(this.pointerSignRegExp) + '<br>' +
+								'5. issue: null pointers<br>' +
+								'6. !!match[0]: ' + !!chronicles[i].textContent.match(this.pointerSignRegExp)[0] + '</div>'
+						});
+					}
+				}
+				/*for (j = 0, len2 = pointers.length; j < len2; j++) {
 					var pointerClass;
 					switch (pointers[j]) {
 					case 'северо-восток':
-					case 'north-east': pointerClass = 'ne'; break;
+					case 'north-east': pointerClass = 'north-east'; break;
 					case 'северо-запад':
-					case 'north-west': pointerClass = 'nw'; break;
+					case 'north-west': pointerClass = 'north-west'; break;
 					case 'юго-восток':
-					case 'south-east': pointerClass = 'se'; break;
+					case 'south-east': pointerClass = 'south-east'; break;
 					case 'юго-запад':
-					case 'south-west': pointerClass = 'sw'; break;
+					case 'south-west': pointerClass = 'south-west'; break;
 					case 'север':
-					case 'north': pointerClass = 'n'; break;
+					case 'north': pointerClass = 'north'; break;
 					case 'восток':
-					case 'east': pointerClass = 'e'; break;
+					case 'east': pointerClass = 'east'; break;
 					case 'юг':
-					case 'south': pointerClass = 's'; break;
+					case 'south': pointerClass = 'south'; break;
 					case 'запад':
-					case 'west': pointerClass = 'w'; break;
+					case 'west': pointerClass = 'west'; break;
 					case 'очень холодно':
 					case 'very cold':
 					case 'freezing': pointerClass = 'freezing'; break;
@@ -746,7 +818,7 @@ ui_improver.improveChronicles = function() {
 					case 'burning': pointerClass = 'burning'; break;
 					}
 					chronicles[i].parentNode.classList.add(pointerClass);
-				}
+				}*/
 			}
 			chronicles[i].classList.add('parsed');
 		}
@@ -765,22 +837,22 @@ ui_improver.improveChronicles = function() {
 };
 ui_improver.colorDungeonMap = function() {
 	// map cells painting
-	var first_sentence, direction, step, i, len, j, len2,
+	var first_sentence, direction, step, i, len, j, len2, currentCell, pointers,
 		x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
 		y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
 		chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
 		ch_down = document.querySelector('.sort_ch').textContent === '▼';
 	for (len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
-		var currentCell = document.querySelectorAll('#map .dml')[y].children[x];
+		currentCell = document.querySelectorAll('#map .dml')[y].children[x];
 		for (j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
 			if (chronicles[i].parentNode.classList.contains(this.dungeonPhrases[j])) {
 				currentCell.classList.add(this.dungeonPhrases[j]);
 			}
 		}
-		if (chronicles[i].parentNode.classList.contains('pointer')) {
-			var pointers = chronicles[i].parentNode.className.match(/ne|nw|se|sw|n|e|s|w|burning|hot|warm|mild|cold|freezing/g);
-			currentCell.title = worker.GUIp_i18n[pointers[0]] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1]] : '');
-		}
+		/*if (chronicles[i].parentNode.className.match('pointer')) {
+			pointers = chronicles[i].parentNode.className.match(this.pointerRegExp);
+			currentCell.title = worker.GUIp_i18n[pointers[0].replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace('-', '_')] : '');
+		}*/
 		first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 		if (first_sentence) {
 			direction = first_sentence[0].match(/север|восток|юг|запад|north|east|south|west/i);
@@ -801,9 +873,14 @@ ui_improver.colorDungeonMap = function() {
 	}
 	if (this.old_chronicles && this.old_chronicles.length) {
 		for (i = this.old_chronicles.length - 1; i >= 0; i--) {
+			currentCell = document.querySelectorAll('#map .dml')[y].children[x];
 			if (this.old_chronicles[i].classList) {
 				for (j = 0, len2 = this.old_chronicles[i].classList.length; j < len2; j++) {
-					document.querySelectorAll('#map .dml')[y].children[x].classList.add(this.old_chronicles[i].classList[j]);
+					currentCell.classList.add(this.old_chronicles[i].classList[j]);
+				}
+				if (this.old_chronicles[i].classList.join().match('pointer')) {
+					pointers = this.old_chronicles[i].classList.join().match(this.pointerRegExp);
+					currentCell.title = worker.GUIp_i18n[pointers[0].replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace('-', '_')] : '');
 				}
 			}
 			direction = this.old_chronicles[i].direction;
