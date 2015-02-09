@@ -1,4 +1,4 @@
-// topic formatting buttons
+// topic formatting
 var initEditor = function(editor) {
 	val = editor.value;
 	ss = editor.selectionStart;
@@ -83,7 +83,15 @@ var setClickActions = function(id, container) {
 		}
 	}
 };
-var addFormattingButtons = function() {
+var setCtrlEnterAction = function(textarea, button) {
+	textarea.onkeydown = function(e) {
+		if (e.ctrlKey && e.keyCode === 13) {
+			e.preventDefault();
+			button.click();
+		}
+	};
+};
+var addFormattingButtonsAndCtrlEnter = function() {
 	var formatting_buttons =
 		'<a class="formatting button bold" title="' + worker.GUIp_i18n.bold_hint + '">' + worker.GUIp_i18n.bold + '</a>' +
 		'<a class="formatting button underline" title="' + worker.GUIp_i18n.underline_hint + '">' + worker.GUIp_i18n.underline + '</a>' +
@@ -101,12 +109,14 @@ var addFormattingButtons = function() {
 		'<a class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '"><code>' + worker.GUIp_i18n.monospace + '</code></a>';
 	$id('post_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
 	setClickActions('post_body_editor', $id('post_body'));
+	setCtrlEnterAction($id('post_body'), document.querySelector('#reply input[type="submit"]'));
 
 	var editFormObserver = new MutationObserver(function(mutations) {
 		mutations.forEach(function() {
 			if ($id('edit_body_editor') && !$q('#edit_body_editor .formatting.button.bold')) {
 				$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
 				setClickActions('edit_body_editor', $id('edit_body'));
+				setCtrlEnterAction($id('edit_body'), document.querySelector('#edit input[type="submit"]'));
 			}
 		});
 	});
