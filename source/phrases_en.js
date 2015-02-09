@@ -315,6 +315,7 @@ worker.GUIp_i18n = {
 	error_message_text: 'Text of the error:',
 	error_message_stack_trace: 'Stack trace',
 	and: ' and ',
+	or: ' or ',
 	ui_help: 'ui+ help',
 	// options
 	import_success: 'You setting\'ve been imported successfully',
@@ -479,7 +480,21 @@ worker.GUIp_i18n = {
 	broadcast: 'broadcast',
 	user_css: 'User CSS',
 	open_chat_with: 'Open chat with god/goddess ',
-	open_in_a_new_tab: 'Open in a new tab'
+	open_in_a_new_tab: 'Open in a new tab',
+	ne: 'north-east',
+	nw: 'north-west',
+	se: 'south-east',
+	sw: 'south-west',
+	n: 'north',
+	e: 'east',
+	s: 'south',
+	w: 'west',
+	burning: 'very hot (1-2 steps from treasure)',
+	hot: 'hot (3-5 steps from treasure)',
+	warm: 'warm (6-9 steps from treasure)',
+	mild: 'mild (10-13 steps from treasure)',
+	cold: 'cold (14-18 steps from treasure)',
+	freezing: 'very cold (19 or more steps from treasure)'
 };
 
 }
