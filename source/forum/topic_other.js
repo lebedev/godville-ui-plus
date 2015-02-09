@@ -34,28 +34,12 @@ var fixPageWrapperPadding = function() {
 	worker.EditForm.old_setReplyId = worker.EditForm.setReplyId;
 	worker.EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } worker.EditForm.old_setReplyId(a); };
 };
-var fixGodnamePaste = function() {
-	worker.ReplyForm.add_name = function(name) {
-		try {
-			var editor;
-			if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
-				editor = document.getElementById('edit_body');
-			} else {
-				editor = document.getElementById('post_body');
-				if (document.getElementById('reply').style.display === 'none') {
-					worker.ReplyForm.init();
-				}
-			}
-			initEditor(editor);
-			var pos = editor.selectionDirection === 'backward' ? ss : se;
-			editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
-			worker.setTimeout(function() {
-				putSelectionTo(editor, pos + name.length + 4, false);
-			}, 50);
-		} catch(error) {
-			worker.console.error(error);
-		}
-	};
+
+var findPost = function(el) {
+	do {
+		el = el.parentNode;
+	} while (el.classList.contains('post'));
+	return el;
 };
 var picturesAutoreplace = function() {
 	if (!storage.get('Option:disableLinksAutoreplace')) {
@@ -63,19 +47,30 @@ var picturesAutoreplace = function() {
 			imgs = [],
 			onerror = function(i) {
 				links[i].removeChild(links[i].getElementsByTagName('img')[0]);
-				imgs[i] = undefined;
+				imgs[i] = null;
 			},
 			onload = function(i) {
+				var oldBottom, hash = location.hash.match(/\d+/),
+					post = findPost(links[i]),
+					linkBeforeCurrentPost = hash ? +post.id.match(/\d+/)[0] < +hash[0] : false;
+				if (linkBeforeCurrentPost) {
+					oldBottom = post.getBoundingClientRect().bottom;
+				}
 				links[i].removeChild(links[i].getElementsByTagName('img')[0]);
 				var hint = links[i].innerHTML;
 				links[i].outerHTML = '<div class="img_container"><a id="link' + i + '" href="' + links[i].href + '" target="_blank" alt="' + worker.GUIp_i18n.open_in_a_new_tab + '"></a><div class="hint">' + hint + '</div></div>';
 				imgs[i].alt = hint;
 				var new_link = document.getElementById('link' + i);
 				new_link.appendChild(imgs[i]);
+				if (linkBeforeCurrentPost) {
+					var diff = post.getBoundingClientRect().bottom - oldBottom;
+					worker.console.log(hash, +post.id.match(/\d+/), linkBeforeCurrentPost, diff);
+					worker.scrollTo(0, worker.scrollY + diff);
+				}
 			};
 		for (i = 0, len = links.length; i < len; i++) {
 			if (links[i].href.match(/jpe?g|png|gif/)) {
-				links[i].insertAdjacentHTML('beforeend', '<img src="http://godville.net/images/spinner.gif">');
+				links[i].insertAdjacentHTML('beforeend', '<img class="img_spinner" src="http://godville.net/images/spinner.gif">');
 				imgs[i] = document.createElement('img');
 				imgs[i].onerror = onerror.bind(null, i);
 				imgs[i].onload = onload.bind(null, i);
@@ -87,6 +82,5 @@ var picturesAutoreplace = function() {
 var improveTopic = function() {
 	checkHash();
 	fixPageWrapperPadding();
-	fixGodnamePaste();
 	picturesAutoreplace();
 };

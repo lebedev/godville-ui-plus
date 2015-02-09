@@ -3,7 +3,7 @@ var initEditor = function(editor) {
 	val = editor.value;
 	ss = editor.selectionStart;
 	se = editor.selectionEnd;
-	selection = worker.getSelection().isCollapsed ? '' : worker.getSelection().toString().trim();
+	selection = worker.getSelection().isCollapsed ? '' : worker.getSelection().toString().trim().replace(/\n[\n\s]*/g, '<br>');
 };
 var putSelectionTo = function(editor, pos, quoting) {
 	editor.focus();
@@ -111,4 +111,27 @@ var addFormattingButtons = function() {
 		});
 	});
 	editFormObserver.observe($id('content'), { childList: true, subtree: true });
+};
+var fixGodnamePaste = function() {
+	worker.ReplyForm.add_name = function(name) {
+		try {
+			var editor;
+			if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
+				editor = document.getElementById('edit_body');
+			} else {
+				editor = document.getElementById('post_body');
+				if (document.getElementById('reply').style.display === 'none') {
+					worker.ReplyForm.init();
+				}
+			}
+			initEditor(editor);
+			var pos = editor.selectionDirection === 'backward' ? ss : se;
+			editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
+			worker.setTimeout(function() {
+				putSelectionTo(editor, pos + name.length + 4, false);
+			}, 50);
+		} catch(error) {
+			worker.console.error(error);
+		}
+	};
 };

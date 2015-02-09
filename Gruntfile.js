@@ -42,7 +42,7 @@ module.exports = function(grunt) {
           footer: "\n\n})();"
         },
         src: ['source/forum/init.js',
-              'source/forum/topic_formatting_buttons.js',
+              'source/forum/topic_formatting.js',
               'source/forum/topic_other.js',
               'source/forum/main.js'],
         dest: '<%= compile_path %>/chrome/forum.js'

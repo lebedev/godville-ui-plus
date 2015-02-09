@@ -27,6 +27,7 @@ var GUIp_forum = function() {
 		if (isTopic) {
 			worker.GUIp_addCSSFromURL(worker.GUIp_getResource('forum.css'), 'forum_css');
 			addFormattingButtons();
+			fixGodnamePaste();
 			improveTopic();
 		}
 	} catch(e) {

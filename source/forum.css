@@ -63,6 +63,9 @@
 	display: none;
 }
 
+.img_spinner {
+	width: 14px;
+}
 .img_container {
 	text-align: center;
 }
