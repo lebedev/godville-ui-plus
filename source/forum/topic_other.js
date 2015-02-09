@@ -84,7 +84,6 @@ var updatePostsNumber = function() {
 		var page = location.search.match(/page=(\d+)/);
 		page = page ? +page[1] - 1 : 0;
 		var posts = page*25 + document.getElementsByClassName('post').length;
-		worker.console.log(posts);
 		if (topics[topic] < posts) {
 			topics[topic] = posts;
 			storage.set(forum_topics, JSON.stringify(topics));
