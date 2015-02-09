@@ -28,8 +28,15 @@ ui_improver.dungeonPhrases = [
 	'trapLowDamage',
 	'trapModerateDamage',
 	'trapMoveLoss',
-	'jumpingDungeon'
+	'jumpingDungeon',
+	'pointerSign'
 ];
+ui_improver.pointerRegExp = RegExp('северо-восток|северо-запад|юго-восток|юго-запад|' +
+								   'север|восток|юг|запад|' +
+								   'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
+								   'north-east|north-west|south-east|south-west|' +
+								   'north|east|south|west|' +
+								   'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot', 'g');
 // resresher
 ui_improver.softRefreshInt = 0;
 ui_improver.hardRefreshInt = 0;
@@ -694,9 +701,51 @@ ui_improver.improveChronicles = function() {
 		// chronicles painting
 		var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
 		for (var i = 0, len = chronicles.length; i < len; i++) {
-			for (var j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
+			for (var j = 0, len2 = this.dungeonPhrases.length - 1; j < len2; j++) {
 				if (chronicles[i].textContent.match(this[this.dungeonPhrases[j] + 'RegExp'])) {
 					chronicles[i].parentNode.classList.add(this.dungeonPhrases[j]);
+				}
+			}
+			if (chronicles[i].textContent.match(this.pointerSignRegExp)) {
+				chronicles[i].parentNode.classList.add('pointer');
+				var middle = chronicles[i].textContent.replace(/offered to trust h.. gut feeling\./, '')
+													  .match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
+				var pointers = middle.match(this.pointerRegExp);
+				for (j = 0, len2 = pointers.length; j < len2; j++) {
+					var pointerClass;
+					switch (pointers[j]) {
+					case 'северо-восток':
+					case 'north-east': pointerClass = 'ne'; break;
+					case 'северо-запад':
+					case 'north-west': pointerClass = 'nw'; break;
+					case 'юго-восток':
+					case 'south-east': pointerClass = 'se'; break;
+					case 'юго-запад':
+					case 'south-west': pointerClass = 'sw'; break;
+					case 'север':
+					case 'north': pointerClass = 'n'; break;
+					case 'восток':
+					case 'east': pointerClass = 'e'; break;
+					case 'юг':
+					case 'south': pointerClass = 's'; break;
+					case 'запад':
+					case 'west': pointerClass = 'w'; break;
+					case 'очень холодно':
+					case 'very cold':
+					case 'freezing': pointerClass = 'freezing'; break;
+					case 'холодно':
+					case 'cold': pointerClass = 'cold'; break;
+					case 'свежо':
+					case 'mild': pointerClass = 'mild'; break;
+					case 'тепло':
+					case 'warm': pointerClass = 'warm'; break;
+					case 'горячо':
+					case 'hot': pointerClass = 'hot'; break;
+					case 'очень горячо':
+					case 'very hot':
+					case 'burning': pointerClass = 'burning'; break;
+					}
+					chronicles[i].parentNode.classList.add(pointerClass);
 				}
 			}
 			chronicles[i].classList.add('parsed');
@@ -722,10 +771,15 @@ ui_improver.colorDungeonMap = function() {
 		chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
 		ch_down = document.querySelector('.sort_ch').textContent === '▼';
 	for (len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
+		var currentCell = document.querySelectorAll('#map .dml')[y].children[x];
 		for (j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
 			if (chronicles[i].parentNode.classList.contains(this.dungeonPhrases[j])) {
-				document.querySelectorAll('#map .dml')[y].children[x].classList.add(this.dungeonPhrases[j]);
+				currentCell.classList.add(this.dungeonPhrases[j]);
 			}
+		}
+		if (chronicles[i].parentNode.classList.contains('pointer')) {
+			var pointers = chronicles[i].parentNode.className.match(/ne|nw|se|sw|n|e|s|w|burning|hot|warm|mild|cold|freezing/g);
+			currentCell.title = worker.GUIp_i18n[pointers[0]] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1]] : '');
 		}
 		first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 		if (first_sentence) {
