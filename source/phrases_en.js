@@ -202,9 +202,9 @@ worker.GUIp_i18n = {
 		'his <a href="skype:angly_cat">skype</a>, ' +
 		'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list-en" title="Opens in a new tab" ' +
 			'target="_blank">bugs and ideas list</a>, ' +
-		'<a href="/forums/show_topic/2800" title="Opens in a new tab" target="_blank">forum thread</a>.',
+		'<a href="/forums/show_topic/2800" title="Opens in a new tab" target="_blank">forum thread</a>, ' +
 		//'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
-		//'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.',
+		'<a href="/gods/God%20Of%20Dungeons" title="Opens in a new tab" target="about:blank">dungeon phrases</a>.',
 	ui_settings_top_menu: '<strong>ui+</strong> settings',
 	getting_version_no: 'Getting the latest addon version number...',
 	is_last_version: 'You have the latest version.',
