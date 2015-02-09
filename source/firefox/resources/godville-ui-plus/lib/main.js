@@ -1,17 +1,20 @@
-var selfUrl = require('sdk/self').data.url;
-var pageMod = require('sdk/page-mod').PageMod;
+var selfUrl = require('sdk/self').data.url,
+	pageMod = require('sdk/page-mod').PageMod;
 
-function mod(url, locale) {
-	var urls = ['superhero.*', 'user\/(?:profile|rk_success).*', 'forums\/show(?:_topic)?\/\\d+.*', 'duels\/log\/.*'],
-		scripts = [
-			[selfUrl('common.js'), selfUrl('guip_firefox.js'), selfUrl('phrases_' + locale + '.js'), selfUrl('superhero.js')],
-			[selfUrl('common.js'), selfUrl('jquery-1.10.2.min.js'), selfUrl('guip_firefox.js'), selfUrl('phrases_' + locale + '.js'), selfUrl('options_page.js'), selfUrl('options.js')],
-			[selfUrl('common.js'), selfUrl('guip_firefox.js'), selfUrl('phrases_' + locale + '.js'), selfUrl('forum.js')],
-			[selfUrl('common.js'), selfUrl('guip_firefox.js'), selfUrl('phrases_' + locale + '.js'), selfUrl('log.js')]
-		];
+function mod(hostname, locale) {
+	var pathnames = ['superhero.*', 'user\/(?:profile|rk_success).*', 'forums\/show(?:_topic)?\/\\d+.*', 'duels\/log\/.*'],
+		common = selfUrl('common.js'),
+		guip_firefox = selfUrl('guip_firefox.js'),
+		phrases = selfUrl('phrases_' + locale + '.js');
+	scripts = [
+		[common, guip_firefox, phrases, selfUrl('superhero.js')],
+		[common, guip_firefox, phrases, selfUrl('jquery-1.10.2.min.js'), selfUrl('options_page.js'), selfUrl('options.js')],
+		[common, guip_firefox, phrases, selfUrl('forum.js')],
+		[common, guip_firefox, phrases, selfUrl('log.js')]
+	];
 	for (var i = 0; i < 4; i++) {
 		pageMod({
-			include: RegExp(url + urls[i]),
+			include: RegExp(hostname + pathnames[i]),
 			contentScriptFile: scripts[i],
 			contentScriptWhen: 'ready'
 		});
