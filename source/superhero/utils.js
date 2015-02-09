@@ -189,13 +189,6 @@ ui_utils.messages = {
 				ui_help.toggleDialog();
 			}
 		}
-	},
-	{
-		msg_no: 1,
-		title: 'Godville UI+: New functionality!',
-		content: '<div style="text-align: justify;">&emsp;I\'ve enabled dungeon functionality and gold-to-exp conversion penalty timer.<br>' +
-				 'Tell me if there are any issues with that.</div>'+
-				 '<div style="text-align: right;">Have fun!<br>~~Bad Luck</div>'
 	}
 	/*{
 		msg_no: 2, // 0..1 are used
