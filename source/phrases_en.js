@@ -494,7 +494,22 @@ worker.GUIp_i18n = {
 	warm: 'warm (6-9 steps from treasure)',
 	mild: 'mild (10-13 steps from treasure)',
 	cold: 'cold (14-18 steps from treasure)',
-	freezing: 'very cold (19 or more steps from treasure)'
+	freezing: 'very cold (19 or more steps from treasure)',
+	send_log_to_LEMs_script: 'Send the log to LEM\'s script\n',
+	till_next_try: 'Till next try: ',
+	tries_left: 'Tries left: ',
+	map: 'Map',
+	wrong_entries_order: 'The button works on another entries order only.',
+	the_button_will_appear_after: 'The button will appear at ',
+	step: '+ step.',
+	get_your_map: 'Get your map',
+	search_database: 'Search Database',
+	relaxed_search: 'Relaxed search',
+	exact: 'Exact',
+	high_precision: 'High Precision',
+	normal: 'Normal',
+	primary: 'Primary',
+	corrections: 'Corrections:'
 };
 
 }

@@ -30,8 +30,8 @@
 			createScripts([scripts.common, scripts.jquery, scripts.guip_chrome, scripts.phrases_ru, scripts.options_page, scripts.options]);
 		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
 			createScripts([scripts.common, scripts.guip_chrome, scripts.phrases_ru, scripts.forum]);
-		} else if (path.match(/^\/(?:duels\/log|hero\/duel_perm_link)\//)) {
-			createScripts([scripts.log]);
+		} else if (path.match(/^\/duels\/log\//)) {
+			createScripts([scripts.common, scripts.guip_chrome, scripts.phrases_ru, scripts.log]);
 		}
 	} else if (site.match(/^https?:\/\/godvillegame.com/)) {
 		if (path.match(/^\/superhero/)) {
@@ -40,6 +40,8 @@
 			createScripts([scripts.common, scripts.jquery, scripts.guip_chrome, scripts.phrases_en, scripts.options_page, scripts.options]);
 		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
 			createScripts([scripts.common, scripts.guip_chrome, scripts.phrases_en, scripts.forum]);
+		} else if (path.match(/^\/duels\/log\//)) {
+			createScripts([scripts.common, scripts.guip_chrome, scripts.phrases_en, scripts.log]);
 		}
 	}
 })();

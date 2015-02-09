@@ -25,8 +25,6 @@
 			"https://godville.net/forums/show_topic/*",
 			"http://godville.net/duels/log/*",
 			"https://godville.net/duels/log/*",
-			"http://godville.net/hero/duel_perm_link/*",
-			"https://godville.net/hero/duel_perm_link/*",
 			"http://godvillegame.com/superhero*",
 			"https://godvillegame.com/superhero*",
 			"http://godvillegame.com/user/profile*",
@@ -36,7 +34,9 @@
 			"http://godvillegame.com/forums/show/*",
 			"http://godvillegame.com/forums/show_topic/*",
 			"https://godvillegame.com/forums/show/*",
-			"https://godvillegame.com/forums/show_topic/*"
+			"https://godvillegame.com/forums/show_topic/*",
+			"http://godvillegame.com/duels/log/*",
+			"https://godvillegame.com/duels/log/*"
 		]
 	}],
 
