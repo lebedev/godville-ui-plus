@@ -655,7 +655,7 @@ ui_improver.parseDungeonPhrases = function(xhr) {
 	ui_improver.improveChronicles();
 };
 ui_improver.getDungeonPhrases = function() {
-	if (!ui_storage.get('Dungeon:bossPhrases')) {
+	if (!ui_storage.get('Dungeon:pointerSignPhrases')) {
 		ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), ui_improver.parseDungeonPhrases.bind(ui_improver));
 	} else {
 		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
@@ -692,7 +692,7 @@ ui_improver.parseChronicles = function(xhr) {
 					entry.classList.push(this.dungeonPhrases[j]);
 				}
 			}
-			/*if (matches[i].match(this.pointerSignRegExp)) {
+			if (matches[i].match(this.pointerSignRegExp)) {
 				if (!entry.classList) {
 					entry.classList = [];
 				}
@@ -736,13 +736,13 @@ ui_improver.parseChronicles = function(xhr) {
 					}
 					entry.classList.push(pointerClass);
 				}
-			}*/
+			}
 			this.old_chronicles.push(entry);
 		}
 	}
 };
 ui_improver.improveChronicles = function() {
-	if (this.bossRegExp) {
+	if (ui_storage.get('Dungeon:pointerSignPhrases')) {
 		// chronicles painting
 		var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
 		for (var i = 0, len = chronicles.length; i < len; i++) {
@@ -754,36 +754,9 @@ ui_improver.improveChronicles = function() {
 			if (chronicles[i].textContent.match(this.pointerSignRegExp)) {
 				chronicles[i].parentNode.classList.add('pointer');
 				var middle = chronicles[i].textContent.replace(/offered to trust h.. gut feeling\./, '')
-													  .match(/^.*?\.(.*)[.!?].*?[.!?]$/);
-				if (!middle) {
-						ui_utils.showMessage('info', {
-							title: 'Инфа по багу 2. ОТПРАВЬТЕ ЭТУ ИНФУ БЭДЛАКУ ВО ЧТО БЫ ТО НИ СТАЛО.',
-							content: '<div>' +
-								'0. ' + worker.GUIp_browser +  '<br>' +
-								'1. jumping: ' + this.jumpingDungeonRegExp + '<br>' +
-								'2. pointerSignRegExp: ' + this.pointerSignRegExp + '<br>' +
-								'3. entry with pointerSign: ' + chronicles[i].textContent + '<br>' +
-								'4. match: ' + chronicles[i].textContent.match(this.pointerSignRegExp) + '<br>' +
-								'5. issue: null middle<br>' +
-								'6. !!match[0]: ' + !!chronicles[i].textContent.match(this.pointerSignRegExp)[0] + '</div>'
-						});
-				} else {
-					var pointers = middle[1] ? middle[1].match(this.pointerRegExp) : null;
-					if (!pointers) {
-						ui_utils.showMessage('info', {
-							title: 'Инфа по багу 2. ОТПРАВЬТЕ ЭТУ ИНФУ БЭДЛАКУ ВО ЧТО БЫ ТО НИ СТАЛО.',
-							content: '<div>' +
-								'0. ' + worker.GUIp_browser +  '<br>' +
-								'1. jumping: ' + this.jumpingDungeonRegExp + '<br>' +
-								'2. pointerSignRegExp: ' + this.pointerSignRegExp + '<br>' +
-								'3. entry with pointerSign: ' + chronicles[i].textContent + '<br>' +
-								'4. match: ' + chronicles[i].textContent.match(this.pointerSignRegExp) + '<br>' +
-								'5. issue: null pointers<br>' +
-								'6. !!match[0]: ' + !!chronicles[i].textContent.match(this.pointerSignRegExp)[0] + '</div>'
-						});
-					}
-				}
-				/*for (j = 0, len2 = pointers.length; j < len2; j++) {
+													  .match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
+				var pointers = middle.match(this.pointerRegExp);
+				for (j = 0, len2 = pointers.length; j < len2; j++) {
 					var pointerClass;
 					switch (pointers[j]) {
 					case 'северо-восток':
@@ -818,7 +791,7 @@ ui_improver.improveChronicles = function() {
 					case 'burning': pointerClass = 'burning'; break;
 					}
 					chronicles[i].parentNode.classList.add(pointerClass);
-				}*/
+				}
 			}
 			chronicles[i].classList.add('parsed');
 		}
@@ -827,11 +800,16 @@ ui_improver.improveChronicles = function() {
 		ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent === '▼' ? document.querySelectorAll('#m_fight_log .d_line.warning:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.warning:last-child').length);
 
 		ui_improver.colorDungeonMap();
+
+		if (!this.old_chronicles || !this.old_chronicles.length) {
+			ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
+		}
+	} else {
+		ui_improver.getDungeonPhrases();
 	}
 	if (this.isFirstTime) {
-		ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
+		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
 	}
-	ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
 	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', worker.$('#m_fight_log .block_title').text().match(/\d+/)[0]);
 	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 };
