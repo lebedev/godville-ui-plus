@@ -35,7 +35,7 @@ var storage = {
 	},
 	exportOptions: function() {
 		var options = {};
-		var r = new RegExp(this._get_key(''));
+		var r = new worker.RegExp(this._get_key(''));
 		for (var i = 0; i < localStorage.length; i++) {
 			if (localStorage.key(i).match(r) && !localStorage.key(i).match(/Stats|Logger/)) {
 				options[localStorage.key(i).replace(r, '')] = localStorage[localStorage.key(i)];
@@ -347,7 +347,7 @@ function set_user_css() {
 
 // Restores select box state to saved value from localStorage.
 function restore_options() {
-	var i, r = new RegExp('^' + storage._get_key('Option:'));
+	var i, r = new worker.RegExp('^' + storage._get_key('Option:'));
 	for (i = 0; i < localStorage.length; i++) {
 		if (localStorage.key(i).match(r)) {
 			var option = localStorage.key(i).replace(r, '');

@@ -90,7 +90,7 @@ ui_data._getWantedMonster = function() {
 		ui_utils.dateToMoscowTimeZone(+ui_storage.get('WantedMonster:Date')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
 		ui_utils.getXHR('/news', ui_data._parseWantedMonster);
 	} else {
-		ui_improver.wantedMonsters = new RegExp(ui_storage.get('WantedMonster:Value'));
+		ui_improver.wantedMonsters = new worker.RegExp(ui_storage.get('WantedMonster:Value'));
 	}
 };
 ui_data._parseWantedMonster = function(xhr) {
@@ -99,7 +99,7 @@ ui_data._parseWantedMonster = function(xhr) {
 	if (newWantedMonster !== ui_storage.get('WantedMonster:Value')) {
 		ui_storage.set('WantedMonster:Date', Date.now());
 		ui_storage.set('WantedMonster:Value', newWantedMonster);
-		ui_improver.wantedMonsters = new RegExp(newWantedMonster);
+		ui_improver.wantedMonsters = new worker.RegExp(newWantedMonster);
 	}
 };
 /*ui_data._sendPing = function() {

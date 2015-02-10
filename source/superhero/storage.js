@@ -34,7 +34,7 @@ ui_storage.set_with_diff = function(id, value) {
 // dumps all values related to current god_name
 ui_storage.dump = function(selector) {
 	var lines = [];
-	var r = new RegExp('^GUIp_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
+	var r = new worker.RegExp('^GUIp_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
 	for (var i = 0; i < worker.localStorage.length; i++) {
 		if (worker.localStorage.key(i).match(r)) {
 			lines.push(worker.localStorage.key(i) + ' = ' + worker.localStorage[worker.localStorage.key(i)]);

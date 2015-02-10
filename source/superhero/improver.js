@@ -31,12 +31,12 @@ ui_improver.dungeonPhrases = [
 	'jumpingDungeon',
 	'pointerSign'
 ];
-ui_improver.pointerRegExp = RegExp('северо-восток|северо-запад|юго-восток|юго-запад|' +
-								   'север|восток|юг|запад|' +
-								   'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
-								   'north-east|north-west|south-east|south-west|' +
-								   'north|east|south|west|' +
-								   'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot', 'g');
+ui_improver.pointerRegExp = new worker.RegExp('северо-восток|северо-запад|юго-восток|юго-запад|' +
+											  'север|восток|юг|запад|' +
+											  'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
+											  'north-east|north-west|south-east|south-west|' +
+											  'north|east|south|west|' +
+											  'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot', 'g');
 // resresher
 ui_improver.softRefreshInt = 0;
 ui_improver.hardRefreshInt = 0;
@@ -648,8 +648,8 @@ ui_improver.improveDiary = function() {
 };
 ui_improver.parseDungeonPhrases = function(xhr) {
 	for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
-		temp = xhr.responseText.match(new RegExp('<p>' + this.dungeonPhrases[i] + '\\b([\\s\\S]+?)<\/p>'))[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
-		this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(temp);
+		temp = xhr.responseText.match(new worker.RegExp('<p>' + this.dungeonPhrases[i] + '\\b([\\s\\S]+?)<\/p>'))[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
+		this[this.dungeonPhrases[i] + 'RegExp'] = new worker.RegExp(temp);
 		ui_storage.set('Dungeon:' + this.dungeonPhrases[i] + 'Phrases', temp);
 	}
 	ui_improver.improveChronicles();
@@ -659,7 +659,7 @@ ui_improver.getDungeonPhrases = function() {
 		ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), ui_improver.parseDungeonPhrases.bind(ui_improver));
 	} else {
 		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
-			this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(ui_storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
+			this[this.dungeonPhrases[i] + 'RegExp'] = new worker.RegExp(ui_storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
 		}
 		ui_improver.improveChronicles();
 	}
@@ -965,7 +965,7 @@ ui_improver.improveChat = function() {
 		for (i = 0, len = $friends.length; i < len; i++) {
 			friends.push($friends[i].textContent);
 		}
-		this.friendsRegexp = new RegExp('^(?:' + friends.join('|') + ')$');
+		this.friendsRegexp = new worker.RegExp('^(?:' + friends.join('|') + ')$');
 	}
 
 	// links replace

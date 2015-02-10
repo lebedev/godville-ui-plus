@@ -67,7 +67,7 @@ ui_forum._parse = function(xhr) {
 		topics.push(topic);
 	}
 	for (var i = 0, len = topics.length; i < len; i++) {
-		temp = xhr.responseText.match(new RegExp("show_topic\\/" + topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topics[i]));
+		temp = xhr.responseText.match(new worker.RegExp("show_topic\\/" + topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topics[i]));
 		if (temp) {
 			diff = +temp[2] - forum[topics[i]];
 			if (diff) {
