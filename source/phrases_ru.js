@@ -652,7 +652,9 @@ worker.GUIp_i18n = {
 	high_precision: 'Высокоточный поиск',
 	normal: 'Нормальный поиск',
 	primary: 'Первичный поиск',
-	corrections: 'Корректировки:'
+	corrections: 'Корректировки:',
+	browser: 'Браузер:',
+	version: 'Версия:'
 };
 
 }

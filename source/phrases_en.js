@@ -505,7 +505,9 @@ worker.GUIp_i18n = {
 	high_precision: 'High Precision',
 	normal: 'Normal',
 	primary: 'Primary',
-	corrections: 'Corrections:'
+	corrections: 'Corrections:',
+	browser: 'Browser:',
+	version: 'Version:'
 };
 
 }

@@ -17,6 +17,8 @@ ui_trycatcher.replace_with = function(method) {
 					ui_utils.showMessage('error', {
 						title: worker.GUIp_i18n.error_message_title,
 						content: '<div>' + worker.GUIp_i18n.error_message_subtitle + '</div>' +
+								 '<div>' + worker.GUIp_i18n.browser + ' <b>' + worker.GUIp_browser + ' ' + navigator.userAgent.match(worker.GUIp_browser + '\/([\\d.]+)')[1] +'</b>.</div>' +
+								 '<div>' + worker.GUIp_i18n.version + ' <b>' + ui_data.currentVersion + '</b>.</div>' +
 								 '<div>' + worker.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
 								 '<div>' + worker.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>',
 						callback: function() {
