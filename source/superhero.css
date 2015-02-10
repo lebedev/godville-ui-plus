@@ -496,7 +496,7 @@ body.nightly .dmc.bonusGodpower {
 body.nightly .dmc.bonusHealth {
 	background: #2f6c37;
 }
-body:.nightly .dmc.trapUnknown {
+body.nightly .dmc.trapUnknown {
 	background: #62317c;
 }
 body.nightly .dmc.trapTrophy,
