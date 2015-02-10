@@ -829,10 +829,10 @@ ui_improver.colorDungeonMap = function() {
 				currentCell.classList.add(this.dungeonPhrases[j]);
 			}
 		}
-		/*if (chronicles[i].parentNode.className.match('pointer')) {
+		if (chronicles[i].parentNode.className.match('pointer')) {
 			pointers = chronicles[i].parentNode.className.match(this.pointerRegExp);
 			currentCell.title = worker.GUIp_i18n[pointers[0].replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace('-', '_')] : '');
-		}*/
+		}
 		first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 		if (first_sentence) {
 			direction = first_sentence[0].match(/север|восток|юг|запад|north|east|south|west/i);
