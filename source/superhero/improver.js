@@ -37,6 +37,7 @@ ui_improver.pointerRegExp = new worker.RegExp('северо-восток|сев�
 											  'north-east|north-west|south-east|south-west|' +
 											  'north|east|south|west|' +
 											  'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot', 'g');
+ui_improver.dungeonPhrasesXHRCount = 0;
 // resresher
 ui_improver.softRefreshInt = 0;
 ui_improver.hardRefreshInt = 0;
@@ -656,6 +657,7 @@ ui_improver.parseDungeonPhrases = function(xhr) {
 };
 ui_improver.getDungeonPhrases = function() {
 	if (!ui_storage.get('Dungeon:pointerSignPhrases')) {
+		this.dungeonPhrasesXHRCount++;
 		ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), ui_improver.parseDungeonPhrases.bind(ui_improver));
 	} else {
 		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
@@ -804,7 +806,7 @@ ui_improver.improveChronicles = function() {
 		if (!this.old_chronicles || !this.old_chronicles.length) {
 			ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
 		}
-	} else {
+	} else if (this.dungeonPhrasesXHRCount < 5) {
 		ui_improver.getDungeonPhrases();
 	}
 	if (this.isFirstTime) {
