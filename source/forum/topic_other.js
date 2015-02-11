@@ -38,7 +38,7 @@ var fixPageWrapperPadding = function() {
 var findPost = function(el) {
 	do {
 		el = el.parentNode;
-	} while (el.classList.contains('post'));
+	} while (!el.classList.contains('post'));
 	return el;
 };
 var picturesAutoreplace = function() {
