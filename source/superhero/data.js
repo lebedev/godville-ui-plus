@@ -17,9 +17,6 @@ ui_data.init = function() {
 
 	ui_data._getWantedMonster();
 	worker.setInterval(ui_data._getWantedMonster, 5*60*1000);
-
-	/*ui_data._sendPing();
-	worker.setInterval(ui_data._sendPing, 60*60*1000);*/
 };
 ui_data._initVariables = function() {
 	this.currentVersion = '$VERSION';
@@ -103,29 +100,3 @@ ui_data._parseWantedMonster = function(xhr) {
 		ui_improver.wantedMonsters = new worker.RegExp(newWantedMonster);
 	}
 };
-/*ui_data._sendPing = function() {
-	if (isNaN(ui_storage.get('lastPing')) ||
-		ui_utils.dateToMoscowTimeZone(+ui_storage.get('lastPing')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
-
-		if (!worker.localStorage.GUIp_id) {
-			var id;
-			do {
-				id = Math.random().toString(36).replace(/[^a-z0-9]+/g, '').substr(1, 10);
-			} while (id.length < 10);
-			worker.localStorage.GUIp_id = id;
-		}
-
-		var ping_url = 'http://guip.pe.hu/counter.php?date=' + ui_utils.dateToMoscowTimeZone(Date.now()).replace(/\//g, '-') +
-													'&godname=' + ui_data.god_name +
-													'&locale=' + worker.GUIp_locale +
-													'&system=' + (worker.navigator.appVersion.match(/Windows|Linux|Android/)[0] || 'Other') +
-													'&browser=' + worker.GUIp_browser +
-													'&id=' + worker.localStorage.GUIp_id;
-		ui_utils.getXHR(ping_url, ui_data._parsePing);
-	}
-};
-ui_data._parsePing = function(xhr) {
-	if (xhr.responseText.match(/Ping successful\./)) {
-		ui_storage.set('lastPing', Date.now());
-	}
-};*/
