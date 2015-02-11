@@ -44,10 +44,7 @@ ui_laying_timer.tick = function() {
 	}
 	ui_storage.set('thirdEyeLatestEntry', latest);
 	var $timer = document.querySelector('#laying_timer');
-	$timer.classList.remove('green');
-	$timer.classList.remove('yellow');
-	$timer.classList.remove('red');
-	$timer.classList.remove('grey');
+	$timer.className = $timer.className.replace(/green|yellow|red|grey/g, '');
 	var hours, minutes;
 	if (lastLaying) {
 		hours = Math.floor(24 - (Date.now() - lastLaying)/1000/60/60);
