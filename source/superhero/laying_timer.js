@@ -57,8 +57,9 @@ ui_laying_timer._calculateTime = function() {
 	}
 };
 ui_laying_timer._formatTime = function() {
-	var hours = Math.floor(36 - this._total_minutes/60),
-		minutes = Math.floor(60 - this._total_minutes%60);
+	var countdown_minutes = 36*60 - this._total_minutes,
+		hours = Math.floor(countdown_minutes/60),
+		minutes = Math.floor(countdown_minutes%60);
 	return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
 };
 ui_laying_timer._calculateExp = function() {
