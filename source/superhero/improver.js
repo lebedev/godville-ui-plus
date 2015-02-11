@@ -31,12 +31,12 @@ ui_improver.dungeonPhrases = [
 	'jumpingDungeon',
 	'pointerSign'
 ];
-ui_improver.pointerRegExp = new worker.RegExp('северо-восток|северо-запад|юго-восток|юго-запад|' +
-											  'север|восток|юг|запад|' +
-											  'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
-											  'north-east|north-west|south-east|south-west|' +
-											  'north|east|south|west|' +
-											  'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot', 'g');
+ui_improver.pointerRegExp = new worker.RegExp('[^а-я](северо-восток|северо-запад|юго-восток|юго-запад|' +
+													 'север|восток|юг|запад|' +
+													 'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
+													 'north-east|north-west|south-east|south-west|' +
+													 'north|east|south|west|' +
+													 'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot)', 'gi');
 ui_improver.dungeonPhrasesXHRCount = 0;
 // resresher
 ui_improver.softRefreshInt = 0;
@@ -705,7 +705,7 @@ ui_improver.parseChronicles = function(xhr) {
 				var pointers = middle.match(this.pointerRegExp);
 				for (j = 0, len2 = pointers.length; j < len2; j++) {
 					var pointerClass;
-					switch (pointers[j]) {
+					switch (pointers[j].replace(/^./, '')) {
 					case 'северо-восток':
 					case 'north-east': pointerClass = 'north-east'; break;
 					case 'северо-запад':
@@ -761,7 +761,7 @@ ui_improver.improveChronicles = function() {
 				var pointers = middle.match(this.pointerRegExp);
 				for (j = 0, len2 = pointers.length; j < len2; j++) {
 					var pointerClass;
-					switch (pointers[j]) {
+					switch (pointers[j].replace(/^./, '')) {
 					case 'северо-восток':
 					case 'north-east': pointerClass = 'north-east'; break;
 					case 'северо-запад':
