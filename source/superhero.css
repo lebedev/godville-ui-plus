@@ -605,36 +605,36 @@ body.nightly .shovel:hover {
 	margin-right: 5px;
 }
 
-/* inventory fullness marks */
-#hk_inventory_num .p_bar,
-body.has_temple #hk_health .p_bar {
+/* inventory fullness and health marks */
+body.field #hk_inventory_num .p_bar,
+body.has_temple.field #hk_health .p_bar {
 	position: relative;
 }
-#hk_inventory_num .p_bar:before,
-#hk_inventory_num .p_bar:after,
-body.has_temple #hk_health .p_bar:before {
+body.field #hk_inventory_num .p_bar:before,
+body.field #hk_inventory_num .p_bar:after,
+body.has_temple.field #hk_health .p_bar:before {
 	content: " ";
 	height: 100%;
 	position: absolute;
 	width: 2px;
 }
-body:not(.nightly) #hk_inventory_num .p_bar:before,
-body:not(.nightly) #hk_inventory_num .p_bar:after,
-body.has_temple:not(.nightly) #hk_health .p_bar:before {
+body.field:not(.nightly) #hk_inventory_num .p_bar:before,
+body.field:not(.nightly) #hk_inventory_num .p_bar:after,
+body.has_temple.field:not(.nightly) #hk_health .p_bar:before {
 	background: #ddd;
 }
-body.nightly #hk_inventory_num .p_bar:before,
-body.nightly #hk_inventory_num .p_bar:after,
-body.has_temple.nightly #hk_health .p_bar:before  {
+body.field.nightly #hk_inventory_num .p_bar:before,
+body.field.nightly #hk_inventory_num .p_bar:after,
+body.has_temple.field.nightly #hk_health .p_bar:before  {
 	background: #555;
 }
-#hk_inventory_num .p_bar:before {
+body.field #hk_inventory_num .p_bar:before {
 	left: 33%;
 }
-#hk_inventory_num .p_bar:after {
+body.field #hk_inventory_num .p_bar:after {
 	left: 50%;
 }
-body.has_temple #hk_health .p_bar:before {
+body.has_temple.field #hk_health .p_bar:before {
 	left: 67%;
 }
 
