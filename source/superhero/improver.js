@@ -905,12 +905,7 @@ ui_improver.improveInterface = function() {
 	if (worker.localStorage.ui_s !== ui_storage.get('ui_s')) {
 		ui_storage.set('ui_s', worker.localStorage.ui_s || 'th_classic');
 		this.Shovel = false;
-		if (document.body.classList.contains('has_temple')) {
-			document.body.className = 'has_temple';
-		} else {
-			document.body.className = '';
-		}
-		document.body.classList.add(ui_storage.get('ui_s').replace('th_', ''));
+		document.body.className = document.body.className.replace(/th_\w+/g, '') + ' ' + ui_storage.get('ui_s');
 	}
 
 	if (ui_storage.get('Option:useBackground') === 'cloud') {

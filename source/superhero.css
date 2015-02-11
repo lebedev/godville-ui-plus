@@ -93,7 +93,7 @@ body {
 .hint_bar_content ol li.hidden {
 	display: none;
 }
-body.nightly .ui_msg {
+body.th_nightly .ui_msg {
 	color: #999;
 }
 
@@ -207,10 +207,10 @@ body.nightly .ui_msg {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
-body.nightly #timeout_bar {
+body.th_nightly #timeout_bar {
 	background: chartreuse;
 }
-body:not(.nightly) #timeout_bar {
+body:not(.th_nightly) #timeout_bar {
 	background: dodgerblue;
 }
 #timeout_bar.running {
@@ -280,7 +280,7 @@ body.divine #forum_informer_bar a {
 	border-color: #00A2E8;
 	color: #3F48CC;
 }
-body.nightly #forum_informer_bar a {
+body.th_nightly #forum_informer_bar a {
 	background: #252525;
 	border-color: #555;
 	color: #999;
@@ -361,32 +361,32 @@ a.inspect_button {
 	top: 2px;
 	left: 60px;
 }
-body.nightly #laying_timer.green {
+body.th_nightly #laying_timer.green {
 	border-color: #040;
 	color: #040;
 	background-color: green;
 }
-body:not(.nightly) #laying_timer.green {
+body:not(.th_nightly) #laying_timer.green {
 	border-color: darkgreen;
 	color: darkgreen;
 	background-color: lightgreen;
 }
-body.nightly #laying_timer.grey {
+body.th_nightly #laying_timer.grey {
 	border-color: #444;
 	color: #444;
 	background-color: darkgrey;
 }
-body:not(.nightly) #laying_timer.grey {
+body:not(.th_nightly) #laying_timer.grey {
 	border-color: grey;
 	color: grey;
 	background-color: lavender;
 }
-body.nightly #laying_timer.red {
+body.th_nightly #laying_timer.red {
 	border-color: #400;
 	color: #400;
 	background-color: darkred;
 }
-body:not(.nightly) #laying_timer.red {
+body:not(.th_nightly) #laying_timer.red {
 	border-color: firebrick;
 	color: firebrick;
 	background-color: darksalmon;
@@ -411,157 +411,157 @@ body:not(.nightly) #laying_timer.red {
 }
 
 /* dungeon map colorization */
-/* not nightly theme */
-body:not(.nightly) .dmc.warning {
+/* not th_nightly theme */
+body:not(.th_nightly) .dmc.warning {
 	background: #ffce09;
 }
-body:not(.nightly) .dmc.boss {
+body:not(.th_nightly) .dmc.boss {
 	background: #fa8700;
 }
-body:not(.nightly) .dmc.bonusGodpower {
+body:not(.th_nightly) .dmc.bonusGodpower {
 	background: #c5e0f3;
 }
-body:not(.nightly) .dmc.bonusHealth {
+body:not(.th_nightly) .dmc.bonusHealth {
 	background: #b9edbe;
 }
-body:not(.nightly) .dmc.trapUnknown {
+body:not(.th_nightly) .dmc.trapUnknown {
 	background: #c173da;
 }
-body:not(.nightly) .dmc.trapTrophy,
-body:not(.nightly) .dmc.trapGold {
+body:not(.th_nightly) .dmc.trapTrophy,
+body:not(.th_nightly) .dmc.trapGold {
 	background: #dee0c0;
 }
-body:not(.nightly) .dmc.trapLowDamage {
+body:not(.th_nightly) .dmc.trapLowDamage {
 	background: #e7afaf;
 }
-body:not(.nightly) .dmc.trapModerateDamage {
+body:not(.th_nightly) .dmc.trapModerateDamage {
 	background: #cb555b;
 }
-body:not(.nightly) .dmc.trapMoveLoss {
+body:not(.th_nightly) .dmc.trapMoveLoss {
 	background: #aaaaaa;
 }
-body:not(.nightly) .dmc.warning.bonusGodpower {
+body:not(.th_nightly) .dmc.warning.bonusGodpower {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #c5e0f3 50%, #c5e0f3 100%);
 }
-body:not(.nightly) .dmc.warning.bonusHealth {
+body:not(.th_nightly) .dmc.warning.bonusHealth {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #b9edbe 50%, #b9edbe 100%);
 }
-body:not(.nightly) .dmc.warning.trapUnknown {
+body:not(.th_nightly) .dmc.warning.trapUnknown {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #c173da 50%, #c173da 100%);
 }
-body:not(.nightly) .dmc.warning.trapTrophy,
-body:not(.nightly) .dmc.warning.trapGold {
+body:not(.th_nightly) .dmc.warning.trapTrophy,
+body:not(.th_nightly) .dmc.warning.trapGold {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #dee0c0 50%, #dee0c0 100%);
 }
-body:not(.nightly) .dmc.warning.trapLowDamage {
+body:not(.th_nightly) .dmc.warning.trapLowDamage {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #e7afaf 50%, #e7afaf 100%);
 }
-body:not(.nightly) .dmc.warning.trapModerateDamage {
+body:not(.th_nightly) .dmc.warning.trapModerateDamage {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #cb555b 50%, #cb555b 100%);
 }
-body:not(.nightly) .dmc.warning.trapMoveLoss {
+body:not(.th_nightly) .dmc.warning.trapMoveLoss {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #aaaaaa 50%, #aaaaaa 100%);
 }
-body:not(.nightly) .dmc.boss.bonusGodpower {
+body:not(.th_nightly) .dmc.boss.bonusGodpower {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #c5e0f3 50%, #c5e0f3 100%);
 }
-body:not(.nightly) .dmc.boss.bonusHealth {
+body:not(.th_nightly) .dmc.boss.bonusHealth {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #b9edbe 50%, #b9edbe 100%);
 }
-body:not(.nightly) .dmc.boss.trapTrophy,
-body:not(.nightly) .dmc.boss.trapGold {
+body:not(.th_nightly) .dmc.boss.trapTrophy,
+body:not(.th_nightly) .dmc.boss.trapGold {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #dee0c0 50%, #dee0c0 100%);
 }
-body:not(.nightly) .dmc.boss.trapLowDamage {
+body:not(.th_nightly) .dmc.boss.trapLowDamage {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #e7afaf 50%, #e7afaf 100%);
 }
-body:not(.nightly) .dmc.boss.trapModerateDamage {
+body:not(.th_nightly) .dmc.boss.trapModerateDamage {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #cb555b 50%, #cb555b 100%);
 }
-body:not(.nightly) .dmc.boss.trapMoveLoss {
+body:not(.th_nightly) .dmc.boss.trapMoveLoss {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #aaaaaa 50%, #aaaaaa 100%);
 }
-/* nightly theme */
-body.nightly .dmc.warning {
+/* th_nightly theme */
+body.th_nightly .dmc.warning {
 	background: #d3ae00;
 }
-body.nightly .dmc.boss {
+body.th_nightly .dmc.boss {
 	background: #ff9f07;
 }
 
-body.nightly .dmc.bonusGodpower {
+body.th_nightly .dmc.bonusGodpower {
 	background: #2d546f;
 }
 
-body.nightly .dmc.bonusHealth {
+body.th_nightly .dmc.bonusHealth {
 	background: #2f6c37;
 }
-body.nightly .dmc.trapUnknown {
+body.th_nightly .dmc.trapUnknown {
 	background: #62317c;
 }
-body.nightly .dmc.trapTrophy,
-body.nightly .dmc.trapGold {
+body.th_nightly .dmc.trapTrophy,
+body.th_nightly .dmc.trapGold {
 	background: #6c6d4e;
 }
 
-body.nightly .dmc.trapLowDamage {
+body.th_nightly .dmc.trapLowDamage {
 	background: #8b5d5d;
 }
 
-body.nightly .dmc.trapModerateDamage {
+body.th_nightly .dmc.trapModerateDamage {
 	background: #9d1515;
 }
 
-body.nightly .dmc.trapMoveLoss {
+body.th_nightly .dmc.trapMoveLoss {
 	background: #5c5c5c;
 }
-body.nightly .dmc.warning.bonusGodpower {
+body.th_nightly .dmc.warning.bonusGodpower {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2d546f 50%, #2d546f 100%);
 }
-body.nightly .dmc.warning.bonusHealth {
+body.th_nightly .dmc.warning.bonusHealth {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2f6c37 50%, #2f6c37 100%);
 }
-body.nightly .dmc.warning.trapUnknown {
+body.th_nightly .dmc.warning.trapUnknown {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #62317c 50%, #62317c 100%);
 }
-body.nightly .dmc.warning.trapTrophy,
-body.nightly .dmc.warning.trapGold {
+body.th_nightly .dmc.warning.trapTrophy,
+body.th_nightly .dmc.warning.trapGold {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #6c6d4e 50%, #6c6d4e 100%);
 }
-body.nightly .dmc.warning.trapLowDamage {
+body.th_nightly .dmc.warning.trapLowDamage {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #8b5d5d 50%, #8b5d5d 100%);
 }
-body.nightly .dmc.warning.trapModerateDamage {
+body.th_nightly .dmc.warning.trapModerateDamage {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #9d1515 50%, #9d1515 100%);
 }
-body.nightly .dmc.warning.trapMoveLoss {
+body.th_nightly .dmc.warning.trapMoveLoss {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
-body.nightly .dmc.boss.bonusGodpower {
+body.th_nightly .dmc.boss.bonusGodpower {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #2d546f 50%, #2d546f 100%);
 }
-body.nightly .dmc.boss.bonusHealth {
+body.th_nightly .dmc.boss.bonusHealth {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #2f6c37 50%, #2f6c37 100%);
 }
-body.nightly .dmc.boss.trapTrophy,
-body.nightly .dmc.boss.trapGold {
+body.th_nightly .dmc.boss.trapTrophy,
+body.th_nightly .dmc.boss.trapGold {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #6c6d4e 50%, #6c6d4e 100%);
 }
-body.nightly .dmc.boss.trapLowDamage {
+body.th_nightly .dmc.boss.trapLowDamage {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #8b5d5d 50%, #8b5d5d 100%);
 }
-body.nightly .dmc.boss.trapModerateDamage {
+body.th_nightly .dmc.boss.trapModerateDamage {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #9d1515 50%, #9d1515 100%);
 }
-body.nightly .dmc.boss.trapMoveLoss {
+body.th_nightly .dmc.boss.trapMoveLoss {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
 
 /* dialog box-shadows */
-body.nightly .ui_msg {
+body.th_nightly .ui_msg {
 	box-shadow: 2px 2px 15px #fff;
 }
-body:not(.nightly) .ui_msg {
+body:not(.th_nightly) .ui_msg {
 	box-shadow: 2px 2px 15px #000;
 }
 
@@ -579,16 +579,16 @@ body:not(.nightly) .ui_msg {
 #hk_gold_we .voice_generator.shovel.compact {
 	margin: 4px -4px 0 0;
 }
-body:not(.nightly) .shovel {
+body:not(.th_nightly) .shovel {
 	background-position: 0px 0px;
 }
-body:not(.nightly) .shovel:hover {
+body:not(.th_nightly) .shovel:hover {
 	background-position: 13px 0px;
 }
-body.nightly .shovel {
+body.th_nightly .shovel {
 	background-position: 0px 13px;
 }
-body.nightly .shovel:hover {
+body.th_nightly .shovel:hover {
 	background-position: 13px 13px;
 }
 
@@ -618,14 +618,14 @@ body.has_temple.field #hk_health .p_bar:before {
 	position: absolute;
 	width: 2px;
 }
-body.field:not(.nightly) #hk_inventory_num .p_bar:before,
-body.field:not(.nightly) #hk_inventory_num .p_bar:after,
-body.has_temple.field:not(.nightly) #hk_health .p_bar:before {
+body.field:not(.th_nightly) #hk_inventory_num .p_bar:before,
+body.field:not(.th_nightly) #hk_inventory_num .p_bar:after,
+body.has_temple.field:not(.th_nightly) #hk_health .p_bar:before {
 	background: #ddd;
 }
-body.field.nightly #hk_inventory_num .p_bar:before,
-body.field.nightly #hk_inventory_num .p_bar:after,
-body.has_temple.field.nightly #hk_health .p_bar:before  {
+body.field.th_nightly #hk_inventory_num .p_bar:before,
+body.field.th_nightly #hk_inventory_num .p_bar:after,
+body.has_temple.field.th_nightly #hk_health .p_bar:before  {
 	background: #555;
 }
 body.field #hk_inventory_num .p_bar:before {
