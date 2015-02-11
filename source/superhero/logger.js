@@ -8,6 +8,7 @@ ui_logger.create = function() {
 	this.need_separator = false;
 	this.dungeonWatchers = [
 		['Map_HP', 'hp', worker.GUIp_i18n.hero_health, 'hp'],
+		['Map_Exp', 'exp', worker.GUIp_i18n.inventory, 'exp'],
 		['Map_Inv', 'inv', worker.GUIp_i18n.inventory, 'inv'],
 		['Map_Gold', 'gld', worker.GUIp_i18n.gold, 'gold'],
 		['Map_Charges', 'ch', worker.GUIp_i18n.charges, 'charges'],
@@ -27,7 +28,6 @@ ui_logger.create = function() {
 		['Exp', 'exp', worker.GUIp_i18n.exp],
 		['Level', 'lvl', worker.GUIp_i18n.level],
 		['HP', 'hp', worker.GUIp_i18n.health],
-		['Godpower', 'gp', worker.GUIp_i18n.godpower],
 		['Charges', 'ch', worker.GUIp_i18n.charges],
 		['Task', 'tsk', worker.GUIp_i18n.task],
 		['Monster', 'mns', worker.GUIp_i18n.monsters],
@@ -45,6 +45,9 @@ ui_logger.create = function() {
 		['Equip7', 'eq7', worker.GUIp_i18n.talisman, 'equip'],
 		['Death', 'death', worker.GUIp_i18n.death_count],
 		['Pet_Level', 'pet_level', worker.GUIp_i18n.pet_level, 'monster']
+	];
+	this.commonWatchers = [
+		['Godpower', 'gp', worker.GUIp_i18n.godpower]
 	];
 };
 ui_logger._appendStr = function(id, klass, str, descr) {
@@ -103,5 +106,6 @@ ui_logger.update = function() {
 	} else {
 		ui_logger._updateWatchers(this.fieldWatchers);
 	}
+	ui_logger._updateWatchers(this.commonWatchers);
 	this.need_separator = true;
 };

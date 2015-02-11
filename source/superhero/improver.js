@@ -461,6 +461,7 @@ ui_improver.improveStats = function() {
 
 	if (ui_data.isDungeon) {
 		ui_stats.setFromLabelCounter('Map_HP', worker.$('#m_info'), worker.GUIp_i18n.health_label);
+		ui_stats.setFromProgressBar('Map_Exp', worker.$('#hk_level .p_bar'));
 		ui_stats.setFromLabelCounter('Map_Gold', worker.$('#m_info'), worker.GUIp_i18n.gold_label, gold_parser);
 		ui_stats.setFromLabelCounter('Map_Inv', worker.$('#m_info'), worker.GUIp_i18n.inventory_label);
 		ui_stats.set('Map_Charges', worker.$('#m_control .acc_val').text(), parseFloat);
