@@ -275,7 +275,7 @@ body:not(.th_nightly) #timeout_bar {
 #forum_informer_bar a:hover {
 	width: auto;
 }
-body.divine #forum_informer_bar a {
+body.th_divine #forum_informer_bar a {
 	background: #99D9EA;
 	border-color: #00A2E8;
 	color: #3F48CC;
@@ -285,33 +285,33 @@ body.th_nightly #forum_informer_bar a {
 	border-color: #555;
 	color: #999;
 }
-body.violet #forum_informer_bar a {
+body.th_violet #forum_informer_bar a {
 	background: #D29BD2;
 	border-color: #A349A3;
 	color: #808;
 }
-body.pink #forum_informer_bar a {
+body.th_pink #forum_informer_bar a {
 	background: #f9f;
 	border-color: #a0a;
 	color: #a0a;
 }
-body.emerald #forum_informer_bar a {
+body.th_emerald #forum_informer_bar a {
 	background: #9BD29B;
 	border-color: #49A349;
 	color: #080;
 }
-body.yellow #forum_informer_bar a {
+body.th_yellow #forum_informer_bar a {
 	background: #F4E9AF;
 	border-color: #A3A349;
 	color: #880;
 }
-body.classic #forum_informer_bar a,
-body.retro #forum_informer_bar a {
+body.th_classic #forum_informer_bar a,
+body.th_retro #forum_informer_bar a {
 	background: #D2D2D2;
 	border-color: #A3A3A3;
 	color: #555;
 }
-body.retro #forum_informer_bar a {
+body.th_retro #forum_informer_bar a {
 	border-radius: 0;
 }
 #forum_informer_bar .fr_new_badge {
