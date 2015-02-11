@@ -64,7 +64,7 @@ ui_laying_timer._formatTime = function() {
 ui_laying_timer._calculateExp = function() {
 	var base_exp = Math.min(this._total_minutes/36/60*2, 2),
 		amount_multiplier = [1, 2, 2.5],
-		half_multiplier = ui_stats.get('Level') >= 100 ? 0.5 : 1,
+		level_multiplier = ui_stats.get('Level') < 100 ? 1 : ui_stats.get('Level') < 125 ? 0.5 : 0.25,
 		title = [];
 	for (var i = 1; i <= 3; i++) {
 		title.push(i + '0k gld -> ' + ((i + base_exp*amount_multiplier[i - 1])*half_multiplier).toFixed(1) + '% exp');
