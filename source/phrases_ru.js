@@ -533,7 +533,7 @@ worker.GUIp_i18n = {
 	forbidden_informers_full_godpower: 'полная прана',
 	forbidden_informers_much_gold: 'много золота',
 	forbidden_informers_dead: 'смерть',
-	forbidden_informers_pvp: 'бой',
+	forbidden_informers_fight: 'бой',
 	forbidden_informers_arena_available: 'открытие арены',
 	forbidden_informers_dungeon_available: 'открытие подземелья',
 	forbidden_informers_wanted_monster: 'монстр дня',

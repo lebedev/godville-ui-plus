@@ -386,7 +386,7 @@ worker.GUIp_i18n = {
 	forbidden_informers_full_godpower: 'full godpower',
 	forbidden_informers_much_gold: 'lots of gold',
 	forbidden_informers_dead: 'death',
-	forbidden_informers_pvp: 'duel',
+	forbidden_informers_fight: 'fight',
 	forbidden_informers_arena_available: 'arena available',
 	forbidden_informers_dungeon_available: 'dungeon available',
 	forbidden_informers_wanted_monster: 'wanted monster',

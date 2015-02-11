@@ -51,7 +51,7 @@ ui_improver.hardRefresh = function() {
 };
 ui_improver.improve = function() {
 	this.improveInProcess = true;
-	ui_informer.update('pvp', ui_data.isFight && !ui_data.isDungeon);
+	ui_informer.update('fight', ui_data.isFight && !ui_data.isDungeon);
 	ui_informer.update('arena available', worker.so.state.arena_available());
 	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
 	if (this.isFirstTime) {
