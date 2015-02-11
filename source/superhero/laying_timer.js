@@ -47,8 +47,8 @@ ui_laying_timer.tick = function() {
 	$timer.className = $timer.className.replace(/green|yellow|red|grey/g, '');
 	var hours, minutes;
 	if (lastLaying) {
-		hours = Math.floor(24 - (Date.now() - lastLaying)/1000/60/60);
-		minutes = Math.floor(60 - (Date.now() - lastLaying)/1000/60%60);
+		hours = Math.floor(24 - (Date.now() + 1 - lastLaying)/1000/60/60);
+		minutes = Math.floor(60 - (Date.now() + 1 - lastLaying)/1000/60%60);
 		if (hours < 0) {
 			$timer.textContent = '✓';
 			$timer.classList.add('green');
