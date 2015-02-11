@@ -2,7 +2,7 @@
 var ui_laying_timer = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "laying_timer"}) : worker.GUIp.laying_timer = {};
 
 ui_laying_timer.init = function() {
-	if (ui_data.hasTemple && !ui_data.isBattle && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
+	if (ui_data.hasTemple && !ui_data.isFight && !ui_data.isDungeon && !ui_storage.get('Option:disableLayingTimer')) {
 		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
 		for (var key in worker) {
 			if (key.match(/^diary/)) {

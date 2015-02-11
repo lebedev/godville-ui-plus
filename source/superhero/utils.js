@@ -21,7 +21,7 @@ ui_utils.findLabel = function($base_elem, label_name) {
 };
 // finds a label with given name and appends given elem after it
 ui_utils.addAfterLabel = function($base_elem, label_name, $elem) {
-	ui_utils.findLabel($base_elem, label_name).after($elem.addClass('voice_generator').addClass(ui_data.isDungeon ? 'dungeon' : ui_data.isBattle ? 'battle' : 'field'));
+	ui_utils.findLabel($base_elem, label_name).after($elem.addClass('voice_generator').addClass(ui_data.isDungeon ? 'dungeon' : ui_data.isFight ? 'battle' : 'field'));
 };
 // generic voice generator
 ui_utils.getGenSayButton = function(title, section, hint) {
@@ -222,7 +222,7 @@ ui_utils.dateToMoscowTimeZone = function(date) {
 		  (temp.getDate() < 10 ? '0' : '') + temp.getDate();
 };
 ui_utils.setVoiceSubmitState = function(condition, disable) {
-	if (!ui_data.isBattle && condition) {
+	if (!ui_data.isFight && condition) {
 		var voice_submit = document.getElementById('voice_submit');
 		if (disable) {
 			voice_submit.setAttribute('disabled', 'disabled');

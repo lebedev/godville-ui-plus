@@ -106,7 +106,7 @@ ui_informer._updateTitle = function(arr) {
 	worker.$('head').append('<link rel="shortcut icon" href=' + favicon + ' />');
 };
 ui_informer.update = function(flag, value) {
-	if (value && (flag === 'pvp' || !(ui_data.isBattle && !ui_data.isDungeon)) && !(ui_storage.get('Option:forbiddenInformers') &&
+	if (value && (flag === 'pvp' || !(ui_data.isFight && !ui_data.isDungeon)) && !(ui_storage.get('Option:forbiddenInformers') &&
 		ui_storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))) {
 		if (!(flag in this.flags)) {
 			this.flags[flag] = true;

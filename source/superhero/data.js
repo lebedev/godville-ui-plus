@@ -23,8 +23,9 @@ ui_data.init = function() {
 };
 ui_data._initVariables = function() {
 	this.currentVersion = '$VERSION';
-	this.isBattle = worker.so.state.is_fighting();
+	this.isFight = worker.so.state.is_fighting();
 	this.isDungeon = worker.so.state.fight_type() === 'dungeon';
+	document.body.classList.add(this.isDungeon ? 'dungeon' : this.isFight ? 'fight' : 'field');
 	this.god_name = worker.so.state.stats.godname.value;
 	this.char_name = worker.so.state.stats.name.value;
 	this.char_sex = worker.so.state.stats.gender.value === 'male' ? worker.GUIp_i18n.hero : worker.GUIp_i18n.heroine;
@@ -62,7 +63,7 @@ ui_data._initForumData = function() {
 	}
 };
 ui_data._clearOldDungeonData = function() {
-	if (!this.isBattle && !this.isDungeon) {
+	if (!this.isFight && !this.isDungeon) {
 		for (var i = 0, lines = [], len = worker.localStorage.length; i < len; i++) {
 			if (worker.localStorage.key(i).match(/Dungeon:/)) {
 				lines.push(worker.localStorage.key(i));

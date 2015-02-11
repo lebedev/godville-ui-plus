@@ -42,7 +42,7 @@ ui_observers.chats = {
 };
 ui_observers.inventory = {
 	get condition() {
-		return !ui_data.isBattle && !ui_data.isDungeon;
+		return !ui_data.isFight && !ui_data.isDungeon;
 	},
 	config: {
 		childList: true,
@@ -80,8 +80,8 @@ ui_observers.refresher = {
 			worker.clearInterval(ui_improver.softRefreshInt);
 			worker.clearInterval(ui_improver.hardRefreshInt);
 			if (!ui_storage.get('Option:disablePageRefresh')) {
-				ui_improver.softRefreshInt = worker.setInterval(ui_improver.softRefresh, (ui_data.isBattle || ui_data.isDungeon) ? 5e3 : 9e4);
-				ui_improver.hardRefreshInt = worker.setInterval(ui_improver.hardRefresh, (ui_data.isBattle || ui_data.isDungeon) ? 15e3 : 27e4);
+				ui_improver.softRefreshInt = worker.setInterval(ui_improver.softRefresh, (ui_data.isFight || ui_data.isDungeon) ? 5e3 : 9e4);
+				ui_improver.hardRefreshInt = worker.setInterval(ui_improver.hardRefresh, (ui_data.isFight || ui_data.isDungeon) ? 15e3 : 27e4);
 			}
 		}
 	},
@@ -90,7 +90,7 @@ ui_observers.refresher = {
 };
 ui_observers.diary = {
 	get condition() {
-		return !ui_data.isBattle && !ui_data.isDungeon;
+		return !ui_data.isFight && !ui_data.isDungeon;
 	},
 	config: { childList: true },
 	func: function(mutation) {
@@ -133,7 +133,7 @@ ui_observers.map_colorization = {
 };
 ui_observers.allies_parse = {
 	get condition() {
-		return ui_data.isBattle || ui_data.isDungeon;
+		return ui_data.isFight || ui_data.isDungeon;
 	},
 	config: {
 		childList: true,

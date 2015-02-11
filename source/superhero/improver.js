@@ -51,11 +51,11 @@ ui_improver.hardRefresh = function() {
 };
 ui_improver.improve = function() {
 	this.improveInProcess = true;
-	ui_informer.update('pvp', ui_data.isBattle && !ui_data.isDungeon);
+	ui_informer.update('pvp', ui_data.isFight && !ui_data.isDungeon);
 	ui_informer.update('arena available', worker.so.state.arena_available());
 	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
 	if (this.isFirstTime) {
-		if (!ui_data.isBattle && !ui_data.isDungeon) {
+		if (!ui_data.isFight && !ui_data.isDungeon) {
 			ui_improver.improveDiary();
 			ui_improver.improveLoot();
 		}
@@ -66,7 +66,7 @@ ui_improver.improve = function() {
 	ui_improver.improveStats();
 	ui_improver.improvePet();
 	ui_improver.improveVoiceDialog();
-	if (!ui_data.isBattle) {
+	if (!ui_data.isFight) {
 		ui_improver.improveNews();
 		ui_improver.improveEquip();
 		ui_improver.improvePantheons();
@@ -76,7 +76,7 @@ ui_improver.improve = function() {
 	}
 	ui_improver.improveInterface();
 	ui_improver.improveChat();
-	if (this.isFirstTime && (ui_data.isBattle || ui_data.isDungeon)) {
+	if (this.isFirstTime && (ui_data.isFight || ui_data.isDungeon)) {
 		ui_improver.improveAllies();
 	}
 	ui_improver.checkButtonsVisibility();
@@ -226,7 +226,7 @@ ui_improver.improveVoiceDialog = function() {
 				worker.$('#actions').hide();
 			}
 		} else {
-			if (ui_data.isBattle) {
+			if (ui_data.isFight) {
 				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.defend, 'defend', worker.GUIp_i18n.ask4 + ui_data.char_sex[0] + worker.GUIp_i18n.to_defend);
 				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
 				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
@@ -476,7 +476,7 @@ ui_improver.improveStats = function() {
 		//ui_informer.update('low health', +ui_stats.get('Map_HP') < 130);
 		return;
 	}
-	if (ui_data.isBattle) {
+	if (ui_data.isFight) {
 		ui_stats.setFromLabelCounter('Hero_HP', worker.$('#m_info'), worker.GUIp_i18n.health_label);
 		ui_stats.setFromLabelCounter('Hero_Gold', worker.$('#m_info'), worker.GUIp_i18n.gold_label, gold_parser);
 		ui_stats.setFromLabelCounter('Hero_Inv', worker.$('#m_info'), worker.GUIp_i18n.inventory_label);
@@ -551,7 +551,7 @@ ui_improver.improveStats = function() {
 	//Shovel pictogramm end
 };
 ui_improver.improvePet = function() {
-	if (ui_data.isBattle) { return; }
+	if (ui_data.isFight) { return; }
 	if (worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value) {
 		if (!ui_utils.isAlreadyImproved(worker.$('#pet'))) {
 			worker.$('#pet .block_title').after(worker.$('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
@@ -626,7 +626,7 @@ ui_improver.improvePantheons = function() {
 	}
 };
 ui_improver.improveDiary = function() {
-	if (ui_data.isBattle) { return; }
+	if (ui_data.isFight) { return; }
 	var i, len;
 	if (this.isFirstTime) {
 		var $msgs = document.querySelectorAll('#diary .d_msg:not(.parsed)');
@@ -893,7 +893,7 @@ ui_improver.improveInterface = function() {
 			worker.clearInterval(this.windowResizeInt);
 			this.windowResizeInt = worker.setTimeout(ui_improver.whenWindowResize.bind(ui_improver), 250);
 		}).bind(ui_improver));
-		if (ui_data.isBattle) {
+		if (ui_data.isFight) {
 			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + worker.so.state.stats.perm_link.value + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
 		}
 	}
@@ -939,7 +939,7 @@ ui_improver.improveChat = function() {
 	var i, len;
 
 	// friends fetching
-	if (this.isFirstTime && (ui_data.isBattle || ui_data.isDungeon)) {
+	if (this.isFirstTime && (ui_data.isFight || ui_data.isDungeon)) {
 		var $friends = document.querySelectorAll('.frline .frname'),
 			friends = [];
 		for (i = 0, len = $friends.length; i < len; i++) {
@@ -1036,7 +1036,7 @@ ui_improver.checkButtonsVisibility = function() {
 		if (this.r_r.length) { worker.$('.r_r').show(); }
 		if (worker.$('.b_b:visible, .b_r:visible, .r_r:visible').length) { worker.$('span.craft_button').show(); }
 		//if (worker.$('.f_news').text() !== 'Возвращается к заданию...')fc
-		if (!ui_data.isBattle) {
+		if (!ui_data.isFight) {
 			if (worker.$('#hk_distance .l_capt').text().match(/Город|Current Town/) || worker.$('.f_news').text().match('дорогу') || worker.$('#news .line')[0].style.display !== 'none') { worker.$('#hk_distance .voice_generator').hide(); }
 			//if (ui_storage.get('Stats:Godpower') === 100) worker.$('#control .voice_generator').hide();
 			if (worker.$('#control .p_val').width() === worker.$('#control .p_bar').width() || worker.$('#news .line')[0].style.display !== 'none') { worker.$('#control .voice_generator')[0].style.display = 'none'; }
@@ -1112,7 +1112,7 @@ ui_improver.nodeInsertion = function() {
 };
 ui_improver.nodeInsertionDelay = function() {
 	ui_improver.improve();
-	if (ui_data.isBattle) {
+	if (ui_data.isFight) {
 		ui_logger.update();
 	}
 };

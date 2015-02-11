@@ -98,7 +98,7 @@ ui_logger.update = function() {
 	}
 	if (ui_data.isDungeon) {
 		ui_logger._updateWatchers(this.dungeonWatchers);
-	} else if (ui_data.isBattle) {
+	} else if (ui_data.isFight) {
 		ui_logger._updateWatchers(this.battleWatchers);
 	} else {
 		ui_logger._updateWatchers(this.fieldWatchers);
