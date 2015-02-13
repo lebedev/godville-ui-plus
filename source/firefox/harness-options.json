@@ -9,8 +9,8 @@
 	"mainPath": "godville-ui-plus/main",
 	"manifest": {
 		"godville-ui-plus/main": {
-			"docsSHA256": "a1fdf60f9f0330f2ecb42ef584bb499e2e05fd14d9dd14bbf915cfb2fe49a16b",
-			"jsSHA256": "24f04ee5e4bce14cdc2b46595cb40beb4b3699eed09e130ef596ba6b51de3b33",
+			"docsSHA256": null,
+			"jsSHA256": "4898a035fe1746d59a53d78750e6dec1689e095c78b70e362b167bc330d7ceea",
 			"moduleName": "main",
 			"packageName": "godville-ui-plus",
 			"requirements": {
