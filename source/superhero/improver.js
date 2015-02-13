@@ -833,7 +833,7 @@ ui_improver.colorDungeonMap = function() {
 		}
 		if (chronicles[i].parentNode.className.match('pointer')) {
 			pointers = chronicles[i].parentNode.className.match(this.pointerRegExp);
-			currentCell.title = worker.GUIp_i18n[pointers[0].replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace('-', '_')] : '');
+			currentCell.title = worker.GUIp_i18n[pointers[0].replace(/^./, '').replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace(/^./, '').replace('-', '_')] : '');
 		}
 		first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
 		if (first_sentence) {
@@ -862,7 +862,7 @@ ui_improver.colorDungeonMap = function() {
 				}
 				if (this.old_chronicles[i].classList.join().match('pointer')) {
 					pointers = this.old_chronicles[i].classList.join().match(this.pointerRegExp);
-					currentCell.title = worker.GUIp_i18n[pointers[0].replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace('-', '_')] : '');
+					currentCell.title = worker.GUIp_i18n[pointers[0].replace(/^./, '').replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace(/^./, '').replace('-', '_')] : '');
 				}
 			}
 			direction = this.old_chronicles[i].direction;
