@@ -469,6 +469,7 @@ ui_improver.improveStats = function() {
 		if (ui_storage.get('Logger:Location') === 'Field') {
 			ui_storage.set('Logger:Location', 'Dungeon');
 			ui_storage.set('Logger:Map_HP', ui_stats.get('Map_HP'));
+			ui_storage.set('Logger:Map_Exp', ui_stats.get('Map_Exp'));
 			ui_storage.set('Logger:Map_Gold', ui_stats.get('Map_Gold'));
 			ui_storage.set('Logger:Map_Inv', ui_stats.get('Map_Inv'));
 			ui_storage.set('Logger:Map_Charges',ui_stats.get('Map_Charges'));
