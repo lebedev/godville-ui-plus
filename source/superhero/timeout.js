@@ -37,7 +37,7 @@ ui_timeout._delayedStart = function() {
 		ui_timeout.timeout = customTimeout;
 		ui_timeout.bar.style.transitionDuration = customTimeout + 's';
 	} else {
-		ui_timeout.timeout = 30;
+		ui_timeout.timeout = 20;
 	}
 	ui_timeout.bar.classList.add('running');
 };

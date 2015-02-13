@@ -261,7 +261,7 @@ function save_options() {
 		if (voice_timeout) {
 			storage.set('Option:voiceTimeout', voice_timeout);
 		} else {
-			$j('#voice_timeout_value').val('30');
+			$j('#voice_timeout_value').val('20');
 			$j('#voice_timeout').click();
 			storage.set('Option:voiceTimeout', '');
 		}
