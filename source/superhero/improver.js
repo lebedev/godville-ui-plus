@@ -745,8 +745,24 @@ ui_improver.parseChronicles = function(xhr) {
 		}
 	}
 };
+ui_improver.deleteInvalidChronicles = function() {
+var isHiddenChronicles = true,
+	chronicles = document.querySelectorAll('#m_fight_log .line.d_line');
+for (var i = chronicles.length; i >= 0; i--) {
+	if (isHiddenChronicles) {
+		if (chronicles[i].style.display !== 'none') {
+			isHiddenChronicles = false;
+		}
+	} else {
+		if (chronicles[i].style.display === 'none') {
+			chronicles[i].parentNode.removeChild(chronicles[i]);
+		}
+	}
+}
+};
 ui_improver.improveChronicles = function() {
 	if (ui_storage.get('Dungeon:pointerSignPhrases')) {
+		ui_improver.deleteInvalidChronicles();
 		// chronicles painting
 		var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
 		for (var i = 0, len = chronicles.length; i < len; i++) {
