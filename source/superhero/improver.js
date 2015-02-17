@@ -54,6 +54,9 @@ ui_improver.improve = function() {
 	ui_informer.update('fight', ui_data.isFight && !ui_data.isDungeon);
 	ui_informer.update('arena available', worker.so.state.arena_available());
 	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
+
+	this.optionsChanged = ui_storage.get('optionsChanged');
+
 	if (this.isFirstTime) {
 		if (!ui_data.isFight && !ui_data.isDungeon) {
 			ui_improver.improveDiary();
@@ -82,6 +85,7 @@ ui_improver.improve = function() {
 	ui_improver.checkButtonsVisibility();
 	this.isFirstTime = false;
 	this.improveInProcess = false;
+	ui_storage.set('optionsChanged', false);
 };
 ui_improver.improveLoot = function() {
 	var i, j, len, items = document.querySelectorAll('#inventory li'),

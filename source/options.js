@@ -295,6 +295,8 @@ function save_options() {
 	$j('#gui_options_progress').fadeOut('slow');
 
 	set_theme_and_background();
+
+	storage.set('optionsChanged', true);
 }
 
 function setSaveWordsButtonState() {
