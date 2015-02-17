@@ -1110,10 +1110,10 @@ ui_improver.initSoundsOverride = function() {
 	}
 };
 ui_improver.activity = function() {
-	if (!ui_logger.Updating) {
-		ui_logger.Updating = true;
+	if (!ui_logger.updating) {
+		ui_logger.updating = true;
 		worker.setTimeout(function() {
-			ui_logger.Updating = false;
+			ui_logger.updating = false;
 		}, 500);
 		ui_logger.update();
 	}
