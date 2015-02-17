@@ -144,13 +144,15 @@ ui_observers.allies_parse = {
 			if (ui_improver.currentAlly === ui_improver.currentAllyObserver) {
 				var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly],
 					motto_field = mutation.target.querySelector('.h_motto');
+				hero_name.innerHTML = '<span class="hero_name">' + hero_name.textContent + '</span>';
 				if (motto_field) {
 					var special_motto = motto_field.textContent.match(/\[[^\]]+?\]/g);
 					if (special_motto) {
-						hero_name.textContent = hero_name.textContent + ' ' + special_motto.join('');
+						hero_name.insertAdjacentHTML('beforeend', '<span class="motto">' + special_motto.join('') + '</span>');
 					}
 				}
 				var god_name = mutation.target.querySelector('.l_val').textContent;
+				hero_name.title = god_name;
 				if (god_name.match(ui_improver.friendsRegexp)) {
 					hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="' + worker.GUIp_i18n.open_chat_with + god_name + '">★</a>');
 					document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = function(e) {
