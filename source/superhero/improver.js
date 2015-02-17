@@ -326,7 +326,7 @@ ui_improver.improveMap = function() {
 			'<div class="guip_legend"><div class="dmc boss trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
 		);
 	}
-	if (worker.$('#map .dml').length) {
+	if (this.isFirstTime || this.optionsChanged) {
 		if (ui_storage.get('Option:relocateMap')) {
 			if (!worker.$('#a_central_block #map').length) {
 				worker.$('#map').insertBefore(worker.$('#m_control'));
@@ -344,6 +344,8 @@ ui_improver.improveMap = function() {
 				}
 			}
 		}
+	}
+	if (worker.$('#map .dml').length) {
 		var i, j,
 			$box = worker.$('#cntrl .voice_generator'),
 			$boxML = worker.$('#map .dml'),
