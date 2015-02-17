@@ -614,30 +614,33 @@ ui_improver.GroupHP = function(flag) {
 	return seq;
 };
 ui_improver.improvePantheons = function() {
-	if (ui_storage.get('Option:relocateDuelButtons') && ui_storage.get('Option:relocateDuelButtons').match('arena')) {
-		if (!worker.$('#pantheons.arena_link_relocated').length) {
-			worker.$('#pantheons').addClass('arena_link_relocated');
-			worker.$('.arena_link_wrap').insertBefore(worker.$('#pantheons_content')).addClass('p_group_sep').css('padding-top', 0);
+	if (this.isFirstTime || this.optionsChanged) {
+		var relocateDuelButtons = ui_storage.get('Option:relocateDuelButtons') || '';
+		if (relocateDuelButtons.match('arena')) {
+			if (!worker.$('#pantheons.arena_link_relocated').length) {
+				worker.$('#pantheons').addClass('arena_link_relocated');
+				worker.$('.arena_link_wrap').insertBefore(worker.$('#pantheons_content')).addClass('p_group_sep').css('padding-top', 0);
+			}
+		} else if (worker.$('#pantheons.arena_link_relocated').length) {
+			worker.$('#pantheons').removeClass('arena_link_relocated').removeClass('both');
+			worker.$('.arena_link_wrap').insertBefore(worker.$('#control .arena_msg')).removeClass('p_group_sep').css('padding-top', '0.5em');
 		}
-	} else if (worker.$('#pantheons.arena_link_relocated').length) {
-		worker.$('#pantheons').removeClass('arena_link_relocated').removeClass('both');
-		worker.$('.arena_link_wrap').insertBefore(worker.$('#control .arena_msg')).removeClass('p_group_sep').css('padding-top', '0.5em');
-	}
-	if (ui_storage.get('Option:relocateDuelButtons') && ui_storage.get('Option:relocateDuelButtons').match('chf')) {
-		if (!worker.$('#pantheons.chf_link_relocated').length) {
-			worker.$('#pantheons').addClass('chf_link_relocated');
-			worker.$('.chf_link_wrap:first').insertBefore(worker.$('#pantheons_content'));
-			worker.$('#pantheons .chf_link_wrap').addClass('p_group_sep');
+		if (relocateDuelButtons.match('chf')) {
+			if (!worker.$('#pantheons.chf_link_relocated').length) {
+				worker.$('#pantheons').addClass('chf_link_relocated');
+				worker.$('.chf_link_wrap:first').insertBefore(worker.$('#pantheons_content'));
+				worker.$('#pantheons .chf_link_wrap').addClass('p_group_sep');
+			}
+		} else if (worker.$('#pantheons.chf_link_relocated').length) {
+			worker.$('#pantheons').removeClass('chf_link_relocated').removeClass('both');
+			worker.$('.chf_link_wrap').removeClass('p_group_sep');
+			worker.$('#pantheons .chf_link_wrap').insertAfter(worker.$('#control .arena_msg'));
 		}
-	} else if (worker.$('#pantheons.chf_link_relocated').length) {
-		worker.$('#pantheons').removeClass('chf_link_relocated').removeClass('both');
-		worker.$('.chf_link_wrap').removeClass('p_group_sep');
-		worker.$('#pantheons .chf_link_wrap').insertAfter(worker.$('#control .arena_msg'));
-	}
-	if (worker.$('#pantheons.arena_link_relocated.chf_link_relocated:not(.both)').length) {
-		worker.$('#pantheons').addClass('both');
-		worker.$('#pantheons .chf_link_wrap').insertBefore(worker.$('#pantheons_content'));
-		worker.$('.arena_link_wrap').removeClass('p_group_sep');
+		if (worker.$('#pantheons.arena_link_relocated.chf_link_relocated:not(.both)').length) {
+			worker.$('#pantheons').addClass('both');
+			worker.$('#pantheons .chf_link_wrap').insertBefore(worker.$('#pantheons_content'));
+			worker.$('.arena_link_wrap').removeClass('p_group_sep');
+		}
 	}
 };
 ui_improver.improveDiary = function() {
