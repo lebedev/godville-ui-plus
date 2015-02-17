@@ -12,7 +12,7 @@ ui_timeout._tick = function() {
 			this.bar.style.transitionDuration = '';
 		}
 		this.bar.classList.remove('running');
-		ui_utils.setVoiceSubmitState(!(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('when_empty')) || document.querySelector('#god_phrase').value, false);
+		ui_utils.setVoiceSubmitState(!ui_improver.freezeVoiceButton.match('when_empty') || document.querySelector('#god_phrase').value, false);
 	}
 };
 // creates timeout bar element
@@ -29,7 +29,7 @@ ui_timeout.start = function() {
 	worker.setTimeout(ui_timeout._delayedStart, 10);
 	this._finishtDate = Date.now() + this.timeout*1000;
 	this._tickInt = worker.setInterval(ui_timeout._tick.bind(this), 100);
-	ui_utils.setVoiceSubmitState(ui_storage.get('Option:freezeVoiceButton') && ui_storage.get('Option:freezeVoiceButton').match('after_voice'), true);
+	ui_utils.setVoiceSubmitState(ui_improver.freezeVoiceButton.match('after_voice'), true);
 };
 ui_timeout._delayedStart = function() {
 	var customTimeout = ui_storage.get('Option:voiceTimeout');
