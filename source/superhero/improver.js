@@ -744,11 +744,12 @@ ui_improver.parseChronicles = function(xhr) {
 			this.old_chronicles.push(entry);
 		}
 	}
+	ui_improver.colorDungeonMap();
 };
 ui_improver.deleteInvalidChronicles = function() {
 var isHiddenChronicles = true,
 	chronicles = document.querySelectorAll('#m_fight_log .line.d_line');
-for (var i = chronicles.length; i >= 0; i--) {
+for (var i = chronicles.length - 1; i >= 0; i--) {
 	if (isHiddenChronicles) {
 		if (chronicles[i].style.display !== 'none') {
 			isHiddenChronicles = false;
