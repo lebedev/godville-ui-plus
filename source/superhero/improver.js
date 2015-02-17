@@ -283,6 +283,10 @@ ui_improver.improveNews = function() {
 	ui_informer.update('wanted monster', isWantedMonster);
 	ui_informer.update('special monster', isSpecialMonster);
 	ui_informer.update('tamable monster', isTamableMonster);
+
+	if (this.optionsChanged) {
+		document.getElementById('laying_timer').style.display = ui_storage.get('Option:disableLayingTimer') ? 'none' : 'block';
+	}
 };
 ui_improver.MapIteration = function(MapThermo, iPointer, jPointer, step, kRow, kColumn) {
 	step++;
