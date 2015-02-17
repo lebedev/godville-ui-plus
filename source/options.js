@@ -47,14 +47,12 @@ var storage = {
 
 function addMenu() {
 	if (god_name === "") { return; }
-	ImproveInProcess = true;
 	if ($j('#ui_options').length === 0) {
 		$j('#profile_main p:first').append(' | <a id="ui_options" href="#ui_options">' + worker.GUIp_i18n.ui_options + '</a>');
 		$j('#ui_options').click(function() {
 			loadOptions();
 		});
 	}
-	ImproveInProcess = false;
 }
 
 function loadOptions() {
@@ -62,7 +60,6 @@ function loadOptions() {
 		worker.setTimeout(function() {loadOptions();}, 100);
 		return;
 	}
-	ImproveInProcess = true;
 	$j('#profile_main').empty();
 	$j('#profile_main').append(worker.getOptionsPage());
 	setForm();
@@ -128,8 +125,6 @@ function loadOptions() {
 	$j('#GUIp_export').click(function() {
 		$j('#guip_settings').val(storage.exportOptions());
 	});
-
-	ImproveInProcess = false;
 }
 
 function setForm() {
@@ -150,7 +145,6 @@ function addOnClick($el, sect) {
 }
 
 function delete_custom_words() {
-	ImproveInProcess = true;
 	var $elem = $j('#ta_edit');
 	var text = def.phrases[curr_sect];
 	$elem.attr('rows', text.length);
@@ -159,11 +153,9 @@ function delete_custom_words() {
 	storage.set('phrasesChanged', 'true');
 	setSaveWordsButtonState();
 	setDefaultWordsButtonState(false);
-	ImproveInProcess = false;
 }
 
 function save_words() {
-	ImproveInProcess = true;
 	$j('#gui_word_progress').show();
 	var text = $j('#ta_edit').val();
 	if (text === "") { return; }
@@ -179,7 +171,6 @@ function save_words() {
 	storage.set('phrasesChanged', 'true');
 	setSaveWordsButtonState();
 	setDefaultWordsButtonState(true);
-	ImproveInProcess = false;
 }
 
 function save_options() {
@@ -304,7 +295,6 @@ function save_options() {
 	$j('#gui_options_progress').fadeOut('slow');
 
 	set_theme_and_background();
-	ImproveInProcess = false;
 }
 
 function setSaveWordsButtonState() {
@@ -326,7 +316,6 @@ function setDefaultWordsButtonState(condition) {
 }
 
 function setText(sect) {
-	ImproveInProcess = true;
 	curr_sect = sect;
 	$j('#words a.selected').removeClass('selected');
 	$j('#words a#l_' + curr_sect).addClass('selected');
@@ -335,7 +324,6 @@ function setText(sect) {
 	$j('#ta_edit').removeAttr('disabled').attr('rows', text.length).val(text.join("\n"));
 	setSaveWordsButtonState();
 	setDefaultWordsButtonState(text_list);
-	ImproveInProcess = false;
 }
 
 function set_user_css() {
@@ -459,8 +447,7 @@ function set_theme_and_background() {
 	}
 }
 
-var def, $j, curr_sect, god_name,
-	ImproveInProcess = false;
+var def, $j, curr_sect, god_name;
 
 var starterInt = worker.setInterval(function() {
 	if (worker.jQuery && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL) {
