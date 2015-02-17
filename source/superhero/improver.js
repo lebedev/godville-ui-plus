@@ -943,24 +943,13 @@ ui_improver.improveInterface = function() {
 		document.body.className = document.body.className.replace(/th_\w+/g, '') + ' ' + ui_storage.get('ui_s');
 	}
 
-	if (ui_storage.get('Option:useBackground') === 'cloud') {
-		if (worker.$('body').css('background-image') !== 'url(' + worker.GUIp_getResource("images/background.jpg") + ')') {
+	if (this.isFirstTime || this.optionsChanged) {
+		var background = ui_storage.get('Option:useBackground');
+		if (background === 'cloud') {
 			worker.$('body').css('background-image', 'url(' + worker.GUIp_getResource("images/background.jpg") + ')');
-		}
-	} else if (ui_storage.get('Option:useBackground')) {
-		//Mini-hash to check if that is the same background
-		var hash = 0, ch, str = ui_storage.get('Option:useBackground');
-		for (var i = 0; i < str.length; i++) {
-			ch = str.charCodeAt(i);
-			hash = ((hash<<5)-hash)+ch;
-			hash = hash & hash; // Convert to 32bit integer
-		}
-		if (hash !== this.hash) {
-			this.hash = hash;
+		} else if (background) {
 			worker.$('body').css('background-image', 'url(' + ui_utils.escapeHTML(str) + ')');
-		}
-	} else {
-		if (worker.$('body').css('background-image')) {
+		} else {
 			worker.$('body').css('background-image', '');
 		}
 	}
