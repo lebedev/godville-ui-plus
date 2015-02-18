@@ -16,7 +16,8 @@ ui_improver.currentAllyObserver = 0;
 ui_improver.b_b = [];
 ui_improver.b_r = [];
 ui_improver.r_r = [];
-// dungeon phrases
+// dungeon
+ui_improver.chronicles = [];
 ui_improver.dungeonPhrases = [
 	'warning',
 	'boss',
@@ -684,6 +685,63 @@ ui_improver.getDungeonPhrases = function() {
 		ui_improver.improveChronicles();
 	}
 };
+ui_improver.parseSingleChronicle = function(text) {
+	var i, len, chronicle = { direction: null, marks: [], pointers: [], jumping: false };
+	for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
+		if (text.match(this[this.dungeonPhrases[i] + 'RegExp'])) {
+			chronicle.marks.push(this.dungeonPhrases[i]);
+		}
+	}
+	var firstSentence = text.match(/^.*?[\.!\?](?:\s|$)/);
+	if (firstSentence) {
+		var direction = firstSentence[0].match(/север|восток|юг|запад|north|east|south|west/i);
+		if (direction) {
+			chronicle.direction = direction[0];
+		}
+		chronicle.jumping = firstSentence[0].match(this.jumpingDungeonRegExp);
+	}
+	if (text.match(this.pointerSignRegExp)) {
+		var middle = text.replace(/offered to trust h.. gut feeling\./, '')
+						 .match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
+		var pointer, pointers = middle.match(this.pointerRegExp);
+		for (i = 0, len = pointers.length; i < len; i++) {
+			switch (pointers[i].replace(/^./, '')) {
+			case 'северо-восток':
+			case 'north-east': pointer = 'north_east'; break;
+			case 'северо-запад':
+			case 'north-west': pointer = 'north_west'; break;
+			case 'юго-восток':
+			case 'south-east': pointer = 'south_east'; break;
+			case 'юго-запад':
+			case 'south-west': pointer = 'south_west'; break;
+			case 'север':
+			case 'north': pointer = 'north'; break;
+			case 'восток':
+			case 'east': pointer = 'east'; break;
+			case 'юг':
+			case 'south': pointer = 'south'; break;
+			case 'запад':
+			case 'west': pointer = 'west'; break;
+			case 'очень холодно':
+			case 'very cold':
+			case 'freezing': pointer = 'freezing'; break;
+			case 'холодно':
+			case 'cold': pointer = 'cold'; break;
+			case 'свежо':
+			case 'mild': pointer = 'mild'; break;
+			case 'тепло':
+			case 'warm': pointer = 'warm'; break;
+			case 'горячо':
+			case 'hot': pointer = 'hot'; break;
+			case 'очень горячо':
+			case 'very hot':
+			case 'burning': pointer = 'burning'; break;
+			}
+			chronicle.pointers.push(pointer);
+		}
+	}
+	return chronicle;
+};
 ui_improver.parseChronicles = function(xhr) {
 	var last;
 	if (document.querySelector('.sort_ch').textContent === '▼') {
@@ -692,157 +750,77 @@ ui_improver.parseChronicles = function(xhr) {
 	} else {
 		last = document.querySelector('#m_fight_log .d_line .d_msg:not(.m_infl)').textContent;
 	}
-	this.old_chronicles = [];
+	var log_chronicles = [];
 	var direction, entry, matches = xhr.responseText.match(/<div class="text_content ">[\s\S]+?<\/div>/g);
 	for (var i = 0, len = matches.length; i < len; i++) {
 		matches[i] = matches[i].replace('<div class="text_content ">', '').replace('</div>', '').trim();
-		if (matches[i] === last) {
-			break;
+		if (matches[i] !== last) {
+			log_chronicles.push(ui_improver.parseSingleChronicle(matches[i]));
 		} else {
-			entry = {};
-			direction = matches[i].match(/^.*?[\.!\?](?:\s|$)/)[0].match(/север|восток|юг|запад|north|east|south|west/i);
-			if (direction) {
-				entry.direction = direction[0];
-			}
-			for (var j = 0, len2 = this.dungeonPhrases.length - 1; j < len2; j++) {
-				if (matches[i].match(this[this.dungeonPhrases[j] + 'RegExp'])) {
-					if (!entry.classList) {
-						entry.classList = [];
-					}
-					entry.classList.push(this.dungeonPhrases[j]);
-				}
-			}
-			if (matches[i].match(this.pointerSignRegExp)) {
-				if (!entry.classList) {
-					entry.classList = [];
-				}
-				entry.classList.push('pointer');
-				var middle = matches[i].replace(/offered to trust h.. gut feeling\./, '')
-									   .match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
-				var pointers = middle.match(this.pointerRegExp);
-				for (j = 0, len2 = pointers.length; j < len2; j++) {
-					var pointerClass;
-					switch (pointers[j].replace(/^./, '')) {
-					case 'северо-восток':
-					case 'north-east': pointerClass = 'north-east'; break;
-					case 'северо-запад':
-					case 'north-west': pointerClass = 'north-west'; break;
-					case 'юго-восток':
-					case 'south-east': pointerClass = 'south-east'; break;
-					case 'юго-запад':
-					case 'south-west': pointerClass = 'south-west'; break;
-					case 'север':
-					case 'north': pointerClass = 'north'; break;
-					case 'восток':
-					case 'east': pointerClass = 'east'; break;
-					case 'юг':
-					case 'south': pointerClass = 'south'; break;
-					case 'запад':
-					case 'west': pointerClass = 'west'; break;
-					case 'очень холодно':
-					case 'very cold':
-					case 'freezing': pointerClass = 'freezing'; break;
-					case 'холодно':
-					case 'cold': pointerClass = 'cold'; break;
-					case 'свежо':
-					case 'mild': pointerClass = 'mild'; break;
-					case 'тепло':
-					case 'warm': pointerClass = 'warm'; break;
-					case 'горячо':
-					case 'hot': pointerClass = 'hot'; break;
-					case 'очень горячо':
-					case 'very hot':
-					case 'burning': pointerClass = 'burning'; break;
-					}
-					entry.classList.push(pointerClass);
-				}
-			}
-			this.old_chronicles.push(entry);
+			break;
 		}
 	}
+	this.chronicles = log_chronicles.concat(this.chronicles);
+	this.logsAreParsed = true;
 	ui_improver.colorDungeonMap();
 };
 ui_improver.deleteInvalidChronicles = function() {
-var isHiddenChronicles = true,
-	chronicles = document.querySelectorAll('#m_fight_log .line.d_line');
-for (var i = chronicles.length - 1; i >= 0; i--) {
-	if (isHiddenChronicles) {
-		if (chronicles[i].style.display !== 'none') {
-			isHiddenChronicles = false;
-		}
-	} else {
-		if (chronicles[i].style.display === 'none') {
-			chronicles[i].parentNode.removeChild(chronicles[i]);
+	var isHiddenChronicles = true,
+		chronicles = document.querySelectorAll('#m_fight_log .line.d_line');
+	for (var i = chronicles.length - 1; i >= 0; i--) {
+		if (isHiddenChronicles) {
+			if (chronicles[i].style.display !== 'none') {
+				isHiddenChronicles = false;
+			}
+		} else {
+			if (chronicles[i].style.display === 'none') {
+				chronicles[i].parentNode.removeChild(chronicles[i]);
+			}
 		}
 	}
-}
+};
+ui_improver.calculateXY = function(coords, cell) {
+	coords.x = ui_utils.getNodeIndex(cell);
+	coords.y = ui_utils.getNodeIndex(cell.parentNode);
+};
+ui_improver.calculateExitXY = function() {
+	var exit_coords = { x: null, y: null },
+		cells = document.querySelectorAll('.dml .dmc');
+	for (var i = 0, len = cells.length; i < len; i++) {
+		if (cells[i].textContent.trim().match(/В|E/)) {
+			ui_improver.calculateXY(exit_coords, cells[i]);
+			break;
+		}
+	}
+	if (!exit_coords.x) {
+		ui_improver.calculateXY(exit_coords, document.getElementsByClassName('map_pos'));
+	}
+	worker.console.log(exit_coords);
+	return exit_coords;
 };
 ui_improver.improveChronicles = function() {
-	if (ui_storage.get('Dungeon:pointerSignPhrases')) {
+	if (!ui_storage.get('Dungeon:pointerSignPhrases')) {
+		if (this.dungeonPhrasesXHRCount < 5) {
+			ui_improver.getDungeonPhrases();
+		}
+	} else {
 		ui_improver.deleteInvalidChronicles();
-		// chronicles painting
-		var chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)');
-		for (var i = 0, len = chronicles.length; i < len; i++) {
-			for (var j = 0, len2 = this.dungeonPhrases.length - 1; j < len2; j++) {
-				if (chronicles[i].textContent.match(this[this.dungeonPhrases[j] + 'RegExp'])) {
-					chronicles[i].parentNode.classList.add(this.dungeonPhrases[j]);
-				}
-			}
-			if (chronicles[i].textContent.match(this.pointerSignRegExp)) {
-				chronicles[i].parentNode.classList.add('pointer');
-				var middle = chronicles[i].textContent.replace(/offered to trust h.. gut feeling\./, '')
-													  .match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
-				var pointers = middle.match(this.pointerRegExp);
-				for (j = 0, len2 = pointers.length; j < len2; j++) {
-					var pointerClass;
-					switch (pointers[j].replace(/^./, '')) {
-					case 'северо-восток':
-					case 'north-east': pointerClass = 'north-east'; break;
-					case 'северо-запад':
-					case 'north-west': pointerClass = 'north-west'; break;
-					case 'юго-восток':
-					case 'south-east': pointerClass = 'south-east'; break;
-					case 'юго-запад':
-					case 'south-west': pointerClass = 'south-west'; break;
-					case 'север':
-					case 'north': pointerClass = 'north'; break;
-					case 'восток':
-					case 'east': pointerClass = 'east'; break;
-					case 'юг':
-					case 'south': pointerClass = 'south'; break;
-					case 'запад':
-					case 'west': pointerClass = 'west'; break;
-					case 'очень холодно':
-					case 'very cold':
-					case 'freezing': pointerClass = 'freezing'; break;
-					case 'холодно':
-					case 'cold': pointerClass = 'cold'; break;
-					case 'свежо':
-					case 'mild': pointerClass = 'mild'; break;
-					case 'тепло':
-					case 'warm': pointerClass = 'warm'; break;
-					case 'горячо':
-					case 'hot': pointerClass = 'hot'; break;
-					case 'очень горячо':
-					case 'very hot':
-					case 'burning': pointerClass = 'burning'; break;
-					}
-					chronicles[i].parentNode.classList.add(pointerClass);
-				}
-			}
+
+		var i, len, chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.m_infl):not(.parsed)'),
+			ch_down = document.querySelector('.sort_ch').textContent === '▼';
+		for (len = chronicles.length, i = ch_down ? len - 1 : 0; ch_down ? i >= 0 : i < len; ch_down ? i-- : i++) {
+			this.chronicles.push(ui_improver.parseSingleChronicle(chronicles[i].textContent));
 			chronicles[i].classList.add('parsed');
 		}
 
 		// informer
-		ui_informer.update('close to boss', document.querySelector('.sort_ch').textContent === '▼' ? document.querySelectorAll('#m_fight_log .d_line.warning:nth-child(1)').length : document.querySelectorAll('#m_fight_log .d_line.warning:last-child').length);
+		ui_informer.update('close to boss', this.chronicles[this.chronicles.length - 1].marks.indexOf('warning') >= 0);
 
-		ui_improver.colorDungeonMap();
-
-		if (!this.old_chronicles || !this.old_chronicles.length) {
+		if (!this.logsAreParsed) {
 			ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
+		} else {
+			ui_improver.colorDungeonMap();
 		}
-	} else if (this.dungeonPhrasesXHRCount < 5) {
-		ui_improver.getDungeonPhrases();
 	}
 	if (this.isFirstTime) {
 		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
@@ -851,68 +829,36 @@ ui_improver.improveChronicles = function() {
 	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 };
 ui_improver.colorDungeonMap = function() {
-	// map cells painting
-	var first_sentence, direction, step, i, len, j, len2, currentCell, pointers,
-		x = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0]),
-		y = ui_utils.getNodeIndex(document.getElementsByClassName('map_pos')[0].parentNode),
-		chronicles = document.querySelectorAll('.d_msg:not(.m_infl)'),
-		ch_down = document.querySelector('.sort_ch').textContent === '▼';
-	for (len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
-		currentCell = document.querySelectorAll('#map .dml')[y].children[x];
-		for (j = 0, len2 = this.dungeonPhrases.length; j < len2; j++) {
-			if (chronicles[i].parentNode.classList.contains(this.dungeonPhrases[j])) {
-				currentCell.classList.add(this.dungeonPhrases[j]);
+	var i, len, j, len2, step, currentCell,
+		coords = ui_improver.calculateExitXY();
+	for (i = 0, len = this.chronicles.length; i < len; i++) {
+		if (this.chronicles[i].direction) {
+			step = this.chronicles[i].jumping ? 2 : 1;
+			switch(this.chronicles[i].direction) {
+			case 'север':
+			case 'north': coords.y -= step; break;
+			case 'восток':
+			case 'east': coords.x += step; break;
+			case 'юг':
+			case 'south': coords.y += step; break;
+			case 'запад':
+			case 'west': coords.x -= step; break;
 			}
 		}
-		if (chronicles[i].parentNode.className.match('pointer')) {
-			pointers = chronicles[i].parentNode.className.match(this.pointerRegExp);
-			currentCell.title = worker.GUIp_i18n[pointers[0].replace(/^./, '').replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace(/^./, '').replace('-', '_')] : '');
+		currentCell = document.querySelectorAll('#map .dml')[coords.y].children[coords.x];
+		for (j = 0, len2 = this.chronicles[i].marks.length; j < len2; j++) {
+			currentCell.classList.add(this.chronicles[i].marks[j]);
 		}
-		first_sentence = chronicles[i].textContent.match(/^.*?[\.!\?](?:\s|$)/);
-		if (first_sentence) {
-			direction = first_sentence[0].match(/север|восток|юг|запад|north|east|south|west/i);
-			step = first_sentence[0].match(this.jumpingDungeonRegExp) ? 2 : 1;
-			if (direction) {
-				switch(direction[0]) {
-				case 'север':
-				case 'north': y += step; break;
-				case 'восток':
-				case 'east': x -= step; break;
-				case 'юг':
-				case 'south': y -= step; break;
-				case 'запад':
-				case 'west': x += step; break;
-				}
-			}
+		if (this.chronicles[i].pointers.length) {
+			currentCell.title = worker.GUIp_i18n[this.chronicles[i].pointers[0]] + (this.chronicles[i].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[i].pointers[1]] : '');
 		}
 	}
-	if (this.old_chronicles && this.old_chronicles.length) {
-		for (i = this.old_chronicles.length - 1; i >= 0; i--) {
-			currentCell = document.querySelectorAll('#map .dml')[y].children[x];
-			if (this.old_chronicles[i].classList) {
-				for (j = 0, len2 = this.old_chronicles[i].classList.length; j < len2; j++) {
-					currentCell.classList.add(this.old_chronicles[i].classList[j]);
-				}
-				if (this.old_chronicles[i].classList.join().match('pointer')) {
-					pointers = this.old_chronicles[i].classList.join().match(this.pointerRegExp);
-					currentCell.title = worker.GUIp_i18n[pointers[0].replace(/^./, '').replace('-', '_')] + (pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[pointers[1].replace(/^./, '').replace('-', '_')] : '');
-				}
-			}
-			direction = this.old_chronicles[i].direction;
-			step = this.old_chronicles[i].classList && this.old_chronicles[i].classList.indexOf('jumpingDungeon') >= 0 ? 2 : 1;
-			if (direction) {
-				switch(direction) {
-				case 'север':
-				case 'north': y += step; break;
-				case 'восток':
-				case 'east': x -= step; break;
-				case 'юг':
-				case 'south': y -= step; break;
-				case 'запад':
-				case 'west': x += step; break;
-				}
-			}
-		}
+	var heroes_coords = ui_improver.calculateXY(document.getElementsByClassName('map_pos'));
+	if (heroes_coords.x !== coords.x || heroes_coords.y !== coords.y) {
+		ui_utils.showMessage('info', {
+			title: 'Хера! Ошибка!',
+			content: '<div>Кароч, разница координат: по x: ' + (heroes_coords.x - coords.x) + ', по y: ' + (heroes_coords.y - coords.y) + '.</div>'
+		});
 	}
 };
 ui_improver.whenWindowResize = function() {
