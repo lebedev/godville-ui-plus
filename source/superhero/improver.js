@@ -56,7 +56,7 @@ ui_improver.improve = function() {
 	ui_informer.update('arena available', worker.so.state.arena_available());
 	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
 
-	this.optionsChanged = ui_storage.get('optionsChanged');
+	this.optionsChanged = this.isFirstTime ? ui_storage.get('optionsChanged') : false;
 
 	if (this.isFirstTime) {
 		if (!ui_data.isFight && !ui_data.isDungeon) {
@@ -289,7 +289,9 @@ ui_improver.improveNews = function() {
 	ui_informer.update('tamable monster', isTamableMonster);
 
 	if (this.optionsChanged) {
-		document.getElementById('laying_timer').style.display = ui_storage.get('Option:disableLayingTimer') ? 'none' : 'block';
+		ui_laying_timer.isDisabled = ui_storage.get('Option:disableLayingTimer');
+		ui_laying_timer.layingTimer.style.display = this.isDisabled ? 'none' : 'block';
+		ui_laying_timer.tick();
 	}
 };
 ui_improver.MapIteration = function(MapThermo, iPointer, jPointer, step, kRow, kColumn) {

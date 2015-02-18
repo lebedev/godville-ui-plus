@@ -4,23 +4,22 @@ var ui_laying_timer = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defi
 ui_laying_timer.init = function() {
 	if (ui_data.hasTemple && !ui_data.isFight && !ui_data.isDungeon) {
 		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
-		for (var key in worker) {
-			if (key.match(/^diary/)) {
-				this._third_eye = key;
-				break;
-			}
-		}
-		ui_laying_timer._tick();
-		worker.setInterval(ui_laying_timer._tick.bind(ui_laying_timer), 60000);
+		this.layingTimer = document.querySelector('#laying_timer');
+		this.isDisabled = ui_storage.get('Option:disableLayingTimer');
+
+		this.layingTimer.style.display = this.isDisabled ? 'none' : 'block';
+
+		ui_laying_timer.tick();
+		worker.setInterval(ui_laying_timer.tick.bind(ui_laying_timer), 60000);
 	}
 };
-ui_laying_timer._tick = function() {
+ui_laying_timer.tick = function() {
 	var latestEntryDateFS = ui_storage.get('thirdEyeLatestEntry') && new Date(ui_storage.get('thirdEyeLatestEntry')),
 		earliestEntryDateFS = ui_storage.get('thirdEyeEarliestEntry') && new Date(ui_storage.get('thirdEyeEarliestEntry')),
 		lastLayingDateFS = ui_storage.get('thirdEyeLastLayingEntry') && new Date(ui_storage.get('thirdEyeLastLayingEntry'));
 	this._lastLayingDate = 0;
-	for (var msg in worker[this._third_eye]) {
-		var curEntryDate = new Date(worker[this._third_eye][msg].time);
+	for (var msg in worker.so.state.diary_i) {
+		var curEntryDate = new Date(worker.so.state.diary_i[msg].time);
 		if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/)) {
 			this._lastLayingDate = curEntryDate > this._lastLayingDate ? curEntryDate : this._lastLayingDate;
 		}
@@ -43,7 +42,9 @@ ui_laying_timer._tick = function() {
 		ui_storage.set('thirdEyeLastLayingEntry', this._lastLayingDate || '');
 	}
 	ui_storage.set('thirdEyeLatestEntry', this._latestEntryDate);
-	ui_laying_timer._calculateTime();
+	if (!this.isDisabled) {
+		ui_laying_timer._calculateTime();
+	}
 };
 ui_laying_timer._calculateTime = function() {
 	var $timer = document.querySelector('#laying_timer');
@@ -73,13 +74,12 @@ ui_laying_timer._calculateExp = function() {
 	return title.join('\n');
 };
 ui_laying_timer._setTimer = function(color) {
-	var $timer = document.querySelector('#laying_timer');
-	$timer.classList.add(color);
+	this.layingTimer.classList.add(color);
 	if (color === 'grey') {
-		$timer.textContent = '?';
-		$timer.title = worker.GUIp_i18n.gte_unknown_penalty + ui_laying_timer._formatTime();
+		this.layingTimer.textContent = '?';
+		this.layingTimer.title = worker.GUIp_i18n.gte_unknown_penalty + ui_laying_timer._formatTime();
 	} else {
-		$timer.textContent = color === 'green' ? '✓' : ui_laying_timer._formatTime();
-		$timer.title = ui_laying_timer._calculateExp();
+		this.layingTimer.textContent = color === 'green' ? '✓' : ui_laying_timer._formatTime();
+		this.layingTimer.title = ui_laying_timer._calculateExp();
 	}
 };
