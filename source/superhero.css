@@ -216,7 +216,7 @@ body:not(.th_nightly) #timeout_bar {
 #timeout_bar.running {
 	top: 0;
 	width: 0;
-	transition: width 30s linear;
+	transition: width 20s linear;
 }
 
 #informer_bar {
