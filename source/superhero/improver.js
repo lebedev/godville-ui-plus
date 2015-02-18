@@ -779,23 +779,24 @@ ui_improver.deleteInvalidChronicles = function() {
 		}
 	}
 };
-ui_improver.calculateXY = function(coords, cell) {
+ui_improver.calculateXY = function(cell) {
+	var coords = {};
 	coords.x = ui_utils.getNodeIndex(cell);
 	coords.y = ui_utils.getNodeIndex(cell.parentNode);
+	return coords;
 };
 ui_improver.calculateExitXY = function() {
 	var exit_coords = { x: null, y: null },
 		cells = document.querySelectorAll('.dml .dmc');
 	for (var i = 0, len = cells.length; i < len; i++) {
 		if (cells[i].textContent.trim().match(/В|E/)) {
-			ui_improver.calculateXY(exit_coords, cells[i]);
+			exit_coords = ui_improver.calculateXY(cells[i]);
 			break;
 		}
 	}
 	if (!exit_coords.x) {
-		ui_improver.calculateXY(exit_coords, document.getElementsByClassName('map_pos'));
+		exit_coords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
 	}
-	worker.console.log(exit_coords);
 	return exit_coords;
 };
 ui_improver.improveChronicles = function() {
@@ -853,7 +854,7 @@ ui_improver.colorDungeonMap = function() {
 			currentCell.title = worker.GUIp_i18n[this.chronicles[i].pointers[0]] + (this.chronicles[i].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[i].pointers[1]] : '');
 		}
 	}
-	var heroes_coords = ui_improver.calculateXY(document.getElementsByClassName('map_pos'));
+	var heroes_coords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
 	if (heroes_coords.x !== coords.x || heroes_coords.y !== coords.y) {
 		ui_utils.showMessage('info', {
 			title: 'Хера! Ошибка!',
