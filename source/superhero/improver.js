@@ -758,7 +758,7 @@ ui_improver.parseChronicles = function(xhr) {
 	var log_chronicles = [];
 	var direction, entry, matches = xhr.responseText.match(/<div class="text_content ">[\s\S]+?<\/div>/g);
 	for (var i = 0, len = matches.length; i < len; i++) {
-		matches[i] = matches[i].replace('<div class="text_content ">', '').replace('</div>', '').trim();
+		matches[i] = matches[i].replace('<div class="text_content ">', '').replace('</div>', '').trim().replace(/&#39;/g, "'");
 		if (matches[i] !== last) {
 			log_chronicles.push(ui_improver.parseSingleChronicle(matches[i]));
 		} else {
