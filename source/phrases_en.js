@@ -364,7 +364,7 @@ worker.GUIp_i18n = {
 	voice_timeout_hint: 'enter time (in seconds)',
 	hide_charge_button: 'Remove "Charge" button',
 	hide_charge_button_desc: 'for those who don\'t buy charges',
-	relocate_map: 'Switch remote control with map',
+	relocate_map: 'Swap remote control with map',
 	relocate_map_desc: 'in the dungeons',
 	freeze_voice_button: 'Freeze godvoice button',
 	freeze_voice_button_desc: 'freezes godvoice button in certain cases',
