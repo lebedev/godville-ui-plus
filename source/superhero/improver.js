@@ -18,6 +18,7 @@ ui_improver.b_r = [];
 ui_improver.r_r = [];
 // dungeon
 ui_improver.chronicles = [];
+ui_improver.directionlessMoveIndex = 0;
 ui_improver.dungeonPhrases = [
 	'warning',
 	'boss',
@@ -32,6 +33,7 @@ ui_improver.dungeonPhrases = [
 	'jumpingDungeon',
 	'pointerSign'
 ];
+ui_improver.corrections = { n: 'north', e: 'east', s: 'south', w: 'west' };
 ui_improver.pointerRegExp = new worker.RegExp('[^а-я](северо-восток|северо-запад|юго-восток|юго-запад|' +
 													 'север|восток|юг|запад|' +
 													 'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
@@ -688,7 +690,7 @@ ui_improver.getDungeonPhrases = function() {
 	}
 };
 ui_improver.parseSingleChronicle = function(text) {
-	var i, len, chronicle = { direction: null, marks: [], pointers: [], jumping: false };
+	var i, len, chronicle = { direction: null, marks: [], pointers: [], jumping: false, directionless: false };
 	for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
 		if (text.match(this[this.dungeonPhrases[i] + 'RegExp'])) {
 			chronicle.marks.push(this.dungeonPhrases[i]);
@@ -700,7 +702,8 @@ ui_improver.parseSingleChronicle = function(text) {
 		if (direction) {
 			chronicle.direction = direction[0];
 		}
-		chronicle.jumping = firstSentence[0].match(this.jumpingDungeonRegExp);
+		chronicle.directionless = !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next/);
+		chronicle.jumping = !!firstSentence[0].match(this.jumpingDungeonRegExp);
 	}
 	if (text.match(this.pointerSignRegExp)) {
 		var middle = text.replace(/offered to trust h.. gut feeling\./, '')
@@ -813,6 +816,9 @@ ui_improver.improveChronicles = function() {
 			ch_down = document.querySelector('.sort_ch').textContent === '▼';
 		for (len = chronicles.length, i = ch_down ? len - 1 : 0; ch_down ? i >= 0 : i < len; ch_down ? i-- : i++) {
 			this.chronicles.push(ui_improver.parseSingleChronicle(chronicles[i].textContent));
+			if (chronicles[i].textContent.match(this.warningRegExp)) {
+				chronicles[i].parentNode.classList.add('warning');
+			}
 			chronicles[i].classList.add('parsed');
 		}
 
@@ -827,27 +833,129 @@ ui_improver.improveChronicles = function() {
 	}
 	if (this.isFirstTime) {
 		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
+		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
 	}
 	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', worker.$('#m_fight_log .block_title').text().match(/\d+/)[0]);
 	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 };
-ui_improver.colorDungeonMap = function() {
-	var i, len, j, len2, step, currentCell,
-		coords = ui_improver.calculateExitXY();
-	for (i = 0, len = this.chronicles.length; i < len; i++) {
-		if (this.chronicles[i].direction) {
-			step = this.chronicles[i].jumping ? 2 : 1;
-			switch(this.chronicles[i].direction) {
-			case 'север':
-			case 'north': coords.y -= step; break;
-			case 'восток':
-			case 'east': coords.x += step; break;
-			case 'юг':
-			case 'south': coords.y += step; break;
-			case 'запад':
-			case 'west': coords.x -= step; break;
+ui_improver.moveCoords = function(coords, chronicle) {
+	if (chronicle.direction) {
+		var step = chronicle.jumping ? 2 : 1;
+		switch(chronicle.direction) {
+		case 'север':
+		case 'north': coords.y -= step; break;
+		case 'восток':
+		case 'east': coords.x += step; break;
+		case 'юг':
+		case 'south': coords.y += step; break;
+		case 'запад':
+		case 'west': coords.x -= step; break;
+		}
+	}
+};
+ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
+	var i, len, j, len2, temp, coords = { x: initCoords.x, y: initCoords.y },
+		heroesСoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]),
+		directionless = 0;
+	for (i = initStep, len = this.chronicles.length; i < len; i++) {
+		if (this.chronicles[i].directionless) {
+			directionless++;
+		}
+		ui_improver.moveCoords(coords, this.chronicles[i]);
+	}
+	var diff = { x: heroesСoords.x - coords.x, y: heroesСoords.y - coords.y };
+	var first = '';
+	while (diff.y < 0) {
+		diff.y++;
+		directionless--;
+		first += 'n';
+	}
+	while (diff.x > 0) {
+		diff.x--;
+		directionless--;
+		first += 'e';
+	}
+	while (diff.y > 0) {
+		diff.y--;
+		directionless--;
+		first += 's';
+	}
+	while (diff.x < 0) {
+		diff.x++;
+		directionless--;
+		first += 'w';
+	}
+	first = [first];
+	while (directionless > 0) {
+		directionless -= 2;
+		temp = [];
+		for (i = 0, len = first.length; i < len; i++) {
+			temp.push(first[i] + 'ns');
+			temp.push(first[i] + 'ew');
+		}
+		first = temp;
+	}
+	second = [];
+	for (i = 0, len = first.length; i < len; i++) {
+		var last = first[i].split('').sort();
+		second.push(last.join(''));
+		// Narayana algorithm
+		while (true) {
+			// calculate k
+			var k = last.length - 2;
+			while (k >= 0 && last[k] >= last[k + 1]) {
+				k--;
+			}
+			// exit if there's no more changes
+			if (k === -1) {
+				break;
+			}
+			// calculate t
+			var t = last.length - 1;
+			while (last[k] >= last[t] && t >= k + 1) {
+				t--;
+			}
+			// swap k with t
+			temp = last[k]; last[k] = last[t]; last[t] = temp;
+			// reverse k+1..n
+			last = last.slice(0, k + 1).concat(last.slice(k + 1).reverse());
+
+			second.push(last.join(''));
+		}
+	}
+	for (i = 0, len = second.length; i < len; i++) {
+		coords = { x: initCoords.x, y: initCoords.y };
+		directionless = 0;
+		for (j = initStep, len2 = this.chronicles.length; j < len2; j++) {
+			if (this.chronicles[j].directionless) {
+				ui_improver.moveCoords(coords, { direction: this.corrections[second[i][directionless]] });
+				directionless++;
+			}
+			ui_improver.moveCoords(coords, this.chronicles[j]);
+			if (document.querySelectorAll('#map .dml')[coords.y].children[coords.x].textContent.match(/#|!|\?/)) {
+				break;
 			}
 		}
+		if (heroesСoords.x - coords.x === 0 && heroesСoords.y - coords.y === 0) {
+			ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections') + second[i]);
+			return this.corrections[second[i][0]];
+		}
+	}
+};
+ui_improver.colorDungeonMap = function() {
+	var i, len, j, len2, currentCell,
+		coords = ui_improver.calculateExitXY();
+	for (i = 0, len = this.chronicles.length; i < len; i++) {
+		if (this.chronicles[i].directionless) {
+			this.chronicles[i].directionless = false;
+			var shortCorrection = ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections')[this.directionlessMoveIndex++];
+			if (shortCorrection) {
+				this.chronicles[i].direction = this.corrections[shortCorrection];
+			} else {
+				this.chronicles[i].direction = ui_improver.calculateDirectionlessMove(coords, i);
+			}
+		}
+		ui_improver.moveCoords(coords, this.chronicles[i]);
 		currentCell = document.querySelectorAll('#map .dml')[coords.y].children[coords.x];
 		for (j = 0, len2 = this.chronicles[i].marks.length; j < len2; j++) {
 			currentCell.classList.add(this.chronicles[i].marks[j]);
@@ -856,11 +964,11 @@ ui_improver.colorDungeonMap = function() {
 			currentCell.title = worker.GUIp_i18n[this.chronicles[i].pointers[0]] + (this.chronicles[i].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[i].pointers[1]] : '');
 		}
 	}
-	var heroes_coords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
-	if (heroes_coords.x !== coords.x || heroes_coords.y !== coords.y) {
+	var heroesСoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
+	if (heroesСoords.x !== coords.x || heroesСoords.y !== coords.y) {
 		ui_utils.showMessage('info', {
 			title: 'Хера! Ошибка!',
-			content: '<div>Кароч, разница координат: по x: ' + (heroes_coords.x - coords.x) + ', по y: ' + (heroes_coords.y - coords.y) + '.</div>'
+			content: '<div>Кароч, разница координат: по x: ' + (heroesСoords.x - coords.x) + ', по y: ' + (heroesСoords.y - coords.y) + '.</div>'
 		});
 	}
 };
