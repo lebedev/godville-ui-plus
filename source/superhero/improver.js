@@ -946,11 +946,9 @@ ui_improver.improveInterface = function() {
 	if (this.isFirstTime || this.optionsChanged) {
 		var background = ui_storage.get('Option:useBackground');
 		if (background === 'cloud') {
-			worker.$('body').css('background-image', 'url(' + worker.GUIp_getResource("images/background.jpg") + ')');
-		} else if (background) {
-			worker.$('body').css('background-image', 'url(' + ui_utils.escapeHTML(str) + ')');
+			worker.$('body').css('background-image', 'url(' + worker.GUIp_getResource('images/background.jpg') + ')');
 		} else {
-			worker.$('body').css('background-image', '');
+			worker.$('body').css('background-image', background ? 'url(' + background + ')' : '');
 		}
 	}
 };

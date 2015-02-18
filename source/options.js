@@ -438,14 +438,10 @@ function set_theme_and_background() {
 	}
 	worker.GUIp_addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'ui_s_css');
 	var background = storage.get('Option:useBackground');
-	if (background) {
-		if (background === 'cloud') {
-			document.body.style.backgroundImage = 'url(' + worker.GUIp_getResource('images/background.jpg') + ')';
-		} else {
-			document.body.style.backgroundImage =  'url(' + background + ')';
-		}
+	if (background === 'cloud') {
+		document.body.style.backgroundImage = 'url(' + worker.GUIp_getResource('images/background.jpg') + ')';
 	} else {
-		document.body.style.backgroundImage = '';
+		document.body.style.backgroundImage =  background ? 'url(' + background + ')' : '';
 	}
 }
 
