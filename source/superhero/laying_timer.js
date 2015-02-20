@@ -69,7 +69,7 @@ ui_laying_timer._calculateExp = function() {
 		level_multiplier = ui_stats.get('Level') < 100 ? 1 : ui_stats.get('Level') < 125 ? 0.5 : 0.25,
 		title = [];
 	for (var i = 1; i <= 3; i++) {
-		title.push(i + '0k gld -> ' + ((i + base_exp*amount_multiplier[i - 1])*level_multiplier).toFixed(1) + '% exp');
+		title.push(i + '0k gld → ' + ((i + base_exp*amount_multiplier[i - 1])*level_multiplier).toFixed(1) + '% exp');
 	}
 	return title.join('\n');
 };
