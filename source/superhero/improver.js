@@ -855,7 +855,7 @@ ui_improver.moveCoords = function(coords, chronicle) {
 };
 ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 	var i, len, j, len2, temp, coords = { x: initCoords.x, y: initCoords.y },
-		heroesСoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]),
+		heroesCoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]),
 		directionless = 0;
 	for (i = initStep, len = this.chronicles.length; i < len; i++) {
 		if (this.chronicles[i].directionless) {
@@ -863,7 +863,7 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 		}
 		ui_improver.moveCoords(coords, this.chronicles[i]);
 	}
-	var diff = { x: heroesСoords.x - coords.x, y: heroesСoords.y - coords.y };
+	var diff = { x: heroesCoords.x - coords.x, y: heroesCoords.y - coords.y };
 	var first = '';
 	while (diff.y < 0) {
 		diff.y++;
@@ -937,7 +937,7 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 				break;
 			}
 		}
-		if (heroesСoords.x - coords.x === 0 && heroesСoords.y - coords.y === 0) {
+		if (heroesCoords.x - coords.x === 0 && heroesCoords.y - coords.y === 0) {
 			ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections') + second[i]);
 			return this.corrections[second[i][0]];
 		}
