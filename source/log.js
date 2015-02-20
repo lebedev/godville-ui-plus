@@ -46,7 +46,7 @@ function GUIp_log() {
 	try {
 		var godname_prefix = 'GUIp_' + worker.localStorage.GUIp_CurrentUser + ':',
 			log = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':',
-			steps = +document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья \(шаг (\d+)\)|Dungeon Journal \(step (\d+)\)/)[1];
+			steps = +document.getElementById('fight_log_capt').textContent.match(/(?:Хроника подземелья \(шаг|Dungeon Journal \(step) (\d+)\)/)[1];
 		if (!document.querySelector('#dmap') && steps === +worker.localStorage[godname_prefix + log + 'steps']) {
 			var map = JSON.parse(worker.localStorage[godname_prefix + log + 'map']),
 				map_elem = '<div id="hero2"><div class="box"><fieldset style="min-width:0;"><legend>' + worker.GUIp_i18n.map + '</legend><div id="dmap" class="new_line">';
