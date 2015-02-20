@@ -1104,7 +1104,9 @@ ui_improver.checkButtonsVisibility = function() {
 	}
 	worker.$('.craft_button,.inspect_button,.voice_generator').hide();
 	if (ui_storage.get('Stats:Godpower') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
-		worker.$('.voice_generator, .inspect_button').show();
+		if (!worker.$('.r_blocked:visible').length) {
+			worker.$('.voice_generator, .inspect_button').show();
+		}
 		if (ui_storage.get('Option:disableDieButton')) {
 			worker.$('#hk_death_count .voice_generator').hide();
 		}
