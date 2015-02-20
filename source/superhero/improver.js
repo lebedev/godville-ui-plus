@@ -966,10 +966,13 @@ ui_improver.colorDungeonMap = function() {
 	}
 	var heroesСoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
 	if (heroesСoords.x !== coords.x || heroesСoords.y !== coords.y) {
-		ui_utils.showMessage('info', {
-			title: 'Хера! Ошибка!',
-			content: '<div>Кароч, разница координат: по x: ' + (heroesСoords.x - coords.x) + ', по y: ' + (heroesСoords.y - coords.y) + '.</div>'
-		});
+		if (ui_utils.hasShownInfoMessage !== true) {
+			ui_utils.showMessage('info', {
+				title: 'Хера! Ошибка!',
+				content: '<div>Кароч, разница координат: по x: ' + (heroesСoords.x - coords.x) + ', по y: ' + (heroesСoords.y - coords.y) + '.</div>'
+			});
+			ui_utils.hasShownInfoMessage = true;
+		}
 	}
 };
 ui_improver.whenWindowResize = function() {
