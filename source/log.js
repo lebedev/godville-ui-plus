@@ -90,7 +90,7 @@ function GUIp_log() {
 				'</div>' +
 				'<table style="box-shadow: none; width: 100%;"><tr>' +
 					'<td style="border: none; padding: 0;"><label for="stoneeater">' + worker.GUIp_i18n.corrections + '</label></td>' +
-					'<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="' + worker.localStorage[godname_prefix + log + 'corrections'] + '" style=" width: 100%; padding: 0;"></td>' +
+					'<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="' + (worker.localStorage[godname_prefix + log + 'corrections'] || '') + '" style=" width: 100%; padding: 0;"></td>' +
 				'</tr></table>' +
 				'<input type="submit" id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
 			'</form>');
