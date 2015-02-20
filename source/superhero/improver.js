@@ -691,6 +691,7 @@ ui_improver.getDungeonPhrases = function() {
 };
 ui_improver.parseSingleChronicle = function(text) {
 	var i, len, chronicle = { direction: null, marks: [], pointers: [], jumping: false, directionless: false };
+	text = text.replace(/offered to trust h.. gut feeling\./, '');
 	for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
 		if (text.match(this[this.dungeonPhrases[i] + 'RegExp'])) {
 			chronicle.marks.push(this.dungeonPhrases[i]);
@@ -698,16 +699,15 @@ ui_improver.parseSingleChronicle = function(text) {
 	}
 	var firstSentence = text.match(/^.*?[\.!\?](?:\s|$)/);
 	if (firstSentence) {
-		var direction = firstSentence[0].match(/север|восток|юг|запад|north|east|south|west/i);
+		var direction = firstSentence[0].match(/север|восток|юг|запад|north|east|south|west/);
 		if (direction) {
 			chronicle.direction = direction[0];
 		}
-		chronicle.directionless = !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next/);
+		chronicle.directionless = !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next|The obedient heroes move in the named direction/);
 		chronicle.jumping = !!firstSentence[0].match(this.jumpingDungeonRegExp);
 	}
 	if (text.match(this.pointerSignRegExp)) {
-		var middle = text.replace(/offered to trust h.. gut feeling\./, '')
-						 .match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
+		var middle = text.match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
 		var pointer, pointers = middle.match(this.pointerRegExp);
 		for (i = 0, len = pointers.length; i < len; i++) {
 			switch (pointers[i].replace(/^./, '')) {
@@ -864,6 +864,8 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 		ui_improver.moveCoords(coords, this.chronicles[i]);
 	}
 	var diff = { x: heroesСoords.x - coords.x, y: heroesСoords.y - coords.y };
+	worker.console.log('diff', diff);
+	worker.console.log('count', directionless);
 	var first = '';
 	while (diff.y < 0) {
 		diff.y++;
@@ -895,7 +897,7 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 		}
 		first = temp;
 	}
-	second = [];
+	var second = [];
 	for (i = 0, len = first.length; i < len; i++) {
 		var last = first[i].split('').sort();
 		second.push(last.join(''));
@@ -923,21 +925,31 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 			second.push(last.join(''));
 		}
 	}
+	worker.console.log('combinations', second);
 	for (i = 0, len = second.length; i < len; i++) {
 		coords = { x: initCoords.x, y: initCoords.y };
+		worker.console.log(i, second[i]);
+		worker.console.log('init coords', coords);
 		directionless = 0;
 		for (j = initStep, len2 = this.chronicles.length; j < len2; j++) {
 			if (this.chronicles[j].directionless) {
+				worker.console.log('directionless', this.corrections[second[i][directionless]]);
 				ui_improver.moveCoords(coords, { direction: this.corrections[second[i][directionless]] });
 				directionless++;
+			} else {
+				worker.console.log('direction', this.chronicles[j].direction);
+				ui_improver.moveCoords(coords, this.chronicles[j]);
 			}
-			ui_improver.moveCoords(coords, this.chronicles[j]);
+			worker.console.log('cell', coords.x, coords.y, document.querySelectorAll('#map .dml')[coords.y].children[coords.x].textContent);
 			if (document.querySelectorAll('#map .dml')[coords.y].children[coords.x].textContent.match(/#|!|\?/)) {
+				worker.console.log('combination', i, second[i], 'fail');
 				break;
 			}
 		}
 		if (heroesСoords.x - coords.x === 0 && heroesСoords.y - coords.y === 0) {
 			ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections') + second[i]);
+			worker.console.log('combination', i, second[i], 'success');
+			worker.console.log('returned', this.corrections[second[i][0]]);
 			return this.corrections[second[i][0]];
 		}
 	}
@@ -947,13 +959,16 @@ ui_improver.colorDungeonMap = function() {
 		coords = ui_improver.calculateExitXY();
 	for (i = 0, len = this.chronicles.length; i < len; i++) {
 		if (this.chronicles[i].directionless) {
-			this.chronicles[i].directionless = false;
 			var shortCorrection = ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections')[this.directionlessMoveIndex++];
+			worker.console.log(ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections'), shortCorrection);
 			if (shortCorrection) {
+				worker.console.log('from storage');
 				this.chronicles[i].direction = this.corrections[shortCorrection];
 			} else {
+				worker.console.log('from calculation');
 				this.chronicles[i].direction = ui_improver.calculateDirectionlessMove(coords, i);
 			}
+			this.chronicles[i].directionless = false;
 		}
 		ui_improver.moveCoords(coords, this.chronicles[i]);
 		currentCell = document.querySelectorAll('#map .dml')[coords.y].children[coords.x];
