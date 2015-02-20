@@ -58,7 +58,7 @@ ui_improver.improve = function() {
 	ui_informer.update('arena available', worker.so.state.arena_available());
 	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
 
-	this.optionsChanged = this.isFirstTime ? ui_storage.get('optionsChanged') : false;
+	this.optionsChanged = this.isFirstTime ? false : ui_storage.get('optionsChanged');
 
 	if (this.isFirstTime) {
 		if (!ui_data.isFight && !ui_data.isDungeon) {
