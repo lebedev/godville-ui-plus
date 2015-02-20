@@ -965,12 +965,12 @@ ui_improver.colorDungeonMap = function() {
 			currentCell.title = worker.GUIp_i18n[this.chronicles[i].pointers[0]] + (this.chronicles[i].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[i].pointers[1]] : '');
 		}
 	}
-	var heroesСoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
-	if (heroesСoords.x !== coords.x || heroesСoords.y !== coords.y) {
+	var heroesCoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
+	if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
 		if (ui_utils.hasShownInfoMessage !== true) {
 			ui_utils.showMessage('info', {
 				title: 'Хера! Ошибка!',
-				content: '<div>Кароч, разница координат: по x: ' + (heroesСoords.x - coords.x) + ', по y: ' + (heroesСoords.y - coords.y) + '.</div>'
+				content: '<div>Кароч, разница координат: по x: ' + (heroesCoords.x - coords.x) + ', по y: ' + (heroesCoords.y - coords.y) + '.</div>'
 			});
 			ui_utils.hasShownInfoMessage = true;
 		}
