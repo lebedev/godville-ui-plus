@@ -864,8 +864,6 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 		ui_improver.moveCoords(coords, this.chronicles[i]);
 	}
 	var diff = { x: heroesСoords.x - coords.x, y: heroesСoords.y - coords.y };
-	worker.console.log('diff', diff);
-	worker.console.log('count', directionless);
 	var first = '';
 	while (diff.y < 0) {
 		diff.y++;
@@ -925,31 +923,22 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 			second.push(last.join(''));
 		}
 	}
-	worker.console.log('combinations', second);
 	for (i = 0, len = second.length; i < len; i++) {
 		coords = { x: initCoords.x, y: initCoords.y };
-		worker.console.log(i, second[i]);
-		worker.console.log('init coords', coords);
 		directionless = 0;
 		for (j = initStep, len2 = this.chronicles.length; j < len2; j++) {
 			if (this.chronicles[j].directionless) {
-				worker.console.log('directionless', this.corrections[second[i][directionless]]);
 				ui_improver.moveCoords(coords, { direction: this.corrections[second[i][directionless]] });
 				directionless++;
 			} else {
-				worker.console.log('direction', this.chronicles[j].direction);
 				ui_improver.moveCoords(coords, this.chronicles[j]);
 			}
-			worker.console.log('cell', coords.x, coords.y, document.querySelectorAll('#map .dml')[coords.y].children[coords.x].textContent);
 			if (document.querySelectorAll('#map .dml')[coords.y].children[coords.x].textContent.match(/#|!|\?/)) {
-				worker.console.log('combination', i, second[i], 'fail');
 				break;
 			}
 		}
 		if (heroesСoords.x - coords.x === 0 && heroesСoords.y - coords.y === 0) {
 			ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections') + second[i]);
-			worker.console.log('combination', i, second[i], 'success');
-			worker.console.log('returned', this.corrections[second[i][0]]);
 			return this.corrections[second[i][0]];
 		}
 	}
@@ -960,12 +949,9 @@ ui_improver.colorDungeonMap = function() {
 	for (i = 0, len = this.chronicles.length; i < len; i++) {
 		if (this.chronicles[i].directionless) {
 			var shortCorrection = ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections')[this.directionlessMoveIndex++];
-			worker.console.log(ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections'), shortCorrection);
 			if (shortCorrection) {
-				worker.console.log('from storage');
 				this.chronicles[i].direction = this.corrections[shortCorrection];
 			} else {
-				worker.console.log('from calculation');
 				this.chronicles[i].direction = ui_improver.calculateDirectionlessMove(coords, i);
 			}
 			this.chronicles[i].directionless = false;
