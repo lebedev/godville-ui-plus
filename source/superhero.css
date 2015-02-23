@@ -643,3 +643,14 @@ a.broadcast {
 	font-size: 80%;
 	vertical-align: top;
 }
+
+/* fix buttons hover */
+.fr_msg_l:hover .gc_fr_page {
+	display: inline-block !important;
+}
+.gc_fr_page {
+	display: none;
+	position: relative;
+	left: 0;
+	margin-top: -1px;
+}

@@ -153,7 +153,7 @@ ui_observers.allies_parse = {
 				}
 				var god_name = mutation.target.querySelector('.l_val').textContent;
 				hero_name.title = god_name;
-				if (god_name.match(ui_improver.friendsRegexp)) {
+				if (god_name.match(ui_improver.friendsRegExp)) {
 					hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="' + worker.GUIp_i18n.open_chat_with + god_name + '">★</a>');
 					document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = function(e) {
 						e.preventDefault();

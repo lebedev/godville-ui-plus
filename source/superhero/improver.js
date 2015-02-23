@@ -6,7 +6,7 @@ ui_improver.improveInProcess = true;
 ui_improver.isFirstTime = true;
 ui_improver.voiceSubmitted = false;
 ui_improver.wantedMonsters = null;
-ui_improver.friendsRegexp = null;
+ui_improver.friendsRegExp = null;
 ui_improver.windowResizeInt = 0;
 ui_improver.mapColorizationTmt = 0;
 ui_improver.alliesCount = 0;
@@ -211,7 +211,7 @@ ui_improver.improveVoiceDialog = function() {
 	if (this.isFirstTime || this.optionsChanged) {
 		this.freezeVoiceButton = ui_storage.get('Option:freezeVoiceButton') || '';
 	}
-	// Add links and show timeout bar after saying
+	// Add voicegens and show timeout bar after saying
 	if (this.isFirstTime) {
 		ui_utils.setVoiceSubmitState(this.freezeVoiceButton.match('when_empty'), true);
 		worker.$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
@@ -523,7 +523,7 @@ ui_improver.improveStats = function() {
 	}
 	var $box = worker.$('#stats');
 	if (!ui_utils.isAlreadyImproved(worker.$('#stats'))) {
-		// Add links
+		// Add voicegens
 		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.level_label, worker.GUIp_i18n.study, 'exp', worker.GUIp_i18n.ask9 + ui_data.char_sex[1] + worker.GUIp_i18n.to_study);
 		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.health_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
 		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.gold_label, worker.GUIp_i18n.dig, 'dig', worker.GUIp_i18n.ask10 + ui_data.char_sex[1] + worker.GUIp_i18n.to_dig);
@@ -1019,29 +1019,30 @@ ui_improver.improveChat = function() {
 	var i, len;
 
 	// friends fetching
-	if (this.isFirstTime && (ui_data.isFight || ui_data.isDungeon)) {
+	if (this.isFirstTime) {
 		var $friends = document.querySelectorAll('.frline .frname'),
 			friends = [];
 		for (i = 0, len = $friends.length; i < len; i++) {
 			friends.push($friends[i].textContent);
 		}
-		this.friendsRegexp = new worker.RegExp('^(?:' + friends.join('|') + ')$');
+		this.friendsRegExp = new worker.RegExp('^(?:' + friends.join('|') + ')$');
 	}
 
-	// links replace
-	var $cur_msg, $msgs = worker.$('.fr_msg_l:not(.improved)'),
-		$temp = worker.$('<div id="temp" />');
-	worker.$('body').append($temp);
-	for (i = 1, len = $msgs.length; i < len; i++) {
-		$cur_msg = $msgs.eq(i);
-		$temp.append(worker.$('.fr_msg_meta', $cur_msg)).append(worker.$('.fr_msg_delete', $cur_msg));
-		var text = $cur_msg.text();
-		$cur_msg.empty();
-		$cur_msg.append(ui_utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t ]+)/g, '<a href="$1" target="_blank" title="' + worker.GUIp_i18n.open_in_a_new_tab + '">$1</a>'));
-		$cur_msg.append(worker.$('.fr_msg_meta', $temp)).append(worker.$('.fr_msg_delete', $temp));
+	// links replacing and open chat with friend button adding
+	var text, $msgs = document.querySelectorAll('.fr_msg_l:not(.improved)');
+	for (i = 0, len = $msgs.length; i < len; i++) {
+		text = $msgs[i].childNodes[0].textContent;
+		$msgs[i].removeChild($msgs[i].childNodes[0]);
+		$msgs[i].insertAdjacentHTML('afterbegin', ui_utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t\, ]+)/g, '<a href="$1" target="_blank" title="' + worker.GUIp_i18n.open_in_a_new_tab + '">$1</a>'));
+
+		var friend = $msgs[i].getElementsByClassName('gc_fr_god')[0];
+		if (friend && friend.textContent.match(this.friendsRegExp)) {
+			friend.insertAdjacentHTML('beforebegin', '<span class="gc_fr_oc gc_fr_page" title="' + worker.GUIp_i18n.open_chat_with + friend.textContent + '">[✎]</span>');
+			$msgs[i].getElementsByClassName('gc_fr_oc')[0].onclick = ui_utils.openChatWith.bind(null, friend.textContent);
+		}
+
+		$msgs[i].classList.add('improved');
 	}
-	$msgs.addClass('improved');
-	$temp.remove();
 
 	// godnames in gc paste fix
 	worker.$('.gc_fr_god:not(.improved)').unbind('click').click(function() {
