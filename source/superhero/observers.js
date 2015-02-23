@@ -133,7 +133,7 @@ ui_observers.map_colorization = {
 };
 ui_observers.allies_parse = {
 	get condition() {
-		return ui_data.isFight || ui_data.isDungeon;
+		return (ui_data.isFight || ui_data.isDungeon) && worker.$('#alls:visible').length;
 	},
 	config: {
 		childList: true,
