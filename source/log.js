@@ -107,7 +107,7 @@ function GUIp_log() {
 		var button = document.getElementById('send_to_LEM'),
 			match = document.getElementById('match'),
 			search_mode = document.getElementById('search_mode'),
-			time_frame_seconds = (worker.localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 15)*60,
+			time_frame_seconds = (worker.localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 20)*60,
 			request_limit = worker.localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 5;
 		button.onclick = function(e) {
 			e.preventDefault();
