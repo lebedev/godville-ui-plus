@@ -742,7 +742,9 @@ ui_improver.parseSingleChronicle = function(text) {
 			case 'very hot':
 			case 'burning': pointer = 'burning'; break;
 			}
-			chronicle.pointers.push(pointer);
+			if (chronicle.pointers.indexOf(pointer) === -1) {
+				chronicle.pointers.push(pointer);
+			}
 		}
 	}
 	return chronicle;
