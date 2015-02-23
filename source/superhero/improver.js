@@ -290,7 +290,7 @@ ui_improver.improveNews = function() {
 	ui_informer.update('special monster', isSpecialMonster);
 	ui_informer.update('tamable monster', isTamableMonster);
 
-	if (this.optionsChanged) {
+	if (ui_data.hasTemple && this.optionsChanged) {
 		ui_laying_timer.isDisabled = ui_storage.get('Option:disableLayingTimer');
 		ui_laying_timer.layingTimer.style.display = this.isDisabled ? 'none' : 'block';
 		ui_laying_timer.tick();
