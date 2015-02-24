@@ -374,9 +374,8 @@ ui_improver.improveMap = function() {
 			// Ищем где мы находимся
 			j = $boxML[si].textContent.indexOf('@');
 			if (j !== -1) {
-				var direction = document.querySelector('.sort_ch').textContent === '▼',
-					chronicles = document.querySelectorAll('#m_fight_log .d_line');
-				if (!(chronicles[direction ? 0 : chronicles.length - 1].classList.contains('trapMoveLoss') && !chronicles[direction ? 1 : chronicles.length - 2].classList.contains('trapMoveLoss'))) {
+				var chronicles = document.querySelectorAll('#m_fight_log .d_line');
+				if (this.chronicles[this.chronicles.length - 1].marks.indexOf('trapMoveLoss') === -1 || this.chronicles[this.chronicles.length - 2].marks.indexOf('trapMoveLoss') !== -1) {
 					//	Проверяем куда можно пройти
 					if ($boxML[si - 1].textContent[j] !== '#' || isJumping && (si === 1 || si !== 1 && $boxML[si - 2].textContent[j] !== '#')) {
 						$box[0].style.visibility = '';	//	Север
