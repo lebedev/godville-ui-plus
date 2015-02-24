@@ -654,3 +654,29 @@ a.broadcast {
 	left: 0;
 	margin-top: -1px;
 }
+
+/* clear voice input button */
+.gvl_popover {
+	right: 0;
+}
+#clear_voice_input {
+	right: 15px;
+	bottom: 6px;
+}
+.c_col #god_phrase {
+	margin-left: 2px;
+	width: 309px;
+}
+.s_col #god_phrase {
+	width: 171px;
+}
+.page_wrapper_5c .c_col #god_phrase {
+	margin-left: 2px;
+	width: 295px;
+}
+.page_wrapper_5c .s_col #god_phrase {
+	width: 156px;
+}
+#god_phrase {
+	padding-right: 36px;
+}

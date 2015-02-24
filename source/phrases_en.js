@@ -504,7 +504,8 @@ worker.GUIp_i18n = {
 	primary: 'Primary',
 	corrections: 'Corrections:',
 	browser: 'Browser:',
-	version: 'Version:'
+	version: 'Version:',
+	clear_voice_input: 'Clear voice input'
 };
 
 }

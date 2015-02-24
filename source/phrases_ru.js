@@ -651,7 +651,8 @@ worker.GUIp_i18n = {
 	primary: 'Первичный поиск',
 	corrections: 'Корректировки:',
 	browser: 'Браузер:',
-	version: 'Версия:'
+	version: 'Версия:',
+	clear_voice_input: 'Очистить поле гласа'
 };
 
 }
