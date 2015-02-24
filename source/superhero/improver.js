@@ -35,11 +35,11 @@ ui_improver.dungeonPhrases = [
 ];
 ui_improver.corrections = { n: 'north', e: 'east', s: 'south', w: 'west' };
 ui_improver.pointerRegExp = new worker.RegExp('[^а-яa-z](северо-восток|северо-запад|юго-восток|юго-запад|' +
-													 'север|восток|юг|запад|' +
-													 'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
-													 'north-east|north-west|south-east|south-west|' +
-													 'north|east|south|west|' +
-													 'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot)', 'gi');
+														'север|восток|юг|запад|' +
+														'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
+														'north-east|north-west|south-east|south-west|' +
+														'north|east|south|west|' +
+														'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot)', 'gi');
 ui_improver.dungeonPhrasesXHRCount = 0;
 // resresher
 ui_improver.softRefreshInt = 0;
