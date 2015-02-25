@@ -834,12 +834,11 @@ ui_improver.improveChronicles = function() {
 			chronicles[i].classList.add('parsed');
 		}
 
-		// informer
-		ui_informer.update('close to boss', this.chronicles[this.chronicles.length - 1].marks.indexOf('warning') >= 0);
-
 		if (!this.logsAreParsed) {
 			ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
 		} else {
+			// informer
+			ui_informer.update('close to boss', this.chronicles[this.chronicles.length - 1].marks.indexOf('warning') !== -1);
 			ui_improver.colorDungeonMap();
 		}
 	}
