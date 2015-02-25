@@ -655,5 +655,7 @@ worker.GUIp_i18n = {
 	clear_voice_input: 'Очистить поле гласа'
 };
 
+delete worker.GUIp_help_guide_link;
+
 }
 })();

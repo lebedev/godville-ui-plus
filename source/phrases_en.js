@@ -508,5 +508,7 @@ worker.GUIp_i18n = {
 	clear_voice_input: 'Clear voice input'
 };
 
+delete worker.GUIp_help_guide_link;
+
 }
 })();
