@@ -33,6 +33,7 @@ var quoteFormatting = function(quotation, editor) {
 		      selection && !selection[selection.length - 1].match(/\n/) ? '\n\n' : (selection[selection.length - 2] && !selection[selection.length - 2].match(/\n/) ? '\n' : '');
 		editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + selection + nle + val.slice(se);
 		putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0), true);
+		return false;
 	} catch(error) {
 		worker.console.error(error);
 	}
@@ -45,6 +46,7 @@ var listFormatting = function(list_marker, editor) {
 		var count = val.slice(ss, se).match(/\n/g) ? val.slice(ss, se).match(/\n/g).length + 1 : 1;
 		editor.value = val.slice(0, ss) + nls + list_marker + ' ' + val.slice(ss, se).replace(/\n/g, '\n' + list_marker + ' ') + nle + val.slice(se);
 		putSelectionTo(editor, se + nls.length + (list_marker.length + 1)*count, true);
+		return false;
 	} catch(error) {
 		worker.console.error(error);
 	}
@@ -55,6 +57,7 @@ var pasteBr = function(dummy, editor) {
 		var pos = editor.selectionDirection === 'backward' ? ss : se;
 		editor.value = val.slice(0, pos) + '<br>' + val.slice(pos);
 		putSelectionTo(editor, pos + 4, true);
+		return false;
 	} catch(error) {
 		worker.console.error(error);
 	}
@@ -93,20 +96,20 @@ var setCtrlEnterAction = function(textarea, button) {
 };
 var addFormattingButtonsAndCtrlEnter = function() {
 	var formatting_buttons =
-		'<a class="formatting button bold" title="' + worker.GUIp_i18n.bold_hint + '">' + worker.GUIp_i18n.bold + '</a>' +
-		'<a class="formatting button underline" title="' + worker.GUIp_i18n.underline_hint + '">' + worker.GUIp_i18n.underline + '</a>' +
-		'<a class="formatting button strike" title="' + worker.GUIp_i18n.strike_hint + '">' + worker.GUIp_i18n.strike + '</a>' +
-		'<a class="formatting button italic" title="' + worker.GUIp_i18n.italic_hint + '">' + worker.GUIp_i18n.italic + '</a>' +
-		'<blockquote class="formatting bq" title="' + worker.GUIp_i18n.quote_hint + '">bq.</blockquote>' +
-		'<pre class="formatting bc" title="' + worker.GUIp_i18n.code_hint + '"><code>bc.</code></pre>' +
-		(worker.GUIp_locale === 'ru' ? '<a class="formatting button godname" title="Вставить ссылку на бога"></a>' : '') +
-		'<a class="formatting button link" title="' + worker.GUIp_i18n.link_hint + '">a</a>' +
-		'<a class="formatting button ul" title="' + worker.GUIp_i18n.unordered_list_hint + '">•</a>' +
-		'<a class="formatting button ol" title="' + worker.GUIp_i18n.ordered_list_hint + '">1.</a>' +
-		'<a class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '">\\n</a>' +
-		'<a class="formatting button sup" title="' + worker.GUIp_i18n.sup_hint + '">X<sup>2</sup></a>' +
-		'<a class="formatting button sub" title="' + worker.GUIp_i18n.sub_hint + '">X<sub>2</sub></a>' +
-		'<a class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '"><code>' + worker.GUIp_i18n.monospace + '</code></a>';
+		'<button class="formatting button bold" title="' + worker.GUIp_i18n.bold_hint + '">' + worker.GUIp_i18n.bold + '</button>' +
+		'<button class="formatting button underline" title="' + worker.GUIp_i18n.underline_hint + '">' + worker.GUIp_i18n.underline + '</button>' +
+		'<button class="formatting button strike" title="' + worker.GUIp_i18n.strike_hint + '">' + worker.GUIp_i18n.strike + '</button>' +
+		'<button class="formatting button italic" title="' + worker.GUIp_i18n.italic_hint + '">' + worker.GUIp_i18n.italic + '</button>' +
+		'<button class="formatting bq" title="' + worker.GUIp_i18n.quote_hint + '">bq.</button>' +
+		'<button class="formatting bc" title="' + worker.GUIp_i18n.code_hint + '">bc.</button>' +
+		(worker.GUIp_locale === 'ru' ? '<button class="formatting button godname" title="Вставить ссылку на бога"></button>' : '') +
+		'<button class="formatting button link" title="' + worker.GUIp_i18n.link_hint + '">a</button>' +
+		'<button class="formatting button ul" title="' + worker.GUIp_i18n.unordered_list_hint + '">•</button>' +
+		'<button class="formatting button ol" title="' + worker.GUIp_i18n.ordered_list_hint + '">1.</button>' +
+		'<button class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '">\\n</button>' +
+		'<button class="formatting button sup" title="' + worker.GUIp_i18n.sup_hint + '">X<sup>2</sup></button>' +
+		'<button class="formatting button sub" title="' + worker.GUIp_i18n.sub_hint + '">X<sub>2</sub></button>' +
+		'<button class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '">' + worker.GUIp_i18n.monospace + '</button>';
 	$id('post_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
 	setClickActions('post_body_editor', $id('post_body'));
 	setCtrlEnterAction($id('post_body'), document.querySelector('#reply input[type="submit"]'));

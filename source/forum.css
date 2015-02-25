@@ -1,25 +1,24 @@
 .formatting {
 	cursor: pointer;
-	display: inline-block;
-	height: 18px;
-	line-height: 18px;
-	margin: -9px 5px 3px 0;
+	line-height: 1;
 	overflow: visible;
 	text-align: center;
 	text-decoration: none;
+	font-size: 13px;
 	vertical-align: middle;
-	width: 18px;
-	-moz-user-select: none;
-	-webkit-user-select: none;
+	height: 22px;
+	width: 22px;
+	margin: -9px 5px 3px 0;
+	padding: 0;
 }
 .formatting.button {
+	color: gray;
 	background-color: lightgray;
 	border: 2px solid gray;
 	border-radius: 3px;
-	color: gray;
 }
-.formatting.button:hover {
-	color: gray;
+.formatting:not(.button) {
+	width: 24px;
 }
 .formatting.bold {
 	font-weight: bold;
@@ -33,20 +32,32 @@
 .formatting.italic {
 	font-style: italic;
 }
-.formatting.bq,
+.formatting.bq {
+	background: #efc;
+	border-bottom: 1px solid #cda;
+	border-left: 3px solid #9a7;
+	border-right: none;
+	border-top: 1px solid #cda;
+}
 .formatting.bc {
-	padding: 1px 3px;
+	background: #eee;
+	border-color: #ccc #ccc #ccc #ddd;
+	border-style: solid none solid solid;
+	border-width: 1px 0 1px 3px;
+}
+.formatting.bc,
+.formatting.monospace {
+	font-size: 12px;
+	font-family: monospace;
 }
 .formatting.godname {
 	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");
 }
-.formatting.link,
-.formatting.link:hover {
+.formatting.link {
 	color: #199bdc;
 	text-decoration: underline;
 }
-.formatting.br,
-.formatting.br:hover {
+.formatting.br {
 	color: darkviolet;
 }
 
