@@ -2,28 +2,28 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$Kye8D3"
+  <RDF:Description RDF:about="rdf:#$Smsbc2"
                    em:id="{aa3c5121-dab2-40e2-81ca-7ea25febc110}"
                    em:minVersion="34.0"
                    em:maxVersion="35.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/raw/master/release/godville-ui-plus%40badluck.dicey.xpi"
-                   em:updateHash="sha1:095016cc3993c84482f12b27af9d5805223f9e09" />
-  <RDF:Description RDF:about="rdf:#$Rye8D3"
+                   em:updateHash="sha1:b093d1c8e97a1a3efe0797d4d94851a421600ae8" />
+  <RDF:Description RDF:about="rdf:#$Zmsbc2"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="31.0"
                    em:maxVersion="37.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/raw/master/release/godville-ui-plus%40badluck.dicey.xpi"
-                   em:updateHash="sha1:095016cc3993c84482f12b27af9d5805223f9e09" />
-  <RDF:Description RDF:about="rdf:#$Hye8D3"
-                   em:version="0.27.124.23">
-    <em:targetApplication RDF:resource="rdf:#$Kye8D3"/>
-    <em:targetApplication RDF:resource="rdf:#$Rye8D3"/>
+                   em:updateHash="sha1:b093d1c8e97a1a3efe0797d4d94851a421600ae8" />
+  <RDF:Description RDF:about="rdf:#$Pmsbc2"
+                   em:version="0.27.124.25">
+    <em:targetApplication RDF:resource="rdf:#$Smsbc2"/>
+    <em:targetApplication RDF:resource="rdf:#$Zmsbc2"/>
   </RDF:Description>
-  <RDF:Seq RDF:about="rdf:#$Gye8D3">
-    <RDF:li RDF:resource="rdf:#$Hye8D3"/>
+  <RDF:Seq RDF:about="rdf:#$Omsbc2">
+    <RDF:li RDF:resource="rdf:#$Pmsbc2"/>
   </RDF:Seq>
   <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAArNsq3wbMALBWFazEdEJKG5rFeLiML5E35gBhOpEYMM5yZGSX0X4AExoePEtOcG9qkuKJ5w7SoJi811ZAveBd02nJ1UtEAv21v/y27krTGxJ2AQT02SWgaxJ3iWicXs0aZHH8ep2P3NiwmEZn/BY8C+gU3M51WrwEnFaS1cLosk">
-    <em:updates RDF:resource="rdf:#$Gye8D3"/>
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAGKH7TFMxDrPuWKbbFd3o7wOlQgcmTEsONuN7qmFqZpZ/XWovGpsz/xq4iQIzj8yUeedyISRmPfbL8c28YPq9ftmwhq2fKext11AjV3/kLO4MiLYbwdGVYPT3yyh0dK7UDE38fhJnNbNbvAXgt2oGGU5oBnoZiGWBDloXNzH5wMQ">
+    <em:updates RDF:resource="rdf:#$Omsbc2"/>
   </RDF:Description>
 </RDF:RDF>
