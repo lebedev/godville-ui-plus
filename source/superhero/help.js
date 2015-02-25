@@ -20,10 +20,12 @@ ui_help._createHelpDialog = function() {
 					'<li class="update_required Chrome hidden">' + worker.GUIp_i18n.help_update_chrome_2 + '</li>' +
 					'<li class="update_required Firefox hidden">' + worker.GUIp_i18n.help_update_firefox_1 + '</li>' +
 					'<li class="update_required Firefox hidden">' + worker.GUIp_i18n.help_update_firefox_2 + '</li>' +
-					'<li class="update_required Chrome Firefox hidden">' + worker.GUIp_i18n.help_back_to_step_1 + '</li>' +
-					'<li class="console Chrome Firefox hidden">' + worker.GUIp_i18n.help_console_1 + '</li>' +
-					'<li class="console Chrome Firefox hidden">' + worker.GUIp_i18n.help_console_2 + '</li>' +
-					'<li class="console Chrome Firefox hidden">' + worker.GUIp_i18n.help_console_3 + '</li>' +
+					'<li class="update_required Opera hidden">' + worker.GUIp_i18n.help_update_opera_1 + '</li>' +
+					'<li class="update_required Opera hidden">' + worker.GUIp_i18n.help_update_opera_2 + '</li>' +
+					'<li class="update_required Chrome Firefox Opera hidden">' + worker.GUIp_i18n.help_back_to_step_1 + '</li>' +
+					'<li class="console hidden">' + worker.GUIp_i18n.help_console_1 + '</li>' +
+					'<li class="console hidden">' + worker.GUIp_i18n.help_console_2 + '</li>' +
+					'<li class="console hidden">' + worker.GUIp_i18n.help_console_3 + '</li>' +
 				'</ol>' +
 				'<div>' + worker.GUIp_i18n.help_useful_links + '</div>' +
 			'</div>' +
@@ -87,7 +89,7 @@ ui_help.onXHRSuccess = function(xhr) {
 		if (!isNewest) {
 			worker.$('#ui_help ol li.update_required.' + worker.GUIp_browser).removeClass('hidden');
 		} else {
-			worker.$('#ui_help ol li.console.' + worker.GUIp_browser).removeClass('hidden');
+			worker.$('#ui_help ol li.console').removeClass('hidden');
 		}
 	} else {
 		ui_help.onXHRFail();

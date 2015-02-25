@@ -2,7 +2,7 @@
 var worker = window.wrappedJSObject || window;
 var starter = worker.setInterval(initPhrases, 100);
 function initPhrases() {
-if (!worker.GUIp_browser || !worker.GUIp_help_guide_link) { return; }
+if (!worker.GUIp_browser || !worker.GUIp_github_link) { return; }
 worker.clearInterval(starter);
 
 worker.GUIp_words = function() {
@@ -325,23 +325,25 @@ worker.GUIp_i18n = {
 	help_refresh: 'Обновите страницу. Если баг повторяется — переходите к следующему шагу.',
 	help_check_version: 'Нажмите сюда, чтоб проверить, последняя ли у вас версия дополнения.',
 	help_update_chrome_1: 'Откройте страницу настроек Хрома (2). ' +
-		worker.GUIp_help_guide_link + 'chrome_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.',
+		worker.GUIp_github_link + 'help_guide/chrome_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.',
 	help_update_chrome_2: 'Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку ' +
 		'"Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
-		worker.GUIp_help_guide_link + 'chrome_manual_update_2.png" title="Откроется в новой вкладке">Картинка</a>.',
-	help_update_firefox_1: 'Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). ' +
-		worker.GUIp_help_guide_link + 'firefox_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.',
+		worker.GUIp_github_link + 'help_guide/chrome_manual_update_2.png" title="Откроется в новой вкладке">Картинка</a>.',
 	help_update_firefox_2: 'Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4), подождите несколько секунд и согласитеcь ' +
 		'на перезапуск браузера. ' +
-		worker.GUIp_help_guide_link + 'firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
+		worker.GUIp_github_link + 'help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
+	help_update_opera_1: 'Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию экстеншона. ' +
+		worker.GUIp_github_link + 'help_guide/opera_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.',
+	help_update_opera_2: 'Скачайте новую версию экстеншона по ссылке и установите ее. ' +
+		worker.GUIp_github_link + 'release/godville-ui-plus@badluck.dicey.oex"  title="Откроется в новой вкладке">Ссылка на новую версию.</a>',
 	help_back_to_step_1: 'Обратно к шагу 1.',
 	help_console_1: 'Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.',
 	help_console_2: 'Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль ' +
-		'(через меню или комбинацией <b>Ctrl+Shift+' + (worker.GUIp_browser === 'Firefox' ? 'K' : 'J') + '</b>). ' +
-		worker.GUIp_help_guide_link + (worker.GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_worker.console.png" ' +
+		'(через меню или комбинацией <b>Ctrl+Shift+' + (worker.GUIp_browser === 'Firefox' ? 'K' : worker.GUIp_browser === 'Chrome' ? 'J' : 'I') + '</b>). ' +
+		worker.GUIp_github_link + 'help_guide/' + worker.GUIp_browser.toLowerCase() + '_console.png" ' +
 		'title="Откроется в новой вкладке">Картинка</a>.',
 	help_console_3: 'Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке (' +
-		worker.GUIp_help_guide_link + (worker.GUIp_browser === 'Firefox' ? 'firefox' : 'chrome') + '_console_error.png" ' +
+		worker.GUIp_github_link + 'help_guide/' + worker.GUIp_browser.toLowerCase() + '_console_error.png" ' +
 		'title="Откроется в новой вкладке">картинка</a>). ' +
 		'И с этой информацией напишите <b>Бэдлаку</b> или в тему на форуме по ссылкам ниже.',
 	help_useful_links: 'Полезные ссылки: ' +
@@ -635,7 +637,7 @@ worker.GUIp_i18n = {
 	mild: 'свежо (10-13 ходов до клада)',
 	cold: 'холодно (14-18 ходов до клада)',
 	freezing: 'очень холодно (19 или более ходов до клада)',
-	send_log_to_LEMs_script: 'Отправить лог в скрипт ЛЕМа\n',
+	send_log_to_LEMs_script: 'Отправить лог в скрипт ЛЕМа<br>',
 	till_next_try: 'До следующей попытки: ',
 	tries_left: 'Осталось попыток: ',
 	map: 'Карта',
@@ -655,7 +657,7 @@ worker.GUIp_i18n = {
 	clear_voice_input: 'Очистить поле гласа'
 };
 
-delete worker.GUIp_help_guide_link;
+delete worker.GUIp_github_link;
 
 }
 })();

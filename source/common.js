@@ -8,4 +8,4 @@ worker.GUIp_addCSSFromString = function(text) {
 	}
 	document.getElementById('guip_user_css').innerHTML = text;
 };
-worker.GUIp_help_guide_link = '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/help_guide/';
+worker.GUIp_github_link = '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/';
