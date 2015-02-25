@@ -250,8 +250,7 @@ function startup(data, reasonCode) {
 
     require('sdk/addon/runner').startup(reason, {
       loader: loader,
-      main: main,
-      prefsURI: rootURI + 'defaults/preferences/prefs.js'
+      main: main
     });
   } catch (error) {
     dump('Bootstrap error: ' +
