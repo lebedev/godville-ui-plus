@@ -462,7 +462,9 @@ var starterInt = worker.setInterval(function() {
 		if (location.hash === "#ui_options") {
 			loadOptions();
 		}
-		worker.GUIp_addCSSFromURL(worker.GUIp_getResource('options.css'), 'guip_options_css');
+		if (worker.GUIp_browser !== 'Opera') {
+			worker.GUIp_addCSSFromURL(worker.GUIp_getResource('options.css'), 'guip_options_css');
+		}
 		set_theme_and_background();
 		improve_blocks();
 		// Event and Listeners

@@ -83,7 +83,7 @@ ui_utils.escapeHTML = function(str) {
 					  .replace(/>/g, "&gt;");
 };
 ui_utils.addCSS = function () {
-	if (!document.getElementById('ui_css')) {
+	if (worker.GUIp_browser !== 'Opera' && !document.getElementById('ui_css')) {
 		worker.GUIp_addCSSFromURL(worker.GUIp_getResource('superhero.css'), 'guip_css');
 	}
 };
