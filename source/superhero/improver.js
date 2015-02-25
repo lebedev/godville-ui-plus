@@ -843,7 +843,7 @@ ui_improver.improveChronicles = function() {
 			ui_improver.colorDungeonMap();
 		}
 	}
-	if (this.isFirstTime && ui_storage.get('Log:current') !== worker.so.state.stats.perm_link.value) {
+	if (ui_storage.get('Log:current') !== worker.so.state.stats.perm_link.value) {
 		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
 		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
 	}
