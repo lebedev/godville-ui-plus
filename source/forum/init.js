@@ -67,9 +67,12 @@ var unfollowOnclick = function(e) {
 		e.preventDefault();
 		var topic = isTopic ? location.pathname.match(/\d+/)[0]
 							: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-			topics = JSON.parse(storage.get(forum_topics));
+			topics = JSON.parse(storage.get(forum_topics)),
+			informers = JSON.parse(storage.get('ForumInformers'));
 		delete topics[topic];
 		storage.set(forum_topics, JSON.stringify(topics));
+		delete informers[topic];
+		storage.set('ForumInformers', JSON.stringify(informers));
 		this.style.display = 'none';
 		this.parentElement.querySelector('.follow').style.display = 'inline';
 	} catch(error) {
