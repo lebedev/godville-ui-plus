@@ -12,11 +12,20 @@ module.exports = function(grunt) {
       },
       firefox: {
         files: [
-          {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'},
           {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
           {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/', filter: 'isFile'},
+          {expand: true, cwd: 'source/vendor/', src: 'jquery-1.10.2.min.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'},
           {expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile'},
-          {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/'}
+          {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/'},
+          {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'}
+        ]
+      },
+      opera: {
+        files: [
+          {expand: true, cwd: 'source/opera', src: '**', dest: '<%= compile_path %>/opera/'},
+          {expand: true, cwd: 'source/', src: '*', dest: '<%= compile_path %>/opera/content/', filter: 'isFile'},
+          {expand: true, cwd: 'source/vendor/', src: '*', dest: '<%= compile_path %>/opera/content/'},
+          {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/opera/content/'}
         ]
       },
       version: {
@@ -30,7 +39,9 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/chrome/'},
 
           {expand: true, cwd: 'source/firefox/', src: ['install.rdf', 'harness-options.json'], dest: '<%= compile_path %>/firefox/'},
-          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'}
+          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'},
+
+          {expand: true, cwd: 'source/opera/', src: 'config.xml', dest: '<%= compile_path %>/opera/'}
         ]
       }
     },
@@ -78,7 +89,8 @@ module.exports = function(grunt) {
     },
     clean: {
       chrome: "<%= compile_path %>/chrome",
-      firefox: "<%= compile_path %>/firefox"
+      firefox: "<%= compile_path %>/firefox",
+      opera: "<%= compile_path %>/opera"
     },
     compress: {
       chrome: {
@@ -96,6 +108,15 @@ module.exports = function(grunt) {
         },
         files: [
           {expand: true, cwd: '<%= compile_path %>/firefox', src: '**'}
+        ]
+      },
+      opera: {
+        options: {
+          archive: '<%= compile_path %>/godville-ui-plus@badluck.dicey.oex',
+          mode: 'zip'
+        },
+        files: [
+          {expand: true, cwd: '<%= compile_path %>/opera', src: '**'}
         ]
       }
     },
@@ -128,7 +149,7 @@ module.exports = function(grunt) {
         src: [
           'Gruntfile.js',
           'source/**/*.js',
-          '!source/firefox/resources/godville-ui-plus/data/jquery-1.10.2.min.js',
+          '!source/vendor/*.js',
           '!source/firefox/bootstrap.js'
         ]
       }
@@ -199,7 +220,8 @@ module.exports = function(grunt) {
       'concat',
       'copy',
       'compress:firefox',
-      'clean:firefox'
+      'clean:firefox',
+      'process_opera'
     ]);
   });
 
@@ -215,6 +237,7 @@ module.exports = function(grunt) {
         'concat',
         'copy',
         'process_chrome',
+        'process_opera',
         'process_firefox'
       ]);
     } else {
@@ -249,6 +272,13 @@ module.exports = function(grunt) {
       'exec:sign',
       'update_version',
       'exec:publish_firefox'
+    ]);
+  });
+
+  grunt.task.registerTask('process_opera', 'Compiles Opera extension.', function() {
+    grunt.task.run([
+      'compress:opera',
+      'clean:opera'
     ]);
   });
 
