@@ -167,22 +167,7 @@ module.exports = function(grunt) {
                 version[3]++;
                 return version.join('.');
               },
-              validate: function(value) {
-                if (!value.match(/\d+\.\d+\.\d+\.\d+/)) {
-                  return false;
-                } else {
-                  var new_version = value.split('.'),
-                      old_version = grunt.config('old_version').split('.');
-
-                  return +old_version[0] < +new_version[0] ? true :
-                         +old_version[0] > +new_version[0] ? false :
-                         +old_version[1] < +new_version[1] ? true :
-                         +old_version[1] > +new_version[1] ? false :
-                         +old_version[2] < +new_version[2] ? true :
-                         +old_version[2] > +new_version[2] ? false :
-                         +old_version[3] < +new_version[3] ? true : false;
-                }
-              }
+              validate: isCorrentVersion
             }
           ]
         }
@@ -225,15 +210,39 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.task.registerTask('release', 'Compiles in release mode.', function() {
+  function isCorrentVersion(value) {
+    if (!value.match(/\d+\.\d+\.\d+\.\d+/)) {
+      return false;
+    } else {
+      var new_version = value.split('.'),
+          old_version = grunt.config('old_version').split('.');
+
+      return +old_version[0] < +new_version[0] ? true :
+             +old_version[0] > +new_version[0] ? false :
+             +old_version[1] < +new_version[1] ? true :
+             +old_version[1] > +new_version[1] ? false :
+             +old_version[2] < +new_version[2] ? true :
+             +old_version[2] > +new_version[2] ? false :
+             +old_version[3] < +new_version[3] ? true : false;
+    }
+  }
+
+  grunt.task.registerTask('release', 'Compiles in release mode.', function(new_version) {
     grunt.log.ok("Compiling in release mode.");
     if (grunt.file.exists('publish')) {
       grunt.config.set('compile_path', 'release');
       grunt.config.set('old_version', grunt.file.read('current_version'));
       grunt.task.run([
         'jshint',
-        'exec:sign',
-        'prompt',
+        'exec:sign'
+      ]);
+      if (new_version && isCorrentVersion(new_version)) {
+        grunt.config.set('new_version', new_version);
+        grunt.log.ok('Got new version number: ' + new_version);
+      } else {
+        grunt.task.run('prompt');
+      }
+      grunt.task.run([
         'concat',
         'copy',
         'process_chrome',
