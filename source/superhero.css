@@ -53,7 +53,10 @@ body {
 .craft_button,
 #informer_bar div,
 .voice_generator,
-.craft_button {
+.craft_button,
+.inspect_button,
+.div_link,
+.div_link_nu {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
