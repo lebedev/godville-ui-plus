@@ -652,7 +652,7 @@ a.broadcast {
 	display: inline-block !important;
 }
 .gc_fr_page {
-	display: none;
+	display: none !important;
 	position: relative;
 	left: 0;
 	margin-top: -1px;
