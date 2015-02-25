@@ -221,7 +221,7 @@ ui_improver.improveVoiceDialog = function() {
 		}).on('click', '.gv_text.div_link', function() {
 			worker.$('#god_phrase').change();
 		});
-		document.getElementById('voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover" title="' + worker.GUIp_i18n.clear_voice_input + '">✖</div>');
+		document.getElementById('voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover" title="' + worker.GUIp_i18n.clear_voice_input + '">×</div>');
 		document.getElementById('clear_voice_input').onclick = function() {
 			document.getElementById('god_phrase').value = '';
 			worker.$('#god_phrase').change();

@@ -661,10 +661,17 @@ a.broadcast {
 /* clear voice input button */
 .gvl_popover {
 	right: 0;
+	bottom: 0;
+	width: 23px;
+	height: 29px;
+	padding-left: 4px;
+	line-height: 29px;
+	margin-right: 0;
 }
 #clear_voice_input {
-	right: 15px;
-	bottom: 6px;
+    padding-left: 0;
+    right: 27px;
+    width: 15px;
 }
 .c_col #god_phrase {
 	margin-left: 2px;
