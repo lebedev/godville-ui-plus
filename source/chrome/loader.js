@@ -1,22 +1,12 @@
 (function() {
-	function createScripts(urls) {
+	function createScripts(urls, locale) {
+		urls = [scripts.common, scripts.guip_chrome, scripts['phrases_' + locale]].concat(urls);
 		for (var i = 0, len = urls.length; i < len; i++) {
 			var scr = document.createElement('script');
 			scr.type = 'text/javascript';
 			scr.src = urls[i];
 			scr.id = 'godville-ui-plus';
 			document.head.appendChild(scr);
-		}
-	}
-	function check(path, locale) {
-		if (path.match(/^\/superhero/)) {
-			createScripts([scripts.common, scripts.guip_chrome, scripts['phrases_' + locale], scripts.superhero]);
-		} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-			createScripts([scripts.common, scripts.jquery, scripts.guip_chrome, scripts['phrases_' + locale], scripts.options_page, scripts.options]);
-		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-			createScripts([scripts.common, scripts.guip_chrome, scripts['phrases_' + locale], scripts.forum]);
-		} else if (path.match(/^\/duels\/log\//)) {
-			createScripts([scripts.common, scripts.guip_chrome, scripts['phrases_' + locale], scripts.log]);
 		}
 	}
 	var prefix = localStorage.GUIp_prefix = window.chrome.extension.getURL('');
@@ -32,11 +22,23 @@
 		forum: prefix + 'forum.js',
 		log: prefix + 'log.js'
 	};
-	var site = location.href,
-		path = location.pathname;
+	function checkPathFor(locale) {
+		var path = location.pathname;
+		if (path.match(/^\/superhero/)) {
+			createScripts(scripts.superhero, locale);
+		} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
+			createScripts([scripts.jquery, scripts.options_page, scripts.options], locale);
+		} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
+			createScripts(scripts.forum, locale);
+		} else if (path.match(/^\/duels\/log\//)) {
+			createScripts(scripts.log, locale);
+		}
+	}
+
+	var site = location.href;
 	if (site.match(/^https?:\/\/godville.net/)) {
-		check(path, 'ru');
+		checkPathFor('ru');
 	} else if (site.match(/^https?:\/\/godvillegame.com/)) {
-		check(path, 'en');
+		checkPathFor('en');
 	}
 })();
