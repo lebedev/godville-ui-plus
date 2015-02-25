@@ -1149,13 +1149,15 @@ ui_improver.chatsFix = function() {
 		}
 	}
 	//padding for page settings link
-	var padding_bottom = worker.$('.frDockCell:first').length ? Math.floor(worker.$('.frDockCell:first').position().top + worker.$('.frDockCell').height()) : 0,
-		isBottom = worker.scrollY >= worker.scrollMaxY - 10;
+	var chats = document.getElementsByClassName('frDockCell'),
+		clen = chats.length,
+		padding_bottom = clen ? chats[0].getBoundingClientRect().bottom - chats[clen - 1].getBoundingClientRect().top : worker.GUIp_browser === 'Opera' ? 27 : 0,
+		isBottom = worker.scrollY >= document.documentElement.scrollHeight - document.documentElement.clientHeight - 10;
 	padding_bottom = Math.floor(padding_bottom*10)/10 + 10;
 	padding_bottom = (padding_bottom < 0) ? 0 : padding_bottom + 'px';
 	worker.$('.reset_layout').css('padding-bottom', padding_bottom);
 	if (isBottom) {
-		worker.scrollTo(0, worker.scrollMaxY);
+		worker.scrollTo(0, document.documentElement.scrollHeight - document.documentElement.clientHeight);
 	}
 };
 ui_improver.initSoundsOverride = function() {
