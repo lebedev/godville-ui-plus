@@ -10,7 +10,7 @@ function GUIp_log() {
 				minutes = Math.floor(time/60),
 				seconds = Math.floor(time%60);
 			seconds = seconds < 10 ? '0' + seconds : seconds;
-			button.value = worker.GUIp_i18n.send_log_to_LEMs_script + worker.GUIp_i18n.till_next_try + minutes + ':' + seconds;
+			button.innerHTML = worker.GUIp_i18n.send_log_to_LEMs_script + worker.GUIp_i18n.till_next_try + minutes + ':' + seconds;
 			button.setAttribute('disabled', 'disabled');
 		} else {
 			var tries = 0;
@@ -19,7 +19,7 @@ function GUIp_log() {
 					tries++;
 				}
 			}
-			button.value = worker.GUIp_i18n.send_log_to_LEMs_script + worker.GUIp_i18n.tries_left + tries;
+			button.innerHTML = worker.GUIp_i18n.send_log_to_LEMs_script + worker.GUIp_i18n.tries_left + tries;
 			button.removeAttribute('disabled');
 		}
 	}
@@ -92,7 +92,7 @@ function GUIp_log() {
 					'<td style="border: none; padding: 0;"><label for="stoneeater">' + worker.GUIp_i18n.corrections + '</label></td>' +
 					'<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="' + (worker.localStorage[godname_prefix + log + 'corrections'] || '') + '" style=" width: 100%; padding: 0;"></td>' +
 				'</tr></table>' +
-				'<input type="submit" id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
+				'<button id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
 			'</form>');
 		document.querySelector('#fight_text').value = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' +
 															document.getElementsByTagName('html')[0].innerHTML.replace(/<(?:script|style)[\S\s]+?<\/(?:script|style)>/g, '')
