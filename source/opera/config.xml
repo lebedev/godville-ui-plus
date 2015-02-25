@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="godville-ui-plus@badluck.dicey" version="$VERSION">
+	<name>Godville UI+</name>
+	<description xml:lang="en">UI improvements for godville.net and godvillegame.com</description>
+	<description xml:lang="ru">Улучшения интерфейса для godville.net и godvillegame.com</description>
+	<author href="http://godville.net/forums/show_topic/2812" email="l1aqus@gmail.com">Badluck Dicey</author>
+	<icon src="icon64.png" />
+	<icon src="icon128.png" />
+	<access origin="*" />
+	<license href="http://opensource.org/licenses/MIT" xml:lang="en">
+		Licensed under the MIT License
+	</license>
+	<license href="http://opensource.org/licenses/MIT" xml:lang="ru">
+		Под лицензией MIT
+	</license>
+</widget>
