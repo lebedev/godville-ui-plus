@@ -86,7 +86,15 @@ ui_informer._getPMTitleNotice = function() {
 	return pm ? '[' + pm + ']' : '';
 };
 ui_informer._getGMTitleNotice = function() {
-	return document.getElementsByClassName('gc_new_badge')[0].style.display !== 'none' ? '[g]' : '';
+	var gm = document.getElementsByClassName('gc_new_badge')[0].style.display !== 'none',
+		stars = document.querySelectorAll('.msgDock .fr_new_msg');
+	for (var i = 0, len = stars.length; i < len; i++) {
+		if (stars[i].parentNode.getElementsByClassName('dockfrname')[0].textContent.match(/Гильдсовет|Guild Council/)) {
+			gm = true;
+			break;
+		}
+	}
+	return gm ? '[g]' : '';
 };
 ui_informer._getFITitleNotice = function() {
 	return document.querySelector('#forum_informer_bar a') ? '[f]' : '';
