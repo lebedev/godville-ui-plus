@@ -843,8 +843,19 @@ ui_improver.improveChronicles = function() {
 		if (!this.logsAreParsed) {
 			ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
 		} else {
-			// informer
-			ui_informer.update('close to boss', this.chronicles[this.chronicles.length - 1].marks.indexOf('warning') !== -1);
+			try {
+				// informer
+				ui_informer.update('close to boss', this.chronicles[this.chronicles.length - 1].marks.indexOf('warning') !== -1);
+			} catch(e) {
+				if (ui_utils.hasShownInfoMessage !== true) {
+					ui_utils.showMessage('info', {
+						title: 'Особая ошибка! Special error!',
+						content: '<div>Сообщите Бэдлаку это: Tell Bad Luck this:<br>' +
+								 e.name + ': ' + e.message + '<br>' + JSON.stringify(this.chronicles)
+					});
+					ui_utils.hasShownInfoMessage = true;
+				}
+			}
 			ui_improver.colorDungeonMap();
 		}
 	}
