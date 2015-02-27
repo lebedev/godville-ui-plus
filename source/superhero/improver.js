@@ -218,10 +218,16 @@ ui_improver.improveVoiceDialog = function() {
 			if (!ui_utils.setVoiceSubmitState(this.value && !(ui_improver.freezeVoiceButton.match('after_voice') && parseInt(ui_timeout.bar.style.width)), false)) {
 				ui_utils.setVoiceSubmitState(ui_improver.freezeVoiceButton.match('when_empty'), true);
 			}
+			var cvi = document.getElementById('clear_voice_input');
+			if (this.value) {
+				cvi.classList.remove('hidden');
+			} else {
+				cvi.classList.add('hidden');
+			}
 		}).on('click', '.gv_text.div_link', function() {
 			worker.$('#god_phrase').change();
 		});
-		document.getElementById('voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover" title="' + worker.GUIp_i18n.clear_voice_input + '">×</div>');
+		document.getElementById('voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover hidden" title="' + worker.GUIp_i18n.clear_voice_input + '">×</div>');
 		document.getElementById('clear_voice_input').onclick = function() {
 			document.getElementById('god_phrase').value = '';
 			worker.$('#god_phrase').change();
@@ -1207,6 +1213,7 @@ ui_improver.nodeInsertion = function() {
 ui_improver.nodeInsertionDelay = function() {
 	ui_improver.improve();
 	if (ui_data.isFight) {
+		worker.$('#god_phrase').change();
 		ui_logger.update();
 	}
 };

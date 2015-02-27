@@ -7,6 +7,10 @@ body {
 	min-height: 100%;
 }
 
+.hidden {
+	display: none !important;
+}
+
 /* long god-name fix */
 #main_wrapper {
 	padding-top: 2.9em;
@@ -92,9 +96,6 @@ body {
 .hint_bar_content ol {
 	margin: 0;
 	padding: 0 0 0 20px;
-}
-.hint_bar_content ol li.hidden {
-	display: none;
 }
 body.th_nightly .ui_msg {
 	color: #999;
@@ -595,11 +596,6 @@ body.th_nightly .shovel:hover {
 	background-position: 13px 13px;
 }
 
-/* hide hidden popovers */
-.popover.hidden {
-	display: none !important;
-}
-
 /* map legend */
 .guip_legend {
 	margin-bottom: 10px;
@@ -675,20 +671,20 @@ a.broadcast {
 }
 .c_col #god_phrase {
 	margin-left: 2px;
-	width: 309px;
+	width: 305px;
 }
 .s_col #god_phrase {
-	width: 171px;
+	width: 167px;
 }
 .page_wrapper_5c .c_col #god_phrase {
 	margin-left: 2px;
-	width: 295px;
+	width: 291px;
 }
 .page_wrapper_5c .s_col #god_phrase {
-	width: 156px;
+	width: 152px;
 }
 #god_phrase {
-	padding-right: 36px;
+	padding-right: 40px;
 }
 
 #alls .motto {
