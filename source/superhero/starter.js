@@ -25,7 +25,7 @@ ui_starter.start = function() {
 		ui_starter._init();
 
 		// Event and listeners
-		worker.$(document).bind('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver));
+		document.body.addEventListener('DOMNodeInserted', ui_improver.nodeInsertion.bind(ui_improver), false);
 
 		if (!ui_data.isFight) {
 			worker.onmousemove = worker.onscroll = worker.ontouchmove = ui_improver.activity;

@@ -1301,8 +1301,9 @@ ui_improver.activity = function() {
 		ui_logger.update();
 	}
 };
-ui_improver.nodeInsertion = function() {
-	if (!this.improveInProcess) {
+ui_improver.nodeInsertion = function(e) {
+	// to prevent improving WHEN ENTERING FUCKING TEXT IN FUCKING TEXTAREA
+	if (e.relatedNode.textContent !== e.target.textContent && !this.improveInProcess) {
 		this.improveInProcess = true;
 		worker.setTimeout(ui_improver.nodeInsertionDelay.bind(ui_improver), 50);
 	}
