@@ -1,7 +1,6 @@
 // ui_improver
 var ui_improver = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "improver"}) : worker.GUIp.improver = {};
 
-ui_improver.inventoryChanged = true;
 ui_improver.improveInProcess = true;
 ui_improver.isFirstTime = true;
 ui_improver.voiceSubmitted = false;
@@ -54,38 +53,88 @@ ui_improver.hardRefresh = function() {
 };
 ui_improver.improve = function() {
 	this.improveInProcess = true;
+	var to, from = Date.now();
 	ui_informer.update('fight', ui_data.isFight && !ui_data.isDungeon);
 	ui_informer.update('arena available', worker.so.state.arena_available());
 	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
 
 	this.optionsChanged = this.isFirstTime ? false : ui_storage.get('optionsChanged');
-
+	to = Date.now();
+	worker.console.log('1 ' + (to - from) + ' msec.');
+	from = to;
 	if (this.isFirstTime) {
 		if (!ui_data.isFight && !ui_data.isDungeon) {
 			ui_improver.improveDiary();
+			to = Date.now();
+			worker.console.log('2 ' + (to - from) + ' msec.');
+			from = to;
+
 			ui_improver.improveLoot();
+			to = Date.now();
+			worker.console.log('3 ' + (to - from) + ' msec.');
+			from = to;
 		}
 		if (ui_data.isDungeon) {
 			ui_improver.getDungeonPhrases();
+			to = Date.now();
+			worker.console.log('4 ' + (to - from) + ' msec.');
+			from = to;
 		}
 	}
 	ui_improver.improveStats();
+	to = Date.now();
+	worker.console.log('5 ' + (to - from) + ' msec.');
+	from = to;
+
 	ui_improver.improvePet();
+	to = Date.now();
+	worker.console.log('6 ' + (to - from) + ' msec.');
+	from = to;
+
 	ui_improver.improveVoiceDialog();
+	to = Date.now();
+	worker.console.log('7 ' + (to - from) + ' msec.');
+	from = to;
 	if (!ui_data.isFight) {
 		ui_improver.improveNews();
+	to = Date.now();
+	worker.console.log('8 ' + (to - from) + ' msec.');
+	from = to;
+
 		ui_improver.improveEquip();
+	to = Date.now();
+	worker.console.log('9 ' + (to - from) + ' msec.');
+	from = to;
+
 		ui_improver.improvePantheons();
+	to = Date.now();
+	worker.console.log('10 ' + (to - from) + ' msec.');
+	from = to;
 	}
 	if (ui_data.isDungeon) {
 		ui_improver.improveMap();
+	to = Date.now();
+	worker.console.log('11 ' + (to - from) + ' msec.');
+	from = to;
 	}
 	ui_improver.improveInterface();
+	to = Date.now();
+	worker.console.log('12 ' + (to - from) + ' msec.');
+	from = to;
 	ui_improver.improveChat();
+	to = Date.now();
+	worker.console.log('13 ' + (to - from) + ' msec.');
+	from = to;
 	if (this.isFirstTime && (ui_data.isFight || ui_data.isDungeon)) {
 		ui_improver.improveAllies();
+	to = Date.now();
+	worker.console.log('14 ' + (to - from) + ' msec.');
+	from = to;
 	}
 	ui_improver.calculateButtonsVisibility();
+	to = Date.now();
+	worker.console.log('15 ' + (to - from) + ' msec.');
+	from = to;
 	this.isFirstTime = false;
 	this.improveInProcess = false;
 	ui_storage.set('optionsChanged', false);
@@ -230,42 +279,39 @@ ui_improver.improveVoiceDialog = function() {
 			ui_utils.hideElem(document.getElementById('clear_voice_input'), true);
 			ui_improver.voiceSubmitted = true;
 		};
-	}
-	var $box = worker.$('#cntrl');
-	if (!ui_utils.isAlreadyImproved(document.getElementById('cntrl'))) {
-		var gp_label = document.getElementsByClassName('gp_label')[0];
-		gp_label.classList.add('l_capt');
-		document.getElementsByClassName('gp_val')[0].classList.add('l_val');
-		if (ui_data.isDungeon && worker.$('#map').length) {
-			var isContradictions = worker.$('#map')[0].textContent.match(/Противоречия|Disobedience/);
-			ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.east, (isContradictions ? 'go_west' : 'go_east'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_east);
-			ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_west);
-			ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_south);
-			ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_north);
-			if (worker.$('#map')[0].textContent.match(/Бессилия|Anti-influence/)) {
-				worker.$('#actions').hide();
-			}
-		} else {
-			if (ui_data.isFight) {
-				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.defend, 'defend', worker.GUIp_i18n.ask4 + ui_data.char_sex[0] + worker.GUIp_i18n.to_defend);
-				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
-				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
-				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
-			} else {
-				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.sacrifice, 'sacrifice', worker.GUIp_i18n.ask8 + ui_data.char_sex[1] + worker.GUIp_i18n.to_sacrifice);
-				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray, 'pray');
-			}
-		}
-		//hide_charge_button
-		var charge_button = worker.$('#cntrl .hch_link');
-		if (charge_button.length) {
-			charge_button[0].style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
-		}
-	}
 
+			if (!ui_utils.isAlreadyImproved(document.getElementById('cntrl'))) {
+			var gp_label = document.getElementsByClassName('gp_label')[0];
+			gp_label.classList.add('l_capt');
+			document.getElementsByClassName('gp_val')[0].classList.add('l_val');
+			if (ui_data.isDungeon && document.getElementById('map')) {
+				var isContradictions = document.getElementById('map').textContent.match(/Противоречия|Disobedience/);
+				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.east, (isContradictions ? 'go_west' : 'go_east'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_east);
+				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_west);
+				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_south);
+				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_north);
+				if (document.getElementById('map').textContent.match(/Бессилия|Anti-influence/)) {
+					ui_utils.hideElem(document.getElementById('actions'), true);
+				}
+			} else {
+				if (ui_data.isFight) {
+					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.defend, 'defend', worker.GUIp_i18n.ask4 + ui_data.char_sex[0] + worker.GUIp_i18n.to_defend);
+					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
+					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
+					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
+				} else {
+					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.sacrifice, 'sacrifice', worker.GUIp_i18n.ask8 + ui_data.char_sex[1] + worker.GUIp_i18n.to_sacrifice);
+					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray, 'pray');
+				}
+			}
+		}
+	}
+	//hide_charge_button
+	var charge_button = document.querySelector('#cntrl .hch_link');
+	charge_button.style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
 	// Save stats
-	ui_stats.setFromLabelCounter('Godpower', $box, worker.GUIp_i18n.godpower_label);
-	ui_informer.update('full godpower', worker.$('#cntrl .p_val').width() === worker.$('#cntrl .p_bar').width());
+	ui_stats.set('Godpower', worker.so.state.stats.godpower.value);
+	ui_informer.update('full godpower', worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value);
 };
 ui_improver.improveNews = function() {
 	if (!ui_utils.isAlreadyImproved(document.getElementById('news'))) {
@@ -275,8 +321,8 @@ ui_improver.improveNews = function() {
 		isSpecialMonster = false,
 		isTamableMonster = false;
 	// Если герой дерется с монстром
-	if (worker.$('#news .line')[0].style.display !== 'none') {
-		var currentMonster = worker.$('#news .l_val').text();
+	var currentMonster = worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value;
+	if (currentMonster) {
 		isWantedMonster = this.wantedMonsters && currentMonster.match(this.wantedMonsters);
 		isSpecialMonster = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
 
@@ -339,32 +385,35 @@ ui_improver.improveMap = function() {
 		);
 	}
 	if (this.isFirstTime || this.optionsChanged) {
+		var control = document.getElementById('m_control'),
+			map = document.getElementById('map'),
+			right_block = document.getElementById('a_right_block');
 		if (ui_storage.get('Option:relocateMap')) {
-			if (!worker.$('#a_central_block #map').length) {
-				worker.$('#map').insertBefore(worker.$('#m_control'));
-				worker.$('#m_control').appendTo(worker.$('#a_right_block'));
+			if (!document.querySelector('#a_central_block #map')) {
+				control.parentNode.insertBefore(map, control);
+				right_block.insertBefore(control, null);
 				if (worker.GUIp_locale === 'ru') {
-					worker.$('#m_control .block_title').text('Пульт');
+					document.querySelector('#m_control .block_title').textContent = 'Пульт';
 				}
 			}
 		} else {
-			if (!worker.$('#a_right_block #map').length) {
-				worker.$('#m_control').insertBefore(worker.$('#map'));
-				worker.$('#map').appendTo(worker.$('#a_right_block'));
+			if (!document.querySelector('#a_right_block #map')) {
+				map.parentNode.insertBefore(control, map);
+				right_block.insertBefore(map, null);
 				if (worker.GUIp_locale === 'ru') {
-					worker.$('#m_control .block_title').text('Пульт вмешательства в личную жизнь');
+					document.querySelector('#m_control .block_title').textContent = 'Пульт вмешательства в личную жизнь';
 				}
 			}
 		}
 	}
-	if (worker.$('#map .dml').length) {
+	if (document.querySelectorAll('#map .dml').length) {
 		var i, j,
 			$box = worker.$('#cntrl .voice_generator'),
 			$boxML = worker.$('#map .dml'),
 			$boxMC = worker.$('#map .dmc'),
 			kRow = $boxML.length,
 			kColumn = $boxML[0].textContent.length,
-			isJumping = worker.$('#map')[0].textContent.match(/Прыгучести|Jumping/),
+			isJumping = document.getElementById('map').textContent.match(/Прыгучести|Jumping/),
 			MaxMap = 0,	// Счетчик указателей
 			MapArray = []; // Карта возможного клада
 		for (i = 0; i < kRow; i++) {
@@ -490,11 +539,11 @@ ui_improver.improveStats = function() {
 	};
 
 	if (ui_data.isDungeon) {
-		ui_stats.setFromLabelCounter('Map_HP', worker.$('#m_info'), worker.GUIp_i18n.health_label);
-		ui_stats.setFromProgressBar('Map_Exp', document.querySelector('#hk_level .p_bar'));
-		ui_stats.setFromLabelCounter('Map_Gold', worker.$('#m_info'), worker.GUIp_i18n.gold_label, gold_parser);
-		ui_stats.setFromLabelCounter('Map_Inv', worker.$('#m_info'), worker.GUIp_i18n.inventory_label);
-		ui_stats.set('Map_Charges', worker.$('#m_control .acc_val').text(), parseFloat);
+		ui_stats.set('Map_HP', worker.so.state.stats.health.value);
+		ui_stats.set('Map_Exp', worker.so.state.stats.exp_progress.value);
+		ui_stats.set('Map_Gold', worker.so.state.stats.gold.value);
+		ui_stats.set('Map_Inv', worker.so.state.stats.inventory_num.value);
+		ui_stats.set('Map_Charges', worker.so.state.stats.accumulator.value);
 		ui_stats.set('Map_Alls_HP', ui_improver.GroupHP(true));
 		if (ui_storage.get('Logger:Location') === 'Field') {
 			ui_storage.set('Logger:Location', 'Dungeon');
@@ -509,10 +558,10 @@ ui_improver.improveStats = function() {
 		return;
 	}
 	if (ui_data.isFight) {
-		ui_stats.setFromLabelCounter('Hero_HP', worker.$('#m_info'), worker.GUIp_i18n.health_label);
-		ui_stats.setFromLabelCounter('Hero_Gold', worker.$('#m_info'), worker.GUIp_i18n.gold_label, gold_parser);
-		ui_stats.setFromLabelCounter('Hero_Inv', worker.$('#m_info'), worker.GUIp_i18n.inventory_label);
-		ui_stats.set('Hero_Charges', worker.$('#m_control .acc_val').text(), parseFloat);
+		ui_stats.set('Hero_HP', worker.so.state.stats.health.value);
+		ui_stats.set('Hero_Gold', worker.so.state.stats.gold.value);
+		ui_stats.set('Hero_Inv', worker.so.state.stats.inventory_num.value);
+		ui_stats.set('Hero_Charges', worker.so.state.stats.accumulator.value);
 		ui_stats.setFromLabelCounter('Enemy_Gold', worker.$('#o_info'), worker.GUIp_i18n.gold_label, gold_parser);
 		ui_stats.setFromLabelCounter('Enemy_Inv', worker.$('#o_info'), worker.GUIp_i18n.inventory_label);
 		ui_stats.set('Hero_Alls_HP', ui_improver.GroupHP(true));
@@ -542,68 +591,62 @@ ui_improver.improveStats = function() {
 		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.do_task, 'do_task', worker.GUIp_i18n.ask12 + ui_data.char_sex[1] + worker.GUIp_i18n.to_do_task, 'tsk');
 		ui_utils.addVoicegen(document.querySelector('#hk_death_count .l_capt'), worker.GUIp_i18n.die, 'die', worker.GUIp_i18n.ask13 + ui_data.char_sex[0] + worker.GUIp_i18n.to_die, 'die');
 	}
-	if (!worker.$('#hk_distance .voice_generator').length) {
+	if (!document.querySelector('#hk_distance .voice_generator')) {
 		ui_utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return, 'return');
 	}
-	var $box = worker.$('#stats');
-	ui_stats.setFromProgressBar('Exp', document.querySelector('#hk_level .p_bar'));
-	ui_stats.setFromProgressBar('Task', document.querySelector('#hk_quests_completed .p_bar'));
-	ui_stats.setFromLabelCounter('Level', $box, worker.GUIp_i18n.level_label);
-	ui_stats.setFromLabelCounter('Monster', $box, worker.GUIp_i18n.monsters_label);
-	ui_stats.setFromLabelCounter('Death', $box, worker.GUIp_i18n.death_label);
-	ui_stats.setFromLabelCounter('Bricks', $box, worker.GUIp_i18n.bricks_label, parseFloat);
-	ui_stats.setFromLabelCounter('Logs', $box, worker.GUIp_i18n.logs_label, parseFloat);
-	ui_stats.setFromLabelCounter('Savings', $box, worker.GUIp_i18n.savings_label, gold_parser);
-	ui_stats.set('Charges', worker.$('#control .acc_val').text(), parseFloat);
-	if (ui_storage.get('Stats:Inv') !== ui_stats.setFromLabelCounter('Inv', $box, worker.GUIp_i18n.inventory_label) || worker.$('#inventory li:not(.improved)').length || worker.$('#inventory li:hidden').length) {
-		this.inventoryChanged = true;
-	}
-	ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, worker.GUIp_i18n.gold_label, gold_parser) >= (ui_data.hasTemple ? 10000 : 3000));
-	ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, worker.GUIp_i18n.health_label) === 0);
-	var questName = document.querySelector('.q_name').textContent;
+	ui_stats.set('Exp', worker.so.state.stats.exp_progress.value);
+	ui_stats.set('Task', worker.so.state.stats.quest_progress.value);
+	ui_stats.set('Level', worker.so.state.stats.level.value);
+	ui_stats.set('Monster', worker.so.state.stats.monsters_killed.value);
+	ui_stats.set('Death', worker.so.state.stats.death_count.value);
+	ui_stats.set('Bricks', worker.so.state.stats.bricks_cnt.value);
+	ui_stats.set('Logs', parseFloat(worker.so.state.stats.wood.value)*10);
+	ui_stats.set('Savings', parseInt(worker.so.state.stats.retirement.value));
+	ui_stats.set('Charges', worker.so.state.stats.accumulator.value);
+
+	ui_informer.update('much gold', ui_stats.set('Gold', worker.so.state.stats.gold.value) >= (ui_data.hasTemple ? 10000 : 3000));
+	ui_informer.update('dead', ui_stats.set('HP', worker.so.state.stats.health.value) === 0);
+	var questName = worker.so.state.stats.quest.value;
 	ui_informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && questName.match(/\((отменено|cancelled)\)/));
 	ui_informer.update('mini quest', questName.match(/\((мини|mini)\)/) && questName.match(/\((отменено|cancelled)\)/));
 
 	//Shovel pictogramm start
-	var $digVoice = worker.$('#hk_gold_we .voice_generator');
-	//worker.$('#hk_gold_we .l_val').text('где-то 20 монет');
+	var digVoice = document.querySelector('#hk_gold_we .voice_generator');
 	if (this.isFirstTime) {
-		$digVoice.css('background-image', 'url(' + worker.GUIp_getResource('images/shovel.png') + ')');
+		digVoice.style.backgroundImage = 'url(' + worker.GUIp_getResource('images/shovel.png') + ')';
 	}
-	if (worker.$('#hk_gold_we .l_val').text().length > 16 - 2*worker.$('.page_wrapper_5c').length) {
-		$digVoice[0].classList.add('shovel');
-		if (worker.$('#hk_gold_we .l_val').text().length > 20 - 3*worker.$('.page_wrapper_5c').length) {
-			$digVoice[0].classList.add('compact');
+	if (worker.so.state.stats.gold_we.value.length > 16 - 2*document.getElementsByClassName('page_wrapper_5c').length) {
+		digVoice.classList.add('shovel');
+		if (so.state.stats.gold_we.value.length > 20 - 3*document.getElementsByClassName('page_wrapper_5c').length) {
+			digVoice.classList.add('compact');
 		} else {
-			$digVoice[0].classList.remove('compact');
+			digVoice.classList.remove('compact');
 		}
 	} else {
-		$digVoice[0].classList.remove('shovel');
+		digVoice.classList.remove('shovel');
 	}
 	//Shovel pictogramm end
 };
 ui_improver.improvePet = function() {
 	if (ui_data.isFight) { return; }
+	var pet_badge;
 	if (worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value) {
 		if (!ui_utils.isAlreadyImproved(document.getElementById('pet'))) {
-			worker.$('#pet .block_title').after(worker.$('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
+			document.querySelector('#pet .block_title').insertAdjacentHTML('beforeend', '<div id="pet_badge" class="fr_new_badge equip_badge_pos hidden">0</div>');
 		}
-		worker.$('#pet_badge').text(ui_utils.findLabel(worker.$('#pet'), worker.GUIp_i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, ''));
-		if (worker.$('#pet .block_content')[0].style.display === 'none') {
-			worker.$('#pet_badge').show();
-		}
-		else {
-			worker.$('#pet_badge').hide();
-		}
+		pet_badge = document.getElementById('pet_badge');
+		pet_badge.textContent = ui_utils.findLabel(worker.$('#pet'), worker.GUIp_i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, '');
+		ui_utils.hideElem(pet_badge, document.querySelector('#pet .block_content').style.display !== 'none');
 	} else {
-		if (worker.$('#pet_badge').length === 1) {
-			worker.$('#pet_badge').hide();
+		pet_badge = document.getElementById('pet_badge');
+		if (pet_badge) {
+			ui_utils.hideElem(pet_badge, true);
 		}
 	}
 	// bruise informer
 	ui_informer.update('pet knocked out', worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value);
 
-	ui_stats.setFromLabelCounter('Pet_Level', worker.$('#pet'), worker.GUIp_i18n.pet_level_label);
+	ui_stats.set('Pet_Level', worker.so.state.pet.pet_level.value);
 };
 ui_improver.improveEquip = function() {
 	// Save stats
@@ -1008,10 +1051,10 @@ ui_improver.improveInterface = function() {
 	if (this.isFirstTime) {
 		worker.$('a[href=#]').removeAttr('href');
 		ui_improver.whenWindowResize();
-		worker.$(worker).resize((function() {
-			worker.clearInterval(this.windowResizeInt);
-			this.windowResizeInt = worker.setTimeout(ui_improver.whenWindowResize.bind(ui_improver), 250);
-		}).bind(ui_improver));
+		worker.onresize = function() {
+			worker.clearInterval(ui_improver.windowResizeInt);
+			ui_improver.windowResizeInt = worker.setTimeout(ui_improver.whenWindowResize.bind(ui_improver), 250);
+		};
 		if (ui_data.isFight) {
 			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + worker.so.state.stats.perm_link.value + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
 		}
@@ -1030,9 +1073,9 @@ ui_improver.improveInterface = function() {
 	if (this.isFirstTime || this.optionsChanged) {
 		var background = ui_storage.get('Option:useBackground');
 		if (background === 'cloud') {
-			worker.$('body').css('background-image', 'url(' + worker.GUIp_getResource('images/background.jpg') + ')');
+			document.body.style.backgroundImage = 'url(' + worker.GUIp_getResource('images/background.jpg') + ')';
 		} else {
-			worker.$('body').css('background-image', background ? 'url(' + background + ')' : '');
+			document.body.style.backgroundImage = background ? 'url(' + background + ')' : '';
 		}
 	}
 };
@@ -1127,15 +1170,16 @@ ui_improver.calculateButtonsVisibility = function() {
 		pant_before = [], pant_after = [];
 	for (i = 0, len = pant_links.length; i < len; i++) {
 		pant_before[i] = !pant_links[i].classList.contains('hidden');
-		pant_after[i] = +ui_stats.get('Godpower') >= 50;
+		pant_after[i] = worker.so.state.stats.godpower.value >= 50;
 	}
 	ui_improver.setButtonsVisibility(pant_links, pant_before, pant_after);
+	var vgbc = worker.so.state.stats.godpower.value >= 5 && !isDisabled;
 	// inspect buttons
 	var insp_btns = document.getElementsByClassName('inspect_button'),
 		insp_btns_before = [], insp_btns_after = [];
 	for (i = 0, len = insp_btns.length; i < len; i++) {
 		insp_btns_before[i] = !insp_btns[i].classList.contains('hidden');
-		insp_btns_after[i] = +ui_stats.get('Godpower') >= 5 && !isDisabled;
+		insp_btns_after[i] = vgbc;
 	}
 	ui_improver.setButtonsVisibility(insp_btns, insp_btns_before, insp_btns_after);
 	// craft buttons
@@ -1148,7 +1192,7 @@ ui_improver.calculateButtonsVisibility = function() {
 	var crft_btns_before = [], crft_btns_after = [];
 	for (i = 0, len = this.crft_btns.length; i < len; i++) {
 		crft_btns_before[i] = !this.crft_btns[i].classList.contains('hidden');
-		crft_btns_after[i] = +ui_stats.get('Godpower') >= 5 && !isDisabled;
+		crft_btns_after[i] = vgbc;
 	}
 	crft_btns_after[0] = crft_btns_after[0] && this.b_b.length;
 	crft_btns_after[1] = crft_btns_after[1] && this.b_r.length;
@@ -1158,24 +1202,28 @@ ui_improver.calculateButtonsVisibility = function() {
 	// voice generators
 	if (this.isFirstTime) {
 		this.voicegens = document.getElementsByClassName('voice_generator');
+		this.voicegen_classes = [];
+		for (i = 0, len = this.voicegens.length; i < len; i++) {
+			this.voicegen_classes[i] = this.voicegens[i].className;
+		}
 	}
 	var voicegens_before = [], voicegens_after = [];
 	var special_conds = [ui_storage.get('Option:disableDieButton'),
-						 document.querySelector('#hk_distance .l_capt').textContent.match(/Город|Current Town/) ||
+						 worker.so.state.stats.town_name.value ||
 							document.getElementsByClassName('f_news')[0].textContent.match('дорогу') ||
-							document.querySelector('#news .line').style.display !== 'none',
-						 worker.$('#control .p_val').width() === worker.$('#control .p_bar').width() || document.querySelector('#news .line').style.display !== 'none',
-						 document.querySelector('#hk_quests_completed .q_name').textContent.match(/\(выполнено|completed|отменено|cancelled\)/),
-						 worker.$('#hk_health .p_val').width() === worker.$('#hk_health .p_bar').width()
+							worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
+						 worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value || worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
+						 worker.so.state.stats.quest.value.match(/\(выполнено|completed|отменено|cancelled\)/),
+						 worker.so.state.stats.health === worker.so.state.stats.max_health
 						];
 	var special_classes = ['die', 'return', 'pray', 'tsk', 'hp'];
+	vgbc = vgbc && !worker.$('.r_blocked:visible').length;
 	for (i = 0, len = this.voicegens.length; i < len; i++) {
 		voicegens_before[i] = !this.voicegens[i].classList.contains('hidden');
-		var baseCond = +ui_stats.get('Godpower') >= 5 && !isDisabled && !worker.$('.r_blocked:visible').length;
-		voicegens_after[i] = baseCond;
-		if (baseCond && !ui_data.isFight) {
+		voicegens_after[i] = vgbc;
+		if (vgbc && !ui_data.isFight) {
 			for (var j = 0, len2 = special_conds.length; j < len2; j++) {
-				if (special_conds[j] && this.voicegens[i].className.match(special_classes[j])) {
+				if (special_conds[j] && this.voicegen_classes[i].match(special_classes[j])) {
 					voicegens_after[i] = false;
 				}
 			}
@@ -1209,7 +1257,7 @@ ui_improver.chatsFix = function() {
 		isBottom = worker.scrollY >= document.documentElement.scrollHeight - document.documentElement.clientHeight - 10;
 	padding_bottom = Math.floor(padding_bottom*10)/10 + 10;
 	padding_bottom = (padding_bottom < 0) ? 0 : padding_bottom + 'px';
-	worker.$('.reset_layout').css('padding-bottom', padding_bottom);
+	document.getElementsByClassName('reset_layout')[0].style.paddingBottom = padding_bottom;
 	if (isBottom) {
 		worker.scrollTo(0, document.documentElement.scrollHeight - document.documentElement.clientHeight);
 	}
