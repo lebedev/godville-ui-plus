@@ -3,7 +3,7 @@ var ui_timers = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: 
 
 ui_timers.init = function() {
 	if (ui_data.hasTemple) {
-		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"imp_timer\" class=\"fr_new_badge\" />');
+		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"imp_timer\" class=\"fr_new_badge hidden\" />');
 		if (!ui_data.isFight && !ui_data.isDungeon) {
 			this.layingTimer = document.querySelector('#imp_timer');
 			this.layingTimerIsDisabled = ui_storage.get('Option:disableLayingTimer');
