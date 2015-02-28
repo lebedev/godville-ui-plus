@@ -96,32 +96,33 @@ var setCtrlEnterAction = function(textarea, button) {
 };
 var addFormattingButtonsAndCtrlEnter = function() {
 	var formatting_buttons =
-		'<button class="formatting button bold" title="' + worker.GUIp_i18n.bold_hint + '">' + worker.GUIp_i18n.bold + '</button>' +
-		'<button class="formatting button underline" title="' + worker.GUIp_i18n.underline_hint + '">' + worker.GUIp_i18n.underline + '</button>' +
-		'<button class="formatting button strike" title="' + worker.GUIp_i18n.strike_hint + '">' + worker.GUIp_i18n.strike + '</button>' +
-		'<button class="formatting button italic" title="' + worker.GUIp_i18n.italic_hint + '">' + worker.GUIp_i18n.italic + '</button>' +
-		'<button class="formatting bq" title="' + worker.GUIp_i18n.quote_hint + '">bq.</button>' +
-		'<button class="formatting bc" title="' + worker.GUIp_i18n.code_hint + '">bc.</button>' +
-		(worker.GUIp_locale === 'ru' ? '<button class="formatting button godname" title="Вставить ссылку на бога"></button>' : '') +
-		'<button class="formatting button link" title="' + worker.GUIp_i18n.link_hint + '">a</button>' +
-		'<button class="formatting button ul" title="' + worker.GUIp_i18n.unordered_list_hint + '">•</button>' +
-		'<button class="formatting button ol" title="' + worker.GUIp_i18n.ordered_list_hint + '">1.</button>' +
-		'<button class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '">\\n</button>' +
-		'<button class="formatting button sup" title="' + worker.GUIp_i18n.sup_hint + '">X<sup>2</sup></button>' +
-		'<button class="formatting button sub" title="' + worker.GUIp_i18n.sub_hint + '">X<sub>2</sub></button>' +
-		'<button class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '">' + worker.GUIp_i18n.monospace + '</button>';
+		'<div>' +
+			'<button class="formatting button bold" title="' + worker.GUIp_i18n.bold_hint + '">' + worker.GUIp_i18n.bold + '</button>' +
+			'<button class="formatting button underline" title="' + worker.GUIp_i18n.underline_hint + '">' + worker.GUIp_i18n.underline + '</button>' +
+			'<button class="formatting button strike" title="' + worker.GUIp_i18n.strike_hint + '">' + worker.GUIp_i18n.strike + '</button>' +
+			'<button class="formatting button italic" title="' + worker.GUIp_i18n.italic_hint + '">' + worker.GUIp_i18n.italic + '</button>' +
+			'<button class="formatting bq" title="' + worker.GUIp_i18n.quote_hint + '">bq.</button>' +
+			'<button class="formatting bc" title="' + worker.GUIp_i18n.code_hint + '">bc.</button>' +
+			(worker.GUIp_locale === 'ru' ? '<button class="formatting button godname" title="Вставить ссылку на бога"></button>' : '') +
+			'<button class="formatting button link" title="' + worker.GUIp_i18n.link_hint + '">a</button>' +
+			'<button class="formatting button ul" title="' + worker.GUIp_i18n.unordered_list_hint + '">•</button>' +
+			'<button class="formatting button ol" title="' + worker.GUIp_i18n.ordered_list_hint + '">1.</button>' +
+			'<button class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '">\\n</button>' +
+			'<button class="formatting button sup" title="' + worker.GUIp_i18n.sup_hint + '">X<sup>2</sup></button>' +
+			'<button class="formatting button sub" title="' + worker.GUIp_i18n.sub_hint + '">X<sub>2</sub></button>' +
+			'<button class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '">' + worker.GUIp_i18n.monospace + '</button>' +
+		'</div>';
 	$id('post_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
 	setClickActions('post_body_editor', $id('post_body'));
 	setCtrlEnterAction($id('post_body'), document.querySelector('#reply input[type="submit"]'));
 
 	var editFormObserver = new MutationObserver(function(mutations) {
-		mutations.forEach(function() {
-			if ($id('edit_body_editor') && !$q('#edit_body_editor .formatting.button.bold')) {
-				$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
-				setClickActions('edit_body_editor', $id('edit_body'));
-				setCtrlEnterAction($id('edit_body'), document.querySelector('#edit input[type="submit"]'));
-			}
-		});
+		if ($id('edit_body_editor') && !$q('#edit_body_editor.improved')) {
+			$id('edit_body_editor').classList.add('improved');
+			$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
+			setClickActions('edit_body_editor', $id('edit_body'));
+			setCtrlEnterAction($id('edit_body'), document.querySelector('#edit input[type="submit"]'));
+		}
 	});
 	editFormObserver.observe($id('content'), { childList: true, subtree: true });
 };
