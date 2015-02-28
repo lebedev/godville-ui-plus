@@ -53,88 +53,37 @@ ui_improver.hardRefresh = function() {
 };
 ui_improver.improve = function() {
 	this.improveInProcess = true;
-	var to, from = Date.now();
 	ui_informer.update('fight', ui_data.isFight && !ui_data.isDungeon);
 	ui_informer.update('arena available', worker.so.state.arena_available());
 	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
 
 	this.optionsChanged = this.isFirstTime ? false : ui_storage.get('optionsChanged');
-	to = Date.now();
-	worker.console.log('1 ' + (to - from) + ' msec.');
-	from = to;
 	if (this.isFirstTime) {
 		if (!ui_data.isFight && !ui_data.isDungeon) {
 			ui_improver.improveDiary();
-			to = Date.now();
-			worker.console.log('2 ' + (to - from) + ' msec.');
-			from = to;
-
 			ui_improver.improveLoot();
-			to = Date.now();
-			worker.console.log('3 ' + (to - from) + ' msec.');
-			from = to;
 		}
 		if (ui_data.isDungeon) {
 			ui_improver.getDungeonPhrases();
-			to = Date.now();
-			worker.console.log('4 ' + (to - from) + ' msec.');
-			from = to;
 		}
 	}
 	ui_improver.improveStats();
-	to = Date.now();
-	worker.console.log('5 ' + (to - from) + ' msec.');
-	from = to;
-
 	ui_improver.improvePet();
-	to = Date.now();
-	worker.console.log('6 ' + (to - from) + ' msec.');
-	from = to;
-
 	ui_improver.improveVoiceDialog();
-	to = Date.now();
-	worker.console.log('7 ' + (to - from) + ' msec.');
-	from = to;
 	if (!ui_data.isFight) {
 		ui_improver.improveNews();
-	to = Date.now();
-	worker.console.log('8 ' + (to - from) + ' msec.');
-	from = to;
-
 		ui_improver.improveEquip();
-	to = Date.now();
-	worker.console.log('9 ' + (to - from) + ' msec.');
-	from = to;
-
 		ui_improver.improvePantheons();
-	to = Date.now();
-	worker.console.log('10 ' + (to - from) + ' msec.');
-	from = to;
 	}
 	if (ui_data.isDungeon) {
 		ui_improver.improveMap();
-	to = Date.now();
-	worker.console.log('11 ' + (to - from) + ' msec.');
-	from = to;
 	}
 	ui_improver.improveInterface();
-	to = Date.now();
-	worker.console.log('12 ' + (to - from) + ' msec.');
-	from = to;
 	ui_improver.improveChat();
-	to = Date.now();
-	worker.console.log('13 ' + (to - from) + ' msec.');
-	from = to;
 	if (this.isFirstTime && (ui_data.isFight || ui_data.isDungeon)) {
 		ui_improver.improveAllies();
-	to = Date.now();
-	worker.console.log('14 ' + (to - from) + ' msec.');
-	from = to;
 	}
 	ui_improver.calculateButtonsVisibility();
-	to = Date.now();
-	worker.console.log('15 ' + (to - from) + ' msec.');
-	from = to;
 	this.isFirstTime = false;
 	this.improveInProcess = false;
 	ui_storage.set('optionsChanged', false);
