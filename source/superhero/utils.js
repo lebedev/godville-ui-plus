@@ -233,3 +233,10 @@ ui_utils.setVoiceSubmitState = function(condition, disable) {
 	}
 	return false;
 };
+ui_utils.hideElem = function(elem, hide) {
+	if (hide) {
+		elem.classList.add('hidden');
+	} else {
+		elem.classList.remove('hidden');
+	}
+};

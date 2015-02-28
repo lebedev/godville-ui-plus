@@ -218,12 +218,7 @@ ui_improver.improveVoiceDialog = function() {
 			if (!ui_utils.setVoiceSubmitState(this.value && !(ui_improver.freezeVoiceButton.match('after_voice') && parseInt(ui_timeout.bar.style.width)), false)) {
 				ui_utils.setVoiceSubmitState(ui_improver.freezeVoiceButton.match('when_empty'), true);
 			}
-			var cvi = document.getElementById('clear_voice_input');
-			if (this.value) {
-				cvi.classList.remove('hidden');
-			} else {
-				cvi.classList.add('hidden');
-			}
+			ui_utils.hideElem(document.getElementById('clear_voice_input'), !this.value);
 		}).on('click', '.gv_text.div_link', function() {
 			worker.$('#god_phrase').change();
 		});
