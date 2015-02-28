@@ -361,41 +361,41 @@ a.inspect_button {
 
 
 /* laying timer themes */
-#laying_timer {
+#imp_timer {
 	top: 2px;
 	left: 60px;
 }
-body.th_nightly #laying_timer.green {
+body.th_nightly #imp_timer.green {
 	border-color: #040;
 	color: #040;
 	background-color: green;
 }
-body:not(.th_nightly) #laying_timer.green {
+body:not(.th_nightly) #imp_timer.green {
 	border-color: darkgreen;
 	color: darkgreen;
 	background-color: lightgreen;
 }
-body.th_nightly #laying_timer.grey {
+body.th_nightly #imp_timer.grey {
 	border-color: #444;
 	color: #444;
 	background-color: darkgrey;
 }
-body:not(.th_nightly) #laying_timer.grey {
+body:not(.th_nightly) #imp_timer.grey {
 	border-color: grey;
 	color: grey;
 	background-color: lavender;
 }
-body.th_nightly #laying_timer.red {
+body.th_nightly #imp_timer.red {
 	border-color: #400;
 	color: #400;
 	background-color: darkred;
 }
-body:not(.th_nightly) #laying_timer.red {
+body:not(.th_nightly) #imp_timer.red {
 	border-color: firebrick;
 	color: firebrick;
 	background-color: darksalmon;
 }
-#laying_timer.yellow {
+#imp_timer.yellow {
 	border-color: #df9900;
 	color: #af5900;
 	background-color: #fcedae;

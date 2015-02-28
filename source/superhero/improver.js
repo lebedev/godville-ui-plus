@@ -298,7 +298,7 @@ ui_improver.improveNews = function() {
 
 	if (ui_data.hasTemple && this.optionsChanged) {
 		ui_timers.layingTimerIsDisabled = ui_storage.get('Option:disableLayingTimer');
-		ui_timers.layingTimer.style.display = this.layingTimerIsDisabled ? 'none' : 'block';
+		ui_utils.hideElem(ui_timers.layingTimer, ui_timers.layingTimerIsDisabled);
 		ui_timers.tick();
 	}
 };
