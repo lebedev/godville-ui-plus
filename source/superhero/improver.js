@@ -1126,13 +1126,12 @@ ui_improver.improveAllies = function() {
 	}
 };
 ui_improver.checkButtonsVisibility = function() {
-	worker.$('.arena_link_wrap,.chf_link_wrap,.cvs_link_wrap', worker.$('#pantheons')).hide();
+	worker.$('.arena_link_wrap, .chf_link_wrap', worker.$('#pantheons')).hide();
 	if (ui_storage.get('Stats:Godpower') >= 50) {
 		worker.$('#pantheons .chf_link_wrap').show();
-		worker.$('#pantheons .cvs_link_wrap').show();
 		worker.$('#pantheons .arena_link_wrap').show();
 	}
-	worker.$('.craft_button,.inspect_button,.voice_generator').hide();
+	worker.$('.craft_button, .inspect_button, .voice_generator').hide();
 	if (ui_storage.get('Stats:Godpower') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
 		if (!worker.$('.r_blocked:visible').length) {
 			worker.$('.voice_generator, .inspect_button').show();
