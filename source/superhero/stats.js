@@ -7,9 +7,8 @@ ui_stats.get = function(key) {
 ui_stats.set = function(key, value) {
 	return ui_storage.set('Stats:' + key, value);
 };
-ui_stats.setFromProgressBar = function(id, $elem) {
-	var value = $elem.attr('title').replace(/[^0-9]/g, '');
-	return ui_stats.set(id, value);
+ui_stats.setFromProgressBar = function(id, elem) {
+	return ui_stats.set(id, elem.title.replace(/[^0-9]/g, ''));
 };
 ui_stats.setFromLabelCounter = function(id, $container, label, parser) {
 	parser = parser || parseInt;

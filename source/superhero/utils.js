@@ -12,6 +12,12 @@ ui_utils.setVoice = function(voice) {
 ui_utils.triggerChangeOnVoiceInput = function() {
 	worker.$(this.voiceInput).change();
 };
+// finds a label with given name
+ui_utils.findLabel = function($base_elem, label_name) {
+	return worker.$('.l_capt', $base_elem).filter(function(index) {
+		return worker.$(this).text() === label_name;
+	});
+};
 // checks if $elem already improved
 ui_utils.isAlreadyImproved = function(elem) {
 	if (elem.classList.contains('improved')) {

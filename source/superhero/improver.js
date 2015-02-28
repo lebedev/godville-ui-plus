@@ -489,7 +489,7 @@ ui_improver.improveStats = function() {
 
 	if (ui_data.isDungeon) {
 		ui_stats.setFromLabelCounter('Map_HP', worker.$('#m_info'), worker.GUIp_i18n.health_label);
-		ui_stats.setFromProgressBar('Map_Exp', worker.$('#hk_level .p_bar'));
+		ui_stats.setFromProgressBar('Map_Exp', document.querySelector('#hk_level .p_bar'));
 		ui_stats.setFromLabelCounter('Map_Gold', worker.$('#m_info'), worker.GUIp_i18n.gold_label, gold_parser);
 		ui_stats.setFromLabelCounter('Map_Inv', worker.$('#m_info'), worker.GUIp_i18n.inventory_label);
 		ui_stats.set('Map_Charges', worker.$('#m_control .acc_val').text(), parseFloat);
@@ -543,9 +543,9 @@ ui_improver.improveStats = function() {
 	if (!worker.$('#hk_distance .voice_generator').length) {
 		ui_utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return);
 	}
-
-	ui_stats.setFromProgressBar('Exp', worker.$('#hk_level .p_bar'));
-	ui_stats.setFromProgressBar('Task', worker.$('#hk_quests_completed .p_bar'));
+	var $box = worker.$('#stats');
+	ui_stats.setFromProgressBar('Exp', document.querySelector('#hk_level .p_bar'));
+	ui_stats.setFromProgressBar('Task', document.querySelector('#hk_quests_completed .p_bar'));
 	ui_stats.setFromLabelCounter('Level', $box, worker.GUIp_i18n.level_label);
 	ui_stats.setFromLabelCounter('Monster', $box, worker.GUIp_i18n.monsters_label);
 	ui_stats.setFromLabelCounter('Death', $box, worker.GUIp_i18n.death_label);
@@ -558,8 +558,9 @@ ui_improver.improveStats = function() {
 	}
 	ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, worker.GUIp_i18n.gold_label, gold_parser) >= (ui_data.hasTemple ? 10000 : 3000));
 	ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, worker.GUIp_i18n.health_label) === 0);
-	ui_informer.update('guild quest', worker.$('.q_name').text().match(/членом гильдии|member of the guild/) && !worker.$('.q_name').text().match(/\((отменено|cancelled)\)/));
-	ui_informer.update('mini quest', worker.$('.q_name').text().match(/\((мини|mini)\)/) && !worker.$('.q_name').text().match(/\((отменено|cancelled)\)/));
+	var questName = document.querySelector('.q_name').textСontent;
+	ui_informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && questName.match(/\((отменено|cancelled)\)/));
+	ui_informer.update('mini quest', questName.match(/\((мини|mini)\)/) && questName.match(/\((отменено|cancelled)\)/));
 
 	//Shovel pictogramm start
 	var $digVoice = worker.$('#hk_gold_we .voice_generator');
