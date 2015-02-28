@@ -1164,41 +1164,43 @@ ui_improver.improveAllies = function() {
 	}
 };
 ui_improver.calculateButtonsVisibility = function() {
-	var i, len, isDisabled = ui_storage.get('Option:disableVoiceGenerators');
-	// pantheon links
-	var pant_links = document.querySelectorAll('#pantheons .arena_link_wrap, #pantheons .chf_link_wrap'),
-		pant_before = [], pant_after = [];
-	for (i = 0, len = pant_links.length; i < len; i++) {
-		pant_before[i] = !pant_links[i].classList.contains('hidden');
-		pant_after[i] = worker.so.state.stats.godpower.value >= 50;
+	var i, len, isDisabled = ui_storage.get('Option:disableVoiceGenerators'),
+		vgbc = worker.so.state.stats.godpower.value >= 5 && !isDisabled;
+	if (!ui_data.isFight) {
+		// pantheon links
+		var pant_links = document.querySelectorAll('#pantheons .arena_link_wrap, #pantheons .chf_link_wrap'),
+			pant_before = [], pant_after = [];
+		for (i = 0, len = pant_links.length; i < len; i++) {
+			pant_before[i] = !pant_links[i].classList.contains('hidden');
+			pant_after[i] = worker.so.state.stats.godpower.value >= 50;
+		}
+		ui_improver.setButtonsVisibility(pant_links, pant_before, pant_after);
+		// inspect buttons
+		var insp_btns = document.getElementsByClassName('inspect_button'),
+			insp_btns_before = [], insp_btns_after = [];
+		for (i = 0, len = insp_btns.length; i < len; i++) {
+			insp_btns_before[i] = !insp_btns[i].classList.contains('hidden');
+			insp_btns_after[i] = vgbc;
+		}
+		ui_improver.setButtonsVisibility(insp_btns, insp_btns_before, insp_btns_after);
+		// craft buttons
+		if (this.isFirstTime) {
+			this.crft_btns = [document.getElementsByClassName('craft_button b_b')[0],
+							  document.getElementsByClassName('craft_button b_r')[0],
+							  document.getElementsByClassName('craft_button r_r')[0],
+							  document.getElementsByClassName('craft_button span')[0]];
+		}
+		var crft_btns_before = [], crft_btns_after = [];
+		for (i = 0, len = this.crft_btns.length; i < len; i++) {
+			crft_btns_before[i] = !this.crft_btns[i].classList.contains('hidden');
+			crft_btns_after[i] = vgbc;
+		}
+		crft_btns_after[0] = crft_btns_after[0] && this.b_b.length;
+		crft_btns_after[1] = crft_btns_after[1] && this.b_r.length;
+		crft_btns_after[2] = crft_btns_after[2] && this.r_r.length;
+		crft_btns_after[3] = crft_btns_after[0] || crft_btns_after[1] || crft_btns_after[2];
+		ui_improver.setButtonsVisibility(this.crft_btns, crft_btns_before, crft_btns_after);
 	}
-	ui_improver.setButtonsVisibility(pant_links, pant_before, pant_after);
-	var vgbc = worker.so.state.stats.godpower.value >= 5 && !isDisabled;
-	// inspect buttons
-	var insp_btns = document.getElementsByClassName('inspect_button'),
-		insp_btns_before = [], insp_btns_after = [];
-	for (i = 0, len = insp_btns.length; i < len; i++) {
-		insp_btns_before[i] = !insp_btns[i].classList.contains('hidden');
-		insp_btns_after[i] = vgbc;
-	}
-	ui_improver.setButtonsVisibility(insp_btns, insp_btns_before, insp_btns_after);
-	// craft buttons
-	if (this.isFirstTime) {
-		this.crft_btns = [document.getElementsByClassName('craft_button b_b')[0],
-						  document.getElementsByClassName('craft_button b_r')[0],
-						  document.getElementsByClassName('craft_button r_r')[0],
-						  document.getElementsByClassName('craft_button span')[0]];
-	}
-	var crft_btns_before = [], crft_btns_after = [];
-	for (i = 0, len = this.crft_btns.length; i < len; i++) {
-		crft_btns_before[i] = !this.crft_btns[i].classList.contains('hidden');
-		crft_btns_after[i] = vgbc;
-	}
-	crft_btns_after[0] = crft_btns_after[0] && this.b_b.length;
-	crft_btns_after[1] = crft_btns_after[1] && this.b_r.length;
-	crft_btns_after[2] = crft_btns_after[2] && this.r_r.length;
-	crft_btns_after[3] = crft_btns_after[0] || crft_btns_after[1] || crft_btns_after[2];
-	ui_improver.setButtonsVisibility(this.crft_btns, crft_btns_before, crft_btns_after);
 	// voice generators
 	if (this.isFirstTime) {
 		this.voicegens = document.getElementsByClassName('voice_generator');
@@ -1207,16 +1209,19 @@ ui_improver.calculateButtonsVisibility = function() {
 			this.voicegen_classes[i] = this.voicegens[i].className;
 		}
 	}
-	var voicegens_before = [], voicegens_after = [];
-	var special_conds = [ui_storage.get('Option:disableDieButton'),
-						 worker.so.state.stats.town_name.value ||
-							document.getElementsByClassName('f_news')[0].textContent.match('дорогу') ||
-							worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
-						 worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value || worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
-						 worker.so.state.stats.quest.value.match(/\(выполнено|completed|отменено|cancelled\)/),
-						 worker.so.state.stats.health === worker.so.state.stats.max_health
-						];
-	var special_classes = ['die', 'return', 'pray', 'tsk', 'hp'];
+	var voicegens_before = [], voicegens_after = [],
+		special_conds, special_classes;
+	if (!ui_data.isFight) {
+		special_conds = [ui_storage.get('Option:disableDieButton'),
+							 worker.so.state.stats.town_name.value ||
+								document.getElementsByClassName('f_news')[0].textContent.match('дорогу') ||
+								worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
+							 worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value || worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
+							 worker.so.state.stats.quest.value.match(/\(выполнено|completed|отменено|cancelled\)/),
+							 worker.so.state.stats.health === worker.so.state.stats.max_health
+							];
+		special_classes = ['die', 'return', 'pray', 'tsk', 'hp'];
+	}
 	vgbc = vgbc && !worker.$('.r_blocked:visible').length;
 	for (i = 0, len = this.voicegens.length; i < len; i++) {
 		voicegens_before[i] = !this.voicegens[i].classList.contains('hidden');
