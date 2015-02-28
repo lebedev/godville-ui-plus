@@ -3,15 +3,23 @@ var ui_utils = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "
 
 ui_utils.hasShownErrorMessage = false;
 ui_utils.hasShownInfoMessage = false;
+ui_utils.voiceInput = document.getElementById('god_phrase');
 // base phrase say algorythm
-ui_utils.sayToHero = function(phrase) {
-	worker.$('#god_phrase').val(phrase).change();
+ui_utils.setVoice = function(voice) {
+	this.voiceInput.value = voice;
+	ui_utils.triggerChangeOnVoiceInput();
+};
+ui_utils.triggerChangeOnVoiceInput = function() {
+	worker.$(this.voiceInput).change();
 };
 // checks if $elem already improved
-ui_utils.isAlreadyImproved = function($elem) {
-	if ($elem.hasClass('improved')) { return true; }
-	$elem.addClass('improved');
-	return false;
+ui_utils.isAlreadyImproved = function(elem) {
+	if (elem.classList.contains('improved')) {
+		return true;
+	} else {
+		elem.classList.add('improved');
+		return false;
+	}
 };
 // finds a label with given name
 ui_utils.findLabel = function($base_elem, label_name) {
@@ -20,21 +28,27 @@ ui_utils.findLabel = function($base_elem, label_name) {
 	});
 };
 // finds a label with given name and appends given elem after it
-ui_utils.addAfterLabel = function($base_elem, label_name, $elem) {
-	ui_utils.findLabel($base_elem, label_name).after($elem.addClass('voice_generator').addClass(ui_data.isDungeon ? 'dungeon' : ui_data.isFight ? 'battle' : 'field'));
+ui_utils.addAfterLabel = function($base_elem, label_name, voicegen) {
+	ui_utils.findLabel($base_elem, label_name).after(worker.$(voicegen));
 };
 // generic voice generator
-ui_utils.getGenSayButton = function(title, section, hint) {
-	return worker.$('<a title="' + hint + '">' + title + '</a>').click(function() {
-		ui_utils.sayToHero(ui_words.longPhrase(section));
-		ui_words.currentPhrase = "";
+ui_utils.getGenericVoicegenButton = function(text, section, title) {
+	var voicegen = document.createElement('a');
+	voicegen.title = title;
+	voicegen.textContent = text;
+	voicegen.className = 'voice_generator ' + (ui_data.isDungeon ? 'dungeon' : ui_data.isFight ? 'battle' : 'field');
+	voicegen.onclick = function() {
+		if (document.getElementById('god_phrase').getAttribute('disabled') !== 'disabled') {
+			ui_utils.setVoice(ui_words.longPhrase(section));
+			ui_words.currentPhrase = "";
+		}
 		return false;
-	});
+	};
 };
-// Хелпер объединяет addAfterLabel и getGenSayButton
+// Хелпер объединяет addAfterLabel и getGenericVoicegenButton
 // + берет фразы из words['phrases']
-ui_utils.addSayPhraseAfterLabel = function($base_elem, label_name, btn_name, section, hint) {
-	ui_utils.addAfterLabel($base_elem, label_name, ui_utils.getGenSayButton(btn_name, section, hint));
+ui_utils.addVoicegenAfterLabel = function($base_elem, label_name, btn_name, section, title) {
+	ui_utils.addAfterLabel($base_elem, label_name, ui_utils.getGenericVoicegenButton(btn_name, section, title));
 };
 // Случайный индекс в массиве
 ui_utils.getRandomIndex = function(arr) {
@@ -57,7 +71,7 @@ ui_utils.createInspectButton = function(item_name) {
 	a.title = worker.GUIp_i18n.ask1 + ui_data.char_sex[0] + worker.GUIp_i18n.inspect + item_name;
 	a.textContent = '?';
 	a.onclick = function() {
-		ui_utils.sayToHero(ui_words.inspectPhrase(item_name));
+		ui_utils.setVoice(ui_words.inspectPhrase(item_name));
 		return false;
 	};
 	return a;
@@ -70,7 +84,7 @@ ui_utils.createCraftButton = function(combo, combo_list, hint) {
 	a.onclick = function() {
 		var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
 			items = ui_improver[combo_list][rand];
-		ui_utils.sayToHero(ui_words.craftPhrase(items));
+		ui_utils.setVoice(ui_words.craftPhrase(items));
 		return false;
 	};
 	return a;
@@ -108,24 +122,27 @@ ui_utils.getXHR = function(path, success_callback, fail_callback, extra_arg) {
 	xhr.send();
 };
 ui_utils.showMessage = function(msg_no, msg) {
-	var id = 'msg' + msg_no,
-		$msg = worker.$('<div id="' + id + '" class="hint_bar ui_msg">'+
-					'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
-					'<div class="hint_bar_content">' + msg.content + '</div>'+
-					'<div class="hint_bar_close"><a id="' + id + '_close">' + worker.GUIp_i18n.close + '</a></div>' +
-				 '</div>').insertAfter(worker.$('#menu_bar'));
-	worker.$('#' + id + '_close').click(function() {
-		worker.$('#' + id).fadeToggle(function() {
-			worker.$('#' + id).remove();
+	var id = 'msg' + msg_no;
+	document.getElementById('menu_bar').insertAdjacentHTML('afterend',
+		'<div id="' + id + '" class="hint_bar ui_msg">'+
+			'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
+			'<div class="hint_bar_content">' + msg.content + '</div>'+
+			'<div class="hint_bar_close"><a id="' + id + '_close">' + worker.GUIp_i18n.close + '</a></div>' +
+		'</div>'
+	);
+	var msg_elem = document.getElementById(id);
+	document.getElementById(id + '_close').onclick = function() {
+		worker.$(msg_elem).fadeToggle(function() {
+			msg_elem.parentNode.removeChild(msg_elem);
 			if (!isNaN(msg_no)) {
 				ui_storage.set('lastShownMessage', msg_no);
 			}
 		});
 		return false;
-	});
+	};
 
 	worker.setTimeout(function() {
-		$msg.fadeToggle(1500, msg.callback);
+		worker.$(msg_elem).fadeToggle(1500, msg.callback);
 	}, 1000);
 };
 ui_utils.inform = function() {

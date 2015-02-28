@@ -129,7 +129,7 @@ ui_improver.improveLoot = function() {
 					trophy_boldness[item_name] = true;
 				}
 			} else if (ui_words.isHealItem(items[i])) {
-				if (!ui_utils.isAlreadyImproved(worker.$(items[i]))) {
+				if (!ui_utils.isAlreadyImproved(items[i])) {
 					items[i].classList.add('heal_item');
 				}
 				if (!(forbidden_craft && (forbidden_craft.match('heal') || (forbidden_craft.match('b_r') && forbidden_craft.match('r_r'))))) {
@@ -151,7 +151,7 @@ ui_improver.improveLoot = function() {
 						trophy_boldness[item_name] = false;
 					}
 				}
-				if (!ui_utils.isAlreadyImproved(worker.$(items[i]))) {
+				if (!ui_utils.isAlreadyImproved(items[i])) {
 					items[i].insertBefore(ui_utils.createInspectButton(item_name), null);
 				}
 			}
@@ -199,7 +199,7 @@ ui_improver.improveLoot = function() {
 		}
 	}
 
-	if (!ui_utils.isAlreadyImproved(worker.$('#inventory'))) {
+	if (!ui_utils.isAlreadyImproved(document.getElementById('inventory'))) {
 		var inv_content = document.querySelector('#inventory .block_content');
 		inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + worker.GUIp_i18n.craft_verb + ':</span>');
 		inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.b_b, 'b_b', worker.GUIp_i18n.b_b_hint), null);
@@ -220,39 +220,39 @@ ui_improver.improveVoiceDialog = function() {
 			}
 			ui_utils.hideElem(document.getElementById('clear_voice_input'), !this.value);
 		}).on('click', '.gv_text.div_link', function() {
-			worker.$('#god_phrase').change();
+			ui_utils.triggerChangeOnVoiceInput();
 		});
 		document.getElementById('voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover hidden" title="' + worker.GUIp_i18n.clear_voice_input + '">×</div>');
 		document.getElementById('clear_voice_input').onclick = function() {
-			document.getElementById('god_phrase').value = '';
-			worker.$('#god_phrase').change();
+			ui_utils.setVoice('');
+		};
+		document.getElementById('voice_submit').onclick = function() {
+			ui_utils.hideElem(document.getElementById('clear_voice_input'), true);
+			ui_improver.voiceSubmitted = true;
 		};
 	}
 	var $box = worker.$('#cntrl');
-	if (!ui_utils.isAlreadyImproved($box)) {
+	if (!ui_utils.isAlreadyImproved(document.getElementById('cntrl'))) {
 		worker.$('.gp_label').addClass('l_capt');
 		worker.$('.gp_val').addClass('l_val');
 		if (ui_data.isDungeon && worker.$('#map').length) {
 			var isContradictions = worker.$('#map')[0].textContent.match(/Противоречия|Disobedience/);
-			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.east, (isContradictions ? 'go_west' : 'go_east'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_east);
-			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_west);
-			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_south);
-			ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_north);
+			ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.east, (isContradictions ? 'go_west' : 'go_east'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_east);
+			ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_west);
+			ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_south);
+			ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_north);
 			if (worker.$('#map')[0].textContent.match(/Бессилия|Anti-influence/)) {
 				worker.$('#actions').hide();
 			}
 		} else {
 			if (ui_data.isFight) {
-				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.defend, 'defend', worker.GUIp_i18n.ask4 + ui_data.char_sex[0] + worker.GUIp_i18n.to_defend);
-				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
-				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
-				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
+				ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.defend, 'defend', worker.GUIp_i18n.ask4 + ui_data.char_sex[0] + worker.GUIp_i18n.to_defend);
+				ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
+				ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
+				ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
 			} else {
-				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.sacrifice, 'sacrifice', worker.GUIp_i18n.ask8 + ui_data.char_sex[1] + worker.GUIp_i18n.to_sacrifice);
-				ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
-				worker.$('#voice_submit').click(function() {
-					ui_improver.voiceSubmitted = true;
-				});
+				ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.sacrifice, 'sacrifice', worker.GUIp_i18n.ask8 + ui_data.char_sex[1] + worker.GUIp_i18n.to_sacrifice);
+				ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.godpower_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
 			}
 		}
 		//hide_charge_button
@@ -267,8 +267,8 @@ ui_improver.improveVoiceDialog = function() {
 	ui_informer.update('full godpower', worker.$('#cntrl .p_val').width() === worker.$('#cntrl .p_bar').width());
 };
 ui_improver.improveNews = function() {
-	if (!ui_utils.isAlreadyImproved(worker.$('#news'))) {
-		ui_utils.addSayPhraseAfterLabel(worker.$('#news'), worker.GUIp_i18n.enemy_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
+	if (!ui_utils.isAlreadyImproved(document.getElementById('news'))) {
+		ui_utils.addVoicegenAfterLabel(worker.$('#news'), worker.GUIp_i18n.enemy_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
 	}
 	var isWantedMonster = false,
 		isSpecialMonster = false,
@@ -533,17 +533,17 @@ ui_improver.improveStats = function() {
 		ui_storage.set('Logger:Location', 'Field');
 	}
 	var $box = worker.$('#stats');
-	if (!ui_utils.isAlreadyImproved(worker.$('#stats'))) {
+	if (!ui_utils.isAlreadyImproved(document.getElementById('stats'))) {
 		// Add voicegens
-		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.level_label, worker.GUIp_i18n.study, 'exp', worker.GUIp_i18n.ask9 + ui_data.char_sex[1] + worker.GUIp_i18n.to_study);
-		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.health_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
-		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.gold_label, worker.GUIp_i18n.dig, 'dig', worker.GUIp_i18n.ask10 + ui_data.char_sex[1] + worker.GUIp_i18n.to_dig);
-		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.task_label, worker.GUIp_i18n.cancel_task, 'cancel_task', worker.GUIp_i18n.ask11 + ui_data.char_sex[0] + worker.GUIp_i18n.to_cancel_task);
-		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.task_label, worker.GUIp_i18n.do_task, 'do_task', worker.GUIp_i18n.ask12 + ui_data.char_sex[1] + worker.GUIp_i18n.to_do_task);
-		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.death_label, worker.GUIp_i18n.die, 'die', worker.GUIp_i18n.ask13 + ui_data.char_sex[0] + worker.GUIp_i18n.to_die);
+		ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.level_label, worker.GUIp_i18n.study, 'exp', worker.GUIp_i18n.ask9 + ui_data.char_sex[1] + worker.GUIp_i18n.to_study);
+		ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.health_label, worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
+		ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.gold_label, worker.GUIp_i18n.dig, 'dig', worker.GUIp_i18n.ask10 + ui_data.char_sex[1] + worker.GUIp_i18n.to_dig);
+		ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.task_label, worker.GUIp_i18n.cancel_task, 'cancel_task', worker.GUIp_i18n.ask11 + ui_data.char_sex[0] + worker.GUIp_i18n.to_cancel_task);
+		ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.task_label, worker.GUIp_i18n.do_task, 'do_task', worker.GUIp_i18n.ask12 + ui_data.char_sex[1] + worker.GUIp_i18n.to_do_task);
+		ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.death_label, worker.GUIp_i18n.die, 'die', worker.GUIp_i18n.ask13 + ui_data.char_sex[0] + worker.GUIp_i18n.to_die);
 	}
 	if (!worker.$('#hk_distance .voice_generator').length) {
-		ui_utils.addSayPhraseAfterLabel($box, worker.GUIp_i18n.milestones_label, worker.$('#main_wrapper.page_wrapper_5c').length ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return);
+		ui_utils.addVoicegenAfterLabel($box, worker.GUIp_i18n.milestones_label, worker.$('#main_wrapper.page_wrapper_5c').length ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return);
 	}
 
 	ui_stats.setFromProgressBar('Exp', worker.$('#hk_level .p_bar'));
@@ -584,7 +584,7 @@ ui_improver.improveStats = function() {
 ui_improver.improvePet = function() {
 	if (ui_data.isFight) { return; }
 	if (worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value) {
-		if (!ui_utils.isAlreadyImproved(worker.$('#pet'))) {
+		if (!ui_utils.isAlreadyImproved(document.getElementById('pet'))) {
 			worker.$('#pet .block_title').after(worker.$('<div id="pet_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 		}
 		worker.$('#pet_badge').text(ui_utils.findLabel(worker.$('#pet'), worker.GUIp_i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, ''));
@@ -611,7 +611,7 @@ ui_improver.improveEquip = function() {
 		ui_stats.set('Equip' + i--, parseInt(worker.$('#eq_' + i + ' .eq_level').text()));
 		seq += parseInt(worker.$('#eq_' + i + ' .eq_level').text()) || 0;
 	}
-	if (!ui_utils.isAlreadyImproved(worker.$('#equipment'))) {
+	if (!ui_utils.isAlreadyImproved(document.getElementById('equipment'))) {
 		worker.$('#equipment .block_title').after(worker.$('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 	}
 	worker.$('#equip_badge').text((seq / 7).toFixed(1));
@@ -674,7 +674,6 @@ ui_improver.improveDiary = function() {
 				if (newMessages.length - document.querySelectorAll('#diary .d_msg:not(.parsed) .vote_links_b').length >= 2) {
 					ui_timeout.start();
 				}
-				worker.$('#god_phrase').change();
 				this.voiceSubmitted = false;
 			}
 			newMessages.addClass('parsed');
@@ -1218,7 +1217,6 @@ ui_improver.nodeInsertion = function() {
 ui_improver.nodeInsertionDelay = function() {
 	ui_improver.improve();
 	if (ui_data.isFight) {
-		worker.$('#god_phrase').change();
 		ui_logger.update();
 	}
 };
