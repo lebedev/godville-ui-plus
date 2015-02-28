@@ -79,7 +79,7 @@ module.exports = function(grunt) {
               'source/superhero/informer.js',
               'source/superhero/forum.js',
               'source/superhero/improver.js',
-              'source/superhero/laying_timer.js',
+              'source/superhero/timers.js',
               'source/superhero/observers.js',
               'source/superhero/trycatcher.js',
               'source/superhero/starter.js',

@@ -302,9 +302,9 @@ ui_improver.improveNews = function() {
 	ui_informer.update('tamable monster', isTamableMonster);
 
 	if (ui_data.hasTemple && this.optionsChanged) {
-		ui_laying_timer.isDisabled = ui_storage.get('Option:disableLayingTimer');
-		ui_laying_timer.layingTimer.style.display = this.isDisabled ? 'none' : 'block';
-		ui_laying_timer.tick();
+		ui_timers.isDisabled = ui_storage.get('Option:disableLayingTimer');
+		ui_timers.layingTimer.style.display = this.isDisabled ? 'none' : 'block';
+		ui_timers.tick();
 	}
 };
 ui_improver.MapIteration = function(MapThermo, iPointer, jPointer, step, kRow, kColumn) {

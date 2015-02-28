@@ -60,7 +60,7 @@
 		"options.js",
 		"forum.js",
 		"shift_enter.js",
-		"laying_timer.js",
+		"timers.js",
 		"log.js",
 		"images/background.jpg",
 		"images/shovel.png"

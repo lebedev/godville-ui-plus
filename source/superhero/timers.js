@@ -1,7 +1,7 @@
-// ui_laying_timer
-var ui_laying_timer = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "laying_timer"}) : worker.GUIp.laying_timer = {};
+// ui_timers
+var ui_timers = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "timers"}) : worker.GUIp.timers = {};
 
-ui_laying_timer.init = function() {
+ui_timers.init = function() {
 	if (ui_data.hasTemple && !ui_data.isFight && !ui_data.isDungeon) {
 		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
 		this.layingTimer = document.querySelector('#laying_timer');
@@ -9,11 +9,11 @@ ui_laying_timer.init = function() {
 
 		this.layingTimer.style.display = this.isDisabled ? 'none' : 'block';
 
-		ui_laying_timer.tick();
-		worker.setInterval(ui_laying_timer.tick.bind(ui_laying_timer), 60000);
+		ui_timers.tick();
+		worker.setInterval(ui_timers.tick.bind(ui_timers), 60000);
 	}
 };
-ui_laying_timer.tick = function() {
+ui_timers.tick = function() {
 	var latestEntryDateFS = ui_storage.get('thirdEyeLatestEntry') && new Date(ui_storage.get('thirdEyeLatestEntry')),
 		earliestEntryDateFS = ui_storage.get('thirdEyeEarliestEntry') && new Date(ui_storage.get('thirdEyeEarliestEntry')),
 		lastLayingDateFS = ui_storage.get('thirdEyeLastLayingEntry') && new Date(ui_storage.get('thirdEyeLastLayingEntry'));
@@ -43,27 +43,27 @@ ui_laying_timer.tick = function() {
 	}
 	ui_storage.set('thirdEyeLatestEntry', this._latestEntryDate);
 	if (!this.isDisabled) {
-		ui_laying_timer._calculateTime();
+		ui_timers._calculateTime();
 	}
 };
-ui_laying_timer._calculateTime = function() {
-	var $timer = document.querySelector('#laying_timer');
+ui_timers._calculateTime = function() {
+	var $timer = document.querySelector('#timers');
 	$timer.className = $timer.className.replace(/green|yellow|red|grey/g, '');
 	if (this._lastLayingDate) {
 		this._total_minutes = Math.ceil((Date.now() + 1 - this._lastLayingDate)/1000/60);
-		ui_laying_timer._setTimer(this._total_minutes > 36*60 ? 'green' : this._total_minutes > 18*60 ? 'yellow' : 'red');
+		ui_timers._setTimer(this._total_minutes > 36*60 ? 'green' : this._total_minutes > 18*60 ? 'yellow' : 'red');
 	} else {
 		this._total_minutes = Math.floor((Date.now() - this._earliestEntryDate)/1000/60);
-		ui_laying_timer._setTimer(this._total_minutes > 36*60 ? 'green' : 'grey');
+		ui_timers._setTimer(this._total_minutes > 36*60 ? 'green' : 'grey');
 	}
 };
-ui_laying_timer._formatTime = function() {
+ui_timers._formatTime = function() {
 	var countdown_minutes = 36*60 - this._total_minutes,
 		hours = Math.floor(countdown_minutes/60),
 		minutes = Math.floor(countdown_minutes%60);
 	return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
 };
-ui_laying_timer._calculateExp = function() {
+ui_timers._calculateExp = function() {
 	var base_exp = Math.min(this._total_minutes/36/60*2, 2),
 		amount_multiplier = [1, 2, 2.5],
 		level_multiplier = ui_stats.get('Level') < 100 ? 1 : ui_stats.get('Level') < 125 ? 0.5 : 0.25,
@@ -73,13 +73,13 @@ ui_laying_timer._calculateExp = function() {
 	}
 	return title.join('\n');
 };
-ui_laying_timer._setTimer = function(color) {
+ui_timers._setTimer = function(color) {
 	this.layingTimer.classList.add(color);
 	if (color === 'grey') {
 		this.layingTimer.textContent = '?';
-		this.layingTimer.title = worker.GUIp_i18n.gte_unknown_penalty + ui_laying_timer._formatTime();
+		this.layingTimer.title = worker.GUIp_i18n.gte_unknown_penalty + ui_timers._formatTime();
 	} else {
-		this.layingTimer.textContent = color === 'green' ? '✓' : ui_laying_timer._formatTime();
-		this.layingTimer.title = ui_laying_timer._calculateExp();
+		this.layingTimer.textContent = color === 'green' ? '✓' : ui_timers._formatTime();
+		this.layingTimer.title = ui_timers._calculateExp();
 	}
 };

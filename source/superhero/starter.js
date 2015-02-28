@@ -13,7 +13,7 @@ ui_starter._init = function() {
 	ui_informer.init();
 	ui_forum.init();
 	ui_improver.improve();
-	ui_laying_timer.init();
+	ui_timers.init();
 	ui_observers.init();
 	ui_improver.initSoundsOverride();
 };
