@@ -566,7 +566,7 @@ ui_improver.improveStats = function() {
 	}
 	if (worker.so.state.stats.gold_we.value.length > 16 - 2*document.getElementsByClassName('page_wrapper_5c').length) {
 		digVoice.classList.add('shovel');
-		if (so.state.stats.gold_we.value.length > 20 - 3*document.getElementsByClassName('page_wrapper_5c').length) {
+		if (worker.so.state.stats.gold_we.value.length > 20 - 3*document.getElementsByClassName('page_wrapper_5c').length) {
 			digVoice.classList.add('compact');
 		} else {
 			digVoice.classList.remove('compact');
