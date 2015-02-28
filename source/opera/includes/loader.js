@@ -29,13 +29,13 @@ window.addEventListener('DOMContentLoaded', function(e) {
 		var checkPathFor = function(locale) {
 			var path = window.location.pathname;
 			if (path.match(/^\/superhero/)) {
-				createScripts([scripts.mo, scripts.superhero], locale);
+				createScripts([scripts.wm, scripts.mo, scripts.superhero], locale);
 				createCSS('superhero.css');
 			} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
 				createScripts([scripts.jquery, scripts.options_page, scripts.options], locale);
 				createCSS('options.css');
 			} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-				createScripts([scripts.mo, scripts.forum], locale);
+				createScripts([scripts.wm, scripts.mo, scripts.forum], locale);
 				createCSS('forum.css');
 			} else if (path.match(/^\/(?:duels\/log|hero\/duel_perm_link)\//)) {
 				createScripts(scripts.log, locale);
@@ -43,6 +43,7 @@ window.addEventListener('DOMContentLoaded', function(e) {
 		};
 		var scripts = {
 			common: 'common.js',
+			wm: 'WeakMap.js',
 			mo: 'MutationObserver.js',
 			superhero: 'superhero.js',
 			phrases_ru: 'phrases_ru.js',
