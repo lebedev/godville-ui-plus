@@ -33,14 +33,16 @@ body {
 #invites .line {
 	text-align: center;
 }
-.l_val {
+.l_val,
+.gp_val {
 	float: none;
 }
 #pet .l_val,
 #trader .l_val {
 	float: right;
 }
-.l_capt {
+.l_capt,
+.gp_label {
 	margin-right: 0;
 }
 

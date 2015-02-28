@@ -21,16 +21,6 @@ ui_utils.isAlreadyImproved = function(elem) {
 		return false;
 	}
 };
-// finds a label with given name
-ui_utils.findLabel = function($base_elem, label_name) {
-	return worker.$('.l_capt', $base_elem).filter(function(index) {
-		return worker.$(this).text() === label_name;
-	});
-};
-// finds a label with given name and appends given elem after it
-ui_utils.addAfterLabel = function($base_elem, label_name, voicegen) {
-	ui_utils.findLabel($base_elem, label_name).after(worker.$(voicegen));
-};
 // generic voice generator
 ui_utils.getGenericVoicegenButton = function(text, section, title) {
 	var voicegen = document.createElement('a');
@@ -45,10 +35,8 @@ ui_utils.getGenericVoicegenButton = function(text, section, title) {
 		return false;
 	};
 };
-// Хелпер объединяет addAfterLabel и getGenericVoicegenButton
-// + берет фразы из words['phrases']
-ui_utils.addVoicegenAfterLabel = function($base_elem, label_name, btn_name, section, title) {
-	ui_utils.addAfterLabel($base_elem, label_name, ui_utils.getGenericVoicegenButton(btn_name, section, title));
+ui_utils.addVoicegen = function(elem, voicegen_name, section, title) {
+	elem.parentNode.insertBefore(ui_utils.getGenericVoicegenButton(voicegen_name, section, title), elem);
 };
 // Случайный индекс в массиве
 ui_utils.getRandomIndex = function(arr) {
