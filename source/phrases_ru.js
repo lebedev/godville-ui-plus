@@ -512,7 +512,7 @@ worker.GUIp_i18n = {
 	use_background_file: 'свой файлом',
 	use_background_link: 'или ссылкой',
 	voice_timeout: 'Выбрать продолжительность таймаута',
-	voice_timeout_desc: 'вместо стандартных 30 секунд',
+	voice_timeout_desc: 'вместо стандартных 20 секунд',
 	voice_timeout_hint: 'введите число (секунд)',
 	hide_charge_button: 'Убрать кнопку "Зарядить"',
 	hide_charge_button_desc: 'для тех, кто не тратит деньги',

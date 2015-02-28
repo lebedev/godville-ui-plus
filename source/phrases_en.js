@@ -367,7 +367,7 @@ worker.GUIp_i18n = {
 	use_background_file: 'from file',
 	use_background_link: 'from link',
 	voice_timeout: 'Choose timeout length',
-	voice_timeout_desc: 'to replace the default 30 seconds',
+	voice_timeout_desc: 'to replace the default 20 seconds',
 	voice_timeout_hint: 'enter time (in seconds)',
 	hide_charge_button: 'Remove "Charge" button',
 	hide_charge_button_desc: 'for those who don\'t buy charges',

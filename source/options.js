@@ -249,7 +249,7 @@ function save_options() {
 
 	if ($j('#voice_timeout:checked').length) {
 		var voice_timeout = $j('#voice_timeout_value').val();
-		if (voice_timeout) {
+		if (parseInt(voice_timeout) > 0) {
 			storage.set('Option:voiceTimeout', voice_timeout);
 		} else {
 			$j('#voice_timeout_value').val('20');
@@ -383,6 +383,7 @@ function restore_options() {
 		$j('#voice_timeout_value').val(storage.get('Option:voiceTimeout'));
 	} else {
 		$j('#voice_timeout_choice').hide();
+		$j('#voice_timeout_value').val('20');
 	}
 	if ($j('#freeze_voice_button:checked').length) {
 		$j('#freeze_voice_button_desc').hide();
