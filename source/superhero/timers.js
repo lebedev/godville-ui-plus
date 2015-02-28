@@ -2,12 +2,16 @@
 var ui_timers = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "timers"}) : worker.GUIp.timers = {};
 
 ui_timers.init = function() {
-	if (ui_data.hasTemple && !ui_data.isFight && !ui_data.isDungeon) {
-		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
-		this.layingTimer = document.querySelector('#laying_timer');
-		this.isDisabled = ui_storage.get('Option:disableLayingTimer');
+	if (ui_data.hasTemple) {
+		if (!ui_data.isFight && !ui_data.isDungeon) {
+			document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"laying_timer\" class=\"fr_new_badge\" />');
+			this.layingTimer = document.querySelector('#laying_timer');
 
-		this.layingTimer.style.display = this.isDisabled ? 'none' : 'block';
+
+		}
+		this.layingTimerIsDisabled = ui_storage.get('Option:disableLayingTimer');
+
+		this.layingTimer.style.display = this.layingTimerIsDisabled ? 'none' : 'block';
 
 		ui_timers.tick();
 		worker.setInterval(ui_timers.tick.bind(ui_timers), 60000);
@@ -42,7 +46,7 @@ ui_timers.tick = function() {
 		ui_storage.set('thirdEyeLastLayingEntry', this._lastLayingDate || '');
 	}
 	ui_storage.set('thirdEyeLatestEntry', this._latestEntryDate);
-	if (!this.isDisabled) {
+	if (this.layingTimer && !this.layingTimerlayingTimerIsDisabled) {
 		ui_timers._calculateTime();
 	}
 };

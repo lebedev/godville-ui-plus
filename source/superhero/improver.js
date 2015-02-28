@@ -297,8 +297,8 @@ ui_improver.improveNews = function() {
 	ui_informer.update('tamable monster', isTamableMonster);
 
 	if (ui_data.hasTemple && this.optionsChanged) {
-		ui_timers.isDisabled = ui_storage.get('Option:disableLayingTimer');
-		ui_timers.layingTimer.style.display = this.isDisabled ? 'none' : 'block';
+		ui_timers.layingTimerIsDisabled = ui_storage.get('Option:disableLayingTimer');
+		ui_timers.layingTimer.style.display = this.layingTimerIsDisabled ? 'none' : 'block';
 		ui_timers.tick();
 	}
 };
