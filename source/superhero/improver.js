@@ -85,7 +85,7 @@ ui_improver.improve = function() {
 	if (this.isFirstTime && (ui_data.isFight || ui_data.isDungeon)) {
 		ui_improver.improveAllies();
 	}
-	ui_improver.checkButtonsVisibility();
+	ui_improver.calculateButtonsVisibility();
 	this.isFirstTime = false;
 	this.improveInProcess = false;
 	ui_storage.set('optionsChanged', false);
@@ -201,7 +201,7 @@ ui_improver.improveLoot = function() {
 
 	if (!ui_utils.isAlreadyImproved(document.getElementById('inventory'))) {
 		var inv_content = document.querySelector('#inventory .block_content');
-		inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button">' + worker.GUIp_i18n.craft_verb + ':</span>');
+		inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button span">' + worker.GUIp_i18n.craft_verb + ':</span>');
 		inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.b_b, 'b_b', worker.GUIp_i18n.b_b_hint), null);
 		inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.b_r, 'b_r', worker.GUIp_i18n.b_r_hint), null);
 		inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.r_r, 'r_r', worker.GUIp_i18n.r_r_hint), null);
@@ -253,7 +253,7 @@ ui_improver.improveVoiceDialog = function() {
 				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
 			} else {
 				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.sacrifice, 'sacrifice', worker.GUIp_i18n.ask8 + ui_data.char_sex[1] + worker.GUIp_i18n.to_sacrifice);
-				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
+				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray, 'pray');
 			}
 		}
 		//hide_charge_button
@@ -536,14 +536,14 @@ ui_improver.improveStats = function() {
 	if (!ui_utils.isAlreadyImproved(document.getElementById('stats'))) {
 		// Add voicegens
 		ui_utils.addVoicegen(document.querySelector('#hk_level .l_capt'), worker.GUIp_i18n.study, 'exp', worker.GUIp_i18n.ask9 + ui_data.char_sex[1] + worker.GUIp_i18n.to_study);
-		ui_utils.addVoicegen(document.querySelector('#hk_health .l_capt'), worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
+		ui_utils.addVoicegen(document.querySelector('#hk_health .l_capt'), worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal, 'hp');
 		ui_utils.addVoicegen(document.querySelector('#hk_gold_we .l_capt'), worker.GUIp_i18n.dig, 'dig', worker.GUIp_i18n.ask10 + ui_data.char_sex[1] + worker.GUIp_i18n.to_dig);
-		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.cancel_task, 'cancel_task', worker.GUIp_i18n.ask11 + ui_data.char_sex[0] + worker.GUIp_i18n.to_cancel_task);
-		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.do_task, 'do_task', worker.GUIp_i18n.ask12 + ui_data.char_sex[1] + worker.GUIp_i18n.to_do_task);
-		ui_utils.addVoicegen(document.querySelector('#hk_death_count .l_capt'), worker.GUIp_i18n.die, 'die', worker.GUIp_i18n.ask13 + ui_data.char_sex[0] + worker.GUIp_i18n.to_die);
+		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.cancel_task, 'cancel_task', worker.GUIp_i18n.ask11 + ui_data.char_sex[0] + worker.GUIp_i18n.to_cancel_task, 'tsk');
+		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.do_task, 'do_task', worker.GUIp_i18n.ask12 + ui_data.char_sex[1] + worker.GUIp_i18n.to_do_task, 'tsk');
+		ui_utils.addVoicegen(document.querySelector('#hk_death_count .l_capt'), worker.GUIp_i18n.die, 'die', worker.GUIp_i18n.ask13 + ui_data.char_sex[0] + worker.GUIp_i18n.to_die, 'die');
 	}
 	if (!worker.$('#hk_distance .voice_generator').length) {
-		ui_utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return);
+		ui_utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return, 'return');
 	}
 	var $box = worker.$('#stats');
 	ui_stats.setFromProgressBar('Exp', document.querySelector('#hk_level .p_bar'));
@@ -1120,33 +1120,77 @@ ui_improver.improveAllies = function() {
 		}
 	}
 };
-ui_improver.checkButtonsVisibility = function() {
-	worker.$('.arena_link_wrap, .chf_link_wrap', worker.$('#pantheons')).hide();
-	if (ui_storage.get('Stats:Godpower') >= 50) {
-		worker.$('#pantheons .chf_link_wrap').show();
-		worker.$('#pantheons .arena_link_wrap').show();
+ui_improver.calculateButtonsVisibility = function() {
+	var i, len, isDisabled = ui_storage.get('Option:disableVoiceGenerators');
+	// pantheon links
+	var pant_links = document.querySelectorAll('#pantheons .arena_link_wrap, #pantheons .chf_link_wrap'),
+		pant_before = [], pant_after = [];
+	for (i = 0, len = pant_links.length; i < len; i++) {
+		pant_before[i] = !pant_links[i].classList.contains('hidden');
+		pant_after[i] = +ui_stats.get('Godpower') >= 50;
 	}
-	worker.$('.craft_button, .inspect_button, .voice_generator').hide();
-	if (ui_storage.get('Stats:Godpower') >= 5 && !ui_storage.get('Option:disableVoiceGenerators')) {
-		if (!worker.$('.r_blocked:visible').length) {
-			worker.$('.voice_generator, .inspect_button').show();
+	ui_improver.setButtonsVisibility(pant_links, pant_before, pant_after);
+	// inspect buttons
+	var insp_btns = document.getElementsByClassName('inspect_button'),
+		insp_btns_before = [], insp_btns_after = [];
+	for (i = 0, len = insp_btns.length; i < len; i++) {
+		insp_btns_before[i] = !insp_btns[i].classList.contains('hidden');
+		insp_btns_after[i] = +ui_stats.get('Godpower') >= 5 && !isDisabled;
+	}
+	ui_improver.setButtonsVisibility(insp_btns, insp_btns_before, insp_btns_after);
+	// craft buttons
+	if (this.isFirstTime) {
+		this.crft_btns = [document.getElementsByClassName('craft_button b_b')[0],
+						  document.getElementsByClassName('craft_button b_r')[0],
+						  document.getElementsByClassName('craft_button r_r')[0],
+						  document.getElementsByClassName('craft_button span')[0]];
+	}
+	var crft_btns_before = [], crft_btns_after = [];
+	for (i = 0, len = this.crft_btns.length; i < len; i++) {
+		crft_btns_before[i] = !this.crft_btns[i].classList.contains('hidden');
+		crft_btns_after[i] = +ui_stats.get('Godpower') >= 5 && !isDisabled;
+	}
+	crft_btns_after[0] = crft_btns_after[0] && this.b_b.length;
+	crft_btns_after[1] = crft_btns_after[1] && this.b_r.length;
+	crft_btns_after[2] = crft_btns_after[2] && this.r_r.length;
+	crft_btns_after[3] = crft_btns_after[0] || crft_btns_after[1] || crft_btns_after[2];
+	ui_improver.setButtonsVisibility(this.crft_btns, crft_btns_before, crft_btns_after);
+	// voice generators
+	if (this.isFirstTime) {
+		this.voicegens = document.getElementsByClassName('voice_generator');
+	}
+	var voicegens_before = [], voicegens_after = [];
+	var special_conds = [ui_storage.get('Option:disableDieButton'),
+						 document.querySelector('#hk_distance .l_capt').textContent.match(/Город|Current Town/) ||
+							document.getElementsByClassName('f_news')[0].textContent.match('дорогу') ||
+							document.querySelector('#news .line').style.display !== 'none',
+						 worker.$('#control .p_val').width() === worker.$('#control .p_bar').width() || document.querySelector('#news .line').style.display !== 'none',
+						 document.querySelector('#hk_quests_completed .q_name').textContent.match(/\(выполнено|completed|отменено|cancelled\)/),
+						 worker.$('#hk_health .p_val').width() === worker.$('#hk_health .p_bar').width()
+						];
+	var special_classes = ['die', 'return', 'pray', 'tsk', 'hp'];
+	for (i = 0, len = this.voicegens.length; i < len; i++) {
+		voicegens_before[i] = !this.voicegens[i].classList.contains('hidden');
+		var baseCond = +ui_stats.get('Godpower') >= 5 && !isDisabled && !worker.$('.r_blocked:visible').length;
+		voicegens_after[i] = baseCond;
+		if (baseCond && !ui_data.isFight) {
+			for (var j = 0, len2 = special_conds.length; j < len2; j++) {
+				if (special_conds[j] && this.voicegens[i].className.match(special_classes[j])) {
+					voicegens_after[i] = false;
+				}
+			}
 		}
-		if (ui_storage.get('Option:disableDieButton')) {
-			worker.$('#hk_death_count .voice_generator').hide();
+	}
+	ui_improver.setButtonsVisibility(this.voicegens, voicegens_before, voicegens_after);
+};
+ui_improver.setButtonsVisibility = function(btns, before, after) {
+	for (var i = 0, len = btns.length; i < len; i++) {
+		if (before[i] && !after[i]) {
+			ui_utils.hideElem(btns[i], true);
 		}
-		if (this.b_b.length) { worker.$('.b_b').show(); }
-		if (this.b_r.length) { worker.$('.b_r').show(); }
-		if (this.r_r.length) { worker.$('.r_r').show(); }
-		if (worker.$('.b_b:visible, .b_r:visible, .r_r:visible').length) { worker.$('span.craft_button').show(); }
-		//if (worker.$('.f_news').text() !== 'Возвращается к заданию...')fc
-		if (!ui_data.isFight) {
-			if (worker.$('#hk_distance .l_capt').text().match(/Город|Current Town/) || worker.$('.f_news').text().match('дорогу') || worker.$('#news .line')[0].style.display !== 'none') { worker.$('#hk_distance .voice_generator').hide(); }
-			//if (ui_storage.get('Stats:Godpower') === 100) worker.$('#control .voice_generator').hide();
-			if (worker.$('#control .p_val').width() === worker.$('#control .p_bar').width() || worker.$('#news .line')[0].style.display !== 'none') { worker.$('#control .voice_generator')[0].style.display = 'none'; }
-			if (worker.$('#hk_distance .l_capt').text().match(/Город|Current Town/)) { worker.$('#control .voice_generator')[1].style.display = 'none'; }
+		if (!before[i] && after[i]) {
+			ui_utils.hideElem(btns[i], false);
 		}
-		if (worker.$('#hk_quests_completed .q_name').text().match(/\(выполнено\)/)) { worker.$('#hk_quests_completed .voice_generator').hide(); }
-		if (worker.$('#hk_health .p_val').width() === worker.$('#hk_health .p_bar').width()) { worker.$('#hk_health .voice_generator').hide(); }
 	}
 };
 ui_improver.chatsFix = function() {
