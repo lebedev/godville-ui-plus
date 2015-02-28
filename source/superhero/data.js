@@ -32,6 +32,7 @@ ui_data._initVariables = function() {
 		document.body.classList.add('has_temple');
 		this.hasTemple = true;
 	}
+	ui_utils.voiceInput = document.getElementById('god_phrase');
 };
 ui_data._initForumData = function() {
 	if (!ui_storage.get('Forum1')) {

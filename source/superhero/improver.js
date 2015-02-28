@@ -234,6 +234,8 @@ ui_improver.improveVoiceDialog = function() {
 	var $box = worker.$('#cntrl');
 	if (!ui_utils.isAlreadyImproved(document.getElementById('cntrl'))) {
 		var gp_label = document.getElementsByClassName('gp_label')[0];
+		gp_label.classList.add('l_capt');
+		document.getElementsByClassName('gp_val')[0].classList.add('l_val');
 		if (ui_data.isDungeon && worker.$('#map').length) {
 			var isContradictions = worker.$('#map')[0].textContent.match(/Противоречия|Disobedience/);
 			ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.east, (isContradictions ? 'go_west' : 'go_east'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_east);
@@ -558,7 +560,7 @@ ui_improver.improveStats = function() {
 	}
 	ui_informer.update('much gold', ui_stats.setFromLabelCounter('Gold', $box, worker.GUIp_i18n.gold_label, gold_parser) >= (ui_data.hasTemple ? 10000 : 3000));
 	ui_informer.update('dead', ui_stats.setFromLabelCounter('HP', $box, worker.GUIp_i18n.health_label) === 0);
-	var questName = document.querySelector('.q_name').textСontent;
+	var questName = document.querySelector('.q_name').textContent;
 	ui_informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && questName.match(/\((отменено|cancelled)\)/));
 	ui_informer.update('mini quest', questName.match(/\((мини|mini)\)/) && questName.match(/\((отменено|cancelled)\)/));
 

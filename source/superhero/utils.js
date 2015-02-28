@@ -3,7 +3,6 @@ var ui_utils = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "
 
 ui_utils.hasShownErrorMessage = false;
 ui_utils.hasShownInfoMessage = false;
-ui_utils.voiceInput = document.getElementById('god_phrase');
 // base phrase say algorythm
 ui_utils.setVoice = function(voice) {
 	this.voiceInput.value = voice;
@@ -15,7 +14,7 @@ ui_utils.triggerChangeOnVoiceInput = function() {
 // finds a label with given name
 ui_utils.findLabel = function($base_elem, label_name) {
 	return worker.$('.l_capt', $base_elem).filter(function(index) {
-		return worker.$(this).text() === label_name;
+		return this.textContent === label_name;
 	});
 };
 // checks if $elem already improved
@@ -40,9 +39,10 @@ ui_utils.getGenericVoicegenButton = function(text, section, title) {
 		}
 		return false;
 	};
+	return voicegen;
 };
 ui_utils.addVoicegen = function(elem, voicegen_name, section, title) {
-	elem.parentNode.insertBefore(ui_utils.getGenericVoicegenButton(voicegen_name, section, title), elem);
+	elem.parentNode.insertBefore(ui_utils.getGenericVoicegenButton(voicegen_name, section, title), elem.nextSibling);
 };
 // Случайный индекс в массиве
 ui_utils.getRandomIndex = function(arr) {
