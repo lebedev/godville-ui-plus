@@ -94,14 +94,18 @@ ui_storage.migrate = function() {
 	var i, len, keys = [];
 	if (!worker.localStorage.GUIp_migrated) {
 		ui_storage._rename(/^GM/, 'GUIp_');
-		worker.localStorage.GUIp_migrated = '151114';
+		worker.localStorage.GUIp_migrated = '141115';
 	}
-	if (worker.localStorage.GUIp_migrated === '151114' || worker.localStorage.GUIp_migrated < '150113') {
+	if (worker.localStorage.GUIp_migrated < '150113') {
 		ui_storage._rename_nesw('n', 'north');
 		ui_storage._rename_nesw('e', 'east');
 		ui_storage._rename_nesw('s', 'south');
 		ui_storage._rename_nesw('w', 'west');
 		ui_storage._rename(/:phrases_/, ':CustomPhrases:');
 		worker.localStorage.GUIp_migrated = '150113';
+	}
+	if (worker.localStorage.GUIp_migrated < '150228') {
+		ui_storage._rename(/:thirdEye(.+)Entry/, ':ThirdEye:$1');
+		worker.localStorage.GUIp_migrated = '150228';
 	}
 };
