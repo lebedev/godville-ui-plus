@@ -601,7 +601,7 @@ ui_improver.improveStats = function() {
 	ui_stats.set('Death', worker.so.state.stats.death_count.value);
 	ui_stats.set('Bricks', worker.so.state.stats.bricks_cnt.value);
 	ui_stats.set('Logs', parseFloat(worker.so.state.stats.wood.value)*10);
-	ui_stats.set('Savings', parseInt(worker.so.state.stats.retirement.value));
+	ui_stats.set('Savings', worker.so.state.stats.retirement && parseInt(worker.so.state.stats.retirement.value));
 	ui_stats.set('Charges', worker.so.state.stats.accumulator.value);
 
 	ui_informer.update('much gold', ui_stats.set('Gold', worker.so.state.stats.gold.value) >= (ui_data.hasTemple ? 10000 : 3000));
@@ -1213,7 +1213,7 @@ ui_improver.calculateButtonsVisibility = function() {
 		special_conds, special_classes;
 	if (!ui_data.isFight) {
 		special_conds = [ui_storage.get('Option:disableDieButton'),
-							 worker.so.state.stats.town_name.value ||
+							 worker.so.state.stats.town_name && worker.so.state.stats.town_name.value ||
 								document.getElementsByClassName('f_news')[0].textContent.match('дорогу') ||
 								worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
 							 worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value || worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
