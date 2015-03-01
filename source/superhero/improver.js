@@ -250,7 +250,7 @@ ui_improver.improveVoiceDialog = function() {
 					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.hit, 'hit', worker.GUIp_i18n.ask7 + ui_data.char_sex[1] + worker.GUIp_i18n.to_hit);
 				} else {
 					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.sacrifice, 'sacrifice', worker.GUIp_i18n.ask8 + ui_data.char_sex[1] + worker.GUIp_i18n.to_sacrifice);
-					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray, 'pray');
+					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.pray, 'pray', worker.GUIp_i18n.ask5 + ui_data.char_sex[0] + worker.GUIp_i18n.to_pray);
 				}
 			}
 		}
@@ -534,14 +534,14 @@ ui_improver.improveStats = function() {
 	if (!ui_utils.isAlreadyImproved(document.getElementById('stats'))) {
 		// Add voicegens
 		ui_utils.addVoicegen(document.querySelector('#hk_level .l_capt'), worker.GUIp_i18n.study, 'exp', worker.GUIp_i18n.ask9 + ui_data.char_sex[1] + worker.GUIp_i18n.to_study);
-		ui_utils.addVoicegen(document.querySelector('#hk_health .l_capt'), worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal, 'hp');
+		ui_utils.addVoicegen(document.querySelector('#hk_health .l_capt'), worker.GUIp_i18n.heal, 'heal', worker.GUIp_i18n.ask6 + ui_data.char_sex[1] + worker.GUIp_i18n.to_heal);
 		ui_utils.addVoicegen(document.querySelector('#hk_gold_we .l_capt'), worker.GUIp_i18n.dig, 'dig', worker.GUIp_i18n.ask10 + ui_data.char_sex[1] + worker.GUIp_i18n.to_dig);
-		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.cancel_task, 'cancel_task', worker.GUIp_i18n.ask11 + ui_data.char_sex[0] + worker.GUIp_i18n.to_cancel_task, 'tsk');
-		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.do_task, 'do_task', worker.GUIp_i18n.ask12 + ui_data.char_sex[1] + worker.GUIp_i18n.to_do_task, 'tsk');
-		ui_utils.addVoicegen(document.querySelector('#hk_death_count .l_capt'), worker.GUIp_i18n.die, 'die', worker.GUIp_i18n.ask13 + ui_data.char_sex[0] + worker.GUIp_i18n.to_die, 'die');
+		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.cancel_task, 'cancel_task', worker.GUIp_i18n.ask11 + ui_data.char_sex[0] + worker.GUIp_i18n.to_cancel_task);
+		ui_utils.addVoicegen(document.querySelector('#hk_quests_completed .l_capt'), worker.GUIp_i18n.do_task, 'do_task', worker.GUIp_i18n.ask12 + ui_data.char_sex[1] + worker.GUIp_i18n.to_do_task);
+		ui_utils.addVoicegen(document.querySelector('#hk_death_count .l_capt'), worker.GUIp_i18n.die, 'die', worker.GUIp_i18n.ask13 + ui_data.char_sex[0] + worker.GUIp_i18n.to_die);
 	}
 	if (!document.querySelector('#hk_distance .voice_generator')) {
-		ui_utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return, 'return');
+		ui_utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return);
 	}
 	ui_stats.set('Exp', worker.so.state.stats.exp_progress.value);
 	ui_stats.set('Task', worker.so.state.stats.quest_progress.value);
@@ -1113,77 +1113,86 @@ ui_improver.improveAllies = function() {
 	}
 };
 ui_improver.calculateButtonsVisibility = function() {
-	var i, len, isDisabled = ui_storage.get('Option:disableVoiceGenerators'),
-		vgbc = worker.so.state.stats.godpower.value >= 5 && !isDisabled;
+	var i, len, baseCond = worker.so.state.stats.godpower.value >= 5 && !ui_storage.get('Option:disableVoiceGenerators'),
+		isMonster = worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
+		isGoingBack = worker.so.state.stats.dir.value !== 'ft',
+		isTown = worker.so.state.stats.town_name && worker.so.state.stats.town_name.value,
+		isSearching = document.getElementsByClassName('f_news')[0].textContent.match('дорогу'),
+		dieIsDisabled = ui_storage.get('Option:disableDieButton'),
+		isFullGP = worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value,
+		isFullHP = worker.so.state.stats.health.value === worker.so.state.stats.max_health.value,
+		canQuestBeAffected = !worker.so.state.stats.quest.value.match(/\((?:выполнено|completed|отменено|cancelled)\)/);
+
 	if (!ui_data.isFight) {
 		// pantheon links
-		var pant_links = document.querySelectorAll('#pantheons .arena_link_wrap, #pantheons .chf_link_wrap'),
-			pant_before = [], pant_after = [];
-		for (i = 0, len = pant_links.length; i < len; i++) {
-			pant_before[i] = !pant_links[i].classList.contains('hidden');
-			pant_after[i] = worker.so.state.stats.godpower.value >= 50;
+		var pantLinks = document.querySelectorAll('#pantheons .arena_link_wrap, #pantheons .chf_link_wrap'),
+			pantBefore = [], pantAfter = [];
+		for (i = 0, len = pantLinks.length; i < len; i++) {
+			pantBefore[i] = !pantLinks[i].classList.contains('hidden');
+			pantAfter[i] = worker.so.state.stats.godpower.value >= 50;
 		}
-		ui_improver.setButtonsVisibility(pant_links, pant_before, pant_after);
+		ui_improver.setButtonsVisibility(pantLinks, pantBefore, pantAfter);
 		// inspect buttons
-		var insp_btns = document.getElementsByClassName('inspect_button'),
-			insp_btns_before = [], insp_btns_after = [];
-		for (i = 0, len = insp_btns.length; i < len; i++) {
-			insp_btns_before[i] = !insp_btns[i].classList.contains('hidden');
-			insp_btns_after[i] = vgbc;
+		var inspBtns = document.getElementsByClassName('inspect_button'),
+			inspBtnsBefore = [], inspBtnsAfter = [];
+		for (i = 0, len = inspBtns.length; i < len; i++) {
+			inspBtnsBefore[i] = !inspBtns[i].classList.contains('hidden');
+			inspBtnsAfter[i] = baseCond && !isMonster;
 		}
-		ui_improver.setButtonsVisibility(insp_btns, insp_btns_before, insp_btns_after);
+		ui_improver.setButtonsVisibility(inspBtns, inspBtnsBefore, inspBtnsAfter);
 		// craft buttons
 		if (this.isFirstTime) {
-			this.crft_btns = [document.getElementsByClassName('craft_button b_b')[0],
+			this.crftBtns = [document.getElementsByClassName('craft_button b_b')[0],
 							  document.getElementsByClassName('craft_button b_r')[0],
 							  document.getElementsByClassName('craft_button r_r')[0],
 							  document.getElementsByClassName('craft_button span')[0]];
 		}
-		var crft_btns_before = [], crft_btns_after = [];
-		for (i = 0, len = this.crft_btns.length; i < len; i++) {
-			crft_btns_before[i] = !this.crft_btns[i].classList.contains('hidden');
-			crft_btns_after[i] = vgbc;
+		var crftBtnsBefore = [], crftBtnsAfter = [];
+		for (i = 0, len = this.crftBtns.length; i < len; i++) {
+			crftBtnsBefore[i] = !this.crftBtns[i].classList.contains('hidden');
+			crftBtnsAfter[i] = baseCond && !isMonster;
 		}
-		crft_btns_after[0] = crft_btns_after[0] && this.b_b.length;
-		crft_btns_after[1] = crft_btns_after[1] && this.b_r.length;
-		crft_btns_after[2] = crft_btns_after[2] && this.r_r.length;
-		crft_btns_after[3] = crft_btns_after[0] || crft_btns_after[1] || crft_btns_after[2];
-		ui_improver.setButtonsVisibility(this.crft_btns, crft_btns_before, crft_btns_after);
+		crftBtnsAfter[0] = crftBtnsAfter[0] && this.b_b.length;
+		crftBtnsAfter[1] = crftBtnsAfter[1] && this.b_r.length;
+		crftBtnsAfter[2] = crftBtnsAfter[2] && this.r_r.length;
+		crftBtnsAfter[3] = crftBtnsAfter[0] || crftBtnsAfter[1] || crftBtnsAfter[2];
+		ui_improver.setButtonsVisibility(this.crftBtns, crftBtnsBefore, crftBtnsAfter);
 	}
 	// voice generators
 	if (this.isFirstTime) {
 		this.voicegens = document.getElementsByClassName('voice_generator');
-		this.voicegen_classes = [];
+		this.voicegenClasses = [];
 		for (i = 0, len = this.voicegens.length; i < len; i++) {
-			this.voicegen_classes[i] = this.voicegens[i].className;
+			this.voicegenClasses[i] = this.voicegens[i].className;
 		}
 	}
-	var voicegens_before = [], voicegens_after = [],
-		special_conds, special_classes;
+	var voicegensBefore = [], voicegensAfter = [],
+		specialConds, specialClasses;
 	if (!ui_data.isFight) {
-		special_conds = [ui_storage.get('Option:disableDieButton'),
-							 worker.so.state.stats.town_name && worker.so.state.stats.town_name.value ||
-								document.getElementsByClassName('f_news')[0].textContent.match('дорогу') ||
-								worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
-							 worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value || worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
-							 worker.so.state.stats.quest.value.match(/\(выполнено|completed|отменено|cancelled\)/),
-							 worker.so.state.stats.health === worker.so.state.stats.max_health
-							];
-		special_classes = ['die', 'return', 'pray', 'tsk', 'hp'];
+		specialClasses = ['heal', 'do_task', 'cancel_task', 'die', 'exp', 'dig', 'town', 'pray'];
+		specialConds = [isMonster || isGoingBack || isTown || isSearching || isFullHP,				// heal
+						isMonster || isGoingBack || isTown || isSearching || !canQuestBeAffected,	// do_task
+						!canQuestBeAffected,														// cancel_task
+						isMonster || isGoingBack || isTown || dieIsDisabled,						// die
+						isMonster,																	// exp
+						isMonster || isTown,														// dig
+						isMonster || isGoingBack || isTown || isSearching,							// town
+						isMonster || isFullGP														// pray
+						];
 	}
-	vgbc = vgbc && !worker.$('.r_blocked:visible').length;
+	baseCond = baseCond && !worker.$('.r_blocked:visible').length;
 	for (i = 0, len = this.voicegens.length; i < len; i++) {
-		voicegens_before[i] = !this.voicegens[i].classList.contains('hidden');
-		voicegens_after[i] = vgbc;
-		if (vgbc && !ui_data.isFight) {
-			for (var j = 0, len2 = special_conds.length; j < len2; j++) {
-				if (special_conds[j] && this.voicegen_classes[i].match(special_classes[j])) {
-					voicegens_after[i] = false;
+		voicegensBefore[i] = !this.voicegens[i].classList.contains('hidden');
+		voicegensAfter[i] = baseCond;
+		if (baseCond && !ui_data.isFight) {
+			for (var j = 0, len2 = specialConds.length; j < len2; j++) {
+				if (specialConds[j] && this.voicegenClasses[i].match(specialClasses[j])) {
+					voicegensAfter[i] = false;
 				}
 			}
 		}
 	}
-	ui_improver.setButtonsVisibility(this.voicegens, voicegens_before, voicegens_after);
+	ui_improver.setButtonsVisibility(this.voicegens, voicegensBefore, voicegensAfter);
 };
 ui_improver.setButtonsVisibility = function(btns, before, after) {
 	for (var i = 0, len = btns.length; i < len; i++) {

@@ -27,11 +27,11 @@ ui_utils.isAlreadyImproved = function(elem) {
 	}
 };
 // generic voice generator
-ui_utils.getGenericVoicegenButton = function(text, section, title, extra_class) {
+ui_utils.getGenericVoicegenButton = function(text, section, title) {
 	var voicegen = document.createElement('a');
 	voicegen.title = title;
 	voicegen.textContent = text;
-	voicegen.className = 'voice_generator ' + (ui_data.isDungeon ? 'dungeon' : ui_data.isFight ? 'battle' : 'field') + ' ' + (extra_class || '');
+	voicegen.className = 'voice_generator ' + (ui_data.isDungeon ? 'dungeon' : ui_data.isFight ? 'battle' : 'field') + ' ' + section;
 	voicegen.onclick = function() {
 		if (document.getElementById('god_phrase').getAttribute('disabled') !== 'disabled') {
 			ui_utils.setVoice(ui_words.longPhrase(section));
@@ -41,8 +41,8 @@ ui_utils.getGenericVoicegenButton = function(text, section, title, extra_class) 
 	};
 	return voicegen;
 };
-ui_utils.addVoicegen = function(elem, voicegen_name, section, title, extra_class) {
-	elem.parentNode.insertBefore(ui_utils.getGenericVoicegenButton(voicegen_name, section, title, extra_class), elem.nextSibling);
+ui_utils.addVoicegen = function(elem, voicegen_name, section, title) {
+	elem.parentNode.insertBefore(ui_utils.getGenericVoicegenButton(voicegen_name, section, title), elem.nextSibling);
 };
 // Случайный индекс в массиве
 ui_utils.getRandomIndex = function(arr) {
