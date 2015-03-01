@@ -411,29 +411,29 @@ ui_improver.improveMap = function() {
 					$boxMC[si * kColumn + sj].style.color = 'green';
 					ttl = $boxMC[si * kColumn + sj].title.replace('северо-восток','↗').replace('северо-запад','↖').replace('юго-восток','↘').replace('юго-запад','↙').replace('север','↑').replace('восток','→').replace('юг','↓').replace('запад','←');
 					for (ij = 0, len = ttl.length; ij < len; ij++){
-					if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) != - 1){
-					for (ik = 0; ik < kRow; ik++) {
-						for (jk = 0; jk < kColumn; jk++) {
-							var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
-								jstep = parseInt((Math.abs(ik - si) - 1) / 5);
-							if ('←→'.indexOf(ttl[ij]) !== -1 && ik >= si - istep && ik <= si + istep ||
-								ttl[ij] === '↓' && ik >= si + istep ||
-								ttl[ij] === '↑' && ik <= si - istep ||
-								'↙↘'.indexOf(ttl[ij]) !== -1 && ik > si + istep ||
-								'↖↗'.indexOf(ttl[ij]) !== -1 && ik < si - istep) {
-								if (ttl[ij] === '→' && jk >= sj + jstep ||
-									ttl[ij] === '←' && jk <= sj - jstep ||
-									'↓↑'.indexOf(ttl[ij]) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
-									'↘↗'.indexOf(ttl[ij]) !== -1 && jk > sj + jstep ||
-									'↙↖'.indexOf(ttl[ij]) !== -1 && jk < sj - jstep) {
-									if (MapArray[ik][jk] >= 0) {
-										MapArray[ik][jk]++;
+						if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) != - 1){
+							for (ik = 0; ik < kRow; ik++) {
+								for (jk = 0; jk < kColumn; jk++) {
+									var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
+										jstep = parseInt((Math.abs(ik - si) - 1) / 5);
+									if ('←→'.indexOf(ttl[ij]) !== -1 && ik >= si - istep && ik <= si + istep ||
+										ttl[ij] === '↓' && ik >= si + istep ||
+										ttl[ij] === '↑' && ik <= si - istep ||
+										'↙↘'.indexOf(ttl[ij]) !== -1 && ik > si + istep ||
+										'↖↗'.indexOf(ttl[ij]) !== -1 && ik < si - istep) {
+										if (ttl[ij] === '→' && jk >= sj + jstep ||
+											ttl[ij] === '←' && jk <= sj - jstep ||
+											'↓↑'.indexOf(ttl[ij]) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
+											'↘↗'.indexOf(ttl[ij]) !== -1 && jk > sj + jstep ||
+											'↙↖'.indexOf(ttl[ij]) !== -1 && jk < sj - jstep) {
+											if (MapArray[ik][jk] >= 0) {
+												MapArray[ik][jk]++;
+											}
+										}
 									}
 								}
 							}
 						}
-					}
-					}
 					}
 				}
 				if ('✺☀♨☁❄✵'.indexOf(Pointer) !== -1) {
