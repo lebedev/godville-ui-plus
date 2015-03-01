@@ -612,16 +612,10 @@ ui_improver.improveEquip = function() {
 	}
 	worker.$('#equip_badge').text((seq / 7).toFixed(1));
 };
-ui_improver.GroupHP = function(flag) {
-	var seq = 0;
-	var $box = flag ? worker.$('#alls .opp_h') : worker.$('#opps .opp_h');
-	var GroupCount = $box.length;
-	if (GroupCount > 0) {
-		for (var i = 0; i < GroupCount; i++) {
-			if (parseInt($box[i].textContent)) {
-				seq += parseInt($box[i].textContent);
-			}
-		}
+ui_improver.GroupHP = function(allies) {
+	var seq = 0, $box = allies ? worker.$('#alls .opp_h') : worker.$('#opps .opp_h');
+	for (var i = 0, len = $box.length; i < len; i++) {
+		seq += parseInt($box[i].textContent) || 0;
 	}
 	return seq;
 };
