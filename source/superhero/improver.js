@@ -543,7 +543,10 @@ ui_improver.improveStats = function() {
 	if (!document.querySelector('#hk_distance .voice_generator')) {
 		ui_utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return);
 	}
+	ui_stats.set('HP', worker.so.state.stats.health.value);
 	ui_stats.set('Exp', worker.so.state.stats.exp_progress.value);
+	ui_stats.set('Gold', worker.so.state.stats.gold.value);
+	ui_stats.set('Inv', worker.so.state.stats.inventory_num.value);
 	ui_stats.set('Task', worker.so.state.stats.quest_progress.value);
 	ui_stats.set('Level', worker.so.state.stats.level.value);
 	ui_stats.set('Monster', worker.so.state.stats.monsters_killed.value);
@@ -553,8 +556,8 @@ ui_improver.improveStats = function() {
 	ui_stats.set('Savings', worker.so.state.stats.retirement && parseInt(worker.so.state.stats.retirement.value));
 	ui_stats.set('Charges', worker.so.state.stats.accumulator.value);
 
-	ui_informer.update('much gold', ui_stats.set('Gold', worker.so.state.stats.gold.value) >= (ui_data.hasTemple ? 10000 : 3000));
-	ui_informer.update('dead', ui_stats.set('HP', worker.so.state.stats.health.value) === 0);
+	ui_informer.update('much gold', worker.so.state.stats.gold.value >= (ui_data.hasTemple ? 10000 : 3000));
+	ui_informer.update('dead', worker.so.state.stats.health.value === 0);
 	var questName = worker.so.state.stats.quest.value;
 	ui_informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && !questName.match(/\((отменено|cancelled)\)/));
 	ui_informer.update('mini quest', questName.match(/\((мини|mini)\)/) && !questName.match(/\((отменено|cancelled)\)/));
