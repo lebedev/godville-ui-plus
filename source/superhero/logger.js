@@ -73,7 +73,7 @@ ui_logger._watchStatsValue = function(id, name, descr, klass) {
 		if (parseInt(diff) !== diff) { diff = diff.toFixed(1); }
 		// Добавление плюcа, минуса или стрелочки
 		if (diff < 0) {
-			if (name === 'exp' && +ui_storage.get('Logger:Level') !== so.state.stats.level.value) {
+			if (name === 'exp' && +ui_storage.get('Logger:Level') !== worker.so.state.stats.level.value) {
 				s = '→' + ui_stats.get(id);
 			} else if (name === 'tsk' && ui_storage.get('Stats:Task_Name') !== worker.so.state.stats.quest.value) {
 				ui_storage.set('Stats:Task_Name', worker.so.state.stats.quest.value);
