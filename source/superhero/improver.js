@@ -847,7 +847,7 @@ ui_improver.improveChronicles = function() {
 		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
 		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
 	}
-	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', worker.$('#m_fight_log .block_title').text().match(/\d+/)[0]);
+	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
 	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 };
 ui_improver.moveCoords = function(coords, chronicle) {
