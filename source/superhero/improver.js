@@ -556,8 +556,8 @@ ui_improver.improveStats = function() {
 	ui_informer.update('much gold', ui_stats.set('Gold', worker.so.state.stats.gold.value) >= (ui_data.hasTemple ? 10000 : 3000));
 	ui_informer.update('dead', ui_stats.set('HP', worker.so.state.stats.health.value) === 0);
 	var questName = worker.so.state.stats.quest.value;
-	ui_informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && questName.match(/\((отменено|cancelled)\)/));
-	ui_informer.update('mini quest', questName.match(/\((мини|mini)\)/) && questName.match(/\((отменено|cancelled)\)/));
+	ui_informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && !questName.match(/\((отменено|cancelled)\)/));
+	ui_informer.update('mini quest', questName.match(/\((мини|mini)\)/) && !questName.match(/\((отменено|cancelled)\)/));
 
 	//Shovel pictogramm start
 	var digVoice = document.querySelector('#hk_gold_we .voice_generator');
