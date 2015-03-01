@@ -329,6 +329,8 @@ worker.GUIp_i18n = {
 	help_update_chrome_2: 'Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку ' +
 		'"Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
 		worker.GUIp_github_link + 'help_guide/chrome_manual_update_2.png" title="Откроется в новой вкладке">Картинка</a>.',
+	 help_update_firefox_1: 'Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). ' +
+		worker.GUIp_github_link + 'help_guide/firefox_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.',
 	help_update_firefox_2: 'Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4), подождите несколько секунд и согласитеcь ' +
 		'на перезапуск браузера. ' +
 		worker.GUIp_github_link + 'help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
