@@ -595,7 +595,7 @@ ui_improver.improvePet = function() {
 	// bruise informer
 	ui_informer.update('pet knocked out', worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value);
 
-	ui_stats.set('Pet_Level', worker.so.state.pet.pet_level.value);
+	ui_stats.set('Pet_Level', worker.so.state.pet.pet_level && worker.so.state.pet.pet_level.value);
 };
 ui_improver.improveEquip = function() {
 	// Save stats
