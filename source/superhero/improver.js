@@ -356,7 +356,7 @@ ui_improver.improveMap = function() {
 		}
 	}
 	if (document.querySelectorAll('#map .dml').length) {
-		var i, j,
+		var i, j, len,
 			$box = worker.$('#cntrl .voice_generator'),
 			$boxML = worker.$('#map .dml'),
 			$boxMC = worker.$('#map .dmc'),
@@ -380,8 +380,8 @@ ui_improver.improveMap = function() {
 			j = $boxML[si].textContent.indexOf('@');
 			if (j !== -1) {
 				var chronicles = document.querySelectorAll('#m_fight_log .d_line'),
-					len = this.chronicles.length,
 					isMoveLoss = [];
+				len = this.chronicles.length;
 				for (i = 0; i < 4; i++) {
 					isMoveLoss[i] = len > i && this.chronicles[len - i - 1].marks.indexOf('trapMoveLoss') !== -1;
 				}
@@ -404,12 +404,19 @@ ui_improver.improveMap = function() {
 			}
 			//	Ищем указатели
 			for (var sj = 0; sj < kColumn; sj++) {
-				var ik, jk,
-					Pointer = $boxML[si].textContent[sj];
-				if ('←→↓↑↙↘↖↗↻↺↬↫'.indexOf(Pointer) !== - 1) {
+				var ik, jk, ij,
+					pointer = $boxML[si].textContent[sj];
+				if ('←→↓↑↙↘↖↗↻↺↬↫'.indexOf(pointer) !== -1) {
 					MaxMap++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
-					ttl = $boxMC[si * kColumn + sj].title.replace('северо-восток','↗').replace('северо-запад','↖').replace('юго-восток','↘').replace('юго-запад','↙').replace('север','↑').replace('восток','→').replace('юг','↓').replace('запад','←');
+					ttl = $boxMC[si * kColumn + sj].title.replace(/северо-восток|north-east/,'↗')
+														 .replace(/северо-запад|north-west/,'↖')
+														 .replace(/юго-восток|south-east/,'↘')
+														 .replace(/юго-запад|south-west/,'↙')
+														 .replace(/север|north/,'↑')
+														 .replace(/восток|east/,'→')
+														 .replace(/юг|south/,'↓')
+														 .replace(/запад|west/, '←');
 					for (ij = 0, len = ttl.length; ij < len; ij++){
 						if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) != - 1){
 							for (ik = 0; ik < kRow; ik++) {
@@ -436,12 +443,12 @@ ui_improver.improveMap = function() {
 						}
 					}
 				}
-				if ('✺☀♨☁❄✵'.indexOf(Pointer) !== -1) {
+				if ('✺☀♨☁❄✵'.indexOf(pointer) !== -1) {
 					MaxMap++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
 					var ThermoMinStep = 0;	//	Минимальное количество шагов до клада
 					var ThermoMaxStep = 0;	//	Максимальное количество шагов до клада
-					switch(Pointer) {
+					switch(pointer) {
 						case '✺': ThermoMinStep = 1; ThermoMaxStep = 2; break;	//	✺ - очень горячо(1-2)
 						case '☀': ThermoMinStep = 3; ThermoMaxStep = 5; break;	//	☀ - горячо(3-5)
 						case '♨': ThermoMinStep = 6; ThermoMaxStep = 9; break;	//	♨ - тепло(6-9)
