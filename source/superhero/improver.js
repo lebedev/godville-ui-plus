@@ -1114,15 +1114,7 @@ ui_improver.improveAllies = function() {
 };
 ui_improver.calculateButtonsVisibility = function() {
 	var i, len, baseCond = worker.so.state.stats.godpower.value >= 5 && !ui_storage.get('Option:disableVoiceGenerators'),
-		isMonster = worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value,
-		isGoingBack = worker.so.state.stats.dir.value !== 'ft',
-		isTown = worker.so.state.stats.town_name && worker.so.state.stats.town_name.value,
-		isSearching = document.getElementsByClassName('f_news')[0].textContent.match('дорогу'),
-		dieIsDisabled = ui_storage.get('Option:disableDieButton'),
-		isFullGP = worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value,
-		isFullHP = worker.so.state.stats.health.value === worker.so.state.stats.max_health.value,
-		canQuestBeAffected = !worker.so.state.stats.quest.value.match(/\((?:выполнено|completed|отменено|cancelled)\)/);
-
+		isMonster = worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value;
 	if (!ui_data.isFight) {
 		// pantheon links
 		var pantLinks = document.querySelectorAll('#pantheons .arena_link_wrap, #pantheons .chf_link_wrap'),
@@ -1143,9 +1135,10 @@ ui_improver.calculateButtonsVisibility = function() {
 		// craft buttons
 		if (this.isFirstTime) {
 			this.crftBtns = [document.getElementsByClassName('craft_button b_b')[0],
-							  document.getElementsByClassName('craft_button b_r')[0],
-							  document.getElementsByClassName('craft_button r_r')[0],
-							  document.getElementsByClassName('craft_button span')[0]];
+							 document.getElementsByClassName('craft_button b_r')[0],
+							 document.getElementsByClassName('craft_button r_r')[0],
+							 document.getElementsByClassName('craft_button span')[0]
+							];
 		}
 		var crftBtnsBefore = [], crftBtnsAfter = [];
 		for (i = 0, len = this.crftBtns.length; i < len; i++) {
@@ -1169,6 +1162,13 @@ ui_improver.calculateButtonsVisibility = function() {
 	var voicegensBefore = [], voicegensAfter = [],
 		specialConds, specialClasses;
 	if (!ui_data.isFight) {
+		var isGoingBack = worker.so.state.stats.dir.value !== 'ft',
+			isTown = worker.so.state.stats.town_name && worker.so.state.stats.town_name.value,
+			isSearching = document.getElementsByClassName('f_news')[0].textContent.match('дорогу'),
+			dieIsDisabled = ui_storage.get('Option:disableDieButton'),
+			isFullGP = worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value,
+			isFullHP = worker.so.state.stats.health.value === worker.so.state.stats.max_health.value,
+			canQuestBeAffected = !worker.so.state.stats.quest.value.match(/\((?:выполнено|completed|отменено|cancelled)\)/);
 		specialClasses = ['heal', 'do_task', 'cancel_task', 'die', 'exp', 'dig', 'town', 'pray'];
 		specialConds = [isMonster || isGoingBack || isTown || isSearching || isFullHP,				// heal
 						isMonster || isGoingBack || isTown || isSearching || !canQuestBeAffected,	// do_task
