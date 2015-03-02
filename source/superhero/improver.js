@@ -404,7 +404,7 @@ ui_improver.improveMap = function() {
 			}
 			//	Ищем указатели
 			for (var sj = 0; sj < kColumn; sj++) {
-				var ik, jk, ij,
+				var ik, jk, ij, ttl,
 					pointer = $boxML[si].textContent[sj];
 				if ('←→↓↑↙↘↖↗↻↺↬↫'.indexOf(pointer) !== -1) {
 					MaxMap++;
@@ -660,7 +660,6 @@ ui_improver.improvePantheons = function() {
 	}
 };
 ui_improver.improveDiary = function() {
-	if (ui_data.isFight) { return; }
 	var i, len;
 	if (this.isFirstTime) {
 		var $msgs = document.querySelectorAll('#diary .d_msg:not(.parsed)');
@@ -1171,7 +1170,7 @@ ui_improver.calculateButtonsVisibility = function() {
 	if (!ui_data.isFight) {
 		var isGoingBack = worker.so.state.stats.dir.value !== 'ft',
 			isTown = worker.so.state.stats.town_name && worker.so.state.stats.town_name.value,
-			isSearching = document.getElementsByClassName('f_news')[0].textContent.match('дорогу'),
+			isSearching = worker.so.state.last_news && worker.so.state.last_news.value.match('дорогу'),
 			dieIsDisabled = ui_storage.get('Option:disableDieButton'),
 			isFullGP = worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value,
 			isFullHP = worker.so.state.stats.health.value === worker.so.state.stats.max_health.value,
@@ -1185,7 +1184,7 @@ ui_improver.calculateButtonsVisibility = function() {
 						isMonster || isTown,														// dig
 						isMonster || isGoingBack || isTown || isSearching,							// town
 						isMonster || isFullGP														// pray
-						];
+					   ];
 	}
 	baseCond = baseCond && !worker.$('.r_blocked:visible').length;
 	for (i = 0, len = this.voicegens.length; i < len; i++) {

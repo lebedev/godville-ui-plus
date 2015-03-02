@@ -8,16 +8,11 @@ ui_observers.init = function() {
 		}
 	}
 };
-ui_observers.process_mutations = function(obj_func, mutations) {
-	for (var i = 0, len = mutations.length; i < len; i++) {
-		obj_func(mutations[i]);
-	}
-};
 ui_observers.start = function(obj) {
 	for (var i = 0, len = obj.target.length; i < len; i++) {
 		var target = document.querySelector(obj.target[i]);
 		if (target) {
-			var observer = new MutationObserver(ui_observers.process_mutations.bind(this, obj.func));
+			var observer = new MutationObserver(obj.func);
 			observer.observe(target, obj.config);
 			obj.observers.push(observer);
 		}
@@ -26,15 +21,23 @@ ui_observers.start = function(obj) {
 ui_observers.chats = {
 	condition: true,
 	config: { childList: true },
-	func: function(mutation) {
-		if (mutation.addedNodes.length && !mutation.addedNodes[0].classList.contains('moved')) {
-			var newNode = mutation.addedNodes[0];
-			newNode.classList.add('moved');
-			mutation.target.appendChild(newNode);
-			var msgArea = newNode.querySelector('.frMsgArea');
-			msgArea.scrollTop = msgArea.scrollTopMax || msgArea.scrollHeight;
-		} else if (mutation.addedNodes.length || mutation.removedNodes.length) {
+	func: function(mutations) {
+		var toFix = false;
+		for (var i = 0, len = mutations.length; i < len; i++) {
+			if (mutations[i].addedNodes.length && !mutations[i].addedNodes[0].classList.contains('moved')) {
+				var newNode = mutations[i].addedNodes[0];
+				newNode.classList.add('moved');
+				mutations[i].target.appendChild(newNode);
+				var msgArea = newNode.querySelector('.frMsgArea');
+				msgArea.scrollTop = msgArea.scrollTopMax || msgArea.scrollHeight;
+			}
+			if (!toFix && (mutations[i].addedNodes.length || mutations[i].removedNodes.length)) {
+				toFix = true;
+			}
+		}
+		if (toFix) {
 			ui_improver.chatsFix();
+			ui_informer.clearTitle();
 		}
 	},
 	observers: [],
@@ -50,13 +53,19 @@ ui_observers.inventory = {
 		subtree: true,
 		attributeFilter: ['style']
 	},
-	func: function(mutation) {
-		if (mutation.target.tagName.toLowerCase() === 'li' && mutation.type === "attributes" &&
-			mutation.target.style.display === 'none' && mutation.target.parentNode) {
-			mutation.target.parentNode.removeChild(mutation.target);
-			ui_improver.improveLoot();
+	func: function(mutations) {
+		var toImprove = false;
+		for (var i = 0, len = mutations.length; i < len; i++) {
+			if (mutations[i].target.tagName.toLowerCase() === 'li' && mutations[i].type === "attributes" &&
+				mutations[i].target.style.display === 'none' && mutations[i].target.parentNode) {
+				mutations[i].target.parentNode.removeChild(mutations[i].target);
+				toImprove = true;
+			}
+			if (mutations[i].target.tagName.toLowerCase() === 'ul' && mutations[i].addedNodes.length) {
+				toImprove = true;
+			}
 		}
-		if (mutation.target.tagName.toLowerCase() === 'ul' && mutation.addedNodes.length) {
+		if (toImprove) {
 			ui_improver.improveLoot();
 		}
 	},
@@ -71,12 +80,19 @@ ui_observers.refresher = {
 		childList: true,
 		subtree: true
 	},
-	func: function(mutation) {
-		var tgt = mutation.target,
-			id = tgt.id,
-			cl = tgt.className;
-		if (!(id && id.match(/logger|pet_badge|equip_badge/)) &&
-			!(cl && cl.match(/voice_generator|inspect_button|m_hover|craft_button/))) {
+	func: function(mutations) {
+		var toReset = false;
+		for (var i = 0, len = mutations.length; i < len; i++) {
+			var tgt = mutations[i].target,
+				id = tgt.id,
+				cl = tgt.className;
+			if (!(id && id.match(/logger|pet_badge|equip_badge/)) &&
+				!(cl && cl.match(/voice_generator|inspect_button|m_hover|craft_button/))) {
+				toReset = true;
+				break;
+			}
+		}
+		if (toReset) {
 			worker.clearInterval(ui_improver.softRefreshInt);
 			worker.clearInterval(ui_improver.hardRefreshInt);
 			if (!ui_storage.get('Option:disablePageRefresh')) {
@@ -93,21 +109,44 @@ ui_observers.diary = {
 		return !ui_data.isFight && !ui_data.isDungeon;
 	},
 	config: { childList: true },
-	func: function(mutation) {
-		if (mutation.addedNodes.length) {
+	func: function(mutations) {
+		var toImprove = false;
+		for (var i = 0, len = mutations.length; i < len; i++) {
+			if (mutations[i].addedNodes.length) {
+				toImprove = true;
+				break;
+			}
+		}
+		if (toImprove) {
 			ui_improver.improveDiary();
 		}
 	},
 	observers: [],
 	target: ['#diary .d_content']
 };
+ui_observers.news = {
+	get condition() {
+		return !ui_data.isFight && !ui_data.isDungeon;
+	},
+	config: { childList: true, characterData: true, subtree: true },
+	func: ui_improver.calculateButtonsVisibility.bind(ui_improver),
+	observers: [],
+	target: ['.f_news']
+};
 ui_observers.chronicles = {
 	get condition() {
 		return ui_data.isDungeon;
 	},
 	config: { childList: true },
-	func: function(mutation) {
-		if (mutation.addedNodes.length) {
+	func: function(mutations) {
+		var toImprove = false;
+		for (var i = 0, len = mutations.length; i < len; i++) {
+			if (mutations[i].addedNodes.length) {
+				toImprove = true;
+				break;
+			}
+		}
+		if (toImprove) {
 			ui_improver.improveChronicles();
 		}
 	},
@@ -122,10 +161,16 @@ ui_observers.map_colorization = {
 		childList: true,
 		subtree: true
 	},
-	func: function(mutation) {
-		if (mutation.addedNodes.length) {
-			worker.clearTimeout(ui_improver.mapColorizationTmt);
-			ui_improver.mapColorizationTmt = worker.setTimeout(ui_improver.colorDungeonMap.bind(ui_improver), 50);
+	func: function(mutations) {
+		var toColor = false;
+		for (var i = 0, len = mutations.length; i < len; i++) {
+			if (mutations[i].addedNodes.length) {
+				toColor = true;
+				break;
+			}
+		}
+		if (toColor) {
+			ui_improver.colorDungeonMap();
 		}
 	},
 	observers: [],
@@ -139,11 +184,16 @@ ui_observers.allies_parse = {
 		childList: true,
 		subtree: true
 	},
-	func: function(mutation) {
-		if (mutation.addedNodes.length) {
-			if (ui_improver.currentAlly === ui_improver.currentAllyObserver) {
+	func: function(mutations) {
+		var openChatWith = function(god_name, e) {
+			e.preventDefault();
+			e.stopPropagation();
+			ui_utils.openChatWith(god_name);
+		};
+		for (var i = 0, len = mutations.length; i < len; i++) {
+			if (mutations[i].addedNodes.length && ui_improver.currentAlly === ui_improver.currentAllyObserver) {
 				var hero_name = document.querySelectorAll('#alls .opp_n')[ui_improver.currentAlly],
-					motto_field = mutation.target.querySelector('.h_motto');
+					motto_field = mutations[i].target.querySelector('.h_motto');
 				hero_name.innerHTML = '<span class="hero_name">' + hero_name.textContent + '</span>';
 				if (motto_field) {
 					var special_motto = motto_field.textContent.match(/\[[^\]]+?\]/g);
@@ -151,18 +201,14 @@ ui_observers.allies_parse = {
 						hero_name.insertAdjacentHTML('beforeend', '<span class="motto">' + special_motto.join('') + '</span>');
 					}
 				}
-				var god_name = mutation.target.querySelector('.l_val').textContent;
+				var god_name = mutations[i].target.querySelector('.l_val').textContent;
 				hero_name.title = god_name;
 				if (god_name.match(ui_improver.friendsRegExp)) {
 					hero_name.insertAdjacentHTML('beforeend', ' <a id="openchatwith' + ui_improver.currentAlly + '" title="' + worker.GUIp_i18n.open_chat_with + god_name + '">★</a>');
-					document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = function(e) {
-						e.preventDefault();
-						e.stopPropagation();
-						ui_utils.openChatWith(god_name);
-					};
+					document.getElementById('openchatwith' + ui_improver.currentAlly).onclick = openChatWith.bind(null, god_name);
 				}
 				ui_improver.currentAlly += 1;
-				var match = mutation.target.id.match(/popover_opp_all(\d)/);
+				var match = mutations[i].target.id.match(/popover_opp_all(\d)/);
 				if (match) {
 					ui_observers.allies_parse.observers[ui_improver.currentAlly - 1].disconnect();
 				}
