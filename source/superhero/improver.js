@@ -80,7 +80,7 @@ ui_improver.improve = function() {
 	}
 	ui_improver.improveInterface();
 	ui_improver.improveChat();
-	if (this.isFirstTime && (ui_data.isFight || ui_data.isDungeon)) {
+	if (ui_data.isFight || ui_data.isDungeon) {
 		ui_improver.improveAllies();
 	}
 	ui_improver.calculateButtonsVisibility();
@@ -1038,14 +1038,12 @@ ui_improver.improveChat = function() {
 	var i, len;
 
 	// friends fetching
-	if (this.isFirstTime) {
-		var $friends = document.querySelectorAll('.frline .frname'),
-			friends = [];
-		for (i = 0, len = $friends.length; i < len; i++) {
-			friends.push($friends[i].textContent);
-		}
-		this.friendsRegExp = new worker.RegExp('^(?:' + friends.join('|') + ')$');
+	var $friends = document.querySelectorAll('.frline .frname'),
+		friends = [];
+	for (i = 0, len = $friends.length; i < len; i++) {
+		friends.push($friends[i].textContent);
 	}
+	this.friendsRegExp = new worker.RegExp('^(?:' + friends.join('|') + ')$');
 
 	// links replacing and open chat with friend button adding
 	var text, $msgs = document.querySelectorAll('.fr_msg_l:not(.improved)');
@@ -1098,24 +1096,19 @@ ui_improver.improveChat = function() {
 	}
 };
 ui_improver.improveAllies = function() {
-	var i, len, popover, allies_buttons = document.querySelectorAll('#alls .opp_dropdown.popover-button');
-	if (this.isFirstTime) {
-		this.alliesCount = allies_buttons.length;
-		for (i = 0; i < 5; i++) {
-			popover = document.getElementById('popover_opp_all' + i);
-			if (popover) {
-				popover.parentNode.parentNode.classList.add('hidden');
-			}
+	var ally, opp_n, star;
+	for (var number in worker.so.state.alls) {
+		ally = worker.so.state.alls[number];
+		opp_n = ally.li[0].getElementsByClassName('opp_n')[0];
+		if (this.isFirstTime) {
+			opp_n.title = ally.god;
+			opp_n.insertAdjacentHTML('beforeend', ' <a class="open_chat" title="' + worker.GUIp_i18n.open_chat_with + ally.god + '">★</a>');
 		}
-	}
-	if (this.currentAlly < this.alliesCount) {
-		this.currentAllyObserver = this.currentAlly;
-		allies_buttons[this.currentAlly].click();
-	} else {
-		document.body.click();
-		while ((popover = document.querySelector('.popover.hidden'))) {
-			popover.classList.remove('hidden');
+		star = opp_n.getElementsByClassName('open_chat')[0];
+		if (this.isFirstTime) {
+			star.onclick = ui_utils.openChatWith.bind(null, ally.god);
 		}
+		ui_utils.hideElem(star, !ally.god.match(this.friendsRegExp));
 	}
 };
 ui_improver.calculateButtonsVisibility = function() {
