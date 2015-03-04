@@ -1171,12 +1171,12 @@ ui_improver.calculateButtonsVisibility = function() {
 		specialClasses = ['heal', 'do_task', 'cancel_task', 'die', 'exp', 'dig', 'town', 'pray'];
 		specialConds = [isMonster || isGoingBack || isTown || isSearching || isFullHP,				// heal
 						isMonster || isGoingBack || isTown || isSearching || !canQuestBeAffected,	// do_task
-						!canQuestBeAffected,														// cancel_task
-						isMonster || isGoingBack || isTown || dieIsDisabled,						// die
+																			 !canQuestBeAffected,	// cancel_task
+						isMonster ||				isTown ||				 dieIsDisabled,			// die
 						isMonster,																	// exp
-						isMonster || isTown,														// dig
-						isMonster || isGoingBack || isTown || isSearching,							// town
-						isMonster || isFullGP														// pray
+						isMonster ||										 isTown,				// dig
+						isMonster || isGoingBack || isTown ||				 isSearching,			// town
+						isMonster ||										 isFullGP				// pray
 					   ];
 	}
 	baseCond = baseCond && !worker.$('.r_blocked:visible').length;
