@@ -356,7 +356,7 @@ ui_improver.improveMap = function() {
 		}
 	}
 	if (document.querySelectorAll('#map .dml').length) {
-		var i, j,
+		var i, j, len,
 			$box = worker.$('#cntrl .voice_generator'),
 			$boxML = worker.$('#map .dml'),
 			$boxMC = worker.$('#map .dmc'),
@@ -380,8 +380,8 @@ ui_improver.improveMap = function() {
 			j = $boxML[si].textContent.indexOf('@');
 			if (j !== -1) {
 				var chronicles = document.querySelectorAll('#m_fight_log .d_line'),
-					len = this.chronicles.length,
 					isMoveLoss = [];
+				len = this.chronicles.length;
 				for (i = 0; i < 4; i++) {
 					isMoveLoss[i] = len > i && this.chronicles[len - i - 1].marks.indexOf('trapMoveLoss') !== -1;
 				}
@@ -404,39 +404,51 @@ ui_improver.improveMap = function() {
 			}
 			//	Ищем указатели
 			for (var sj = 0; sj < kColumn; sj++) {
-				var ik, jk,
-					Pointer = $boxML[si].textContent[sj];
-				if ('←→↓↑↙↘↖↗'.indexOf(Pointer) !== - 1) {
+				var ik, jk, ij, ttl,
+					pointer = $boxML[si].textContent[sj];
+				if ('←→↓↑↙↘↖↗↻↺↬↫'.indexOf(pointer) !== -1) {
 					MaxMap++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
-					for (ik = 0; ik < kRow; ik++) {
-						for (jk = 0; jk < kColumn; jk++) {
-							var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
-								jstep = parseInt((Math.abs(ik - si) - 1) / 5);
-							if ('←→'.indexOf(Pointer) !== -1 && ik >= si - istep && ik <= si + istep ||
-								Pointer === '↓' && ik >= si + istep ||
-								Pointer === '↑' && ik <= si - istep ||
-								'↙↘'.indexOf(Pointer) !== -1 && ik > si + istep ||
-								'↖↗'.indexOf(Pointer) !== -1 && ik < si - istep) {
-								if (Pointer === '→' && jk >= sj + jstep ||
-									Pointer === '←' && jk <= sj - jstep ||
-									'↓↑'.indexOf(Pointer) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
-									'↘↗'.indexOf(Pointer) !== -1 && jk > sj + jstep ||
-									'↙↖'.indexOf(Pointer) !== -1 && jk < sj - jstep) {
-									if (MapArray[ik][jk] >= 0) {
-										MapArray[ik][jk]++;
+					ttl = $boxMC[si * kColumn + sj].title.replace(/северо-восток|north-east/,'↗')
+														 .replace(/северо-запад|north-west/,'↖')
+														 .replace(/юго-восток|south-east/,'↘')
+														 .replace(/юго-запад|south-west/,'↙')
+														 .replace(/север|north/,'↑')
+														 .replace(/восток|east/,'→')
+														 .replace(/юг|south/,'↓')
+														 .replace(/запад|west/, '←');
+					for (ij = 0, len = ttl.length; ij < len; ij++){
+						if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) != - 1){
+							for (ik = 0; ik < kRow; ik++) {
+								for (jk = 0; jk < kColumn; jk++) {
+									var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
+										jstep = parseInt((Math.abs(ik - si) - 1) / 5);
+									if ('←→'.indexOf(ttl[ij]) !== -1 && ik >= si - istep && ik <= si + istep ||
+										ttl[ij] === '↓' && ik >= si + istep ||
+										ttl[ij] === '↑' && ik <= si - istep ||
+										'↙↘'.indexOf(ttl[ij]) !== -1 && ik > si + istep ||
+										'↖↗'.indexOf(ttl[ij]) !== -1 && ik < si - istep) {
+										if (ttl[ij] === '→' && jk >= sj + jstep ||
+											ttl[ij] === '←' && jk <= sj - jstep ||
+											'↓↑'.indexOf(ttl[ij]) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
+											'↘↗'.indexOf(ttl[ij]) !== -1 && jk > sj + jstep ||
+											'↙↖'.indexOf(ttl[ij]) !== -1 && jk < sj - jstep) {
+											if (MapArray[ik][jk] >= 0) {
+												MapArray[ik][jk]++;
+											}
+										}
 									}
 								}
 							}
 						}
 					}
 				}
-				if ('✺☀♨☁❄✵'.indexOf(Pointer) !== -1) {
+				if ('✺☀♨☁❄✵'.indexOf(pointer) !== -1) {
 					MaxMap++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
 					var ThermoMinStep = 0;	//	Минимальное количество шагов до клада
 					var ThermoMaxStep = 0;	//	Максимальное количество шагов до клада
-					switch(Pointer) {
+					switch(pointer) {
 						case '✺': ThermoMinStep = 1; ThermoMaxStep = 2; break;	//	✺ - очень горячо(1-2)
 						case '☀': ThermoMinStep = 3; ThermoMaxStep = 5; break;	//	☀ - горячо(3-5)
 						case '♨': ThermoMinStep = 6; ThermoMaxStep = 9; break;	//	♨ - тепло(6-9)
@@ -465,8 +477,6 @@ ui_improver.improveMap = function() {
 						}
 					}
 				}
-				// На будущее
-				// ↻ ↺ ↬ ↫
 			}
 		}
 		//	Отрисовываем возможный клад
@@ -650,7 +660,6 @@ ui_improver.improvePantheons = function() {
 	}
 };
 ui_improver.improveDiary = function() {
-	if (ui_data.isFight) { return; }
 	var i, len;
 	if (this.isFirstTime) {
 		var $msgs = document.querySelectorAll('#diary .d_msg:not(.parsed)');
@@ -847,7 +856,7 @@ ui_improver.improveChronicles = function() {
 		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
 		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
 	}
-	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', worker.$('#m_fight_log .block_title').text().match(/\d+/)[0]);
+	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
 	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 };
 ui_improver.moveCoords = function(coords, chronicle) {
@@ -1161,7 +1170,7 @@ ui_improver.calculateButtonsVisibility = function() {
 	if (!ui_data.isFight) {
 		var isGoingBack = worker.so.state.stats.dir.value !== 'ft',
 			isTown = worker.so.state.stats.town_name && worker.so.state.stats.town_name.value,
-			isSearching = document.getElementsByClassName('f_news')[0].textContent.match('дорогу'),
+			isSearching = worker.so.state.last_news && worker.so.state.last_news.value.match('дорогу'),
 			dieIsDisabled = ui_storage.get('Option:disableDieButton'),
 			isFullGP = worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value,
 			isFullHP = worker.so.state.stats.health.value === worker.so.state.stats.max_health.value,
@@ -1175,7 +1184,7 @@ ui_improver.calculateButtonsVisibility = function() {
 						isMonster || isTown,														// dig
 						isMonster || isGoingBack || isTown || isSearching,							// town
 						isMonster || isFullGP														// pray
-						];
+					   ];
 	}
 	baseCond = baseCond && !worker.$('.r_blocked:visible').length;
 	for (i = 0, len = this.voicegens.length; i < len; i++) {
