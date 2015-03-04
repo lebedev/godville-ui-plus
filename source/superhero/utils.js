@@ -215,7 +215,11 @@ ui_utils.getNodeIndex = function(node) {
 	}
 	return i;
 };
-ui_utils.openChatWith = function(friend) {
+ui_utils.openChatWith = function(friend, e) {
+	if (e) {
+		e.preventDefault();
+		e.stopPropagation();
+	}
 	var current, friends = document.querySelectorAll('.msgDockPopupW .frline');
 	for (var i = 0, len = friends.length; i < len; i++) {
 		current = friends[i].querySelector('.frname');
