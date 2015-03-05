@@ -107,7 +107,7 @@ var addFormattingButtonsAndCtrlEnter = function() {
 			'<button class="formatting button link" title="' + worker.GUIp_i18n.link_hint + '">a</button>' +
 			'<button class="formatting button ul" title="' + worker.GUIp_i18n.unordered_list_hint + '">•</button>' +
 			'<button class="formatting button ol" title="' + worker.GUIp_i18n.ordered_list_hint + '">1.</button>' +
-			'<button class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '">\\n</button>' +
+			'<button class="formatting button br" title="' + worker.GUIp_i18n.br_hint + '"><p>\u21b5</p></button>' +
 			'<button class="formatting button sup" title="' + worker.GUIp_i18n.sup_hint + '">X<sup>2</sup></button>' +
 			'<button class="formatting button sub" title="' + worker.GUIp_i18n.sub_hint + '">X<sub>2</sub></button>' +
 			'<button class="formatting button monospace" title="' + worker.GUIp_i18n.monospace_hint + '">' + worker.GUIp_i18n.monospace + '</button>' +
