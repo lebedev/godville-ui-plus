@@ -631,32 +631,25 @@ ui_improver.GroupHP = function(allies) {
 	return seq;
 };
 ui_improver.improvePantheons = function() {
+	var pants = document.querySelector('#pantheons .block_content');
+	if (this.isFirstTime) {
+		pants.insertAdjacentHTML('afterbegin', '<div class="guip p_group_sep" />');
+	}
 	if (this.isFirstTime || this.optionsChanged) {
 		var relocateDuelButtons = ui_storage.get('Option:relocateDuelButtons') || '';
-		if (relocateDuelButtons.match('arena')) {
-			if (!worker.$('#pantheons.arena_link_relocated').length) {
-				worker.$('#pantheons').addClass('arena_link_relocated');
-				worker.$('.arena_link_wrap').insertBefore(worker.$('#pantheons_content')).addClass('p_group_sep').css('padding-top', 0);
-			}
-		} else if (worker.$('#pantheons.arena_link_relocated').length) {
-			worker.$('#pantheons').removeClass('arena_link_relocated').removeClass('both');
-			worker.$('.arena_link_wrap').insertBefore(worker.$('#control .arena_msg')).removeClass('p_group_sep').css('padding-top', '0.5em');
+		var arenaRelocated = relocateDuelButtons.match('arena'),
+			arenaInPantheons = document.querySelector('#pantheons .arena_link_wrap');
+		if (arenaRelocated && !arenaInPantheons) {
+			pants.insertBefore(document.getElementsByClassName('arena_link_wrap')[0], pants.firstChild);
+		} else if (!arenaRelocated && arenaInPantheons) {
+			document.getElementById('cntrl2').insertBefore(arenaInPantheons, document.querySelector('#control .arena_msg'));
 		}
-		if (relocateDuelButtons.match('chf')) {
-			if (!worker.$('#pantheons.chf_link_relocated').length) {
-				worker.$('#pantheons').addClass('chf_link_relocated');
-				worker.$('.chf_link_wrap:first').insertBefore(worker.$('#pantheons_content'));
-				worker.$('#pantheons .chf_link_wrap').addClass('p_group_sep');
-			}
-		} else if (worker.$('#pantheons.chf_link_relocated').length) {
-			worker.$('#pantheons').removeClass('chf_link_relocated').removeClass('both');
-			worker.$('.chf_link_wrap').removeClass('p_group_sep');
-			worker.$('#pantheons .chf_link_wrap').insertAfter(worker.$('#control .arena_msg'));
-		}
-		if (worker.$('#pantheons.arena_link_relocated.chf_link_relocated:not(.both)').length) {
-			worker.$('#pantheons').addClass('both');
-			worker.$('#pantheons .chf_link_wrap').insertBefore(worker.$('#pantheons_content'));
-			worker.$('.arena_link_wrap').removeClass('p_group_sep');
+		var chfRelocated = relocateDuelButtons.match('chf'),
+			chfInPantheons = document.querySelector('#pantheons .chf_link_wrap');
+		if (chfRelocated && !chfInPantheons) {
+			pants.insertBefore(document.getElementsByClassName('chf_link_wrap')[0], document.getElementsByClassName('guip p_group_sep')[0]);
+		} else if (!chfRelocated && chfInPantheons) {
+			document.getElementById('cntrl2').insertBefore(chfInPantheons, document.querySelector('#control .arena_msg').nextSibling);
 		}
 	}
 };

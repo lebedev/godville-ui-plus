@@ -687,6 +687,15 @@ a.broadcast {
 	padding-right: 40px;
 }
 
-#alls .motto {
-	margin-left: 3px;
+/* relocated duel buttons styles */
+.guip.p_group_sep {
+	display: none;
+}
+.chf_link_wrap ~ .guip.p_group_sep,
+.arena_link_wrap ~ .guip.p_group_sep {
+	display: block;
+}
+#pantheons .arena_link_wrap,
+#pantheons .chf_link_wrap {
+	padding-top: 0;
 }
