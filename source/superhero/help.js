@@ -85,19 +85,27 @@ ui_help.onXHRSuccess = function(xhr) {
 					   +temp_cur[2] < +temp_last[2] ? false :
 					   +temp_cur[2] > +temp_last[2] ? true :
 					   +temp_cur[3] < +temp_last[3] ? false : true;
-		worker.$('#check_version')[0].innerHTML = (isNewest ? worker.GUIp_i18n.is_last_version : worker.GUIp_i18n.is_not_last_version_1 + last_version + worker.GUIp_i18n.is_not_last_version_2) + worker.GUIp_i18n.proceed_to_next_step;
+		document.getElementById('check_version').innerHTML = (isNewest ? worker.GUIp_i18n.is_last_version : worker.GUIp_i18n.is_not_last_version_1 + last_version + worker.GUIp_i18n.is_not_last_version_2) + worker.GUIp_i18n.proceed_to_next_step;
+		var selector;
 		if (!isNewest) {
-			worker.$('#ui_help ol li.update_required.' + worker.GUIp_browser).removeClass('hidden');
+			selector = '#ui_help ol li.update_required.' + worker.GUIp_browser;
 		} else {
-			worker.$('#ui_help ol li.console').removeClass('hidden');
+			selector = '#ui_help ol li.console';
+		}
+		var steps = document.querySelectorAll(selector);
+		for (var i = 0, len = steps.length; i < len; i++) {
+			steps[i].classList.remove('hidden');
 		}
 	} else {
 		ui_help.onXHRFail();
 	}
 };
 ui_help.onXHRFail = function() {
-	worker.$('#check_version')[0].textContent = worker.GUIp_i18n.getting_version_failed;
-	worker.$('#ui_help ol li.' + worker.GUIp_browser).removeClass('hidden');
+	document.getElementById('check_version').textContent = worker.GUIp_i18n.getting_version_failed;
+	var steps = document.querySelectorAll('#ui_help ol li.' + worker.GUIp_browser);
+	for (var i = 0, len = steps.length; i < len; i++) {
+		steps[i].classList.remove('hidden');
+	}
 };
 ui_help.toggleDialog = function(visible) {
 	ui_storage.set('helpDialogVisible', !ui_storage.get('helpDialogVisible'));
