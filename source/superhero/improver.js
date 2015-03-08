@@ -705,15 +705,15 @@ ui_improver.parseSingleChronicle = function(text, step) {
 	}
 	var firstSentence = text.match(/^.*?[\.!\?](?:\s|$)/);
 	if (firstSentence) {
-		var direction = firstSentence[0].match(/север|восток|юг|запад|north|east|south|west/);
+		var direction = firstSentence[0].match(/[^\wА-Яа-я](север|восток|юг|запад|north|east|south|west)/);
 		if (direction) {
-			chronicle.direction = direction[0];
+			chronicle.direction = direction[1];
 		}
 		chronicle.directionless = chronicle.directionless || !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next|The obedient heroes move in the named direction/);
 		chronicle.jumping = chronicle.jumping || !!firstSentence[0].match(this.jumpingDungeonRegExp);
 	}
 	if (text.match(this.pointerSignRegExp)) {
-		var middle = text.match(/^.*?\.(.*?)[.!?]/)[1];
+		var middle = text.match(/^.*?\.(.*?(?:«[^»]+»|[.!?]))/)[1];
 		var pointer, pointers = middle.match(this.pointerRegExp);
 		for (i = 0, len = pointers.length; i < len; i++) {
 			switch (pointers[i].replace(/^./, '')) {
