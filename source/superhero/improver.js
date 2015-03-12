@@ -783,21 +783,6 @@ ui_improver.parseChronicles = function(xhr) {
 
 	ui_improver.colorDungeonMap();
 };
-/*ui_improver.deleteInvalidChronicles = function() {
-	var isHiddenChronicles = true,
-		chronicles = document.querySelectorAll('#m_fight_log .line.d_line');
-	for (var i = chronicles.length - 1; i >= 0; i--) {
-		if (isHiddenChronicles) {
-			if (chronicles[i].style.display !== 'none') {
-				isHiddenChronicles = false;
-			}
-		} else {
-			if (chronicles[i].style.display === 'none') {
-				chronicles[i].parentNode.removeChild(chronicles[i]);
-			}
-		}
-	}
-};*/
 ui_improver.calculateXY = function(cell) {
 	var coords = {};
 	coords.x = ui_utils.getNodeIndex(cell);
@@ -824,13 +809,15 @@ ui_improver.improveChronicles = function() {
 			ui_improver.getDungeonPhrases();
 		}
 	} else {
-		//ui_improver.deleteInvalidChronicles();
-
+		var numberInBlockTitle = document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/);
+		if (!numberInBlockTitle) {
+			return;
+		}
 		var i, len, chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)'),
 			ch_down = document.querySelector('.sort_ch').textContent === '▼',
-			step = document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/)[0];
+			step = numberInBlockTitle[0];
 		worker.console.log('new ', chronicles.length, ' chronicles from step #', step);
-		for (len = chronicles.length, i = ch_down ? 0 : len - 1; ch_down ? i < len : i >= 0; ch_down ? i++ : i--) {
+		for (len = chronicles.length, i = ch_down ? 0 : len - 1; (ch_down ? i < len : i >= 0) && step; ch_down ? i++ : i--) {
 			if (!chronicles[i].className.match('m_infl')) {
 				ui_improver.parseSingleChronicle(chronicles[i].textContent, step);
 				worker.console.log('chronicle #', step);
@@ -861,17 +848,17 @@ ui_improver.improveChronicles = function() {
 				ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
 			}
 		}
+		// informer
+		ui_informer.update('close to boss', this.chronicles[worker.Object.keys(this.chronicles).reverse()[0]].marks.indexOf('warning') !== -1);
+
+		if (ui_storage.get('Log:current') !== worker.so.state.stats.perm_link.value) {
+			ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
+			ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
+		}
+		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
+		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 	}
 
-	// informer
-	ui_informer.update('close to boss', this.chronicles[worker.Object.keys(this.chronicles).reverse()[0]].marks.indexOf('warning') !== -1);
-
-	if (ui_storage.get('Log:current') !== worker.so.state.stats.perm_link.value) {
-		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
-		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
-	}
-	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
-	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 };
 ui_improver.moveCoords = function(coords, chronicle) {
 	if (chronicle.direction) {
