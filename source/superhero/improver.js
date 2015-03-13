@@ -240,9 +240,6 @@ ui_improver.improveVoiceDialog = function() {
 				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_west);
 				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_south);
 				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_north);
-				if (document.getElementById('map').textContent.match(/Бессилия|Anti-influence/)) {
-					ui_utils.hideElem(document.getElementById('actions'), true);
-				}
 			} else {
 				if (ui_data.isFight) {
 					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.defend, 'defend', worker.GUIp_i18n.ask4 + ui_data.char_sex[0] + worker.GUIp_i18n.to_defend);
