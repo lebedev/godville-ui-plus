@@ -759,19 +759,26 @@ ui_improver.parseChronicles = function(xhr) {
 		return;
 	}
 
-	var text, step = 1,
+	var lastNotParsed, text = '',
+		step = 1,
 		step_max = +worker.Object.keys(this.chronicles)[0],
 		matches = xhr.responseText.match(/<div class="new_line" style='[^']*'>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g);
 	worker.chronicles = matches;
 	worker.response = xhr.responseText;
 	for (var i = 0; step <= step_max; i++) {
+		lastNotParsed = true;
 		if (!matches[i].match(/<div class="text_content infl">/)) {
-			text = matches[i].match(/<div class="text_content ">([\s\S]+?)<\/div>/)[1].trim().replace(/&#39;/g, "'");
-			ui_improver.parseSingleChronicle(text, step);
+			text += matches[i].match(/<div class="text_content ">([\s\S]+?)<\/div>/)[1].trim().replace(/&#39;/g, "'");
 		}
 		if (matches[i].match(/<div class="new_line" style='[^']+'>/)) {
+			ui_improver.parseSingleChronicle(text, step);
+			lastNotParsed = false;
+			text = '';
 			step++;
 		}
+	}
+	if (lastNotParsed) {
+		ui_improver.parseSingleChronicle(text, step);
 	}
 
 			worker.console.log('after log chronicles');
@@ -810,23 +817,31 @@ ui_improver.improveChronicles = function() {
 		if (!numberInBlockTitle) {
 			return;
 		}
-		var i, len, chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)'),
+		var i, len, lastNotParsed, text = '',
+			chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)'),
 			ch_down = document.querySelector('.sort_ch').textContent === '▼',
 			step = numberInBlockTitle[0];
 		worker.console.log('new ', chronicles.length, ' chronicles from step #', step);
 		for (len = chronicles.length, i = ch_down ? 0 : len - 1; (ch_down ? i < len : i >= 0) && step; ch_down ? i++ : i--) {
+			lastNotParsed = true;
 			if (!chronicles[i].className.match('m_infl')) {
-				ui_improver.parseSingleChronicle(chronicles[i].textContent, step);
-				worker.console.log('chronicle #', step);
-				worker.console.log(chronicles[i].textContent);
+				text += chronicles[i].textContent;
 			}
 			if (chronicles[i].parentNode.className.match('turn_separator')) {
+				ui_improver.parseSingleChronicle(text, step);
+				worker.console.log('chronicle #', step);
+				worker.console.log(chronicles[i].textContent);
+				lastNotParsed = false;
+				text = '';
 				step--;
 			}
 			if (chronicles[i].textContent.match(this.warningRegExp)) {
 				chronicles[i].parentNode.classList.add('warning');
 			}
 			chronicles[i].classList.add('parsed');
+		}
+		if (lastNotParsed) {
+			ui_improver.parseSingleChronicle(text, step);
 		}
 		worker.console.log('last step #', step);
 
