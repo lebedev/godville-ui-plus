@@ -689,28 +689,30 @@ ui_improver.getDungeonPhrases = function() {
 		ui_improver.improveChronicles();
 	}
 };
-ui_improver.parseSingleChronicle = function(text, step) {
+ui_improver.parseSingleChronicle = function(texts, step) {
 	if (!this.chronicles[step]) {
-		this.chronicles[step] = { direction: null, marks: [], pointers: [], jumping: false, directionless: false, text: text };
+		this.chronicles[step] = { direction: null, marks: [], pointers: [], jumping: false, directionless: false, text: texts.join(' ') };
 	}
-	var i, len, chronicle = this.chronicles[step];
-	text = text.replace(/offered to trust h.. gut feeling\./, '');
-	for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
-		if (text.match(this[this.dungeonPhrases[i] + 'RegExp']) && chronicle.marks.indexOf(this.dungeonPhrases[i]) === -1) {
-			chronicle.marks.push(this.dungeonPhrases[i]);
+	var i, len, j, len2, chronicle = this.chronicles[step];
+	for (j = 0, len2 = texts.length; j < len2; j++) {
+		texts[j] = texts[j].replace(/offered to trust h.. gut feeling\./, '');
+		for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
+			if (texts[j].match(this[this.dungeonPhrases[i] + 'RegExp']) && chronicle.marks.indexOf(this.dungeonPhrases[i]) === -1) {
+				chronicle.marks.push(this.dungeonPhrases[i]);
+			}
+		}
+		var firstSentence = texts[j].match(/^.*?[\.!\?](?:\s|$)/);
+		if (firstSentence) {
+			var direction = firstSentence[0].match(/[^\wА-Яа-я](север|восток|юг|запад|north|east|south|west)/);
+			if (direction) {
+				chronicle.direction = direction[1];
+			}
+			chronicle.directionless = chronicle.directionless || !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next|The obedient heroes move in the named direction/);
+			chronicle.jumping = chronicle.jumping || !!firstSentence[0].match(this.jumpingDungeonRegExp);
 		}
 	}
-	var firstSentence = text.match(/^.*?[\.!\?](?:\s|$)/);
-	if (firstSentence) {
-		var direction = firstSentence[0].match(/[^\wА-Яа-я](север|восток|юг|запад|north|east|south|west)/);
-		if (direction) {
-			chronicle.direction = direction[1];
-		}
-		chronicle.directionless = chronicle.directionless || !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next|The obedient heroes move in the named direction/);
-		chronicle.jumping = chronicle.jumping || !!firstSentence[0].match(this.jumpingDungeonRegExp);
-	}
-	if (text.match(this.pointerSignRegExp)) {
-		var middle = text.match(/^.+?\.(.+)[.!?].+?[.!?]$/)[1];
+	if (texts.join(' ').match(this.pointerSignRegExp)) {
+		var middle = texts.join(' ').match(/^.+?\.(.+)[.!?].+?[.!?]$/)[1];
 		var pointer, pointers = middle.match(this.pointerRegExp);
 		for (i = 0, len = pointers.length; i < len; i++) {
 			switch (pointers[i].replace(/^./, '')) {
@@ -759,7 +761,7 @@ ui_improver.parseChronicles = function(xhr) {
 		return;
 	}
 
-	var lastNotParsed, text = '',
+	var lastNotParsed, texts = [],
 		step = 1,
 		step_max = +worker.Object.keys(this.chronicles)[0],
 		matches = xhr.responseText.match(/<div class="new_line" style='[^']*'>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g);
@@ -768,17 +770,17 @@ ui_improver.parseChronicles = function(xhr) {
 	for (var i = 0; step <= step_max; i++) {
 		lastNotParsed = true;
 		if (!matches[i].match(/<div class="text_content infl">/)) {
-			text += matches[i].match(/<div class="text_content ">([\s\S]+?)<\/div>/)[1].trim().replace(/&#39;/g, "'");
+			texts.push(matches[i].match(/<div class="text_content ">([\s\S]+?)<\/div>/)[1].trim().replace(/&#39;/g, "'"));
 		}
 		if (matches[i].match(/<div class="new_line" style='[^']+'>/)) {
-			ui_improver.parseSingleChronicle(text, step);
+			ui_improver.parseSingleChronicle(texts, step);
 			lastNotParsed = false;
-			text = '';
+			texts = [];
 			step++;
 		}
 	}
 	if (lastNotParsed) {
-		ui_improver.parseSingleChronicle(text, step);
+		ui_improver.parseSingleChronicle(texts, step);
 	}
 
 			worker.console.log('after log chronicles');
@@ -817,7 +819,7 @@ ui_improver.improveChronicles = function() {
 		if (!numberInBlockTitle) {
 			return;
 		}
-		var i, len, lastNotParsed, text = '',
+		var i, len, lastNotParsed, texts = [],
 			chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)'),
 			ch_down = document.querySelector('.sort_ch').textContent === '▼',
 			step = numberInBlockTitle[0];
@@ -825,14 +827,14 @@ ui_improver.improveChronicles = function() {
 		for (len = chronicles.length, i = ch_down ? 0 : len - 1; (ch_down ? i < len : i >= 0) && step; ch_down ? i++ : i--) {
 			lastNotParsed = true;
 			if (!chronicles[i].className.match('m_infl')) {
-				text += chronicles[i].textContent;
+				texts.push(chronicles[i].textContent);
 			}
 			if (chronicles[i].parentNode.className.match('turn_separator')) {
-				ui_improver.parseSingleChronicle(text, step);
+				ui_improver.parseSingleChronicle(texts, step);
 				worker.console.log('chronicle #', step);
 				worker.console.log(chronicles[i].textContent);
 				lastNotParsed = false;
-				text = '';
+				texts = [];
 				step--;
 			}
 			if (chronicles[i].textContent.match(this.warningRegExp)) {
@@ -841,7 +843,7 @@ ui_improver.improveChronicles = function() {
 			chronicles[i].classList.add('parsed');
 		}
 		if (lastNotParsed) {
-			ui_improver.parseSingleChronicle(text, step);
+			ui_improver.parseSingleChronicle(texts, step);
 		}
 		worker.console.log('last step #', step);
 
