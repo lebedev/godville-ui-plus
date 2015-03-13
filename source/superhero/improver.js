@@ -404,37 +404,25 @@ ui_improver.improveMap = function() {
 			for (var sj = 0; sj < kColumn; sj++) {
 				var ik, jk, ij, ttl,
 					pointer = $boxML[si].textContent[sj];
-				if ('←→↓↑↙↘↖↗↻↺↬↫⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1) {
+				if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨∧><'.indexOf(pointer) !== -1) {
 					MaxMap++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
-					ttl = $boxMC[si * kColumn + sj].title.replace(/северо-восток|north-east/,'↗')
-														 .replace(/северо-запад|north-west/,'↖')
-														 .replace(/юго-восток|south-east/,'↘')
-														 .replace(/юго-запад|south-west/,'↙')
-														 .replace(/север|north/,'↑')
-														 .replace(/восток|east/,'→')
-														 .replace(/юг|south/,'↓')
-														 .replace(/запад|west/, '←');
-					for (ij = 0, len = ttl.length; ij < len; ij++){
-						if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) != - 1){
-							for (ik = 0; ik < kRow; ik++) {
-								for (jk = 0; jk < kColumn; jk++) {
-									var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
-										jstep = parseInt((Math.abs(ik - si) - 1) / 5);
-									if ('←→'.indexOf(ttl[ij]) !== -1 && ik >= si - istep && ik <= si + istep ||
-										ttl[ij] === '↓' && ik >= si + istep ||
-										ttl[ij] === '↑' && ik <= si - istep ||
-										'↙↘'.indexOf(ttl[ij]) !== -1 && ik > si + istep ||
-										'↖↗'.indexOf(ttl[ij]) !== -1 && ik < si - istep) {
-										if (ttl[ij] === '→' && jk >= sj + jstep ||
-											ttl[ij] === '←' && jk <= sj - jstep ||
-											'↓↑'.indexOf(ttl[ij]) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
-											'↘↗'.indexOf(ttl[ij]) !== -1 && jk > sj + jstep ||
-											'↙↖'.indexOf(ttl[ij]) !== -1 && jk < sj - jstep) {
-											if (MapArray[ik][jk] >= 0) {
-												MapArray[ik][jk]++;
-											}
-										}
+					for (ik = 0; ik < kRow; ik++) {
+						for (jk = 0; jk < kColumn; jk++) {
+							var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
+								jstep = parseInt((Math.abs(ik - si) - 1) / 5);
+							if ('←→⌊⌋⌈⌉'.indexOf(pointer) !== -1 && ik >= si - istep && ik <= si + istep ||
+								'↓⌈⌉'.indexOf(pointer) && ik >= si + istep ||
+								'↑⌊⌋'.indexOf(pointer) && ik <= si - istep ||
+								'↙↘∧><'.indexOf(pointer) !== -1 && ik > si + istep ||
+								'↖↗∨><'.indexOf(pointer) !== -1 && ik < si - istep) {
+								if ('→⌊⌈'.indexOf(pointer) && jk >= sj + jstep ||
+									'←⌋⌉'.indexOf(pointer) && jk <= sj - jstep ||
+									'↓↑⌊⌋⌈⌉'.indexOf(pointer) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
+									'↘↗∨∧<'.indexOf(pointer) !== -1 && jk > sj + jstep ||
+									'↙↖∨∧>'.indexOf(pointer) !== -1 && jk < sj - jstep) {
+									if (MapArray[ik][jk] >= 0) {
+										MapArray[ik][jk]++;
 									}
 								}
 							}
