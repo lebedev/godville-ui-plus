@@ -8,7 +8,7 @@ ui_logger.create = function() {
 	this.need_separator = false;
 	this.dungeonWatchers = [
 		['Map_HP', 'hp', worker.GUIp_i18n.hero_health, 'hp'],
-		['Map_Exp', 'exp', worker.GUIp_i18n.inventory, 'exp'],
+		['Map_Exp', 'exp', worker.GUIp_i18n.exp, 'exp'],
 		['Map_Inv', 'inv', worker.GUIp_i18n.inventory, 'inv'],
 		['Map_Gold', 'gld', worker.GUIp_i18n.gold, 'gold'],
 		['Map_Charges', 'ch', worker.GUIp_i18n.charges, 'charges'],

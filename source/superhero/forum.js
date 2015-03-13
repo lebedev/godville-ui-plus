@@ -25,6 +25,7 @@ ui_forum._process = function(forum_no) {
 			ui_forum._setInformer(topic, informers[topic], topics[topic]);
 		}
 	}
+	ui_informer.clearTitle();
 };
 ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
 	var informer = document.getElementById('topic' + topic_no);

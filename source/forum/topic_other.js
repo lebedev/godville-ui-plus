@@ -69,7 +69,7 @@ var picturesAutoreplace = function() {
 				}
 			};
 		for (i = 0, len = links.length; i < len; i++) {
-			if (links[i].href.match(/jpe?g|png|gif/)) {
+			if (links[i].href.match(/jpe?g|png|gif/i)) {
 				links[i].insertAdjacentHTML('beforeend', '<img class="img_spinner" src="http://godville.net/images/spinner.gif">');
 				imgs[i] = document.createElement('img');
 				imgs[i].onerror = onerror.bind(null, i);

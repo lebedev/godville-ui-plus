@@ -68,8 +68,8 @@ ui_timers.tick = function() {
 	} else {
 		ui_storage.set('ThirdEye:Earliest', this._earliestEntryDate);
 		ui_storage.set('ThirdEye:LastLaying', this._lastLayingDate || '');
-		ui_storage.set('ThirdEye:LastLaying', this._lastLogDate || '');
-		ui_storage.set('ThirdEye:PenultLaying', this._penultLogDate || '');
+		ui_storage.set('ThirdEye:LastLog', this._lastLogDate || '');
+		ui_storage.set('ThirdEye:PenultLog', this._penultLogDate || '');
 	}
 	ui_storage.set('ThirdEye:Latest', this._latestEntryDate);
 	if (this.layingTimer && !this.layingTimerIsDisabled) {

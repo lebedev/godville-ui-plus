@@ -57,7 +57,9 @@
 	color: #199bdc;
 	text-decoration: underline;
 }
-.formatting.br {
+.formatting.br p {
+	margin-top: -8px;
+	font-size: 24px;
 	color: darkviolet;
 }
 

@@ -59,17 +59,20 @@ ui_informer._tick = function() {
 	}
 };
 ui_informer.clearTitle = function() {
-	var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
-	var titleNotices = (!forbidden_title_notices.match('pm') ? ui_informer._getPMTitleNotice() : '') +
-					   (!forbidden_title_notices.match('gm') ? ui_informer._getGMTitleNotice() : '') +
-					   (!forbidden_title_notices.match('fi') ? ui_informer._getFITitleNotice() : '');
-	document.title = (titleNotices ? titleNotices + ' ' : '') + this.title;
+	document.title = ui_informer._getTitleNotices() + this.title;
 
 	var sc = document.querySelector('link[rel="shortcut icon"]');
 	if (sc) {
 		document.head.removeChild(sc);
 	}
 	document.head.insertAdjacentHTML('beforeend', '<link rel="shortcut icon" href="images/favicon.ico" />');
+};
+ui_informer._getTitleNotices = function() {
+	var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
+	var titleNotices = (!forbidden_title_notices.match('pm') ? ui_informer._getPMTitleNotice() : '') +
+					   (!forbidden_title_notices.match('gm') ? ui_informer._getGMTitleNotice() : '') +
+					   (!forbidden_title_notices.match('fi') ? ui_informer._getFITitleNotice() : '');
+	return titleNotices ? titleNotices + ' ' : '';
 };
 ui_informer._getPMTitleNotice = function() {
 	var pm = 0,
@@ -109,7 +112,7 @@ ui_informer._updateTitle = function(arr) {
 		sep = '!!!';
 		favicon = "images/favicon.ico";
 	}
-	document.title = sep + ' ' + arr.join('! ') + ' ' + sep;
+	document.title = ui_informer._getTitleNotices() + sep + ' ' + arr.join('! ') + ' ' + sep;
 	worker.$('link[rel="shortcut icon"]').remove();
 	worker.$('head').append('<link rel="shortcut icon" href=' + favicon + ' />');
 };

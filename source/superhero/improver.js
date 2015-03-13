@@ -16,7 +16,7 @@ ui_improver.b_b = [];
 ui_improver.b_r = [];
 ui_improver.r_r = [];
 // dungeon
-ui_improver.chronicles = [];
+ui_improver.chronicles = {};
 ui_improver.directionlessMoveIndex = 0;
 ui_improver.dungeonPhrases = [
 	'warning',
@@ -39,7 +39,8 @@ ui_improver.pointerRegExp = new worker.RegExp('[^а-яa-z](северо-вост
 														'north-east|north-west|south-east|south-west|' +
 														'north|east|south|west|' +
 														'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot)', 'gi');
-ui_improver.dungeonPhrasesXHRCount = 0;
+ui_improver.dungeonXHRCount = 0;
+ui_improver.needLog = true;
 // resresher
 ui_improver.softRefreshInt = 0;
 ui_improver.hardRefreshInt = 0;
@@ -80,7 +81,7 @@ ui_improver.improve = function() {
 	}
 	ui_improver.improveInterface();
 	ui_improver.improveChat();
-	if (this.isFirstTime && (ui_data.isFight || ui_data.isDungeon)) {
+	if (ui_data.isFight || ui_data.isDungeon) {
 		ui_improver.improveAllies();
 	}
 	ui_improver.calculateButtonsVisibility();
@@ -239,9 +240,6 @@ ui_improver.improveVoiceDialog = function() {
 				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.west, (isContradictions ? 'go_east' : 'go_west'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_west);
 				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.south, (isContradictions ? 'go_north' : 'go_south'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_south);
 				ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.north, (isContradictions ? 'go_south' : 'go_north'), worker.GUIp_i18n.ask3 + ui_data.char_sex[0] + worker.GUIp_i18n.go_north);
-				if (document.getElementById('map').textContent.match(/Бессилия|Anti-influence/)) {
-					ui_utils.hideElem(document.getElementById('actions'), true);
-				}
 			} else {
 				if (ui_data.isFight) {
 					ui_utils.addVoicegen(gp_label, worker.GUIp_i18n.defend, 'defend', worker.GUIp_i18n.ask4 + ui_data.char_sex[0] + worker.GUIp_i18n.to_defend);
@@ -406,7 +404,7 @@ ui_improver.improveMap = function() {
 			for (var sj = 0; sj < kColumn; sj++) {
 				var ik, jk, ij, ttl,
 					pointer = $boxML[si].textContent[sj];
-				if ('←→↓↑↙↘↖↗↻↺↬↫'.indexOf(pointer) !== -1) {
+				if ('←→↓↑↙↘↖↗↻↺↬↫⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1) {
 					MaxMap++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
 					ttl = $boxMC[si * kColumn + sj].title.replace(/северо-восток|north-east/,'↗')
@@ -630,32 +628,25 @@ ui_improver.GroupHP = function(allies) {
 	return seq;
 };
 ui_improver.improvePantheons = function() {
+	var pants = document.querySelector('#pantheons .block_content');
+	if (this.isFirstTime) {
+		pants.insertAdjacentHTML('afterbegin', '<div class="guip p_group_sep" />');
+	}
 	if (this.isFirstTime || this.optionsChanged) {
 		var relocateDuelButtons = ui_storage.get('Option:relocateDuelButtons') || '';
-		if (relocateDuelButtons.match('arena')) {
-			if (!worker.$('#pantheons.arena_link_relocated').length) {
-				worker.$('#pantheons').addClass('arena_link_relocated');
-				worker.$('.arena_link_wrap').insertBefore(worker.$('#pantheons_content')).addClass('p_group_sep').css('padding-top', 0);
-			}
-		} else if (worker.$('#pantheons.arena_link_relocated').length) {
-			worker.$('#pantheons').removeClass('arena_link_relocated').removeClass('both');
-			worker.$('.arena_link_wrap').insertBefore(worker.$('#control .arena_msg')).removeClass('p_group_sep').css('padding-top', '0.5em');
+		var arenaRelocated = relocateDuelButtons.match('arena'),
+			arenaInPantheons = document.querySelector('#pantheons .arena_link_wrap');
+		if (arenaRelocated && !arenaInPantheons) {
+			pants.insertBefore(document.getElementsByClassName('arena_link_wrap')[0], pants.firstChild);
+		} else if (!arenaRelocated && arenaInPantheons) {
+			document.getElementById('cntrl2').insertBefore(arenaInPantheons, document.querySelector('#control .arena_msg'));
 		}
-		if (relocateDuelButtons.match('chf')) {
-			if (!worker.$('#pantheons.chf_link_relocated').length) {
-				worker.$('#pantheons').addClass('chf_link_relocated');
-				worker.$('.chf_link_wrap:first').insertBefore(worker.$('#pantheons_content'));
-				worker.$('#pantheons .chf_link_wrap').addClass('p_group_sep');
-			}
-		} else if (worker.$('#pantheons.chf_link_relocated').length) {
-			worker.$('#pantheons').removeClass('chf_link_relocated').removeClass('both');
-			worker.$('.chf_link_wrap').removeClass('p_group_sep');
-			worker.$('#pantheons .chf_link_wrap').insertAfter(worker.$('#control .arena_msg'));
-		}
-		if (worker.$('#pantheons.arena_link_relocated.chf_link_relocated:not(.both)').length) {
-			worker.$('#pantheons').addClass('both');
-			worker.$('#pantheons .chf_link_wrap').insertBefore(worker.$('#pantheons_content'));
-			worker.$('.arena_link_wrap').removeClass('p_group_sep');
+		var chfRelocated = relocateDuelButtons.match('chf'),
+			chfInPantheons = document.querySelector('#pantheons .chf_link_wrap');
+		if (chfRelocated && !chfInPantheons) {
+			pants.insertBefore(document.getElementsByClassName('chf_link_wrap')[0], document.getElementsByClassName('guip p_group_sep')[0]);
+		} else if (!chfRelocated && chfInPantheons) {
+			document.getElementById('cntrl2').insertBefore(chfInPantheons, document.querySelector('#control .arena_msg').nextSibling);
 		}
 	}
 };
@@ -689,7 +680,7 @@ ui_improver.parseDungeonPhrases = function(xhr) {
 };
 ui_improver.getDungeonPhrases = function() {
 	if (!ui_storage.get('Dungeon:pointerSignPhrases')) {
-		this.dungeonPhrasesXHRCount++;
+		this.dungeonXHRCount++;
 		ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), ui_improver.parseDungeonPhrases.bind(ui_improver));
 	} else {
 		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
@@ -698,25 +689,30 @@ ui_improver.getDungeonPhrases = function() {
 		ui_improver.improveChronicles();
 	}
 };
-ui_improver.parseSingleChronicle = function(text) {
-	var i, len, chronicle = { direction: null, marks: [], pointers: [], jumping: false, directionless: false };
-	text = text.replace(/offered to trust h.. gut feeling\./, '');
-	for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
-		if (text.match(this[this.dungeonPhrases[i] + 'RegExp'])) {
-			chronicle.marks.push(this.dungeonPhrases[i]);
+ui_improver.parseSingleChronicle = function(texts, step) {
+	if (!this.chronicles[step]) {
+		this.chronicles[step] = { direction: null, marks: [], pointers: [], jumping: false, directionless: false, text: texts.join(' ') };
+	}
+	var i, len, j, len2, chronicle = this.chronicles[step];
+	for (j = 0, len2 = texts.length; j < len2; j++) {
+		texts[j] = texts[j].replace(/offered to trust h.. gut feeling\./, '');
+		for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
+			if (texts[j].match(this[this.dungeonPhrases[i] + 'RegExp']) && chronicle.marks.indexOf(this.dungeonPhrases[i]) === -1) {
+				chronicle.marks.push(this.dungeonPhrases[i]);
+			}
+		}
+		var firstSentence = texts[j].match(/^.*?[\.!\?](?:\s|$)/);
+		if (firstSentence) {
+			var direction = firstSentence[0].match(/[^\wА-Яа-я](север|восток|юг|запад|north|east|south|west)/);
+			if (direction) {
+				chronicle.direction = direction[1];
+			}
+			chronicle.directionless = chronicle.directionless || !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next|The obedient heroes move in the named direction/);
+			chronicle.jumping = chronicle.jumping || !!firstSentence[0].match(this.jumpingDungeonRegExp);
 		}
 	}
-	var firstSentence = text.match(/^.*?[\.!\?](?:\s|$)/);
-	if (firstSentence) {
-		var direction = firstSentence[0].match(/север|восток|юг|запад|north|east|south|west/);
-		if (direction) {
-			chronicle.direction = direction[0];
-		}
-		chronicle.directionless = !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next|The obedient heroes move in the named direction/);
-		chronicle.jumping = !!firstSentence[0].match(this.jumpingDungeonRegExp);
-	}
-	if (text.match(this.pointerSignRegExp)) {
-		var middle = text.match(/^.*?\.(.*)[.!?].*?[.!?]$/)[1];
+	if (texts.join(' ').match(this.pointerSignRegExp)) {
+		var middle = texts.join(' ').match(/^.+?\.(.+)[.!?].+?[.!?]$/)[1];
 		var pointer, pointers = middle.match(this.pointerRegExp);
 		for (i = 0, len = pointers.length; i < len; i++) {
 			switch (pointers[i].replace(/^./, '')) {
@@ -756,44 +752,42 @@ ui_improver.parseSingleChronicle = function(text) {
 			}
 		}
 	}
-	return chronicle;
 };
 ui_improver.parseChronicles = function(xhr) {
-	var last;
-	if (document.querySelector('.sort_ch').textContent === '▼') {
-		var temp = document.querySelectorAll('#m_fight_log .d_line .d_msg:not(.m_infl)');
-		last = temp[temp.length - 1].textContent;
-	} else {
-		last = document.querySelector('#m_fight_log .d_line .d_msg:not(.m_infl)').textContent;
+	this.needLog = false;
+	this.dungeonXHRCount++;
+
+	if (worker.Object.keys(this.chronicles)[0] === '1') {
+		return;
 	}
-	var log_chronicles = [];
-	var direction, entry, matches = xhr.responseText.match(/<div class="text_content ">[\s\S]+?<\/div>/g);
-	for (var i = 0, len = matches.length; i < len; i++) {
-		matches[i] = matches[i].replace('<div class="text_content ">', '').replace('</div>', '').trim().replace(/&#39;/g, "'");
-		if (matches[i] !== last) {
-			log_chronicles.push(ui_improver.parseSingleChronicle(matches[i]));
-		} else {
-			break;
+
+	var lastNotParsed, texts = [],
+		step = 1,
+		step_max = +worker.Object.keys(this.chronicles)[0],
+		matches = xhr.responseText.match(/<div class="new_line" style='[^']*'>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g);
+	worker.chronicles = matches;
+	worker.response = xhr.responseText;
+	for (var i = 0; step <= step_max; i++) {
+		lastNotParsed = true;
+		if (!matches[i].match(/<div class="text_content infl">/)) {
+			texts.push(matches[i].match(/<div class="text_content ">([\s\S]+?)<\/div>/)[1].trim().replace(/&#39;/g, "'"));
+		}
+		if (matches[i].match(/<div class="new_line" style='[^']+'>/)) {
+			ui_improver.parseSingleChronicle(texts, step);
+			lastNotParsed = false;
+			texts = [];
+			step++;
 		}
 	}
-	this.chronicles = log_chronicles.concat(this.chronicles);
-	this.logsAreParsed = true;
+	if (lastNotParsed) {
+		ui_improver.parseSingleChronicle(texts, step);
+	}
+
+			worker.console.log('after log chronicles');
+			worker.console.log(this.chronicles);
+			worker.console.log(JSON.stringify(this.chronicles));
+
 	ui_improver.colorDungeonMap();
-};
-ui_improver.deleteInvalidChronicles = function() {
-	var isHiddenChronicles = true,
-		chronicles = document.querySelectorAll('#m_fight_log .line.d_line');
-	for (var i = chronicles.length - 1; i >= 0; i--) {
-		if (isHiddenChronicles) {
-			if (chronicles[i].style.display !== 'none') {
-				isHiddenChronicles = false;
-			}
-		} else {
-			if (chronicles[i].style.display === 'none') {
-				chronicles[i].parentNode.removeChild(chronicles[i]);
-			}
-		}
-	}
 };
 ui_improver.calculateXY = function(cell) {
 	var coords = {};
@@ -817,47 +811,68 @@ ui_improver.calculateExitXY = function() {
 };
 ui_improver.improveChronicles = function() {
 	if (!ui_storage.get('Dungeon:pointerSignPhrases')) {
-		if (this.dungeonPhrasesXHRCount < 5) {
+		if (this.dungeonXHRCount < 5) {
 			ui_improver.getDungeonPhrases();
 		}
 	} else {
-		ui_improver.deleteInvalidChronicles();
-
-		var i, len, chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.m_infl):not(.parsed)'),
-			ch_down = document.querySelector('.sort_ch').textContent === '▼';
-		for (len = chronicles.length, i = ch_down ? len - 1 : 0; ch_down ? i >= 0 : i < len; ch_down ? i-- : i++) {
-			this.chronicles.push(ui_improver.parseSingleChronicle(chronicles[i].textContent));
+		var numberInBlockTitle = document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/);
+		if (!numberInBlockTitle) {
+			return;
+		}
+		var i, len, lastNotParsed, texts = [],
+			chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)'),
+			ch_down = document.querySelector('.sort_ch').textContent === '▼',
+			step = numberInBlockTitle[0];
+		worker.console.log('new ', chronicles.length, ' chronicles from step #', step);
+		for (len = chronicles.length, i = ch_down ? 0 : len - 1; (ch_down ? i < len : i >= 0) && step; ch_down ? i++ : i--) {
+			lastNotParsed = true;
+			if (!chronicles[i].className.match('m_infl')) {
+				texts.push(chronicles[i].textContent);
+			}
+			if (chronicles[i].parentNode.className.match('turn_separator')) {
+				ui_improver.parseSingleChronicle(texts, step);
+				worker.console.log('chronicle #', step);
+				worker.console.log(chronicles[i].textContent);
+				lastNotParsed = false;
+				texts = [];
+				step--;
+			}
 			if (chronicles[i].textContent.match(this.warningRegExp)) {
 				chronicles[i].parentNode.classList.add('warning');
 			}
 			chronicles[i].classList.add('parsed');
 		}
-
-		if (!this.logsAreParsed) {
-			ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
-		} else {
-			try {
-				// informer
-				ui_informer.update('close to boss', this.chronicles[this.chronicles.length - 1].marks.indexOf('warning') !== -1);
-			} catch(e) {
-				if (ui_utils.hasShownInfoMessage !== true) {
-					ui_utils.showMessage('info', {
-						title: 'Особая ошибка! Special error!',
-						content: '<div>Сообщите Бэдлаку это: Tell Bad Luck this:<br>' +
-								 e.name + ': ' + e.message + '<br>' + JSON.stringify(this.chronicles)
-					});
-					ui_utils.hasShownInfoMessage = true;
-				}
-			}
-			ui_improver.colorDungeonMap();
+		if (lastNotParsed) {
+			ui_improver.parseSingleChronicle(texts, step);
 		}
+		worker.console.log('last step #', step);
+
+		if (!this.initial) {
+			this.initial = true;
+			worker.console.log('initial chronicles');
+			worker.console.log(this.chronicles);
+			worker.console.log(JSON.stringify(this.chronicles));
+		}
+
+		if (this.needLog) {
+			if (worker.Object.keys(this.chronicles)[0] === '1') {
+				this.needLog = false;
+				ui_improver.colorDungeonMap();
+			} else if (this.dungeonXHRCount < 5) {
+				ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
+			}
+		}
+		// informer
+		ui_informer.update('close to boss', this.chronicles[worker.Object.keys(this.chronicles).reverse()[0]].marks.indexOf('warning') !== -1);
+
+		if (ui_storage.get('Log:current') !== worker.so.state.stats.perm_link.value) {
+			ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
+			ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
+		}
+		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
+		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 	}
-	if (ui_storage.get('Log:current') !== worker.so.state.stats.perm_link.value) {
-		ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
-		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
-	}
-	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
-	ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
+
 };
 ui_improver.moveCoords = function(coords, chronicle) {
 	if (chronicle.direction) {
@@ -965,29 +980,36 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 	}
 };
 ui_improver.colorDungeonMap = function() {
-	var i, len, j, len2, currentCell,
-		coords = ui_improver.calculateExitXY();
-	for (i = 0, len = this.chronicles.length; i < len; i++) {
-		if (this.chronicles[i].directionless) {
+	var step, mark_no, marks_length, currentCell,
+		coords = ui_improver.calculateExitXY(),
+		steps = worker.Object.keys(this.chronicles),
+		steps_max = steps.length;
+	for (step = 1; step <= steps_max; step++) {
+		if (this.chronicles[step].directionless) {
 			var shortCorrection = ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections')[this.directionlessMoveIndex++];
 			if (shortCorrection) {
-				this.chronicles[i].direction = this.corrections[shortCorrection];
+				this.chronicles[step].direction = this.corrections[shortCorrection];
 			} else {
-				this.chronicles[i].direction = ui_improver.calculateDirectionlessMove(coords, i);
+				this.chronicles[step].direction = ui_improver.calculateDirectionlessMove(coords, step);
 			}
-			this.chronicles[i].directionless = false;
+			this.chronicles[step].directionless = false;
 		}
-		ui_improver.moveCoords(coords, this.chronicles[i]);
+		ui_improver.moveCoords(coords, this.chronicles[step]);
 		currentCell = document.querySelectorAll('#map .dml')[coords.y].children[coords.x];
-		for (j = 0, len2 = this.chronicles[i].marks.length; j < len2; j++) {
-			currentCell.classList.add(this.chronicles[i].marks[j]);
+		for (mark_no = 0, marks_length = this.chronicles[step].marks.length; mark_no < marks_length; mark_no++) {
+			currentCell.classList.add(this.chronicles[step].marks[mark_no]);
 		}
-		if (this.chronicles[i].pointers.length) {
-			currentCell.title = worker.GUIp_i18n[this.chronicles[i].pointers[0]] + (this.chronicles[i].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[i].pointers[1]] : '');
+		if (this.chronicles[step].pointers.length) {
+			currentCell.title = worker.GUIp_i18n[this.chronicles[step].pointers[0]] + (this.chronicles[step].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[step].pointers[1]] : '');
 		}
 	}
 	var heroesCoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
 	if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
+		worker.console.log('current chronicles');
+		worker.console.log(this.chronicles);
+		worker.console.log(JSON.stringify(this.chronicles));
+		worker.console.log('m_fight_log');
+		worker.console.log(document.getElementById('m_fight_log').innerHTML);
 		if (ui_utils.hasShownInfoMessage !== true) {
 			ui_utils.showMessage('info', {
 				title: 'Хера! Ошибка!',
@@ -1038,14 +1060,12 @@ ui_improver.improveChat = function() {
 	var i, len;
 
 	// friends fetching
-	if (this.isFirstTime) {
-		var $friends = document.querySelectorAll('.frline .frname'),
-			friends = [];
-		for (i = 0, len = $friends.length; i < len; i++) {
-			friends.push($friends[i].textContent);
-		}
-		this.friendsRegExp = new worker.RegExp('^(?:' + friends.join('|') + ')$');
+	var $friends = document.querySelectorAll('.frline .frname'),
+		friends = [];
+	for (i = 0, len = $friends.length; i < len; i++) {
+		friends.push($friends[i].textContent);
 	}
+	this.friendsRegExp = new worker.RegExp('^(?:' + friends.join('|') + ')$');
 
 	// links replacing and open chat with friend button adding
 	var text, $msgs = document.querySelectorAll('.fr_msg_l:not(.improved)');
@@ -1098,24 +1118,19 @@ ui_improver.improveChat = function() {
 	}
 };
 ui_improver.improveAllies = function() {
-	var i, len, popover, allies_buttons = document.querySelectorAll('#alls .opp_dropdown.popover-button');
-	if (this.isFirstTime) {
-		this.alliesCount = allies_buttons.length;
-		for (i = 0; i < 5; i++) {
-			popover = document.getElementById('popover_opp_all' + i);
-			if (popover) {
-				popover.parentNode.parentNode.classList.add('hidden');
-			}
+	var ally, opp_n, star;
+	for (var number in worker.so.state.alls) {
+		ally = worker.so.state.alls[number];
+		opp_n = ally.li[0].getElementsByClassName('opp_n')[0];
+		if (this.isFirstTime) {
+			opp_n.title = ally.god;
+			opp_n.insertAdjacentHTML('beforeend', ' <a class="open_chat" title="' + worker.GUIp_i18n.open_chat_with + ally.god + '">★</a>');
 		}
-	}
-	if (this.currentAlly < this.alliesCount) {
-		this.currentAllyObserver = this.currentAlly;
-		allies_buttons[this.currentAlly].click();
-	} else {
-		document.body.click();
-		while ((popover = document.querySelector('.popover.hidden'))) {
-			popover.classList.remove('hidden');
+		star = opp_n.getElementsByClassName('open_chat')[0];
+		if (this.isFirstTime) {
+			star.onclick = ui_utils.openChatWith.bind(null, ally.god);
 		}
+		ui_utils.hideElem(star, !ally.god.match(this.friendsRegExp));
 	}
 };
 ui_improver.calculateButtonsVisibility = function() {
@@ -1178,12 +1193,12 @@ ui_improver.calculateButtonsVisibility = function() {
 		specialClasses = ['heal', 'do_task', 'cancel_task', 'die', 'exp', 'dig', 'town', 'pray'];
 		specialConds = [isMonster || isGoingBack || isTown || isSearching || isFullHP,				// heal
 						isMonster || isGoingBack || isTown || isSearching || !canQuestBeAffected,	// do_task
-						!canQuestBeAffected,														// cancel_task
-						isMonster || isGoingBack || isTown || dieIsDisabled,						// die
+																			 !canQuestBeAffected,	// cancel_task
+						isMonster ||				isTown ||				 dieIsDisabled,			// die
 						isMonster,																	// exp
-						isMonster || isTown,														// dig
-						isMonster || isGoingBack || isTown || isSearching,							// town
-						isMonster || isFullGP														// pray
+						isMonster ||										 isTown,				// dig
+						isMonster || isGoingBack || isTown ||				 isSearching,			// town
+						isMonster ||										 isFullGP				// pray
 					   ];
 	}
 	baseCond = baseCond && !worker.$('.r_blocked:visible').length;
