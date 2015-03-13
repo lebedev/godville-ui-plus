@@ -710,7 +710,7 @@ ui_improver.parseSingleChronicle = function(text, step) {
 		chronicle.jumping = chronicle.jumping || !!firstSentence[0].match(this.jumpingDungeonRegExp);
 	}
 	if (text.match(this.pointerSignRegExp)) {
-		var middle = text.match(/^.*?\.(.*?(?:«[^»]+»|[.!?]))/)[1];
+		var middle = text.match(/^.+?\.(.+)[.!?].+?[.!?]$/)[1];
 		var pointer, pointers = middle.match(this.pointerRegExp);
 		for (i = 0, len = pointers.length; i < len; i++) {
 			switch (pointers[i].replace(/^./, '')) {
