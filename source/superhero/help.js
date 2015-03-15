@@ -16,16 +16,16 @@ ui_help._createHelpDialog = function() {
 				'<ol>' +
 					'<li>' + worker.GUIp_i18n.help_refresh + '</li>' +
 					'<li><div id="check_version" class="div_link" style="display: inline;">' + worker.GUIp_i18n.help_check_version + '</div></li>' +
-					'<li class="update_required Chrome hidden">' + worker.GUIp_i18n.help_update_chrome_1 + '</li>' +
-					'<li class="update_required Chrome hidden">' + worker.GUIp_i18n.help_update_chrome_2 + '</li>' +
 					'<li class="update_required Firefox hidden">' + worker.GUIp_i18n.help_update_firefox_1 + '</li>' +
 					'<li class="update_required Firefox hidden">' + worker.GUIp_i18n.help_update_firefox_2 + '</li>' +
+					'<li class="update_required Chrome hidden">' + worker.GUIp_i18n.help_update_chrome_1 + '</li>' +
+					'<li class="update_required Chrome hidden">' + worker.GUIp_i18n.help_update_chrome_2 + '</li>' +
 					'<li class="update_required Opera hidden">' + worker.GUIp_i18n.help_update_opera_1 + '</li>' +
 					'<li class="update_required Opera hidden">' + worker.GUIp_i18n.help_update_opera_2 + '</li>' +
 					'<li class="update_required Chrome Firefox Opera hidden">' + worker.GUIp_i18n.help_back_to_step_1 + '</li>' +
-					'<li class="console hidden">' + worker.GUIp_i18n.help_console_1 + '</li>' +
-					'<li class="console hidden">' + worker.GUIp_i18n.help_console_2 + '</li>' +
-					'<li class="console hidden">' + worker.GUIp_i18n.help_console_3 + '</li>' +
+					'<li class="console Chrome Firefox Opera hidden">' + worker.GUIp_i18n.help_console_1 + '</li>' +
+					'<li class="console Chrome Firefox Opera hidden">' + worker.GUIp_i18n.help_console_2 + '</li>' +
+					'<li class="console Chrome Firefox Opera hidden">' + worker.GUIp_i18n.help_console_3 + '</li>' +
 				'</ol>' +
 				'<div>' + worker.GUIp_i18n.help_useful_links + '</div>' +
 			'</div>' +
@@ -36,7 +36,9 @@ ui_help._createHelpDialog = function() {
 	document.getElementById('check_version').onclick = function() {
 		this.textContent = worker.GUIp_i18n.getting_version_no;
 		this.classList.remove('div_link');
-		ui_utils.getXHR('/forums/show/' + (worker.GUIp_locale === 'ru' ? '2' : '1'), ui_help.onXHRSuccess, ui_help.onXHRFail);
+		ui_utils.checkVersion(ui_help.checkVersionCallback.bind(null, false, true), // failed = false, isNewest = true
+							  ui_help.checkVersionCallback.bind(null, false, false),// failed = false, isNewest = false
+							  ui_help.checkVersionCallback.bind(null, true));		// failed = true
 		return false;
 	};
 
@@ -72,37 +74,15 @@ ui_help._addDumpButton = function(text, label, selector) {
 		ui_storage.dump(selector);
 	};
 };
-ui_help.onXHRSuccess = function(xhr) {
-	var match;
-	if ((match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/))) {
-		var temp_cur = ui_data.currentVersion.split('.'),
-			last_version = match[1],
-			temp_last = last_version.split('.'),
-			isNewest = +temp_cur[0] < +temp_last[0] ? false :
-					   +temp_cur[0] > +temp_last[0] ? true :
-					   +temp_cur[1] < +temp_last[1] ? false :
-					   +temp_cur[1] > +temp_last[1] ? true :
-					   +temp_cur[2] < +temp_last[2] ? false :
-					   +temp_cur[2] > +temp_last[2] ? true :
-					   +temp_cur[3] < +temp_last[3] ? false : true;
-		document.getElementById('check_version').innerHTML = (isNewest ? worker.GUIp_i18n.is_last_version : worker.GUIp_i18n.is_not_last_version_1 + last_version + worker.GUIp_i18n.is_not_last_version_2) + worker.GUIp_i18n.proceed_to_next_step;
-		var selector;
-		if (!isNewest) {
-			selector = '#ui_help ol li.update_required.' + worker.GUIp_browser;
-		} else {
-			selector = '#ui_help ol li.console';
-		}
-		var steps = document.querySelectorAll(selector);
-		for (var i = 0, len = steps.length; i < len; i++) {
-			steps[i].classList.remove('hidden');
-		}
-	} else {
-		ui_help.onXHRFail();
-	}
-};
-ui_help.onXHRFail = function() {
-	document.getElementById('check_version').textContent = worker.GUIp_i18n.getting_version_failed;
-	var steps = document.querySelectorAll('#ui_help ol li.' + worker.GUIp_browser);
+ui_help.checkVersionCallback = function(failed, isNewest) {
+	document.getElementById('check_version').innerHTML = failed ? worker.GUIp_i18n.getting_version_failed
+																: (isNewest ? worker.GUIp_i18n.is_last_version
+																			: worker.GUIp_i18n.is_not_last_version_1 + last_version + worker.GUIp_i18n.is_not_last_version_2
+																  ) + worker.GUIp_i18n.proceed_to_next_step;
+	var selector = '#ui_help ol li.' + failed ? worker.GUIp_browser
+											  : isNewest ? 'console'
+														 : 'update_required.' + worker.GUIp_browser;
+	var steps = document.querySelectorAll(selector);
 	for (var i = 0, len = steps.length; i < len; i++) {
 		steps[i].classList.remove('hidden');
 	}
