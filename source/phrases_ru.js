@@ -458,7 +458,7 @@ worker.GUIp_i18n = {
 	// options
 	import_success: 'Настройки успешно импортированы',
 	import_fail: 'Некорректная строка настроек',
-	ui_options: 'Настройки UI+',
+	ui_settings: 'Настройки UI+',
 	import_prompt: 'Импорт настроек\nВставьте сюда строку настроек',
 	export_prompt: 'Экспорт настроек\nСкопируйте отсюда строку настроек',
 	bg_status_file: 'файл',

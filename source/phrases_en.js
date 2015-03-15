@@ -314,7 +314,7 @@ worker.GUIp_i18n = {
 	// options
 	import_success: 'You setting\'ve been imported successfully',
 	import_fail: 'Incorrect settings string',
-	ui_options: 'UI+ Settings',
+	ui_settings: 'UI+ Settings',
 	import_prompt: 'Settings import\nPaste here your settings string',
 	export_prompt: 'Settings export\nCopy your settings string from here',
 	bg_status_file: 'file',

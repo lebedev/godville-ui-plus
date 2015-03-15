@@ -47,9 +47,9 @@ var storage = {
 
 function addMenu() {
 	if (god_name === "") { return; }
-	if ($j('#ui_options').length === 0) {
-		$j('#profile_main p:first').append(' | <a id="ui_options" href="#ui_options">' + worker.GUIp_i18n.ui_options + '</a>');
-		$j('#ui_options').click(function() {
+	if ($j('#ui_settings').length === 0) {
+		$j('#profile_main p:first').append(' | <a id="ui_settings" href="#ui_settings">' + worker.GUIp_i18n.ui_settings + '</a>');
+		$j('#ui_settings').click(function() {
 			loadOptions();
 		});
 	}
@@ -175,7 +175,7 @@ function save_words() {
 
 function save_options() {
 	var i;
-	$j('#gui_options_progress').show();
+	$j('#gui_settings_progress').show();
 
 	for (i = 0; i < $j('.option-checkbox').length; i++) {
 		var option = $j('.option-checkbox')[i].id;
@@ -292,7 +292,7 @@ function save_options() {
 	}
 	storage.set('Option:forbiddenCraft', forbiddenCraft.join());
 
-	$j('#gui_options_progress').fadeOut('slow');
+	$j('#gui_settings_progress').fadeOut('slow');
 
 	set_theme_and_background();
 
@@ -460,7 +460,7 @@ var starterInt = worker.setInterval(function() {
 			god_name = localStorage.GUIp_CurrentUser;
 		}
 		addMenu();
-		if (location.hash === "#ui_options") {
+		if (location.hash === "#ui_settings") {
 			loadOptions();
 		}
 		if (worker.GUIp_browser !== 'Opera') {
@@ -470,7 +470,7 @@ var starterInt = worker.setInterval(function() {
 		improve_blocks();
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
-			if (!$j('#profile_main p:first').text().match(worker.GUIp_i18n.ui_options.replace('+', '\\+'))) {
+			if (!$j('#profile_main p:first').text().match(worker.GUIp_i18n.ui_settings.replace('+', '\\+'))) {
 				worker.setTimeout(addMenu, 0);
 			}
 			improve_blocks();

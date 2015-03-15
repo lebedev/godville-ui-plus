@@ -8,7 +8,7 @@ return '<p>\n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=informers\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + worker.GUIp_i18n.profile_menu_informers + '</a> | \n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=gadgets\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + worker.GUIp_i18n.profile_menu_gadgets + '</a> | \n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=invites\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + worker.GUIp_i18n.profile_menu_invites + '</a> | \n' +
-'<a href="/user/profile/plogs">' + worker.GUIp_i18n.profile_menu_plogs + '</a> | ' + worker.GUIp_i18n.ui_options + '</p>\n' +
+'<a href="/user/profile/plogs">' + worker.GUIp_i18n.profile_menu_plogs + '</a> | ' + worker.GUIp_i18n.ui_settings + '</p>\n' +
 '<div id="pant_spn">\n' +
 '	<img align="middle" alt="Spinner" border="0" id="spinner_prof" src="/images/spinner.gif" style="vertical-align: bottom; display: none; ">\n' +
 '</div>\n' +
@@ -288,7 +288,7 @@ return '<p>\n' +
 '					<div class="new_line">\n' +
 '						<div id="options_GodvilleUI_general">\n' +
 '							<input class="input_btn" type="submit" value="' + worker.GUIp_i18n.apply + '">\n' +
-'							<img align="middle" alt="Spinner" border="0" id="gui_options_progress"\n' +
+'							<img align="middle" alt="Spinner" border="0" id="gui_settings_progress"\n' +
 '								 src="/images/spinner.gif" style="vertical-align:bottom; display: none;">\n' +
 '						</div>\n' +
 '					</div>\n' +
