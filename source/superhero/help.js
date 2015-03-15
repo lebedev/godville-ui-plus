@@ -14,7 +14,7 @@ ui_help._createHelpDialog = function() {
 			'<div style="text-align: left;">' +
 				'<div>' + worker.GUIp_i18n.how_to_update + '</div>' +
 				'<ol>' +
-					worker.GUIp_i18n['help_update_' + GUIp_browser] +
+					worker.GUIp_i18n['help_update_' + worker.GUIp_browser] +
 				'</ol>' +
 				'<div>' + worker.GUIp_i18n.help_useful_links + '</div>' +
 			'</div>' +

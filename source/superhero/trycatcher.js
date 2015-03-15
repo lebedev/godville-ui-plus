@@ -1,7 +1,7 @@
 // ui_trycatcher
 var ui_trycatcher = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "trycatcher"}) : worker.GUIp.trycatcher = {};
 
-ui_trycatcher.replace_with = function(method) {
+ui_trycatcher.replaceWithImproved = function(method) {
 	return function() {
 		try {
 			return method.apply(this, arguments);
@@ -37,7 +37,7 @@ ui_trycatcher.process = function(object) {
 	for (method_name in object) {
 		method = object[method_name];
 		if (typeof method === "function") {
-			object[method_name] = ui_trycatcher.replace_with(method);
+			object[method_name] = ui_trycatcher.replaceWithImproved(method);
 		}
 	}
 };

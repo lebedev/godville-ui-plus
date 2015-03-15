@@ -454,7 +454,7 @@ worker.GUIp_i18n = {
 	error_message_stack_trace: 'Трассировка стека',
 	and: ' и ',
 	or: ' или ',
-	ui_help: 'help',
+	ui_help: 'ui+ help',
 	// options
 	import_success: 'Настройки успешно импортированы',
 	import_fail: 'Некорректная строка настроек',
