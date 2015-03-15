@@ -320,34 +320,21 @@ worker.GUIp_i18n = {
 	craft2: ' предметов из инвентаря.',
 	get craft_verb() { return ['Склей', 'Собери', 'Скрафти', 'Соедини', 'Сделай', 'Слепи'][Math.floor(Math.random()*6)]; },
 	close: 'закрыть',
-	if_something_wrong_capt: 'если что-то пошло не так',
-	if_something_wrong: 'Если что-то работает не так, как должно:',
-	help_refresh: 'Обновите страницу. Если баг повторяется — переходите к следующему шагу.',
-	help_check_version: 'Нажмите сюда, чтоб проверить, последняя ли у вас версия дополнения.',
-	help_update_chrome_1: 'Откройте страницу настроек Хрома (2). ' +
-		worker.GUIp_github_link + 'help_guide/chrome_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.',
-	help_update_chrome_2: 'Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку ' +
+	help_dialog_capt: 'окошко помощи',
+	how_to_update: 'Как вручную обновить <b>Godville UI+</b>:',
+	help_update_Firefox: '<li>Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). ' +
+		worker.GUIp_github_link + 'help_guide/firefox_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+		'<li>Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4) и подождите несколько секунд. ' +
+		worker.GUIp_github_link + 'help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>',
+	help_update_Chrome: '<li>Откройте страницу настроек Хрома (2). ' +
+		worker.GUIp_github_link + 'help_guide/chrome_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+		'<li>Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку ' +
 		'"Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
-		worker.GUIp_github_link + 'help_guide/chrome_manual_update_2.png" title="Откроется в новой вкладке">Картинка</a>.',
-	 help_update_firefox_1: 'Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). ' +
-		worker.GUIp_github_link + 'help_guide/firefox_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.',
-	help_update_firefox_2: 'Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4), подождите несколько секунд и согласитеcь ' +
-		'на перезапуск браузера. ' +
-		worker.GUIp_github_link + 'help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.',
-	help_update_opera_1: 'Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию экстеншона. ' +
-		worker.GUIp_github_link + 'help_guide/opera_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.',
-	help_update_opera_2: 'Скачайте новую версию экстеншона по ссылке и установите ее. ' +
-		worker.GUIp_github_link + 'release/godville-ui-plus@badluck.dicey.oex"  title="Откроется в новой вкладке">Ссылка на новую версию.</a>',
-	help_back_to_step_1: 'Обратно к шагу 1.',
-	help_console_1: 'Если баг остался — проверьте, нет ли пойманного вами бага в списке багов по ссылке ниже.',
-	help_console_2: 'Если его нет в списке и не выдавалось сообщения с текстом и местом ошибки — откройте консоль ' +
-		'(через меню или комбинацией <b>Ctrl+Shift+' + (worker.GUIp_browser === 'Firefox' ? 'K' : worker.GUIp_browser === 'Chrome' ? 'J' : 'I') + '</b>). ' +
-		worker.GUIp_github_link + 'help_guide/' + worker.GUIp_browser.toLowerCase() + '_console.png" ' +
-		'title="Откроется в новой вкладке">Картинка</a>.',
-	help_console_3: 'Попробуйте найти в консоли что-нибудь, похожее на информацию об ошибке (' +
-		worker.GUIp_github_link + 'help_guide/' + worker.GUIp_browser.toLowerCase() + '_console_error.png" ' +
-		'title="Откроется в новой вкладке">картинка</a>). ' +
-		'И с этой информацией напишите <b>Бэдлаку</b> или в тему на форуме по ссылкам ниже.',
+		worker.GUIp_github_link + 'help_guide/chrome_manual_update_2.png" title="Откроется в новой вкладке">Картинка</a>.</li>',
+	help_update_Opera: '<li>Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию экстеншона. ' +
+		worker.GUIp_github_link + 'help_guide/opera_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+		'<li>Скачайте новую версию экстеншона по ссылке и установите ее. ' +
+		worker.GUIp_github_link + 'release/godville-ui-plus@badluck.dicey.oex"  title="Откроется в новой вкладке">Ссылка на новую версию.</a></li>',
 	help_useful_links: 'Полезные ссылки: ' +
 		'<a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
 		'его <a href="skype:angly_cat">скайп</a>, ' +

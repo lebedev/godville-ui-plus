@@ -274,7 +274,7 @@ ui_utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCall
 					isNewestCallback();
 				}
 			} else if (isNotNewestCallback) {
-				isNotNewestCallback();
+				isNotNewestCallback(last_version);
 			}
 		} else if (failCallback) {
 			failCallback();
