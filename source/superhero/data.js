@@ -95,7 +95,7 @@ ui_data._getWantedMonster = function() {
 ui_data._parseWantedMonster = function(xhr) {
 	var temp = xhr.responseText.match(/(?:Разыскиваются|Wanted)[\s\S]+?>([^<]+?)<\/a>[\s\S]+?>([^<]+?)<\/a>/),
 		newWantedMonster = temp ? temp[1] + '|' + temp[2] : '';
-	if (newWantedMonster !== ui_storage.get('WantedMonster:Value')) {
+	if (newWantedMonster && newWantedMonster !== ui_storage.get('WantedMonster:Value')) {
 		ui_storage.set('WantedMonster:Date', Date.now());
 		ui_storage.set('WantedMonster:Value', newWantedMonster);
 		ui_improver.wantedMonsters = new worker.RegExp(newWantedMonster);
