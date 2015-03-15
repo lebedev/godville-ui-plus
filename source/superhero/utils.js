@@ -255,3 +255,29 @@ ui_utils.hideElem = function(elem, hide) {
 		elem.classList.remove('hidden');
 	}
 };
+ui_utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCallback) {
+	ui_utils.getXHR('/forums/show/' + (worker.GUIp_locale === 'ru' ? '2' : '1'), function(xhr) {
+		var match;
+		if ((match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/))) {
+			var temp_cur = ui_data.currentVersion.split('.'),
+				last_version = match[1],
+				temp_last = last_version.split('.'),
+				isNewest = +temp_cur[0] < +temp_last[0] ? false :
+						   +temp_cur[0] > +temp_last[0] ? true :
+						   +temp_cur[1] < +temp_last[1] ? false :
+						   +temp_cur[1] > +temp_last[1] ? true :
+						   +temp_cur[2] < +temp_last[2] ? false :
+						   +temp_cur[2] > +temp_last[2] ? true :
+						   +temp_cur[3] < +temp_last[3] ? false : true;
+			if (isNewest) {
+				if (isNewestCallback) {
+					isNewestCallback();
+				}
+			} else if (isNotNewestCallback) {
+				isNotNewestCallback();
+			}
+		} else if (failCallback) {
+			failCallback();
+		}
+	}, failCallback);
+};
