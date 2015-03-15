@@ -18,6 +18,10 @@ th {
 	width: 100%;
 }
 
+#user_css {
+	font: 100% monospace;
+}
+
 #words a {
 	text-decoration: underline;
 	color: #199BDC;

@@ -321,7 +321,7 @@ return '<p>\n' +
 '					<a id="l_go_east" href="#">' + worker.GUIp_i18n.voices_east + '</a>\n' +
 '					<div id="opt_change_words">\n' +
 '						<div class="new_line">\n' +
-'							<textarea id="ta_edit" class="rounded_field" rows="4" wrap="virtual;" style="width: 98%; resize: none;" disabled></textarea>\n' +
+'							<textarea id="ta_edit" class="rounded_field" rows="1" wrap="virtual;" style="width: 98%; resize: none;" disabled></textarea>\n' +
 '						</div>\n' +
 '					</div>\n' +
 '					<div class="new_line">\n' +
@@ -338,7 +338,7 @@ return '<p>\n' +
 '			<div class="bl_capt">' + worker.GUIp_i18n.user_css + '</div>\n' +
 '			<div class="bl_content" style="text-align: center; padding-top: 0.9em;">\n' +
 '				<div class="new_line">\n' +
-'					<textarea id="user_css" class="rounded_field" rows="1" wrap="virtual;" style="width: 98%; resize: none;"></textarea>\n' +
+'					<textarea id="user_css" class="rounded_field" wrap="virtual;" style="width: 98%; resize: none;"></textarea>\n' +
 '				</div>\n' +
 '				<input class="input_btn" type="submit" id="set_user_css" value="' + worker.GUIp_i18n.apply + '">\n' +
 '				<img align="middle" alt="Spinner" border="0" id="gui_css_progress" src="/images/spinner.gif" style="vertical-align:bottom; display: none;">\n' +

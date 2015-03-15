@@ -57,7 +57,7 @@ function addMenu() {
 
 function loadOptions() {
 	if (!(localStorage.GUIp_CurrentUser || $j('#profile_main').length)) {
-		worker.setTimeout(function() {loadOptions();}, 100);
+		worker.setTimeout(loadOptions, 100);
 		return;
 	}
 	$j('#profile_main').empty();
@@ -118,6 +118,10 @@ function loadOptions() {
 		$j(this).attr('rows', $j(this).val().split('\n').length || 1);
 		setSaveWordsButtonState();
 	}).attr('rows', 1);
+
+	$j(document).on('change keypress paste focus textInput input', '#user_css', function() {
+		$j(this).attr('rows', $j(this).val().split('\n').length || 1);
+	});
 
 	$j('#GUIp_import').click(function() {
 		storage.importOptions($j('#guip_settings').val());
