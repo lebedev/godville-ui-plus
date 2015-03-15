@@ -255,29 +255,87 @@ ui_utils.hideElem = function(elem, hide) {
 		elem.classList.remove('hidden');
 	}
 };
-ui_utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCallback) {
-	ui_utils.getXHR('/forums/show/' + (worker.GUIp_locale === 'ru' ? '2' : '1'), function(xhr) {
-		var match;
-		if ((match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/))) {
-			var temp_cur = ui_data.currentVersion.split('.'),
-				last_version = match[1],
-				temp_last = last_version.split('.'),
-				isNewest = +temp_cur[0] < +temp_last[0] ? false :
-						   +temp_cur[0] > +temp_last[0] ? true :
-						   +temp_cur[1] < +temp_last[1] ? false :
-						   +temp_cur[1] > +temp_last[1] ? true :
-						   +temp_cur[2] < +temp_last[2] ? false :
-						   +temp_cur[2] > +temp_last[2] ? true :
-						   +temp_cur[3] < +temp_last[3] ? false : true;
-			if (isNewest) {
-				if (isNewestCallback) {
-					isNewestCallback();
-				}
-			} else if (isNotNewestCallback) {
-				isNotNewestCallback(last_version);
+ui_utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCallback, xhr) {
+	var match;
+	if ((match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/))) {
+		var temp_cur = ui_data.currentVersion.split('.'),
+			last_version = match[1],
+			temp_last = last_version.split('.'),
+			isNewest = +temp_cur[0] < +temp_last[0] ? false :
+					   +temp_cur[0] > +temp_last[0] ? true :
+					   +temp_cur[1] < +temp_last[1] ? false :
+					   +temp_cur[1] > +temp_last[1] ? true :
+					   +temp_cur[2] < +temp_last[2] ? false :
+					   +temp_cur[2] > +temp_last[2] ? true :
+					   +temp_cur[3] < +temp_last[3] ? false : true;
+		worker.console.log(isNewest);
+		if (isNewest) {
+			if (isNewestCallback) {
+				isNewestCallback();
 			}
-		} else if (failCallback) {
-			failCallback();
+		} else if (isNotNewestCallback) {
+			isNotNewestCallback();
 		}
-	}, failCallback);
+	} else if (failCallback) {
+		failCallback();
+	}
+};
+ui_utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCallback) {
+	ui_utils.getXHR('/forums/show/' + (worker.GUIp_locale === 'ru' ? '2' : '1'), ui_utils._parseVersion.bind(null, isNewestCallback, isNotNewestCallback, failCallback), failCallback);
+};
+
+ui_utils.processError = function(error, isDebugMode) {
+	worker.console.log('pe');
+	if (isDebugMode) {
+		worker.console.warn(worker.GUIp_i18n.debug_mode_warning);
+	}
+	var name_message = error.name + ': ' + error.message,
+		stack = error.stack.replace(name_message, '').replace(/^\n|    at /g, '').replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1');
+	worker.console.error('Godville UI+ error log:\n' +
+						  name_message + '\n' +
+						  worker.GUIp_i18n.error_message_stack_trace + ': ' + stack);
+	if (!ui_utils.hasShownErrorMessage) {
+		ui_utils.hasShownErrorMessage = true;
+		ui_utils.showMessage('error', {
+			title: worker.GUIp_i18n.error_message_title,
+			content: (isDebugMode ? '<div><b class="debug_mode_warning">' + worker.GUIp_i18n.debug_mode_warning + '</b></div>' : '') +
+					 '<div id="possible_actions">' +
+						'<div>' + worker.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
+						'<div>' + worker.GUIp_i18n.possible_actions + '</div>' +
+						'<ol>' +
+							'<li>' + worker.GUIp_i18n.if_first_time + '<a id="press_here_to_reload">' + worker.GUIp_i18n.press_here_to_reload + '</a></li>' +
+							'<li>' + worker.GUIp_i18n.if_repeats + '<a id="press_here_to_show_details">' + worker.GUIp_i18n.press_here_to_show_details + '</a></li>' +
+						'</ol>' +
+					 '</div>' +
+					 '<div id="error_details" class="hidden">' +
+						'<div>' + worker.GUIp_i18n.error_message_subtitle + '</div>' +
+						'<div>' + worker.GUIp_i18n.browser + ' <b>' + worker.GUIp_browser + ' ' + navigator.userAgent.match(worker.GUIp_browser + '\/([\\d.]+)')[1] +'</b>.</div>' +
+						'<div>' + worker.GUIp_i18n.version + ' <b>' + ui_data.currentVersion + '</b>.</div>' +
+						'<div>' + worker.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
+						'<div>' + worker.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>' +
+					 '</div>',
+			callback: function() {
+				document.getElementById('press_here_to_reload').onclick = location.reload.bind(location);
+				document.getElementById('press_here_to_show_details').onclick = function() {
+					ui_utils.hideElem(document.getElementById('possible_actions'), true);
+					ui_utils.hideElem(document.getElementById('error_details'), false);
+					if (!ui_storage.get('helpDialogVisible')) {
+						ui_help.toggleDialog();
+					}
+				};
+			}
+		});
+	}
+};
+
+ui_utils.informAboutOldVersion = function() {
+	ui_utils.showMessage('update_required', {
+		title: worker.GUIp_i18n.error_message_title,
+		content: '<div>' + worker.GUIp_i18n.error_message_in_old_version + '</div>',
+		callback: function() {
+			if (!ui_storage.get('helpDialogVisible')) {
+				ui_help.toggleDialog();
+			}
+		}
+	});
 };

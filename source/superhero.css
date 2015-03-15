@@ -699,3 +699,11 @@ a.broadcast {
 #pantheons .chf_link_wrap {
 	padding-top: 0;
 }
+
+.debug_mode_warning {
+	color: red;
+}
+
+#msgerror li {
+	text-align: left;
+}
