@@ -18,9 +18,13 @@ ui_informer.init = function() {
 	ui_informer._tick();
 };
 ui_informer._load = function() {
-	var fl = ui_storage.get('informer_flags');
-	if (!fl || fl === "") { fl = '{}'; }
-	this.flags = JSON.parse(fl);
+	this.flags = JSON.parse(ui_storage.get('informer_flags') || '{}');
+	for (var flag in this.flags) {
+		if (this.flags[flag]) {
+			delete this.flags[flag];
+		}
+	}
+	ui_informer._save();
 };
 ui_informer._save = function() {
 	ui_storage.set('informer_flags', JSON.stringify(this.flags));
