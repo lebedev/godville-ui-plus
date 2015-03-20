@@ -8,9 +8,11 @@ ui_data.init = function() {
 	ui_data._clearOldDungeonData();
 
 	// init mobile cookies
-	worker.document.cookie = 'm_f=1';
-	worker.document.cookie = 'm_pp=1';
-	worker.document.cookie = 'm_fl=1';
+	if (worker.navigator.userAgent.match(/Android/)) {
+		worker.document.cookie = 'm_f=1';
+		worker.document.cookie = 'm_pp=1';
+		worker.document.cookie = 'm_fl=1';
+	}
 
 	ui_data._getLEMRestrictions();
 	worker.setInterval(ui_data._getLEMRestrictions, 60*60*1000);
