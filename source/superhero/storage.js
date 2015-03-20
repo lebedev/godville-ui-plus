@@ -15,12 +15,12 @@ ui_storage._diff = function(id, value) {
 };
 // stores a value
 ui_storage.set = function(id, value) {
-	worker.localStorage[ui_storage._get_key(id)] = value;
+	localStorage[ui_storage._get_key(id)] = value;
 	return value;
 };
 // reads a value
 ui_storage.get = function(id) {
-	var val = worker.localStorage[ui_storage._get_key(id)];
+	var val = localStorage[ui_storage._get_key(id)];
 	if (val === 'true') { return true; }
 	if (val === 'false') { return false; }
 	return val;
@@ -35,9 +35,9 @@ ui_storage.set_with_diff = function(id, value) {
 ui_storage.dump = function(selector) {
 	var lines = [];
 	var r = new worker.RegExp('^GUIp_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
-	for (var i = 0; i < worker.localStorage.length; i++) {
-		if (worker.localStorage.key(i).match(r)) {
-			lines.push(worker.localStorage.key(i) + ' = ' + worker.localStorage[worker.localStorage.key(i)]);
+	for (var i = 0; i < localStorage.length; i++) {
+		if (localStorage.key(i).match(r)) {
+			lines.push(localStorage.key(i) + ' = ' + localStorage[localStorage.key(i)]);
 		}
 	}
 	lines.sort();
@@ -59,44 +59,44 @@ ui_storage.clear = function(what) {
 		}
 		return;
 	}
-	for (var key in worker.localStorage) {
+	for (var key in localStorage) {
 		if (what === 'GUIp' && key.match(/^GUIp_/) ||
 			what === 'Godville' && !key.match(/^GUIp_/) ||
 			what === 'All') {
-			delete worker.localStorage[key];
+			delete localStorage[key];
 		}
 	}
 	location.reload();
 };
 ui_storage._rename = function(from, to) {
-	for (var key in worker.localStorage) {
+	for (var key in localStorage) {
 		if (key.match(from)) {
-			worker.localStorage[key.replace(from, to)] = worker.localStorage[key];
-			delete worker.localStorage[key];
+			localStorage[key.replace(from, to)] = localStorage[key];
+			delete localStorage[key];
 		}
 	}
 };
 ui_storage._rename_nesw = function(from, to) {
 	if (ui_storage.get('phrases_walk_' + from)) {
 		ui_storage.set('CustomPhrases:go_' + to, ui_storage.get('phrases_walk_' + from));
-		delete worker.localStorage[ui_storage._get_key('phrases_walk_' + from)];
+		delete localStorage[ui_storage._get_key('phrases_walk_' + from)];
 	}
 };
 ui_storage.migrate = function() {
-	if (!worker.localStorage.GUIp_migrated) {
+	if (!localStorage.GUIp_migrated) {
 		ui_storage._rename(/^GM/, 'GUIp_');
-		worker.localStorage.GUIp_migrated = '141115';
+		localStorage.GUIp_migrated = '141115';
 	}
-	if (worker.localStorage.GUIp_migrated < '150113') {
+	if (localStorage.GUIp_migrated < '150113') {
 		ui_storage._rename_nesw('n', 'north');
 		ui_storage._rename_nesw('e', 'east');
 		ui_storage._rename_nesw('s', 'south');
 		ui_storage._rename_nesw('w', 'west');
 		ui_storage._rename(/:phrases_/, ':CustomPhrases:');
-		worker.localStorage.GUIp_migrated = '150113';
+		localStorage.GUIp_migrated = '150113';
 	}
-	if (worker.localStorage.GUIp_migrated < '150228') {
+	if (localStorage.GUIp_migrated < '150228') {
 		ui_storage._rename(/:thirdEye(.+)Entry/, ':ThirdEye:$1');
-		worker.localStorage.GUIp_migrated = '150228';
+		localStorage.GUIp_migrated = '150228';
 	}
 };

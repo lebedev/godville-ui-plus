@@ -5,8 +5,8 @@ function GUIp_log() {
 
 	function updateButton() {
 		var i;
-		if (!isNaN(worker.localStorage[godname_prefix + log + 'sentToLEM' + request_limit]) && Date.now() - worker.localStorage[godname_prefix + log + 'sentToLEM' + request_limit] < time_frame_seconds*1000) {
-			var time = time_frame_seconds - (Date.now() - worker.localStorage[godname_prefix + log + 'sentToLEM' + request_limit])/1000,
+		if (!isNaN(localStorage[godname_prefix + log + 'sentToLEM' + request_limit]) && Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + request_limit] < time_frame_seconds*1000) {
+			var time = time_frame_seconds - (Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + request_limit])/1000,
 				minutes = Math.floor(time/60),
 				seconds = Math.floor(time%60);
 			seconds = seconds < 10 ? '0' + seconds : seconds;
@@ -15,7 +15,7 @@ function GUIp_log() {
 		} else {
 			var tries = 0;
 			for (i = 0; i < request_limit; i++) {
-				if (isNaN(worker.localStorage[godname_prefix + log + 'sentToLEM' + i]) || Date.now() - worker.localStorage[godname_prefix + log + 'sentToLEM' + i] > time_frame_seconds*1000) {
+				if (isNaN(localStorage[godname_prefix + log + 'sentToLEM' + i]) || Date.now() - localStorage[godname_prefix + log + 'sentToLEM' + i] > time_frame_seconds*1000) {
 					tries++;
 				}
 			}
@@ -27,14 +27,14 @@ function GUIp_log() {
 	function deleteOldEntries() {
 		// old entries deletion
 		var len, lines = [];
-		for (i = 0, len = worker.localStorage.length; i < len; i++) {
-			if (worker.localStorage.key(i).match(godname_prefix + 'Log:\\w{5}:') && !worker.localStorage.key(i).match(log + '|' + worker.localStorage[godname_prefix + 'Log:current'])) {
-				lines.push(worker.localStorage.key(i));
+		for (i = 0, len = localStorage.length; i < len; i++) {
+			if (localStorage.key(i).match(godname_prefix + 'Log:\\w{5}:') && !localStorage.key(i).match(log + '|' + localStorage[godname_prefix + 'Log:current'])) {
+				lines.push(localStorage.key(i));
 			}
 		}
 		for (i = 0, len = lines.length; i < len; i++) {
-			if (isNaN(worker.localStorage[lines[i]]) || Date.now() - worker.localStorage[lines[i]] > time_frame_seconds*1000) {
-				worker.localStorage.removeItem(lines[i]);
+			if (isNaN(localStorage[lines[i]]) || Date.now() - localStorage[lines[i]] > time_frame_seconds*1000) {
+				localStorage.removeItem(lines[i]);
 			}
 		}
 	}
@@ -44,11 +44,11 @@ function GUIp_log() {
 	}
 
 	try {
-		var godname_prefix = 'GUIp_' + worker.localStorage.GUIp_CurrentUser + ':',
+		var godname_prefix = 'GUIp_' + localStorage.GUIp_CurrentUser + ':',
 			log = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':',
 			steps = +document.getElementById('fight_log_capt').textContent.match(/(?:Хроника подземелья \(шаг|Dungeon Journal \(step) (\d+)\)/)[1];
-		if (!document.querySelector('#dmap') && steps === +worker.localStorage[godname_prefix + log + 'steps']) {
-			var map = JSON.parse(worker.localStorage[godname_prefix + log + 'map']),
+		if (!document.querySelector('#dmap') && steps === +localStorage[godname_prefix + log + 'steps']) {
+			var map = JSON.parse(localStorage[godname_prefix + log + 'map']),
 				map_elem = '<div id="hero2"><div class="box"><fieldset style="min-width:0;"><legend>' + worker.GUIp_i18n.map + '</legend><div id="dmap" class="new_line">';
 			for (var i = 0, ilen = map.length; i < ilen; i++) {
 				map_elem += '<div class="dml" style="width:' + (map[0].length * 21) + 'px;">';
@@ -65,7 +65,7 @@ function GUIp_log() {
 			$box.insertAdjacentHTML('beforeend', '<span>' + worker.GUIp_i18n.wrong_entries_order + '</span>');
 			return;
 		}
-		var steps_min = worker.localStorage[godname_prefix + 'LEMRestrictions:FirstRequest'] || 12;
+		var steps_min = localStorage[godname_prefix + 'LEMRestrictions:FirstRequest'] || 12;
 		if (steps < steps_min) {
 			$box.insertAdjacentHTML('beforeend', '<span>' + worker.GUIp_i18n.the_button_will_appear_after + steps_min + worker.GUIp_i18n.step + '</span>');
 			return;
@@ -90,7 +90,7 @@ function GUIp_log() {
 				'</div>' +
 				'<table style="box-shadow: none; width: 100%;"><tr>' +
 					'<td style="border: none; padding: 0;"><label for="stoneeater">' + worker.GUIp_i18n.corrections + '</label></td>' +
-					'<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="' + (worker.localStorage[godname_prefix + log + 'corrections'] || '') + '" style=" width: 100%; padding: 0;"></td>' +
+					'<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="' + (localStorage[godname_prefix + log + 'corrections'] || '') + '" style=" width: 100%; padding: 0;"></td>' +
 				'</tr></table>' +
 				'<button id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
 			'</form>');
@@ -107,14 +107,14 @@ function GUIp_log() {
 		var button = document.getElementById('send_to_LEM'),
 			match = document.getElementById('match'),
 			search_mode = document.getElementById('search_mode'),
-			time_frame_seconds = (worker.localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 20)*60,
-			request_limit = worker.localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 5;
+			time_frame_seconds = (localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 20)*60,
+			request_limit = localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 5;
 		button.onclick = function(e) {
 			e.preventDefault();
 			for (var i = request_limit; i > 1; i--) {
-				worker.localStorage[godname_prefix + log + 'sentToLEM' + i] = worker.localStorage[godname_prefix + log + 'sentToLEM' + (i - 1)];
+				localStorage[godname_prefix + log + 'sentToLEM' + i] = localStorage[godname_prefix + log + 'sentToLEM' + (i - 1)];
 			}
-			worker.localStorage[godname_prefix + log + 'sentToLEM1'] = Date.now();
+			localStorage[godname_prefix + log + 'sentToLEM1'] = Date.now();
 			updateButton();
 			this.form.submit();
 			document.getElementById('match').checked = false;

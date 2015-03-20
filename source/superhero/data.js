@@ -29,7 +29,7 @@ ui_data._initVariables = function() {
 	this.char_name = worker.so.state.stats.name.value;
 	this.char_sex = worker.so.state.stats.gender.value === 'male' ? worker.GUIp_i18n.hero : worker.GUIp_i18n.heroine;
 	ui_storage.set('ui_s', '');
-	worker.localStorage.GUIp_CurrentUser = this.god_name;
+	localStorage.GUIp_CurrentUser = this.god_name;
 	if (worker.so.state.bricks_cnt() === 1000) {
 		document.body.classList.add('has_temple');
 		this.hasTemple = true;
@@ -50,8 +50,8 @@ ui_data._initForumData = function() {
 			ui_storage.set('Forum6', '{}');
 
 			// clear old data
-			worker.localStorage.removeItem('GUIp_' + this.god_name + ':posts');
-			worker.localStorage.removeItem('GUIp_Options:User');
+			delete localStorage['GUIp_' + this.god_name + ':posts'];
+			delete localStorage['GUIp_Options:User'];
 			var informer_flags = ui_storage.get('informer_flags') && JSON.parse(ui_storage.get('informer_flags')) || null;
 			if (informer_flags) {
 				delete informer_flags['new posts'];
@@ -64,9 +64,9 @@ ui_data._initForumData = function() {
 };
 ui_data._clearOldDungeonData = function() {
 	if (!this.isFight && !this.isDungeon) {
-		for (var key in worker.localStorage) {
+		for (var key in localStorage) {
 			if (key.match(/Dungeon:/)) {
-				delete worker.localStorage[key];
+				delete localStorage[key];
 			}
 		}
 	}

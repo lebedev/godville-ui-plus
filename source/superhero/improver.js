@@ -1029,8 +1029,8 @@ ui_improver.improveInterface = function() {
 		worker.GUIp_addCSSFromString(ui_storage.get('UserCss'));
 	}
 
-	if (worker.localStorage.ui_s !== ui_storage.get('ui_s')) {
-		ui_storage.set('ui_s', worker.localStorage.ui_s || 'th_classic');
+	if (localStorage.ui_s !== ui_storage.get('ui_s')) {
+		ui_storage.set('ui_s', localStorage.ui_s || 'th_classic');
 		this.Shovel = false;
 		document.body.className = document.body.className.replace(/th_\w+/g, '') + ' ' + ui_storage.get('ui_s');
 	}
