@@ -20,7 +20,7 @@ ui_starter._init = function() {
 ui_starter.start = function() {
 	if (worker.$ && (worker.$('#m_info').length || worker.$('#stats').length) && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && worker.so.state) {
 		worker.clearInterval(starterInt);
-		var start = new Date();
+		worker.console.time('Godville UI+ initialized in');
 
 		ui_starter._init();
 
@@ -47,7 +47,6 @@ ui_starter.start = function() {
 			'</svg>'
 		);
 
-		var finish = new Date();
-		worker.console.info('Godville UI+ log: Initialized in ' + (finish.getTime() - start.getTime()) + ' msec.');
+		worker.console.timeEnd('Godville UI+ initialized in');
 	}
 };
