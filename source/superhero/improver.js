@@ -369,7 +369,7 @@ ui_improver.improveMap = function() {
 					isMoveLoss = [];
 				len = +worker.Object.keys(this.chronicles).reverse()[0];
 				for (i = 0; i < 4; i++) {
-					isMoveLoss[i] = len > i && this.chronicles[len - i - 1].marks.indexOf('trapMoveLoss') !== -1;
+					isMoveLoss[i] = len > i && this.chronicles[len - i].marks.indexOf('trapMoveLoss') !== -1;
 				}
 				var directionsShouldBeShown = !isMoveLoss[0] || (isMoveLoss[1] && (!isMoveLoss[2] || isMoveLoss[3]));
 				if (directionsShouldBeShown) {
