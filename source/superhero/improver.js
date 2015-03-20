@@ -1242,7 +1242,7 @@ ui_improver.initSoundsOverride = function() {
 				if((worker.$(document.activeElement).is("input") || worker.$(document.activeElement).is("textarea")) &&
 					worker.$(document.activeElement).attr("id") !== "god_phrase" &&
 					worker.$(document.activeElement).val().length > 3) {
-					var readyness = confirm(Loc.duel_switch_confirm);
+					var readyness = worker.confirm(worker.Loc.duel_switch_confirm);
 					if (!readyness)  {
 						return false;
 					}
