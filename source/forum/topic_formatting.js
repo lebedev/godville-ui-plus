@@ -1,4 +1,5 @@
 // topic formatting
+var val, ss, se, nls, nle, selection;
 var initEditor = function(editor) {
 	val = editor.value;
 	ss = editor.selectionStart;
@@ -63,7 +64,7 @@ var pasteBr = function(dummy, editor) {
 	}
 };
 var setClickActions = function(id, container) {
-	var temp = '#' + id + ' .formatting.',
+	var elem, temp = '#' + id + ' .formatting.',
 		buttons = [
 			{ class: 'bold', func: basicFormatting, params: ['*', '*'] },
 			{ class: 'underline', func: basicFormatting, params: ['+', '+'] },

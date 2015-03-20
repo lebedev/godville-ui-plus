@@ -1,4 +1,5 @@
 // topic other improvements
+var pw, pw_pb_int;
 var checkHash = function() {
 	// scroll to a certain post #
 	var guip_hash = location.hash.match(/#guip_(\d+)/);
@@ -86,7 +87,7 @@ var updatePostsNumber = function() {
 		var posts = page*25 + document.getElementsByClassName('post').length;
 		if (topics[topic] < posts) {
 			topics[topic] = posts;
-			storage.set(forum_topics, JSON.stringify(topics));
+			storage.set(forum_no, JSON.stringify(topics));
 		}
 	}
 };

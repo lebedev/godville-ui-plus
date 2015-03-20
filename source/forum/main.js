@@ -1,12 +1,11 @@
 // main code
-var i, len, follow_links, isFollowed, links_containers, topic, unfollow_links,
-	isTopic, forum_topics, god_name, topics, elem, pw, pw_pb_int, val, ss, se, nls, nle, selection;
+var i, len, topic, isTopic, forum_no, topics;
 var setInitVariables = function() {
 	isTopic = location.pathname.match(/topic/) !== null;
-	forum_topics = 'Forum' + (isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
+	forum_no = 'Forum' + (isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
 									  : location.pathname.match(/forums\/show\/(\d+)/)[1]);
-	god_name = localStorage.GUIp_CurrentUser;
-	topics = JSON.parse(storage.get(forum_topics));
+	storage.god_name = localStorage.GUIp_CurrentUser;
+	topics = JSON.parse(storage.get(forum_no));
 };
 var GUIp_forum = function() {
 	try {
@@ -15,11 +14,8 @@ var GUIp_forum = function() {
 
 		setInitVariables();
 
-		if (isTopic) {
-			links_containers = $Q('#topic_mod');
-		} else {
+		if (!isTopic) {
 			addSmallElements();
-			links_containers = $Q('.c2 small');
 		}
 
 		addLinks();

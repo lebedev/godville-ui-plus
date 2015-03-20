@@ -19,7 +19,7 @@ var $q = function(sel) {
 };
 var storage = {
 	_getKey: function(key) {
-		return "GUIp_" + god_name + ':' + key;
+		return "GUIp_" + this.god_name + ':' + key;
 	},
 	set: function(id, value) {
 		localStorage[this._getKey(id)] = value;
@@ -30,7 +30,8 @@ var storage = {
 		if (value === 'true') { return true; }
 		else if (value === 'false') { return false; }
 		else { return value; }
-	}
+	},
+	god_name: ''
 };
 var addSmallElements = function() {
 	var temp = $Q('.c2');
@@ -47,9 +48,9 @@ var followOnclick = function(e) {
 							: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
 			posts = isTopic ? +$c('subtitle').textContent.match(/\d+/)[0]
 							: +this.parentElement.parentElement.nextElementSibling.textContent,
-			topics = JSON.parse(storage.get(forum_topics));
+			topics = JSON.parse(storage.get(forum_no));
 		topics[topic] = posts;
-		storage.set(forum_topics, JSON.stringify(topics));
+		storage.set(forum_no, JSON.stringify(topics));
 		this.style.display = 'none';
 		this.parentElement.querySelector('.unfollow').style.display = 'inline';
 	} catch(error) {
@@ -57,7 +58,7 @@ var followOnclick = function(e) {
 	}
 };
 var addOnclickToFollow = function() {
-	follow_links = $Q('.follow');
+	var follow_links = $Q('.follow');
 	for (i = 0, len = follow_links.length; i < len; i++) {
 		follow_links[i].onclick = followOnclick;
 	}
@@ -67,10 +68,10 @@ var unfollowOnclick = function(e) {
 		e.preventDefault();
 		var topic = isTopic ? location.pathname.match(/\d+/)[0]
 							: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-			topics = JSON.parse(storage.get(forum_topics)),
+			topics = JSON.parse(storage.get(forum_no)),
 			informers = JSON.parse(storage.get('ForumInformers'));
 		delete topics[topic];
-		storage.set(forum_topics, JSON.stringify(topics));
+		storage.set(forum_no, JSON.stringify(topics));
 		delete informers[topic];
 		storage.set('ForumInformers', JSON.stringify(informers));
 		this.style.display = 'none';
@@ -80,16 +81,22 @@ var unfollowOnclick = function(e) {
 	}
 };
 var addOnclickToUnfollow = function() {
-	unfollow_links = $Q('.unfollow');
+	var unfollow_links = $Q('.unfollow');
 	for (i = 0, len = unfollow_links.length; i < len; i++) {
 		unfollow_links[i].onclick = unfollowOnclick;
 	}
 };
 var addLinks = function() {
+	var links_containers;
+	if (isTopic) {
+		links_containers = $Q('#topic_mod');
+	} else {
+		links_containers = $Q('.c2 small');
+	}
 	for (i = 0, len = links_containers.length; i < len; i++) {
 		topic = isTopic ? location.pathname.match(/\d+/)[0]
 						: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
-		isFollowed = topics[topic] !== undefined;
+		var isFollowed = topics[topic] !== undefined;
 		links_containers[i].insertAdjacentHTML('beforeend',
 			(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? worker.GUIp_i18n.Subscribe : worker.GUIp_i18n.subscribe) + '</a>' +
 									 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? worker.GUIp_i18n.Unsubscribe : worker.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
