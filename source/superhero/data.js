@@ -62,13 +62,10 @@ ui_data._initForumData = function() {
 };
 ui_data._clearOldDungeonData = function() {
 	if (!this.isFight && !this.isDungeon) {
-		for (var i = 0, lines = [], len = worker.localStorage.length; i < len; i++) {
-			if (worker.localStorage.key(i).match(/Dungeon:/)) {
-				lines.push(worker.localStorage.key(i));
+		for (var key in worker.localStorage) {
+			if (key.match(/Dungeon:/)) {
+				delete worker.localStorage[key];
 			}
-		}
-		for (i = 0, len = lines.length; i < len; i++) {
-			worker.localStorage.removeItem(lines[i]);
 		}
 	}
 };
