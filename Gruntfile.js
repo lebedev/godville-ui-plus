@@ -145,11 +145,101 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      all: {
+      options: {
+        'curly': true,
+        'eqnull': true,
+        'eqeqeq': true,
+        'undef': true
+      },
+      gruntfile: {
+        options: {
+          'globals': {
+            'module': false
+          }
+        },
+        src: 'Gruntfile.js'
+      },
+      superhero: {
+        options: {
+          'globals': {
+            'worker': true,
+            'window': false,
+            'createObjectIn': false,
+            'document': false,
+            'location': false,
+            'navigator': false,
+            'localStorage': false,
+            'XMLHttpRequest': false,
+            'MutationObserver': false,
+            'ui_data': true,
+            'ui_utils': true,
+            'ui_timeout': true,
+            'ui_help': true,
+            'ui_storage': true,
+            'ui_words': true,
+            'ui_stats': true,
+            'ui_logger': true,
+            'ui_informer': true,
+            'ui_forum': true,
+            'ui_improver': true,
+            'ui_timers': true,
+            'ui_observers': true,
+            'ui_starter': true,
+            'ui_trycatcher': true,
+            'starterInt': true,
+          }
+        },
+        src: 'source/superhero/*.js'
+      },
+      forum: {
+        options: {
+          'globals': {
+            'worker': true,
+            'window': false,
+            'document': false,
+            'location': false,
+            'localStorage': false,
+            'MutationObserver': false,
+            'getComputedStyle': false,
+            '$id': true,
+            '$C': true,
+            '$Q': true,
+            '$q': true,
+            'storage': true,
+            'addSmallElements': true,
+            'addLinks': true,
+            'addFormattingButtonsAndCtrlEnter': true,
+            'fixGodnamePaste': true,
+            'improveTopic': true,
+            'i': true,
+            'len': true,
+            'isTopic': true,
+            'forum_no': true,
+            'topics': true,
+            'topic': true
+          }
+        },
+        src: 'source/forum/*.js'
+      },
+      other: {
+        options: {
+          'globals': {
+            'worker': true,
+            'window': false,
+            'document': false,
+            'location': false,
+            'localStorage': false,
+            'unsafeWindow': false,
+            'require': false,
+            'opera': false,
+            'FileReader': false,
+          }
+        },
         src: [
-          'Gruntfile.js',
           'source/**/*.js',
           '!source/vendor/*.js',
+          '!source/superhero/*.js',
+          '!source/forum/*.js',
           '!source/firefox/bootstrap.js'
         ]
       }
