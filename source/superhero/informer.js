@@ -4,6 +4,8 @@ var ui_informer = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs
 ui_informer.init = function() {
 	//title saver
 	this.title = document.title;
+	//favicon saver
+	this.favicon = document.querySelector('link[rel="shortcut icon"]');
 	// container
 	document.getElementById('main_wrapper').insertAdjacentHTML('afterbegin', '<div id="informer_bar" />');
 	this.container = document.getElementById('informer_bar');
@@ -64,12 +66,7 @@ ui_informer._tick = function() {
 };
 ui_informer.clearTitle = function() {
 	document.title = ui_informer._getTitleNotices() + this.title;
-
-	var sc = document.querySelector('link[rel="shortcut icon"]');
-	if (sc) {
-		document.head.removeChild(sc);
-	}
-	document.head.insertAdjacentHTML('beforeend', '<link rel="shortcut icon" href="images/favicon.ico" />');
+	this.favicon.href = 'images/favicon.ico';
 };
 ui_informer._getTitleNotices = function() {
 	var forbidden_title_notices = ui_storage.get('Option:forbiddenTitleNotices') || '';
@@ -106,19 +103,14 @@ ui_informer._getGMTitleNotice = function() {
 ui_informer._getFITitleNotice = function() {
 	return document.querySelector('#forum_informer_bar a') ? '[f]' : '';
 };
-ui_informer._updateTitle = function(arr) {
+ui_informer._updateTitle = function(flags) {
 	this.odd_tick = !this.odd_tick;
-	var sep, favicon;
-	if (this.odd_tick) {
-		sep = '...';
-		favicon = 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
-	} else {
-		sep = '!!!';
-		favicon = "images/favicon.ico";
+	var sep = this.odd_tick ? '!!!' : '...';
+	document.title = ui_informer._getTitleNotices() + sep + ' ' + flags.join('! ') + ' ' + sep;
+	if (worker.GUIp_browser !== 'Opera') {
+		this.favicon.href = this.odd_tick ? 'images/favicon.ico'
+										  : 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
 	}
-	document.title = ui_informer._getTitleNotices() + sep + ' ' + arr.join('! ') + ' ' + sep;
-	worker.$('link[rel="shortcut icon"]').remove();
-	worker.$('head').append('<link rel="shortcut icon" href=' + favicon + ' />');
 };
 ui_informer.update = function(flag, value) {
 	if (value && (flag === 'fight' || !(ui_data.isFight && !ui_data.isDungeon)) && !(ui_storage.get('Option:forbiddenInformers') &&
