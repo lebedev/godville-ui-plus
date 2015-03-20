@@ -822,7 +822,7 @@ ui_improver.improveChronicles = function() {
 		var i, len, lastNotParsed, texts = [],
 			chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)'),
 			ch_down = document.querySelector('.sort_ch').textContent === '▼',
-			step = numberInBlockTitle[0];
+			step = +numberInBlockTitle[0];
 		worker.console.log('new ', chronicles.length, ' chronicles from step #', step);
 		for (len = chronicles.length, i = ch_down ? 0 : len - 1; (ch_down ? i < len : i >= 0) && step; ch_down ? i++ : i--) {
 			lastNotParsed = true;
