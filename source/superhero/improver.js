@@ -404,7 +404,7 @@ ui_improver.improveMap = function() {
 														 .replace(/юг|south/,'↓')
 														 .replace(/запад|west/, '←');
 					for (ij = 0, len = ttl.length; ij < len; ij++){
-						if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) != - 1){
+						if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) !== - 1){
 							for (ik = 0; ik < kRow; ik++) {
 								for (jk = 0; jk < kColumn; jk++) {
 									var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
