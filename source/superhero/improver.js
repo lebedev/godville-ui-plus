@@ -90,71 +90,59 @@ ui_improver.improve = function() {
 	ui_storage.set('optionsChanged', false);
 };
 ui_improver.improveLoot = function() {
-	var i, j, len, items = document.querySelectorAll('#inventory li'),
-		flags = new Array(ui_words.base.usable_items.types.length),
+	var i, j, len, item, flags = [],
 		bold_items = 0,
-		trophy_list = [],
 		trophy_boldness = {},
-		forbidden_craft = ui_storage.get('Option:forbiddenCraft');
+		forbidden_craft = ui_storage.get('Option:forbiddenCraft') || '';
 
-	for (i = 0, len = flags.length; i < len; i++) {
+	for (i = 0, len = ui_words.base.usable_items.types.length; i < len; i++) {
 		flags[i] = false;
 	}
 
 	// Parse items
-	for (i = 0, len = items.length; i < len; i++) {
-		if (getComputedStyle(items[i]).overflow === 'visible') {
-			var item_name = items[i].textContent.replace(/\?$/, '')
-												.replace(/\(@\)/, '')
-												.replace(/\(\d шт\)$/, '')
-												.replace(/\(\dpcs\)$/, '')
-												.replace(/^\s+|\s+$/g, '');
-			// color items and add buttons
-			if (ui_words.isUsableItem(items[i])) {
-				var desc = items[i].querySelector('.item_act_link_div *').getAttribute('title').replace(/ \(.*/g, ''),
-					sect = ui_words.usableItemType(desc);
+	for (var item_name in worker.so.state.inventory) {
+		item = worker.so.state.inventory[item_name];
+		// color items and add buttons
+		if (item.description) { // usable item
+			var sect = ui_words.usableItemType(item.description);
+			bold_items++;
+			if (sect !== -1) {
+				flags[sect] = true;
+			} else if (!ui_utils.hasShownInfoMessage) {
+				ui_utils.hasShownInfoMessage = true;
+				ui_utils.showMessage('info', {
+					title: worker.GUIp_i18n.unknown_item_type_title,
+					content: '<div>' + worker.GUIp_i18n.unknown_item_type_content + '<b>"' + item.description + '</b>"</div>'
+				});
+			}
+			if (!(forbidden_craft.match('usable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r')))) {
+				trophy_boldness[item_name] = true;
+			}
+		} else if (item.type === 'heal_potion') { // healing item
+			if (!item.isImproved) {
+				item.li[0].classList.add('heal_item');
+			}
+			if (!(forbidden_craft.match('heal') || (forbidden_craft.match('b_r') && forbidden_craft.match('r_r')))) {
+				trophy_boldness[item_name] = false;
+			}
+		} else {
+			if (item.price === 101) { // bold item
 				bold_items++;
-				if (sect !== -1) {
-					flags[sect] = true;
-				} else if (!ui_utils.hasShownInfoMessage) {
-					ui_utils.hasShownInfoMessage = true;
-					ui_utils.showMessage('info', {
-						title: worker.GUIp_i18n.unknown_item_type_title,
-						content: '<div>' + worker.GUIp_i18n.unknown_item_type_content + '<b>"' + desc + '</b>"</div>'
-					});
-				}
-				if (!(forbidden_craft && (forbidden_craft.match('usable') || (forbidden_craft.match('b_b') && forbidden_craft.match('b_r'))))) {
-					trophy_list.push(item_name);
+				if (!(forbidden_craft.match('b_b') && forbidden_craft.match('b_r')) &&
+					!item_name.match('золотой кирпич') && !item_name.match(' босса ')) {
 					trophy_boldness[item_name] = true;
 				}
-			} else if (ui_words.isHealItem(items[i])) {
-				if (!ui_utils.isAlreadyImproved(items[i])) {
-					items[i].classList.add('heal_item');
-				}
-				if (!(forbidden_craft && (forbidden_craft.match('heal') || (forbidden_craft.match('b_r') && forbidden_craft.match('r_r'))))) {
-					trophy_list.push(item_name);
+			} else {
+				if (!(forbidden_craft.match('b_r') && forbidden_craft.match('r_r')) &&
+					!item_name.match('пушистого триббла')) {
 					trophy_boldness[item_name] = false;
 				}
-			} else {
-				if (ui_words.isBoldItem(items[i])) {
-					bold_items++;
-					if (!(forbidden_craft && forbidden_craft.match('b_b') && forbidden_craft.match('b_r')) &&
-						!item_name.match('золотой кирпич') && !item_name.match(' босса ')) {
-						trophy_list.push(item_name);
-						trophy_boldness[item_name] = true;
-					}
-				} else {
-					if (!(forbidden_craft && forbidden_craft.match('b_r') && forbidden_craft.match('r_r')) &&
-						!item_name.match('пушистого триббла')) {
-						trophy_list.push(item_name);
-						trophy_boldness[item_name] = false;
-					}
-				}
-				if (!ui_utils.isAlreadyImproved(items[i])) {
-					items[i].insertBefore(ui_utils.createInspectButton(item_name), null);
-				}
+			}
+			if (!item.isImproved) {
+				item.li[0].insertBefore(ui_utils.createInspectButton(item_name), null);
 			}
 		}
+		item.isImproved = true;
 	}
 
 	for (i = 0, len = flags.length; i < len; i++) {
@@ -167,27 +155,27 @@ ui_improver.improveLoot = function() {
 	this.b_b = [];
 	this.b_r = [];
 	this.r_r = [];
-	if (trophy_list.length) {
-		trophy_list.sort();
-		for (i = 0, len = trophy_list.length - 1; i < len; i++) {
+	var item_names = worker.Object.keys(trophy_boldness).sort();
+	if (item_names.length) {
+		for (i = 0, len = item_names.length - 1; i < len; i++) {
 			for (j = i + 1; j < len + 1; j++) {
-				if (trophy_list[i][0] === trophy_list[j][0]) {
-					if (trophy_boldness[trophy_list[i]] && trophy_boldness[trophy_list[j]]) {
-						if (!(forbidden_craft && forbidden_craft.match('b_b'))) {
-							this.b_b.push(trophy_list[i] + worker.GUIp_i18n.and + trophy_list[j]);
-							this.b_b.push(trophy_list[j] + worker.GUIp_i18n.and + trophy_list[i]);
+				if (item_names[i][0] === item_names[j][0]) {
+					if (trophy_boldness[item_names[i]] && trophy_boldness[item_names[j]]) {
+						if (!forbidden_craft.match('b_b')) {
+							this.b_b.push(item_names[i] + worker.GUIp_i18n.and + item_names[j]);
+							this.b_b.push(item_names[j] + worker.GUIp_i18n.and + item_names[i]);
 						}
-					} else if (!trophy_boldness[trophy_list[i]] && !trophy_boldness[trophy_list[j]]) {
-						if (!(forbidden_craft && forbidden_craft.match('r_r'))) {
-							this.r_r.push(trophy_list[i] + worker.GUIp_i18n.and + trophy_list[j]);
-							this.r_r.push(trophy_list[j] + worker.GUIp_i18n.and + trophy_list[i]);
+					} else if (!trophy_boldness[item_names[i]] && !trophy_boldness[item_names[j]]) {
+						if (!forbidden_craft.match('r_r')) {
+							this.r_r.push(item_names[i] + worker.GUIp_i18n.and + item_names[j]);
+							this.r_r.push(item_names[j] + worker.GUIp_i18n.and + item_names[i]);
 						}
 					} else {
-						if (!(forbidden_craft && forbidden_craft.match('b_r'))) {
-							if (trophy_boldness[trophy_list[i]]) {
-								this.b_r.push(trophy_list[i] + worker.GUIp_i18n.and + trophy_list[j]);
+						if (!forbidden_craft.match('b_r')) {
+							if (trophy_boldness[item_names[i]]) {
+								this.b_r.push(item_names[i] + worker.GUIp_i18n.and + item_names[j]);
 							} else {
-								this.b_r.push(trophy_list[j] + worker.GUIp_i18n.and + trophy_list[i]);
+								this.b_r.push(item_names[j] + worker.GUIp_i18n.and + item_names[i]);
 							}
 						}
 					}

@@ -67,12 +67,3 @@ ui_words.craftPhrase = function(items) {
 ui_words.usableItemType = function(desc) {
 	return this.base.usable_items.descriptions.indexOf(desc);
 };
-ui_words.isHealItem = function(item) {
-	return item.style.fontStyle === "italic";
-};
-ui_words.isUsableItem = function(item) {
-	return item.textContent.match(/\(@\)/);
-};
-ui_words.isBoldItem = function(item) {
-	return item.style.fontWeight === 700 || item.style.fontWeight === "bold";
-};
