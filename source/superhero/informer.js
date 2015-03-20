@@ -9,15 +9,8 @@ ui_informer.init = function() {
 	// container
 	document.getElementById('main_wrapper').insertAdjacentHTML('afterbegin', '<div id="informer_bar" />');
 	this.container = document.getElementById('informer_bar');
-	// load and draw labels
+	// load
 	ui_informer._load();
-	for (var flag in this.flags) {
-		if (this.flags[flag]) {
-			ui_informer._createLabel(flag);
-		}
-	}
-	// run flicker
-	ui_informer._tick();
 };
 ui_informer._load = function() {
 	this.flags = JSON.parse(ui_storage.get('informer_flags') || '{}');
@@ -61,7 +54,7 @@ ui_informer._tick = function() {
 		this.tref = worker.setTimeout(ui_informer._tick.bind(ui_informer), 700);
 	} else {
 		ui_informer.clearTitle();
-		this.tref = undefined;
+		this.tref = 0;
 	}
 };
 ui_informer.clearTitle = function() {
@@ -115,18 +108,18 @@ ui_informer._updateTitle = function(flags) {
 ui_informer.update = function(flag, value) {
 	if (value && (flag === 'fight' || !(ui_data.isFight && !ui_data.isDungeon)) && !(ui_storage.get('Option:forbiddenInformers') &&
 		ui_storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))) {
-		if (!(flag in this.flags)) {
+		if (this.flags[flag] === undefined) {
 			this.flags[flag] = true;
 			ui_informer._createLabel(flag);
 			ui_informer._save();
+			if (!this.tref) {
+				ui_informer._tick();
+			}
 		}
-	} else if (flag in this.flags) {
+	} else if (this.flags[flag] !== undefined) {
 		delete this.flags[flag];
 		ui_informer._deleteLabel(flag);
 		ui_informer._save();
-	}
-	if (!this.tref) {
-		ui_informer._tick();
 	}
 };
 ui_informer.hide = function(flag) {
