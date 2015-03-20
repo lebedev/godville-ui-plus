@@ -379,7 +379,7 @@ ui_improver.improveMap = function() {
 			if (j !== -1) {
 				var chronicles = document.querySelectorAll('#m_fight_log .d_line'),
 					isMoveLoss = [];
-				len = this.chronicles.length;
+				len = +worker.Object.keys(this.chronicles).reverse()[0];
 				for (i = 0; i < 4; i++) {
 					isMoveLoss[i] = len > i && this.chronicles[len - i - 1].marks.indexOf('trapMoveLoss') !== -1;
 				}
