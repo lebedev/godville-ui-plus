@@ -40,17 +40,17 @@ ui_informer._deleteLabel = function(flag) {
 };
 ui_informer._tick = function() {
 	// пройти по всем флагам и выбрать те, которые надо показывать
-	var to_show = [];
+	var activeFlags = [];
 	for (var flag in this.flags) {
 		if (this.flags[flag]) {
-			to_show.push(flag);
+			activeFlags.push(flag);
 		}
 	}
-	to_show.sort();
+	activeFlags.sort();
 
 	// если есть чё, показать или вернуть стандартный заголовок
-	if (to_show.length > 0) {
-		ui_informer._updateTitle(to_show);
+	if (activeFlags.length) {
+		ui_informer._updateTitle(activeFlags);
 		this.tref = worker.setTimeout(ui_informer._tick.bind(ui_informer), 700);
 	} else {
 		ui_informer.clearTitle();
@@ -58,6 +58,11 @@ ui_informer._tick = function() {
 	}
 };
 ui_informer.clearTitle = function() {
+	for (var flag in this.flags) {
+		if (this.flags[flag]) {
+			return;
+		}
+	}
 	document.title = ui_informer._getTitleNotices() + this.title;
 	this.favicon.href = 'images/favicon.ico';
 };
@@ -96,10 +101,10 @@ ui_informer._getGMTitleNotice = function() {
 ui_informer._getFITitleNotice = function() {
 	return document.querySelector('#forum_informer_bar a') ? '[f]' : '';
 };
-ui_informer._updateTitle = function(flags) {
+ui_informer._updateTitle = function(activeFlags) {
 	this.odd_tick = !this.odd_tick;
 	var sep = this.odd_tick ? '!!!' : '...';
-	document.title = ui_informer._getTitleNotices() + sep + ' ' + flags.join('! ') + ' ' + sep;
+	document.title = ui_informer._getTitleNotices() + sep + ' ' + activeFlags.join('! ') + ' ' + sep;
 	if (worker.GUIp_browser !== 'Opera') {
 		this.favicon.href = this.odd_tick ? 'images/favicon.ico'
 										  : 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
