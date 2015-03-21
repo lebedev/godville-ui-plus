@@ -13,6 +13,7 @@
     "grunt-contrib-jshint": "*",
     "grunt-contrib-watch": "*",
     "grunt-exec": "*",
+    "grunt-notify": "*",
     "grunt-prompt": "*",
     "es6-symbol": "*"
   },

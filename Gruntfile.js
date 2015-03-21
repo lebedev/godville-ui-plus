@@ -266,11 +266,32 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['source/**/*', 'Gruntfile.js'],
-        tasks: 'debug',
+        tasks: ['notify_hooks', 'debug'],
         options: {
-          spawn: false,
+          spawn: true,
           atBegin: true
         }
+      }
+    },
+    notify: {
+      start: {
+        options: {
+          title: 'Godville UI+',
+          message: 'Rebuild initiated',
+        }
+      },
+      end: {
+        options: {
+          title: 'Godville UI+',
+          message: 'Rebuild successful',
+          callbackurl: 'D:\\Stuff\\Codein\\godville\\godville-ui-plus\\debug\\godville-ui-plus@badluck.dicey.xpi'
+        }
+      }
+    },
+    notify_hooks: {
+      options: {
+        enabled: true,
+        title: 'Godville UI+'
       }
     }
   });
@@ -282,6 +303,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-prompt');
 
   grunt.task.registerTask('debug', 'Compiles in debug mode.', function() {
@@ -291,12 +313,14 @@ module.exports = function(grunt) {
     new_version[3]++;
     grunt.config.set('new_version', new_version.join('.'));
     grunt.task.run([
+      'notify:start',
       'jshint',
       'concat',
       'copy',
       'compress:firefox',
       'clean:firefox',
-      'process_opera'
+      'process_opera',
+      'notify:end'
     ]);
   });
 
