@@ -43,6 +43,30 @@ ui_observers.chats = {
 	observers: [],
 	target: ['.chat_ph']
 };
+ui_observers.clearTitle = {
+	condition: true,
+	config: {
+		childList: true,
+		attributes: true,
+		subtree: true,
+		attributeFilter: ['style']
+	},
+	func: function(mutations) {
+		var toClear = false;
+		for (var i = 0, len = mutations.length; i < len; i++) {
+			if (mutations[i].target.className.match(/fr_new_(?:msg|badge)/)) {
+				toClear = true;
+				break;
+			}
+		}
+		if (toClear) {
+			worker.console.log('clearTitle');
+			ui_informer.clearTitle();
+		}
+	},
+	observers: [],
+	target: ['.msgDockWrapper']
+};
 ui_observers.inventory = {
 	get condition() {
 		return !ui_data.isFight && !ui_data.isDungeon;

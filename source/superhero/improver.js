@@ -1080,7 +1080,7 @@ ui_improver.improveChat = function() {
 		ta.selectionStart = ta.selectionEnd = pos + this.textContent.length + 3;
 	}).addClass('improved');
 
-	//"Shift+Enter → new line" improvement
+	// "Shift+Enter → new line" improvement
 	var keypresses, handlers,
 	$tas = worker.$('.frInputArea textarea:not(.improved)');
 	if ($tas.length) {

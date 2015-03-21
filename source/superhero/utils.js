@@ -285,7 +285,6 @@ ui_utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCall
 };
 
 ui_utils.processError = function(error, isDebugMode) {
-	worker.console.log('pe');
 	if (isDebugMode) {
 		worker.console.warn(worker.GUIp_i18n.debug_mode_warning);
 	}
