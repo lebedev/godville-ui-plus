@@ -54,7 +54,8 @@ ui_observers.clearTitle = {
 	func: function(mutations) {
 		var toClear = false;
 		for (var i = 0, len = mutations.length; i < len; i++) {
-			if (mutations[i].target.className.match(/fr_new_(?:msg|badge)/)) {
+			if (mutations[i].target.className.match(/fr_new_(?:msg|badge)/) ||
+			   (mutations[i].target.className.match(/dockfrname_w/) && mutations[i].removedNodes.length && mutations[i].removedNodes[0].className.match(/fr_new_msg/))) {
 				toClear = true;
 				break;
 			}
