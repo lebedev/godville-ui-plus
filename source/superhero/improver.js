@@ -1110,7 +1110,8 @@ ui_improver.improveAllies = function() {
 	for (var number in worker.so.state.alls) {
 		ally = worker.so.state.alls[number];
 		opp_n = ally.li[0].getElementsByClassName('opp_n')[0];
-		if (this.isFirstTime) {
+		if (!opp_n.classList.contains('improved')) {
+			opp_n.classList.add('improved');
 			opp_n.title = ally.god;
 			opp_n.insertAdjacentHTML('beforeend', ' <a class="open_chat" title="' + worker.GUIp_i18n.open_chat_with + ally.god + '">★</a>');
 		}
