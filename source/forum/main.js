@@ -9,7 +9,7 @@ var setInitVariables = function() {
 };
 var GUIp_forum = function() {
 	try {
-		if (!worker.GUIp_i18n || !worker.GUIp_browser || !worker.GUIp_addCSSFromURL) { return; }
+		if (!worker.GUIp_i18n || !worker.GUIp_browser || !worker.GUIp_addCSSFromURL || !window.BrowserPonies) { return; }
 		worker.clearInterval(starter);
 
 		setInitVariables();

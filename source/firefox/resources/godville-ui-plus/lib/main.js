@@ -3,7 +3,7 @@ var selfUrl = require('sdk/self').data.url,
 
 function mod(hostname, locale) {
 	var pathnames = ['superhero.*', 'user\/(?:profile|rk_success).*', 'forums\/show(?:_topic)?\/\\d+.*', 'duels\/log\/.*'],
-		commonScripts = [selfUrl('common.js'), selfUrl('guip_firefox.js'), selfUrl('phrases_' + locale + '.js')];
+		commonScripts = [selfUrl('common.js'), selfUrl('guip_firefox.js'), selfUrl('phrases_' + locale + '.js'), selfUrl('browserponies.js')];
 	var scripts = [
 		selfUrl('superhero.js'),
 		[selfUrl('jquery-1.10.2.min.js'), selfUrl('options_page.js'), selfUrl('options.js')],
