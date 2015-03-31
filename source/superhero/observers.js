@@ -14,7 +14,6 @@ ui_observers.start = function(obj) {
 		if (target) {
 			var observer = new MutationObserver(obj.func);
 			observer.observe(target, obj.config);
-			obj.observers.push(observer);
 		}
 	}
 };
@@ -40,7 +39,6 @@ ui_observers.chats = {
 			ui_informer.clearTitle();
 		}
 	},
-	observers: [],
 	target: ['.chat_ph']
 };
 ui_observers.clearTitle = {
@@ -65,7 +63,6 @@ ui_observers.clearTitle = {
 			ui_informer.clearTitle();
 		}
 	},
-	observers: [],
 	target: ['.msgDockWrapper']
 };
 ui_observers.inventory = {
@@ -94,7 +91,6 @@ ui_observers.inventory = {
 			ui_improver.improveLoot();
 		}
 	},
-	observers: [],
 	target: ['#inventory ul']
 };
 ui_observers.refresher = {
@@ -126,7 +122,6 @@ ui_observers.refresher = {
 			}
 		}
 	},
-	observers: [],
 	target: ['#main_wrapper']
 };
 ui_observers.diary = {
@@ -146,7 +141,6 @@ ui_observers.diary = {
 			ui_improver.improveDiary();
 		}
 	},
-	observers: [],
 	target: ['#diary .d_content']
 };
 ui_observers.news = {
@@ -155,7 +149,6 @@ ui_observers.news = {
 	},
 	config: { childList: true, characterData: true, subtree: true },
 	func: ui_improver.calculateButtonsVisibility.bind(ui_improver),
-	observers: [],
 	target: ['.f_news']
 };
 ui_observers.chronicles = {
@@ -175,7 +168,6 @@ ui_observers.chronicles = {
 			ui_improver.improveChronicles();
 		}
 	},
-	observers: [],
 	target: ['#m_fight_log .d_content']
 };
 ui_observers.map_colorization = {
@@ -198,6 +190,5 @@ ui_observers.map_colorization = {
 			ui_improver.colorDungeonMap();
 		}
 	},
-	observers: [],
 	target: ['#map .block_content']
 };
