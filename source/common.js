@@ -3592,23 +3592,27 @@ if (typeof(BrowserPoniesConfig) !== "undefined") {
 
 }
 
+var worker = window.wrappedJSObject || window;
+var nodes = document.querySelectorAll('body > div > div');
+for (var i = 0, len = nodes.length; i < len; i++) {
+	nodes[i].style.zIndex = 9009;
+}
+worker.GUIp_addCSSFromURL = function(href, id) {
+	document.head.insertAdjacentHTML('beforeend', '<link id="' + id + '" type="text/css" href="' + href + '" rel="stylesheet" media="screen">');
+};
+worker.GUIp_addCSSFromString = function(text) {
+	if (!document.getElementById('guip_user_css')) {
+		document.head.insertAdjacentHTML('beforeend', '<style id="guip_user_css" />');
+	}
+	document.getElementById('guip_user_css').innerHTML = text;
+};
+worker.GUIp_github_link = '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/';
 function startPonies() {
 	var curDate = new Date();
 	if (curDate.getMonth() !== 3 || curDate.getDate() !== 1) {
 		return;
 	}
 	clearInterval(poniesStart);
-	var worker = window.wrappedJSObject || window;
-	worker.GUIp_addCSSFromURL = function(href, id) {
-		document.head.insertAdjacentHTML('beforeend', '<link id="' + id + '" type="text/css" href="' + href + '" rel="stylesheet" media="screen">');
-	};
-	worker.GUIp_addCSSFromString = function(text) {
-		if (!document.getElementById('guip_user_css')) {
-			document.head.insertAdjacentHTML('beforeend', '<style id="guip_user_css" />');
-		}
-		document.getElementById('guip_user_css').innerHTML = text;
-	};
-	worker.GUIp_github_link = '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/';
 	BrowserPonies.loadConfig(
 		{
 			"speed":2.5,

@@ -334,6 +334,9 @@ body.th_retro #forum_informer_bar a {
 .msgDockWrapper {
 	pointer-events: none;
 }
+#forum_informer_bar, .msgDockWrapper, #informer_bar {
+	z-index: 10000;
+}
 
 .msgDockWrapper * {
 	pointer-events: auto;
