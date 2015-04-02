@@ -1,6 +1,6 @@
 function GUIp_log() {
 	'use strict';
-	if (!worker.GUIp_locale || !worker.GUIp_i18n || !window.BrowserPonies) { return; }
+	if (!worker.GUIp_locale || !worker.GUIp_i18n) { return; }
 	worker.clearInterval(starterInt);
 
 	function updateButton() {

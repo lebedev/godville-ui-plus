@@ -453,7 +453,7 @@ function set_theme_and_background() {
 var def, $j, curr_sect, god_name;
 
 var starterInt = worker.setInterval(function() {
-	if (worker.jQuery && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && window.BrowserPonies) {
+	if (worker.jQuery && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL) {
 		$j = worker.jQuery.noConflict();
 		def = worker.GUIp_words();
 		worker.clearInterval(starterInt);

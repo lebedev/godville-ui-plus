@@ -237,7 +237,6 @@ module.exports = function(grunt) {
         },
         src: [
           'source/**/*.js',
-          '!source/common.js',
           '!source/vendor/*.js',
           '!source/superhero/*.js',
           '!source/forum/*.js',

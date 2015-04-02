@@ -18,7 +18,7 @@ ui_starter._init = function() {
 	ui_improver.initSoundsOverride();
 };
 ui_starter.start = function() {
-	if (worker.$ && (worker.$('#m_info').length || worker.$('#stats').length) && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && worker.so.state && window.BrowserPonies) {
+	if (worker.$ && (worker.$('#m_info').length || worker.$('#stats').length) && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && worker.so.state) {
 		worker.clearInterval(starterInt);
 		worker.console.time('Godville UI+ initialized in');
 
