@@ -19,7 +19,7 @@ ui_improver.r_r = [];
 ui_improver.chronicles = {};
 ui_improver.directionlessMoveIndex = 0;
 ui_improver.dungeonPhrases = [
-	'warning',
+	'bossHint',
 	'boss',
 	'bonusGodpower',
 	'bonusHealth',
@@ -30,7 +30,7 @@ ui_improver.dungeonPhrases = [
 	'trapModerateDamage',
 	'trapMoveLoss',
 	'jumpingDungeon',
-	'pointerSign'
+	'pointerMarker'
 ];
 ui_improver.corrections = { n: 'north', e: 'east', s: 'south', w: 'west' };
 ui_improver.pointerRegExp = new worker.RegExp('[^а-яa-z](северо-восток|северо-запад|юго-восток|юго-запад|' +
@@ -306,7 +306,7 @@ ui_improver.MapIteration = function(MapThermo, iPointer, jPointer, step, kRow, k
 ui_improver.improveMap = function() {
 	if (this.isFirstTime) {
 		document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
-			'<div class="guip_legend"><div class="dmc warning"></div><div> - ' + worker.GUIp_i18n.boss_warning_hint + '</div></div>' +
+			'<div class="guip_legend"><div class="dmc bossHint"></div><div> - ' + worker.GUIp_i18n.boss_warning_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc boss"></div><div> - ' + worker.GUIp_i18n.boss_slay_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc bonusGodpower"></div><div> - ' + worker.GUIp_i18n.small_prayer_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc bonusHealth"></div><div> - ' + worker.GUIp_i18n.small_healing_hint + '</div></div>' +
@@ -315,7 +315,7 @@ ui_improver.improveMap = function() {
 			'<div class="guip_legend"><div class="dmc trapLowDamage"></div><div> - ' + worker.GUIp_i18n.low_damage_trap_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc trapModerateDamage"></div><div> - ' + worker.GUIp_i18n.moderate_damage_trap_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
-			'<div class="guip_legend"><div class="dmc warning trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
+			'<div class="guip_legend"><div class="dmc bossHint trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc boss trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
 		);
 	}
@@ -667,7 +667,7 @@ ui_improver.parseDungeonPhrases = function(xhr) {
 	ui_improver.improveChronicles();
 };
 ui_improver.getDungeonPhrases = function() {
-	if (!ui_storage.get('Dungeon:pointerSignPhrases')) {
+	if (!ui_storage.get('Dungeon:pointerMarkerPhrases')) {
 		this.dungeonXHRCount++;
 		ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), ui_improver.parseDungeonPhrases.bind(ui_improver));
 	} else {
@@ -699,7 +699,7 @@ ui_improver.parseSingleChronicle = function(texts, step) {
 			chronicle.jumping = chronicle.jumping || !!firstSentence[0].match(this.jumpingDungeonRegExp);
 		}
 	}
-	if (texts.join(' ').match(this.pointerSignRegExp)) {
+	if (texts.join(' ').match(this.pointerMarkerRegExp)) {
 		var middle = texts.join(' ').match(/^.+?\.(.+)[.!?].+?[.!?]$/)[1];
 		var pointer, pointers = middle.match(this.pointerRegExp);
 		for (i = 0, len = pointers.length; i < len; i++) {
@@ -798,7 +798,7 @@ ui_improver.calculateExitXY = function() {
 	return exit_coords;
 };
 ui_improver.improveChronicles = function() {
-	if (!ui_storage.get('Dungeon:pointerSignPhrases')) {
+	if (!ui_storage.get('Dungeon:pointerMarkerPhrases')) {
 		if (this.dungeonXHRCount < 5) {
 			ui_improver.getDungeonPhrases();
 		}
@@ -825,8 +825,8 @@ ui_improver.improveChronicles = function() {
 				texts = [];
 				step--;
 			}
-			if (chronicles[i].textContent.match(this.warningRegExp)) {
-				chronicles[i].parentNode.classList.add('warning');
+			if (chronicles[i].textContent.match(this.bossHintRegExp)) {
+				chronicles[i].parentNode.classList.add('bossHint');
 			}
 			chronicles[i].classList.add('parsed');
 		}
@@ -851,7 +851,7 @@ ui_improver.improveChronicles = function() {
 			}
 		}
 		// informer
-		ui_informer.update('close to boss', this.chronicles[worker.Object.keys(this.chronicles).reverse()[0]].marks.indexOf('warning') !== -1);
+		ui_informer.update('close to boss', this.chronicles[worker.Object.keys(this.chronicles).reverse()[0]].marks.indexOf('bossHint') !== -1);
 
 		if (ui_storage.get('Log:current') !== worker.so.state.stats.perm_link.value) {
 			ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);

@@ -409,14 +409,14 @@ body:not(.th_nightly) #imp_timer.red {
 }
 
 /* dungeon phrases colorization */
-#m_fight_log .warning .d_time,
-#m_fight_log .warning .d_msg {
+#m_fight_log .bossHint .d_time,
+#m_fight_log .bossHint .d_msg {
 	color: darkgoldenrod;
 }
 
 /* dungeon map colorization */
 /* not th_nightly theme */
-body:not(.th_nightly) .dmc.warning {
+body:not(.th_nightly) .dmc.bossHint {
 	background: #ffce09;
 }
 body:not(.th_nightly) .dmc.boss {
@@ -444,26 +444,26 @@ body:not(.th_nightly) .dmc.trapModerateDamage {
 body:not(.th_nightly) .dmc.trapMoveLoss {
 	background: #aaaaaa;
 }
-body:not(.th_nightly) .dmc.warning.bonusGodpower {
+body:not(.th_nightly) .dmc.bossHint.bonusGodpower {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #c5e0f3 50%, #c5e0f3 100%);
 }
-body:not(.th_nightly) .dmc.warning.bonusHealth {
+body:not(.th_nightly) .dmc.bossHint.bonusHealth {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #b9edbe 50%, #b9edbe 100%);
 }
-body:not(.th_nightly) .dmc.warning.trapUnknown {
+body:not(.th_nightly) .dmc.bossHint.trapUnknown {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #c173da 50%, #c173da 100%);
 }
-body:not(.th_nightly) .dmc.warning.trapTrophy,
-body:not(.th_nightly) .dmc.warning.trapGold {
+body:not(.th_nightly) .dmc.bossHint.trapTrophy,
+body:not(.th_nightly) .dmc.bossHint.trapGold {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #dee0c0 50%, #dee0c0 100%);
 }
-body:not(.th_nightly) .dmc.warning.trapLowDamage {
+body:not(.th_nightly) .dmc.bossHint.trapLowDamage {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #e7afaf 50%, #e7afaf 100%);
 }
-body:not(.th_nightly) .dmc.warning.trapModerateDamage {
+body:not(.th_nightly) .dmc.bossHint.trapModerateDamage {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #cb555b 50%, #cb555b 100%);
 }
-body:not(.th_nightly) .dmc.warning.trapMoveLoss {
+body:not(.th_nightly) .dmc.bossHint.trapMoveLoss {
 	background: linear-gradient(135deg, #ffce09 0%, #ffce09 50%, #aaaaaa 50%, #aaaaaa 100%);
 }
 body:not(.th_nightly) .dmc.boss.bonusGodpower {
@@ -486,7 +486,7 @@ body:not(.th_nightly) .dmc.boss.trapMoveLoss {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #aaaaaa 50%, #aaaaaa 100%);
 }
 /* th_nightly theme */
-body.th_nightly .dmc.warning {
+body.th_nightly .dmc.bossHint {
 	background: #d3ae00;
 }
 body.th_nightly .dmc.boss {
@@ -519,26 +519,26 @@ body.th_nightly .dmc.trapModerateDamage {
 body.th_nightly .dmc.trapMoveLoss {
 	background: #5c5c5c;
 }
-body.th_nightly .dmc.warning.bonusGodpower {
+body.th_nightly .dmc.bossHint.bonusGodpower {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2d546f 50%, #2d546f 100%);
 }
-body.th_nightly .dmc.warning.bonusHealth {
+body.th_nightly .dmc.bossHint.bonusHealth {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2f6c37 50%, #2f6c37 100%);
 }
-body.th_nightly .dmc.warning.trapUnknown {
+body.th_nightly .dmc.bossHint.trapUnknown {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #62317c 50%, #62317c 100%);
 }
-body.th_nightly .dmc.warning.trapTrophy,
-body.th_nightly .dmc.warning.trapGold {
+body.th_nightly .dmc.bossHint.trapTrophy,
+body.th_nightly .dmc.bossHint.trapGold {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #6c6d4e 50%, #6c6d4e 100%);
 }
-body.th_nightly .dmc.warning.trapLowDamage {
+body.th_nightly .dmc.bossHint.trapLowDamage {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #8b5d5d 50%, #8b5d5d 100%);
 }
-body.th_nightly .dmc.warning.trapModerateDamage {
+body.th_nightly .dmc.bossHint.trapModerateDamage {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #9d1515 50%, #9d1515 100%);
 }
-body.th_nightly .dmc.warning.trapMoveLoss {
+body.th_nightly .dmc.bossHint.trapMoveLoss {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
 body.th_nightly .dmc.boss.bonusGodpower {
