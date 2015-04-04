@@ -266,7 +266,7 @@ ui_improver.improveNews = function() {
 			var pet, hero_level = ui_stats.get('Level');
 			for (var i = 0; i < ui_words.base.pets.length; i++) {
 				pet = ui_words.base.pets[i];
-				if (currentMonster.match(pet.name) && hero_level >= pet.min_level && hero_level <= (pet.min_level + (hasArk ? 28 : 14))) {
+				if (currentMonster.match(pet.name, 'i') && hero_level >= pet.min_level && hero_level <= (pet.min_level + (hasArk ? 28 : 14))) {
 					isTamableMonster = true;
 					break;
 				}
