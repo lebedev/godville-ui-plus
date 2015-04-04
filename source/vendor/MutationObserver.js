@@ -271,7 +271,7 @@
     record.attributeNamespace = original.attributeNamespace;
     record.oldValue = original.oldValue;
     return record;
-  };
+  }
 
   // We keep track of the two (possibly one) records used in a single mutation.
   var currentRecord, recordWithOldValue;
@@ -283,7 +283,7 @@
    * @return {MutationRecord}
    */
   function getRecord(type, target) {
-    return currentRecord = new MutationRecord(type, target);
+    return (currentRecord = new MutationRecord(type, target));
   }
 
   /**
@@ -370,41 +370,26 @@
     },
 
     addListeners: function() {
-      this.addListeners_(this.target);
-    },
-
-    addListeners_: function(node) {
-      var options = this.options;
-      if (options.attributes)
-        node.addEventListener('DOMAttrModified', this, true);
-
-      if (options.characterData)
-        node.addEventListener('DOMCharacterDataModified', this, true);
-
-      if (options.childList)
-        node.addEventListener('DOMNodeInserted', this, true);
-
-      if (options.childList || options.subtree)
-        node.addEventListener('DOMNodeRemoved', this, true);
+      this.processListeners(this.target, 'addEventListener');
     },
 
     removeListeners: function() {
-      this.removeListeners_(this.target);
+      this.processListeners(this.target, 'removeEventListener');
     },
 
-    removeListeners_: function(node) {
+    processListeners: function(node, action) {
       var options = this.options;
       if (options.attributes)
-        node.removeEventListener('DOMAttrModified', this, true);
+        node[action]('DOMAttrModified', this, true);
 
       if (options.characterData)
-        node.removeEventListener('DOMCharacterDataModified', this, true);
+        node[action]('DOMCharacterDataModified', this, true);
 
       if (options.childList)
-        node.removeEventListener('DOMNodeInserted', this, true);
+        node[action]('DOMNodeInserted', this, true);
 
       if (options.childList || options.subtree)
-        node.removeEventListener('DOMNodeRemoved', this, true);
+        node[action]('DOMNodeRemoved', this, true);
     },
 
     /**
