@@ -8,9 +8,6 @@ ui_improver.wantedMonsters = null;
 ui_improver.friendsRegExp = null;
 ui_improver.windowResizeInt = 0;
 ui_improver.mapColorizationTmt = 0;
-ui_improver.alliesCount = 0;
-ui_improver.currentAlly = 0;
-ui_improver.currentAllyObserver = 0;
 // trophy craft combinations
 ui_improver.b_b = [];
 ui_improver.b_r = [];
