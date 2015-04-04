@@ -17,11 +17,22 @@ ui_observers.start = function(obj) {
 		}
 	}
 };
+ui_observers.mutationChecker = function(mutations, check, callback) {
+	var callbackRunRequired = false;
+	for (var i = 0, len = mutations.length; i < len; i++) {
+		if (check(mutations[i])) {
+			callbackRunRequired = true;
+			break;
+		}
+	}
+	if (callbackRunRequired) {
+		callback();
+	}
+};
 ui_observers.chats = {
 	condition: true,
 	config: { childList: true },
 	func: function(mutations) {
-		var toFix = false;
 		for (var i = 0, len = mutations.length; i < len; i++) {
 			if (mutations[i].addedNodes.length && !mutations[i].addedNodes[0].classList.contains('moved')) {
 				var newNode = mutations[i].addedNodes[0];
@@ -30,14 +41,10 @@ ui_observers.chats = {
 				var msgArea = newNode.querySelector('.frMsgArea');
 				msgArea.scrollTop = msgArea.scrollTopMax || msgArea.scrollHeight;
 			}
-			if (!toFix && (mutations[i].addedNodes.length || mutations[i].removedNodes.length)) {
-				toFix = true;
-			}
 		}
-		if (toFix) {
-			ui_improver.chatsFix();
-			ui_informer.clearTitle();
-		}
+		ui_observers.mutationChecker(mutations, function(mutation) {
+			return mutation.addedNodes.length || mutation.removedNodes.length;
+		}, function() { ui_improver.chatsFix(); ui_informer.clearTitle(); });
 	},
 	target: ['.chat_ph']
 };
@@ -50,18 +57,10 @@ ui_observers.clearTitle = {
 		attributeFilter: ['style']
 	},
 	func: function(mutations) {
-		var toClear = false;
-		for (var i = 0, len = mutations.length; i < len; i++) {
-			if (mutations[i].target.className.match(/fr_new_(?:msg|badge)/) ||
-			   (mutations[i].target.className.match(/dockfrname_w/) && mutations[i].removedNodes.length && mutations[i].removedNodes[0].className.match(/fr_new_msg/))) {
-				toClear = true;
-				break;
-			}
-		}
-		if (toClear) {
-			worker.console.log('clearTitle');
-			ui_informer.clearTitle();
-		}
+		ui_observers.mutationChecker(mutations, function(mutation) {
+			return mutation.target.className.match(/fr_new_(?:msg|badge)/) ||
+				  (mutation.target.className.match(/dockfrname_w/) && mutation.removedNodes.length && mutation.removedNodes[0].className.match(/fr_new_msg/));
+		}, ui_informer.clearTitle.bind(ui_informer));
 	},
 	target: ['.msgDockWrapper']
 };
@@ -76,20 +75,17 @@ ui_observers.inventory = {
 		attributeFilter: ['style']
 	},
 	func: function(mutations) {
-		var toImprove = false;
 		for (var i = 0, len = mutations.length; i < len; i++) {
 			if (mutations[i].target.tagName.toLowerCase() === 'li' && mutations[i].type === "attributes" &&
 				mutations[i].target.style.display === 'none' && mutations[i].target.parentNode) {
 				mutations[i].target.parentNode.removeChild(mutations[i].target);
-				toImprove = true;
-			}
-			if (mutations[i].target.tagName.toLowerCase() === 'ul' && mutations[i].addedNodes.length) {
-				toImprove = true;
 			}
 		}
-		if (toImprove) {
-			ui_improver.improveLoot();
-		}
+		ui_observers.mutationChecker(mutations, function(mutation) {
+			return mutation.target.tagName.toLowerCase() === 'li' && mutation.type === "attributes" &&
+				   mutation.target.style.display === 'none' && mutation.target.parentNode ||
+				   mutation.target.tagName.toLowerCase() === 'ul' && mutation.addedNodes.length;
+		}, ui_improver.improveLoot.bind(ui_improver));
 	},
 	target: ['#inventory ul']
 };
@@ -130,16 +126,7 @@ ui_observers.diary = {
 	},
 	config: { childList: true },
 	func: function(mutations) {
-		var toImprove = false;
-		for (var i = 0, len = mutations.length; i < len; i++) {
-			if (mutations[i].addedNodes.length) {
-				toImprove = true;
-				break;
-			}
-		}
-		if (toImprove) {
-			ui_improver.improveDiary();
-		}
+		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.improveDiary.bind(ui_improver));
 	},
 	target: ['#diary .d_content']
 };
@@ -157,16 +144,7 @@ ui_observers.chronicles = {
 	},
 	config: { childList: true },
 	func: function(mutations) {
-		var toImprove = false;
-		for (var i = 0, len = mutations.length; i < len; i++) {
-			if (mutations[i].addedNodes.length) {
-				toImprove = true;
-				break;
-			}
-		}
-		if (toImprove) {
-			ui_improver.improveChronicles();
-		}
+		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.improveChronicles.bind(ui_improver));
 	},
 	target: ['#m_fight_log .d_content']
 };
@@ -179,16 +157,7 @@ ui_observers.map_colorization = {
 		subtree: true
 	},
 	func: function(mutations) {
-		var toColor = false;
-		for (var i = 0, len = mutations.length; i < len; i++) {
-			if (mutations[i].addedNodes.length) {
-				toColor = true;
-				break;
-			}
-		}
-		if (toColor) {
-			ui_improver.colorDungeonMap();
-		}
+		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.colorDungeonMap.bind(ui_improver));
 	},
 	target: ['#map .block_content']
 };
