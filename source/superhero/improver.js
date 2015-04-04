@@ -1107,13 +1107,14 @@ ui_improver.improveAllies = function() {
 	for (var number in worker.so.state.alls) {
 		ally = worker.so.state.alls[number];
 		opp_n = ally.li[0].getElementsByClassName('opp_n')[0];
+		star = opp_n.getElementsByClassName('open_chat')[0] || document.createElement('a');
 		if (!opp_n.classList.contains('improved')) {
 			opp_n.classList.add('improved');
 			opp_n.title = ally.god;
-			opp_n.insertAdjacentHTML('beforeend', ' <a class="open_chat" title="' + worker.GUIp_i18n.open_chat_with + ally.god + '">★</a>');
-		}
-		star = opp_n.getElementsByClassName('open_chat')[0];
-		if (this.isFirstTime) {
+			opp_n.insertBefore(star, null);
+			star.className = 'open_chat';
+			star.title = worker.GUIp_i18n.open_chat_with + ally.god;
+			star.textContent = '★';
 			star.onclick = ui_utils.openChatWith.bind(null, ally.god);
 		}
 		ui_utils.hideElem(star, !ally.god.match(this.friendsRegExp));
