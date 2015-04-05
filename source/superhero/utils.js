@@ -172,13 +172,6 @@ ui_utils.messages = {
 				ui_help.toggleDialog();
 			}
 		}
-	},
-	{
-		msg_no: 7,
-		title: 'Godville UI+: Решение бага с безумной пони',
-		content: '<div style="text-align: justify;">&emsp;Рад сообщить, что баг с безумной пони был, наконец-то, окончательно починен. Прошу прощения за возможно причиненные неудобства. ' +
-				 'Надеюсь, в будущем удастся избежать таких багов.</div>' +
-				 '<div style="text-align: right;">Хорошего дня.<br>~~Бэдлак</div>'
 	}
 	/*{
 		msg_no: 8, // 0..7 are used
@@ -207,13 +200,6 @@ ui_utils.messages = {
 				ui_help.toggleDialog();
 			}
 		}
-	},
-	{
-		msg_no: 2,
-		title: 'Godville UI+: Crazy pony bug fix',
-		content: '<div style="text-align: justify;">&emsp;I\'m glad to inform you that the crazy pony bug is finally fixed. Sorry for inconvenience. ' +
-				 'I hope that I\'ll be able to prevent such bugs in the future.</div>' +
-				 '<div style="text-align: right;">Have a nice day.<br>~~Bad Luck</div>'
 	}
 	/*{
 		msg_no: 3, // 0..2 are used
