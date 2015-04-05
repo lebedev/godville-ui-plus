@@ -403,7 +403,7 @@
       if (node === this.target)
         return;
 
-      this.addListeners_(node);
+      this.processListeners(node, 'addEventListener');
       this.transientObservedNodes.push(node);
       var registrations = registrationsTable.get(node);
       if (!registrations)
@@ -420,7 +420,7 @@
 
       transientObservedNodes.forEach(function(node) {
         // Transient observers are never added to the target.
-        this.removeListeners_(node);
+        this.processListeners(node, 'removeEventListener');
 
         var registrations = registrationsTable.get(node);
         for (var i = 0; i < registrations.length; i++) {
@@ -440,22 +440,23 @@
       // correctly but that is by design.
       e.stopImmediatePropagation();
 
+      var target, record, oldValue;
+
       switch (e.type) {
         case 'DOMAttrModified':
           // http://dom.spec.whatwg.org/#concept-mo-queue-attributes
 
           var name = e.attrName;
           var namespace = e.relatedNode.namespaceURI;
-          var target = e.target;
+          target = e.target;
 
           // 1.
-          var record = new getRecord('attributes', target);
+          record = new getRecord('attributes', target);
           record.attributeName = name;
           record.attributeNamespace = namespace;
 
           // 2.
-          var oldValue =
-              e.attrChange === MutationEvent.ADDITION ? null : e.prevValue;
+          oldValue = e.attrChange === MutationEvent.ADDITION ? null : e.prevValue;
 
           forEachAncestorAndObserverEnqueueRecord(target, function(options) {
             // 3.1, 4.2
@@ -480,13 +481,13 @@
 
         case 'DOMCharacterDataModified':
           // http://dom.spec.whatwg.org/#concept-mo-queue-characterdata
-          var target = e.target;
+          target = e.target;
 
           // 1.
-          var record = getRecord('characterData', target);
+          record = getRecord('characterData', target);
 
           // 2.
-          var oldValue = e.prevValue;
+          oldValue = e.prevValue;
 
 
           forEachAncestorAndObserverEnqueueRecord(target, function(options) {
@@ -523,7 +524,7 @@
           var nextSibling = changedNode.nextSibling;
 
           // 1.
-          var record = getRecord('childList', e.target.parentNode);
+          record = getRecord('childList', e.target.parentNode);
           record.addedNodes = addedNodes;
           record.removedNodes = removedNodes;
           record.previousSibling = previousSibling;
