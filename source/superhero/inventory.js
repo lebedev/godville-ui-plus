@@ -13,7 +13,7 @@ ui_inventory.observer = {
 			return mutation.target.tagName.toLowerCase() === 'li' && mutation.type === "attributes" &&
 				   mutation.target.style.display === 'none' && mutation.target.parentNode ||
 				   mutation.target.tagName.toLowerCase() === 'ul' && mutation.addedNodes.length;
-		}, ui_inventory.update);
+		}, ui_inventory._update);
 	},
 	target: ['#inventory ul']
 };
@@ -23,7 +23,7 @@ ui_inventory.init = function() {
 		return;
 	}
 	ui_inventory._createCraftButtons();
-	ui_inventory.update();
+	ui_inventory._update();
 	ui_observers.start(ui_inventory.observer);
 };
 ui_inventory._createCraftButtons = function() {
@@ -33,8 +33,8 @@ ui_inventory._createCraftButtons = function() {
 	inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.b_r, 'b_r', worker.GUIp_i18n.b_r_hint), null);
 	inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.r_r, 'r_r', worker.GUIp_i18n.r_r_hint), null);
 };
-ui_inventory.update = function() {
-	var i, j, len, item, flags = [],
+ui_inventory._update = function() {
+	var i, len, item, flags = [],
 		bold_items = 0,
 		trophy_boldness = {},
 		forbidden_craft = ui_storage.get('Option:forbiddenCraft') || '';
@@ -95,32 +95,30 @@ ui_inventory.update = function() {
 	ui_informer.update('transform!', flags[ui_words.base.usable_items.types.indexOf('transformer')] && bold_items >= 2);
 	ui_informer.update('smelt!', flags[ui_words.base.usable_items.types.indexOf('smelter')] && ui_storage.get('Stats:Gold') >= 3000);
 
+	ui_inventory._updateCraftCombos(trophy_boldness);
+};
+ui_inventory._updateCraftCombos = function(trophy_boldness) {
 	// Склейка трофеев, формирование списков
 	ui_inventory.b_b = [];
 	ui_inventory.b_r = [];
 	ui_inventory.r_r = [];
-	var item_names = worker.Object.keys(trophy_boldness).sort();
+	var item_names = worker.Object.keys(trophy_boldness).sort(),
+		forbidden_craft = ui_storage.get('Option:forbiddenCraft') || '';
 	if (item_names.length) {
-		for (i = 0, len = item_names.length - 1; i < len; i++) {
-			for (j = i + 1; j < len + 1; j++) {
+		for (var i = 0, len = item_names.length - 1; i < len; i++) {
+			for (var j = i + 1; j < len + 1; j++) {
 				if (item_names[i][0] === item_names[j][0]) {
 					if (trophy_boldness[item_names[i]] && trophy_boldness[item_names[j]]) {
 						if (!forbidden_craft.match('b_b')) {
-							ui_inventory.b_b.push(item_names[i] + worker.GUIp_i18n.and + item_names[j]);
-							ui_inventory.b_b.push(item_names[j] + worker.GUIp_i18n.and + item_names[i]);
+							ui_inventory._pushItemCombo('b_b', item_names[i], item_names[j]);
 						}
 					} else if (!trophy_boldness[item_names[i]] && !trophy_boldness[item_names[j]]) {
 						if (!forbidden_craft.match('r_r')) {
-							ui_inventory.r_r.push(item_names[i] + worker.GUIp_i18n.and + item_names[j]);
-							ui_inventory.r_r.push(item_names[j] + worker.GUIp_i18n.and + item_names[i]);
+							ui_inventory._pushItemCombo('r_r', item_names[i], item_names[j]);
 						}
 					} else {
 						if (!forbidden_craft.match('b_r')) {
-							if (trophy_boldness[item_names[i]]) {
-								ui_inventory.b_r.push(item_names[i] + worker.GUIp_i18n.and + item_names[j]);
-							} else {
-								ui_inventory.b_r.push(item_names[j] + worker.GUIp_i18n.and + item_names[i]);
-							}
+							ui_inventory._pushItemCombo('b_r', item_names[i], item_names[j]);
 						}
 					}
 				} else {
@@ -130,4 +128,8 @@ ui_inventory.update = function() {
 		}
 	}
 	ui_improver.calculateButtonsVisibility();
+};
+ui_inventory._pushItemCombo = function(combo, first, second) {
+	ui_inventory[combo].push(first + worker.GUIp_i18n.and + second);
+	ui_inventory[combo].push(second + worker.GUIp_i18n.and + first);
 };
