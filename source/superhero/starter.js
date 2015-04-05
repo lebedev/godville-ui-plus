@@ -12,6 +12,7 @@ ui_starter._init = function() {
 	ui_help.init();
 	ui_informer.init();
 	ui_forum.init();
+	ui_inventory.init();
 	ui_improver.improve();
 	ui_timers.init();
 	ui_observers.init();

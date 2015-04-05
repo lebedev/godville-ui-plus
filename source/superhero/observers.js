@@ -64,31 +64,6 @@ ui_observers.clearTitle = {
 	},
 	target: ['.msgDockWrapper']
 };
-ui_observers.inventory = {
-	get condition() {
-		return !ui_data.isFight && !ui_data.isDungeon;
-	},
-	config: {
-		childList: true,
-		attributes: true,
-		subtree: true,
-		attributeFilter: ['style']
-	},
-	func: function(mutations) {
-		for (var i = 0, len = mutations.length; i < len; i++) {
-			if (mutations[i].target.tagName.toLowerCase() === 'li' && mutations[i].type === "attributes" &&
-				mutations[i].target.style.display === 'none' && mutations[i].target.parentNode) {
-				mutations[i].target.parentNode.removeChild(mutations[i].target);
-			}
-		}
-		ui_observers.mutationChecker(mutations, function(mutation) {
-			return mutation.target.tagName.toLowerCase() === 'li' && mutation.type === "attributes" &&
-				   mutation.target.style.display === 'none' && mutation.target.parentNode ||
-				   mutation.target.tagName.toLowerCase() === 'ul' && mutation.addedNodes.length;
-		}, ui_improver.improveLoot.bind(ui_improver));
-	},
-	target: ['#inventory ul']
-};
 ui_observers.refresher = {
 	condition: true,
 	config: {
@@ -135,7 +110,7 @@ ui_observers.news = {
 		return !ui_data.isFight && !ui_data.isDungeon;
 	},
 	config: { childList: true, characterData: true, subtree: true },
-	func: ui_improver.calculateButtonsVisibility.bind(ui_improver),
+	func: ui_improver.improve.bind(ui_improver),
 	target: ['.f_news']
 };
 ui_observers.chronicles = {
