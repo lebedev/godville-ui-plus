@@ -59,30 +59,6 @@ ui_utils.popRandomItem = function(arr) {
 	arr.splice(ind, 1);
 	return res;
 };
-ui_utils.createInspectButton = function(item_name) {
-	var a = document.createElement('a');
-	a.className = 'inspect_button';
-	a.title = worker.GUIp_i18n.ask1 + ui_data.char_sex[0] + worker.GUIp_i18n.inspect + item_name;
-	a.textContent = '?';
-	a.onclick = function() {
-		ui_utils.setVoice(ui_words.inspectPhrase(item_name));
-		return false;
-	};
-	return a;
-};
-ui_utils.createCraftButton = function(combo, combo_list, hint) {
-	var a = document.createElement('a');
-	a.className = 'craft_button ' + combo_list;
-	a.title = worker.GUIp_i18n.ask2 + ui_data.char_sex[0] + worker.GUIp_i18n.craft1 + hint + worker.GUIp_i18n.craft2;
-	a.innerHTML = combo;
-	a.onclick = function() {
-		var rand = Math.floor(Math.random()*ui_improver[combo_list].length),
-			items = ui_improver[combo_list][rand];
-		ui_utils.setVoice(ui_words.craftPhrase(items));
-		return false;
-	};
-	return a;
-};
 // Escapes HTML symbols
 ui_utils.escapeHTML = function(str) {
 	return String(str).replace(/&/g, "&amp;")

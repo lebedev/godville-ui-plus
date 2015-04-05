@@ -17,7 +17,6 @@ ui_inventory.observer = {
 	},
 	target: ['#inventory ul']
 };
-
 ui_inventory.init = function() {
 	if (ui_data.isFight) {
 		return;
@@ -27,11 +26,35 @@ ui_inventory.init = function() {
 	ui_observers.start(ui_inventory.observer);
 };
 ui_inventory._createCraftButtons = function() {
-	var inv_content = document.querySelector('#inventory .block_content');
-	inv_content.insertAdjacentHTML('beforeend', '<span class="craft_button span">' + worker.GUIp_i18n.craft_verb + ':</span>');
-	inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.b_b, 'b_b', worker.GUIp_i18n.b_b_hint), null);
-	inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.b_r, 'b_r', worker.GUIp_i18n.b_r_hint), null);
-	inv_content.insertBefore(ui_utils.createCraftButton(worker.GUIp_i18n.r_r, 'r_r', worker.GUIp_i18n.r_r_hint), null);
+	var invContent = document.querySelector('#inventory .block_content');
+	invContent.insertAdjacentHTML('beforeend', '<span class="craft_button span">' + worker.GUIp_i18n.craft_verb + ':</span>');
+	invContent.insertBefore(ui_inventory._createCraftButton(worker.GUIp_i18n.b_b, 'b_b', worker.GUIp_i18n.b_b_hint), null);
+	invContent.insertBefore(ui_inventory._createCraftButton(worker.GUIp_i18n.b_r, 'b_r', worker.GUIp_i18n.b_r_hint), null);
+	invContent.insertBefore(ui_inventory._createCraftButton(worker.GUIp_i18n.r_r, 'r_r', worker.GUIp_i18n.r_r_hint), null);
+};
+ui_inventory._createInspectButton = function(item_name) {
+	var a = document.createElement('a');
+	a.className = 'inspect_button';
+	a.title = worker.GUIp_i18n.ask1 + ui_data.char_sex[0] + worker.GUIp_i18n.inspect + item_name;
+	a.textContent = '?';
+	a.onclick = function() {
+		ui_utils.setVoice(ui_words.inspectPhrase(item_name));
+		return false;
+	};
+	return a;
+};
+ui_inventory._createCraftButton = function(combo, combo_list, hint) {
+	var a = document.createElement('a');
+	a.className = 'craft_button ' + combo_list;
+	a.title = worker.GUIp_i18n.ask2 + ui_data.char_sex[0] + worker.GUIp_i18n.craft1 + hint + worker.GUIp_i18n.craft2;
+	a.innerHTML = combo;
+	a.onclick = function() {
+		var rand = Math.floor(Math.random()*ui_inventory[combo_list].length),
+			items = ui_inventory[combo_list][rand];
+		ui_utils.setVoice(ui_words.craftPhrase(items));
+		return false;
+	};
+	return a;
 };
 ui_inventory._update = function() {
 	var i, len, item, flags = [],
@@ -83,7 +106,7 @@ ui_inventory._update = function() {
 				}
 			}
 			if (!item.isImproved) {
-				item.li[0].insertBefore(ui_utils.createInspectButton(item_name), null);
+				item.li[0].insertBefore(ui_inventory._createInspectButton(item_name), null);
 			}
 		}
 		item.isImproved = true;
