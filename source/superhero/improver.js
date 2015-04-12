@@ -534,7 +534,7 @@ ui_improver.improvePantheons = function() {
 };
 ui_improver.improveDiary = function() {
 	var i, len;
-	if (this.isFirstTime) {
+	if (ui_improver.isFirstTime) {
 		var $msgs = document.querySelectorAll('#diary .d_msg:not(.parsed)');
 		for (i = 0, len = $msgs.length; i < len; i++) {
 			$msgs[i].classList.add('parsed');
@@ -542,11 +542,11 @@ ui_improver.improveDiary = function() {
 	} else {
 		var newMessages = worker.$('#diary .d_msg:not(.parsed)');
 		if (newMessages.length) {
-			if (this.voiceSubmitted) {
+			if (ui_improver.voiceSubmitted) {
 				if (newMessages.length - document.querySelectorAll('#diary .d_msg:not(.parsed) .vote_links_b').length >= 2) {
 					ui_timeout.start();
 				}
-				this.voiceSubmitted = false;
+				ui_improver.voiceSubmitted = false;
 			}
 			newMessages.addClass('parsed');
 		}

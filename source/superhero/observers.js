@@ -101,7 +101,7 @@ ui_observers.diary = {
 	},
 	config: { childList: true },
 	func: function(mutations) {
-		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.improveDiary.bind(ui_improver));
+		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.improveDiary);
 	},
 	target: ['#diary .d_content']
 };
