@@ -37,24 +37,26 @@ ui_inventory._createInspectButton = function(item_name) {
 	a.className = 'inspect_button';
 	a.title = worker.GUIp_i18n.ask1 + ui_data.char_sex[0] + worker.GUIp_i18n.inspect + item_name;
 	a.textContent = '?';
-	a.onclick = function() {
-		ui_utils.setVoice(ui_words.inspectPhrase(item_name));
-		return false;
-	};
+	a.onclick = ui_inventory._inspectButtonClick.bind(null, item_name);
 	return a;
+};
+ui_inventory._inspectButtonClick = function(item_name) {
+	ui_utils.setVoice(ui_words.inspectPhrase(item_name));
+	return false;
 };
 ui_inventory._createCraftButton = function(combo, combo_list, hint) {
 	var a = document.createElement('a');
 	a.className = 'craft_button ' + combo_list;
 	a.title = worker.GUIp_i18n.ask2 + ui_data.char_sex[0] + worker.GUIp_i18n.craft1 + hint + worker.GUIp_i18n.craft2;
 	a.innerHTML = combo;
-	a.onclick = function() {
-		var rand = Math.floor(Math.random()*ui_inventory[combo_list].length),
-			items = ui_inventory[combo_list][rand];
-		ui_utils.setVoice(ui_words.craftPhrase(items));
-		return false;
-	};
+	a.onclick = ui_inventory._craftButtonClick.bind(null, combo_list);
 	return a;
+};
+ui_inventory._craftButtonClick = function(combo_list) {
+	var rand = Math.floor(Math.random()*ui_inventory[combo_list].length),
+		items = ui_inventory[combo_list][rand];
+	ui_utils.setVoice(ui_words.craftPhrase(items));
+	return false;
 };
 ui_inventory._update = function() {
 	var i, len, item, flags = [],
