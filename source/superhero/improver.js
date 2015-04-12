@@ -1,7 +1,7 @@
 // ui_improver
 var ui_improver = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "improver"}) : worker.GUIp.improver = {};
 
-ui_improver.improveInProcess = true;
+ui_improver.improveTmt = 0;
 ui_improver.isFirstTime = true;
 ui_improver.voiceSubmitted = false;
 ui_improver.wantedMonsters = null;
@@ -551,6 +551,7 @@ ui_improver.improveDiary = function() {
 			newMessages.addClass('parsed');
 		}
 	}
+	ui_improver.improvementDebounce();
 };
 ui_improver.parseDungeonPhrases = function(xhr) {
 	for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
@@ -754,7 +755,7 @@ ui_improver.improveChronicles = function() {
 		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
 		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
 	}
-
+	ui_improver.improvementDebounce();
 };
 ui_improver.moveCoords = function(coords, chronicle) {
 	if (chronicle.direction) {
@@ -1169,16 +1170,12 @@ ui_improver.activity = function() {
 		ui_logger.update();
 	}
 };
-ui_improver.nodeInsertion = function(e) {
-	// to prevent improving WHEN ENTERING FUCKING TEXT IN FUCKING TEXTAREA
-	if (e.relatedNode.textContent !== e.target.textContent && !this.improveInProcess) {
-		this.improveInProcess = true;
-		worker.setTimeout(ui_improver.nodeInsertionDelay.bind(ui_improver), 50);
-	}
-};
-ui_improver.nodeInsertionDelay = function() {
-	ui_improver.improve();
-	if (ui_data.isFight) {
-		ui_logger.update();
-	}
+ui_improver.improvementDebounce = function(mutations) {
+	worker.clearTimeout(ui_improver.improveTmt);
+	ui_improver.improveTmt = worker.setTimeout(function() {
+		ui_improver.improve();
+		if (ui_data.isFight) {
+			ui_logger.update();
+		}
+	}, 250);
 };

@@ -110,7 +110,7 @@ ui_observers.news = {
 		return !ui_data.isFight && !ui_data.isDungeon;
 	},
 	config: { childList: true, characterData: true, subtree: true },
-	func: ui_improver.improve.bind(ui_improver),
+	func: ui_improver.improvementDebounce,
 	target: ['.f_news']
 };
 ui_observers.chronicles = {
@@ -135,4 +135,18 @@ ui_observers.map_colorization = {
 		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.colorDungeonMap.bind(ui_improver));
 	},
 	target: ['#map .block_content']
+};
+ui_observers.node_insertion = {
+	condition: true,
+	config: {
+		childList: true,
+		subtree: true
+	},
+	func: function(mutations) {
+		ui_observers.mutationChecker(mutations, function(mutation) {
+			// to prevent improving WHEN ENTERING FUCKING TEXT IN FUCKING TEXTAREA
+			return mutation.addedNodes.length && mutation.addedNodes[0].nodeType !== 3;
+		}, ui_improver.improvementDebounce);
+	},
+	target: ['body']
 };
