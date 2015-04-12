@@ -497,7 +497,10 @@ ui_improver.improveEquip = function() {
 	if (!ui_utils.isAlreadyImproved(document.getElementById('equipment'))) {
 		worker.$('#equipment .block_title').after(worker.$('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 	}
-	worker.$('#equip_badge').text((seq / 7).toFixed(1));
+	var equipBadge = document.getElementById('equip_badge');
+	if (equipBadge.textContent !== (seq/7).toFixed(1) + '') {
+		equipBadge.textContent = (seq/7).toFixed(1);
+	}
 };
 ui_improver.GroupHP = function(allies) {
 	var seq = 0, $box = allies ? worker.$('#alls .opp_h') : worker.$('#opps .opp_h');
