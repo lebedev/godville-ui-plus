@@ -125,6 +125,7 @@ worker.GUIp_words = function() {
 			'raidboss box',
 			'smelter',
 			'teleporter',
+			'temper box',
 			'to arena box',
 			'transformer',
 			'quest box'
@@ -144,6 +145,7 @@ worker.GUIp_words = function() {
 			'This item makes the hero search for allies against an underground boss',
 			'This item kills the monster or tries to melt a golden brick out of gold coins',
 			'This item can teleport the hero into a random town',
+			'This item makes hero\'s alignment more defined',
 			'This item teleports the hero to the arena when activated',
 			'This item can transform one or several bold items in inventory into golden bricks',
 			'This item sends the hero on a mini-quest when activated'
