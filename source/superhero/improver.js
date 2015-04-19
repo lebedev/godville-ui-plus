@@ -710,7 +710,7 @@ ui_improver.improveChronicles = function() {
 		for (len = chronicles.length, i = ch_down ? 0 : len - 1; (ch_down ? i < len : i >= 0) && step; ch_down ? i++ : i--) {
 			lastNotParsed = true;
 			if (!chronicles[i].className.match('m_infl')) {
-				texts.push(chronicles[i].textContent);
+				texts = [chronicles[i].textContent].concat(texts);
 			}
 			if (chronicles[i].parentNode.className.match('turn_separator')) {
 				ui_improver.parseSingleChronicle(texts, step);
