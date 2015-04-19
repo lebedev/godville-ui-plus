@@ -48,8 +48,12 @@ var followOnclick = function(e) {
 							: this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
 			posts = isTopic ? +$c('subtitle').textContent.match(/\d+/)[0]
 							: +this.parentElement.parentElement.nextElementSibling.textContent,
+			dates = isTopic ? document.getElementsByTagName('abbr')
+							: null,
+			date =  isTopic ? document.getElementsByClassName('disabled next_page').length ? dates[dates.length - 1].title : 0
+							: this.parentElement.parentElement.parentElement.getElementsByTagName('abbr')[0].title,
 			topics = JSON.parse(storage.get(forum_no));
-		topics[topic] = posts;
+		topics[topic] = { posts: posts, date: date };
 		storage.set(forum_no, JSON.stringify(topics));
 		this.style.display = 'none';
 		this.parentElement.querySelector('.unfollow').style.display = 'inline';
