@@ -22,7 +22,7 @@ ui_forum._process = function(forum_no) {
 		topics = JSON.parse(ui_storage.get('Forum' + forum_no));
 	for (var topic in topics) {
 		if (informers[topic]) {
-			ui_forum._setInformer(topic, informers[topic], topics[topic]);
+			ui_forum._setInformer(topic, informers[topic], topics[topic].posts);
 		}
 	}
 	ui_informer.clearTitle();
@@ -60,29 +60,33 @@ ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
 	informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
 };
 ui_forum._parse = function(xhr) {
-	var diff, temp, old_diff,
+	var diff, temp, old_diff, topic_name, posts, date, last_poster,
 		forum = JSON.parse(ui_storage.get('Forum' + xhr.extra_arg)),
 		informers = JSON.parse(ui_storage.get('ForumInformers')),
 		topics = [];
 	for (var topic in forum) {
-		topics.push(topic);
-	}
-	for (var i = 0, len = topics.length; i < len; i++) {
-		temp = xhr.responseText.match(new worker.RegExp("show_topic\\/" + topics[i] + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topics[i]));
+		temp = xhr.responseText.match("show_topic\\/" + topic + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<abbr class=\"updated\" title=\"([^\"]+)(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topic);
 		if (temp) {
-			diff = +temp[2] - forum[topics[i]];
-			if (diff) {
-				forum[topics[i]] = +temp[2];
-				if (diff > 0) {
-					if (temp[3] !== ui_data.god_name) {
-						old_diff = informers[topics[i]] ? informers[topics[i]].diff : 0;
-						if (old_diff) {
-							delete informers[topics[i]];
-						}
-						informers[topics[i]] = {diff: old_diff + diff, name: temp[1].replace(/&quot;/g, '"')};
-					} else {
-						delete informers[topics[i]];
-					}
+			topic_name = temp[1].replace(/&quot;/g, '"');
+			posts = +temp[2];
+			date = temp[3];
+			last_poster = temp[4];
+
+			diff = posts - forum[topic].posts;
+
+			if (diff < 0 || diff === 0 && forum[topic].date && forum[topic].date !== date) {
+				diff = 1;
+			}
+
+			forum[topic].posts = posts;
+			forum[topic].date = date;
+
+			if (diff > 0) {
+				if (last_poster !== ui_data.god_name) {
+					old_diff = informers[topic] ? informers[topic].diff : 0;
+					informers[topic] = { diff: old_diff + diff, name: topic_name };
+				} else {
+					delete informers[topic];
 				}
 			}
 		}
