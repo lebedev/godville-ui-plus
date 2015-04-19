@@ -655,7 +655,8 @@ worker.GUIp_i18n = {
 	corrections: 'Корректировки:',
 	browser: 'Браузер:',
 	version: 'Версия:',
-	clear_voice_input: 'Очистить поле гласа'
+	clear_voice_input: 'Очистить поле гласа',
+	trophy: 'трофей '
 };
 
 delete worker.GUIp_github_link;

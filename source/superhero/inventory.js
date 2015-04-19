@@ -41,7 +41,7 @@ ui_inventory._createInspectButton = function(item_name) {
 	return a;
 };
 ui_inventory._inspectButtonClick = function(item_name) {
-	ui_utils.setVoice(ui_words.inspectPhrase(item_name));
+	ui_utils.setVoice(ui_words.inspectPhrase(worker.GUIp_i18n.trophy + item_name));
 	return false;
 };
 ui_inventory._createCraftButton = function(combo, combo_list, hint) {

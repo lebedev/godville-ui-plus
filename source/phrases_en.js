@@ -512,7 +512,8 @@ worker.GUIp_i18n = {
 	corrections: 'Corrections:',
 	browser: 'Browser:',
 	version: 'Version:',
-	clear_voice_input: 'Clear voice input'
+	clear_voice_input: 'Clear voice input',
+	trophy: 'trophy '
 };
 
 delete worker.GUIp_github_link;
