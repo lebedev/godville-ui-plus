@@ -26,8 +26,8 @@ ui_help._createHelpDialog = function() {
 };
 ui_help._createButtons = function() {
 	var menu_bar = document.querySelector('#menu_bar ul');
-	menu_bar.insertAdjacentHTML('beforeend', '<li> | </li><a href="user/profile#ui_settings">' + worker.GUIp_i18n.ui_settings_top_menu + '</a><li> | </li>');
-	ui_help._addToggleButton(menu_bar, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
+	menu_bar.insertAdjacentHTML('beforeend', '| <li><a href="user/profile#ui_settings">' + worker.GUIp_i18n.ui_settings_top_menu + '</a></li> | <li></li>');
+	ui_help._addToggleButton(menu_bar.lastElementChild, '<strong>' + worker.GUIp_i18n.ui_help + '</strong>');
 	if (ui_storage.get('Option:enableDebugMode')) {
 		ui_help._addDumpButton('<span>dump: </span>', 'all');
 		ui_help._addDumpButton('<span>, </span>', 'options', 'Option');
