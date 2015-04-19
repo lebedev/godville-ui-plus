@@ -344,7 +344,7 @@ worker.GUIp_i18n = {
 		'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
 		'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
 		'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.',
-	ui_settings_top_menu: 'настройки <strong>ui+</strong>',
+	ui_settings_top_menu: 'настройки&nbsp;<strong>ui+</strong>',
 	getting_version_no: 'Получения номера последней версии дополнения...',
 	is_last_version: 'У вас последняя версия.',
 	is_not_last_version_1: 'Последняя версия — <b>',
@@ -463,7 +463,7 @@ worker.GUIp_i18n = {
 	error_message_in_old_version: 'Произошла ошибка. Однако, ваша версия Godville&nbsp;UI+ устарела. Обновитесь по инструкции из окошка помощи (оно сейчас открыто).',
 	and: ' и ',
 	or: ' или ',
-	ui_help: 'ui+ help',
+	ui_help: 'ui+&nbsp;help',
 	// options
 	import_success: 'Настройки успешно импортированы',
 	import_fail: 'Некорректная строка настроек',

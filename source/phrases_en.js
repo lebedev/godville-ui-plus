@@ -201,7 +201,7 @@ worker.GUIp_i18n = {
 		'<a href="/forums/show_topic/2800" title="Opens in a new tab" target="_blank">forum thread</a>, ' +
 		//'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
 		'<a href="/gods/God%20Of%20Dungeons" title="Opens in a new tab" target="about:blank">dungeon phrases</a>.',
-	ui_settings_top_menu: '<strong>ui+</strong> settings',
+	ui_settings_top_menu: '<strong>ui+</strong>&nbsp;settings',
 	getting_version_no: 'Getting the latest addon version number...',
 	is_last_version: 'You have the latest version.',
 	is_not_last_version_1: 'Last version — <b>',
@@ -320,7 +320,7 @@ worker.GUIp_i18n = {
 	error_message_in_old_version: 'An error has occurred. However, your Godville&nbsp;UI+ version is outdated. Update as per the instrucions from the help dialog (it\'s opened now).',
 	and: ' and ',
 	or: ' or ',
-	ui_help: 'ui+ help',
+	ui_help: 'ui+&nbsp;help',
 	// options
 	import_success: 'You setting\'ve been imported successfully',
 	import_fail: 'Incorrect settings string',
