@@ -18,13 +18,13 @@ ui_timers.init = function() {
 		worker.setInterval(ui_timers.tick.bind(ui_timers), 60000);
 	}
 };
+ui_timers.getDate = function(entry) {
+	return ui_storage.get('ThirdEye:' + entry) ? new Date(ui_storage.get('ThirdEye:' + entry)) : 0;
+};
 ui_timers.tick = function() {
-	var latestEntryDateFS = ui_storage.get('ThirdEye:Latest') && new Date(ui_storage.get('ThirdEye:Latest')),
-		earliestEntryDateFS = ui_storage.get('ThirdEye:Earliest') && new Date(ui_storage.get('ThirdEye:Earliest')),
-		lastLayingDateFS = ui_storage.get('ThirdEye:LastLaying') && new Date(ui_storage.get('ThirdEye:LastLaying')),
-		lastLogDateFS = ui_storage.get('ThirdEye:LastLog') && new Date(ui_storage.get('ThirdEye:LastLog')),
-		penultLogDateFS = ui_storage.get('ThirdEye:PenultLog') && new Date(ui_storage.get('ThirdEye:PenultLog'));
-	this._lastLayingDate = this._lastLogDate = this._penultLogDate = 0;
+	this._lastLayingDate = ui_timers.getDate('LastLaying');
+	this._lastLogDate = ui_timers.getDate('LastLog');
+	this._penultLogDate = ui_timers.getDate('PenultLog');
 	for (var msg in worker.so.state.diary_i) {
 		var curEntryDate = new Date(worker.so.state.diary_i[msg].time);
 		if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/) && curEntryDate > this._lastLayingDate) {
@@ -37,7 +37,7 @@ ui_timers.tick = function() {
 					this._penultLogDate = this._lastLogDate;
 					this._lastLogDate = curEntryDate;
 				}
-			} else if (curEntryDate > this._penultLogDate) {
+			} else if (curEntryDate < this._lastLogDate && curEntryDate > this._penultLogDate) {
 				this._penultLogDate = curEntryDate;
 			}
 		}
@@ -48,22 +48,16 @@ ui_timers.tick = function() {
 			this._earliestEntryDate = curEntryDate;
 		}
 	}
-	if (latestEntryDateFS >= this._earliestEntryDate) {
-		this._earliestEntryDate = earliestEntryDateFS;
+	if (ui_timers.getDate('Latest') >= this._earliestEntryDate) {
+		this._earliestEntryDate = ui_timers.getDate('Earliest');
 		if (this._lastLayingDate) {
 			ui_storage.set('ThirdEye:LastLaying', this._lastLayingDate);
-		} else {
-			this._lastLayingDate = lastLayingDateFS;
 		}
 		if (this._lastLogDate) {
 			ui_storage.set('ThirdEye:LastLog', this._lastLogDate);
-		} else {
-			this._lastLogDate = lastLogDateFS;
 		}
 		if (this._penultLogDate) {
 			ui_storage.set('ThirdEye:PenultLog', this._penultLogDate);
-		} else {
-			this._penultLogDate = penultLogDateFS;
 		}
 	} else {
 		ui_storage.set('ThirdEye:Earliest', this._earliestEntryDate);
