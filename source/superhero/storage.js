@@ -105,11 +105,26 @@ ui_storage.migrate = function() {
 			forum = JSON.parse(ui_storage.get('Forum' + i));
 			for (var topic in forum) {
 				if (!isNaN(forum[topic])) {
-					forum[topic] = { posts: forum[topic], date: undefined };
+					forum[topic] = { posts: forum[topic], date: 0 };
 				}
 			}
 			ui_storage.set('Forum' + i, JSON.stringify(forum));
 		}
 		localStorage.GUIp_migrated = '150419';
+	}
+	if (localStorage.GUIp_migrated < '150419_2') {
+		var forum2;
+		for (var key in localStorage) {
+			if (key.match('Forum\\d')) {
+				forum2 = JSON.parse(localStorage[key]);
+				for (var topic2 in forum2) {
+					if (!isNaN(forum2[topic2])) {
+						forum2[topic2] = { posts: forum2[topic2], date: 0 };
+					}
+				}
+				localStorage[key] = JSON.stringify(forum2);
+			}
+		}
+		localStorage.GUIp_migrated = '150419_2';
 	}
 };
