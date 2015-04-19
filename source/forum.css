@@ -57,10 +57,8 @@
 	color: #199bdc;
 	text-decoration: underline;
 }
-.formatting.br p {
-	margin-top: -8px;
-	font-size: 24px;
-	color: darkviolet;
+.formatting.br {
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABmJLR0QA/wD/AP+gvaeTAAAA70lEQVQ4y+2TwUpCURCGvzn3Hq9g1EYQg4QWuU1q0batD+BDiCJiL+ALGMX1JXqA1lcoaFGE3GjlOgh016r0Oi07xC2u4tJ/Nz8z35zDzMBWG9c1TwdD4veQuOn6ZlWQIfFASgoF1/fTkkOey4K9WfDV6nL6kq1BCgRsBHrm41Wyv9TRJeN9sCNBDxNotKndZgX5P5CHvMWLBKogU4P2QuJeSk3+X1DCh8lR2AEBsEDxr+6KvgrLmeuJG1zxWPUJIpC9BfN6l5O7rF+T38aA8VGAGSnsKlrvcHy/1tQuqE0+WZ6DvG1kg/v0ve0dA/AN7lg3eQxiQo0AAAAASUVORK5CYII=');
 }
 
 .popup_menu ul li {
