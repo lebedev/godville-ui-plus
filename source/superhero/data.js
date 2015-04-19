@@ -45,11 +45,11 @@ ui_data._initForumData = function() {
 		ui_storage.set('ForumInformers', '{}');
 
 		if (worker.GUIp_locale === 'ru') {
-			ui_storage.set('Forum2', '{"2812": 0}');
+			ui_storage.set('Forum2', '{"2812": {"posts": 0, "date": 0}}');
 			ui_storage.set('Forum5', '{}');
 			ui_storage.set('Forum6', '{}');
 		} else {
-			ui_storage.set('Forum1', '{"2800": 0}');
+			ui_storage.set('Forum1', '{"2800": {"posts": 0, "date": 0}}');
 		}
 	}
 };
