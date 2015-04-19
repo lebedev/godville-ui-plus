@@ -99,4 +99,17 @@ ui_storage.migrate = function() {
 		ui_storage._rename(/:thirdEye(.+)Entry/, ':ThirdEye:$1');
 		localStorage.GUIp_migrated = '150228';
 	}
+	if (localStorage.GUIp_migrated < '150419') {
+		var forum;
+		for (var i = 1; i <= (worker.GUIp_locale === 'ru' ? 6 : 4); i++) {
+			forum = JSON.parse(ui_storage.get('Forum' + i));
+			for (var topic in forum) {
+				if (!isNaN(forum[topic])) {
+					forum[topic] = { posts: forum[topic], date: undefined };
+				}
+			}
+			ui_storage.set('Forum' + i, JSON.stringify(forum));
+		}
+		localStorage.GUIp_migrated = '150419';
+	}
 };
