@@ -85,8 +85,10 @@ var updatePostsNumber = function() {
 		var page = location.search.match(/page=(\d+)/);
 		page = page ? +page[1] - 1 : 0;
 		var posts = page*25 + document.getElementsByClassName('post').length;
-		if (topics[topic] < posts) {
-			topics[topic] = posts;
+		if (topics[topic].posts < posts) {
+			topics[topic].posts = posts;
+			var dates = document.getElementsByTagName('abbr');
+			topics[topic].date = dates[dates.length - 1].title;
 			storage.set(forum_no, JSON.stringify(topics));
 		}
 	}
