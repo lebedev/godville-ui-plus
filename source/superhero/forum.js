@@ -61,10 +61,9 @@ ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
 };
 ui_forum._parse = function(xhr) {
 	var diff, temp, old_diff, topic_name, posts, date, last_poster,
-		forum = JSON.parse(ui_storage.get('Forum' + xhr.extra_arg)),
-		informers = JSON.parse(ui_storage.get('ForumInformers')),
-		topics = [];
-	for (var topic in forum) {
+		topics = JSON.parse(ui_storage.get('Forum' + xhr.extra_arg)),
+		informers = JSON.parse(ui_storage.get('ForumInformers'));
+	for (var topic in topics) {
 		temp = xhr.responseText.match("show_topic\\/" + topic + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<abbr class=\"updated\" title=\"([^\"]+)(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topic);
 		if (temp) {
 			topic_name = temp[1].replace(/&quot;/g, '"');
@@ -72,14 +71,14 @@ ui_forum._parse = function(xhr) {
 			date = temp[3];
 			last_poster = temp[4];
 
-			diff = posts - forum[topic].posts;
+			diff = posts - topics[topic].posts;
 
-			if (diff < 0 || diff === 0 && forum[topic].date && forum[topic].date !== date) {
+			if (diff < 0 || diff === 0 && topics[topic].date && topics[topic].date !== date) {
 				diff = 1;
 			}
 
-			forum[topic].posts = posts;
-			forum[topic].date = date;
+			topics[topic].posts = posts;
+			topics[topic].date = date;
 
 			if (diff > 0) {
 				if (last_poster !== ui_data.god_name) {
@@ -92,6 +91,6 @@ ui_forum._parse = function(xhr) {
 		}
 	}
 	ui_storage.set('ForumInformers', JSON.stringify(informers));
-	ui_storage.set('Forum' + xhr.extra_arg, JSON.stringify(forum));
+	ui_storage.set('Forum' + xhr.extra_arg, JSON.stringify(topics));
 	ui_forum._process(xhr.extra_arg);
 };
