@@ -30,8 +30,14 @@ var quoteFormatting = function(quotation, editor) {
 	try {
 		initEditor(editor);
 		nls = val && val[ss - 1] && !val[ss - 1].match(/\n/) ? '\n\n' : (val[ss - 2] && !val[ss - 2].match(/\n/) ? '\n' : '');
-		nle = val && (val[se] && !val[se].match(/\n/) || !val[se]) ? '\n\n' : (val[se + 1] && !val[se + 1].match(/\n/) ? '\n' : '') +
-		      selection && !selection[selection.length - 1].match(/\n/) ? '\n\n' : (selection[selection.length - 2] && !selection[selection.length - 2].match(/\n/) ? '\n' : '');
+		nle = ss !== se && val ? ((val[se] && !val[se].match(/\n/) || !val[se]) ? '\n\n'
+																				: (val[se + 1] && !val[se + 1].match(/\n/) ? '\n'
+																														   : ''))
+							   : '' +
+			  selection ? (!selection[selection.length - 1].match(/\n/) ? '\n\n'
+																		: (selection && selection[selection.length - 2] && !selection[selection.length - 2].match(/\n/) ? '\n'
+																																										: ''))
+						: '';
 		editor.value = val.slice(0, ss) + nls + quotation + val.slice(ss, se) + selection + nle + val.slice(se);
 		putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0), true);
 		return false;
