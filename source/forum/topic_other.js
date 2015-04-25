@@ -31,9 +31,11 @@ var fixPageWrapperPadding = function() {
 	worker.Effect.old_BlindDown = worker.Effect.BlindDown;
 	worker.Effect.BlindDown = function(a, b) { setPageWrapperPaddingBottom(a); worker.Effect.old_BlindDown(a, b); };
 	worker.EditForm.old_hide = worker.EditForm.hide;
-	worker.EditForm.hide = function(dummy) { pw.style.paddingBottom = '0px'; worker.EditForm.old_hide(); };
+	worker.EditForm.hide = function() { pw.style.paddingBottom = '0px'; worker.EditForm.old_hide(); };
 	worker.EditForm.old_setReplyId = worker.EditForm.setReplyId;
 	worker.EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } worker.EditForm.old_setReplyId(a); };
+	worker.ReplyForm.old_init = worker.ReplyForm.init;
+	worker.ReplyForm.init = function() { worker.ReplyForm.old_init(); if (worker.getSelection().isCollapsed) { worker.setTimeout(function() { document.getElementById('post_body').focus(); }, 50); } };
 };
 
 var findPost = function(el) {
