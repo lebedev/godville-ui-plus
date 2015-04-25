@@ -13,13 +13,13 @@ var putSelectionTo = function(editor, pos, quoting) {
 var basicFormatting = function(left_and_right, editor) {
 	try {
 		initEditor(editor);
-		while (ss < se && val[ss].match(/[^\wА-Яа-я]/)) {
+		while (ss < se && val[ss].match(/\s/)) {
 			ss++;
 		}
-		while (ss < se && val[se - 1].match(/[^\wА-Яа-я]/)) {
+		while (ss < se && val[se - 1].match(/\s/)) {
 			se--;
 		}
-		editor.value = val.slice(0, ss) + (val && val[ss - 1] && !val[ss - 1].match(/[^\wА-Яа-я]/) ? ' ' : '') + left_and_right[0] + val.slice(ss, se) + selection + left_and_right[1] + (val && val [se] && !val[se].match(/[^\wА-Яа-я]/) ? ' ' : '') + val.slice(se);
+		editor.value = val.slice(0, ss) + (val && val[ss - 1] && val[ss - 1].match(/[a-zA-Zа-яА-ЯёЁ]/) ? ' ' : '') + left_and_right[0] + val.slice(ss, se) + selection + left_and_right[1] + (val && val [se] && val[se].match(/[a-zA-Zа-яА-ЯёЁ]/) ? ' ' : '') + val.slice(se);
 		putSelectionTo(editor, se + left_and_right[0].length, true);
 		return false;
 	} catch(error) {
