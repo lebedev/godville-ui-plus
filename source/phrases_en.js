@@ -514,7 +514,8 @@ worker.GUIp_i18n = {
 	browser: 'Browser:',
 	version: 'Version:',
 	clear_voice_input: 'Clear voice input',
-	trophy: 'trophy '
+	trophy: 'trophy ',
+	high_contrast: 'High contrast mode (for vision impared)'
 };
 
 delete worker.GUIp_github_link;

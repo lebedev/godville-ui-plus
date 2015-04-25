@@ -92,6 +92,7 @@ function GUIp_log() {
 					'<td style="border: none; padding: 0;"><label for="stoneeater">' + worker.GUIp_i18n.corrections + '</label></td>' +
 					'<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="' + (localStorage[godname_prefix + log + 'corrections'] || '') + '" style=" width: 100%; padding: 0;"></td>' +
 				'</tr></table>' +
+				'<input type="checkbox" id="high_contrast" name="high_contrast" value="1"><label for="high_contrast">' + worker.GUIp_i18n.high_contrast + '</label>' +
 				'<button id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
 			'</form>');
 		document.querySelector('#fight_text').value = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' +
@@ -107,6 +108,7 @@ function GUIp_log() {
 		var button = document.getElementById('send_to_LEM'),
 			match = document.getElementById('match'),
 			search_mode = document.getElementById('search_mode'),
+			high_contrast = document.getElementById('high_contrast'),
 			time_frame_seconds = (localStorage[godname_prefix + 'LEMRestrictions:TimeFrame'] || 20)*60,
 			request_limit = localStorage[godname_prefix + 'LEMRestrictions:RequestLimit'] || 5;
 		button.onclick = function(e) {
@@ -130,6 +132,10 @@ function GUIp_log() {
 		}, 1000);
 		match.onchange = function() {
 			search_mode.style.display = search_mode.style.display === 'none' ? 'block' : 'none';
+		};
+		high_contrast.checked = localStorage.GUIp_highContrast === 'true';
+		high_contrast.onchange = function() {
+			localStorage.GUIp_highContrast = document.getElementById('high_contrast').checked;
 		};
 	} catch(e) {
 		worker.console.log(e);

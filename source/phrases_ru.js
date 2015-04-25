@@ -657,7 +657,8 @@ worker.GUIp_i18n = {
 	browser: 'Браузер:',
 	version: 'Версия:',
 	clear_voice_input: 'Очистить поле гласа',
-	trophy: 'трофей '
+	trophy: 'трофей ',
+	high_contrast: 'Высококонтрастный режим (для слабовидящих)'
 };
 
 delete worker.GUIp_github_link;
