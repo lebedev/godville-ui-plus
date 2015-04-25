@@ -63,7 +63,8 @@
 		"timers.js",
 		"log.js",
 		"images/background.jpg",
-		"images/shovel.png"
+		"images/shovel.png",
+		"images/crop.png"
 	]
 
 }

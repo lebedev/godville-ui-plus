@@ -80,6 +80,9 @@
 .img_container {
 	text-align: center;
 }
+.img_container a {
+	display: inline-block;
+}
 .img_container img {
 	max-width: 456px;
 }

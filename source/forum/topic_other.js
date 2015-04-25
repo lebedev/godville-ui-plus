@@ -61,8 +61,16 @@ var picturesAutoreplace = function() {
 				var hint = links[i].innerHTML;
 				links[i].outerHTML = '<div class="img_container"><a id="link' + i + '" href="' + links[i].href + '" target="_blank" alt="' + worker.GUIp_i18n.open_in_a_new_tab + '"></a><div class="hint">' + hint + '</div></div>';
 				imgs[i].alt = hint;
-				var new_link = document.getElementById('link' + i);
-				new_link.appendChild(imgs[i]);
+				var new_link = document.getElementById('link' + i),
+					width = Math.min(imgs[i].width, 456),
+					height = imgs[i].height*(imgs[i].width <= 456 ? 1 : 456/imgs[i].width);
+				if (height < 1500) {
+					new_link.insertAdjacentHTML('beforeend', '<div style="width: ' + width + 'px; height: ' + height + 'px; background-image: url(' + imgs[i].src + '); background-size: ' + width + 'px;"></div>');
+				} else {
+					new_link.insertAdjacentHTML('beforeend', '<div style="width: ' + width + 'px; height: 750px; background-image: url(' + imgs[i].src + '); background-size: ' + width + 'px;"></div>' +
+															 '<div style="width: ' + width + 'px; height: ' + (342*width/456) + 'px; background-image: url(' + worker.GUIp_getResource('images/crop.png') + '); background-size: ' + width + 'px; position: absolute; top: ' + (750 - 171*width/456) + 'px;"></div>' +
+															 '<div style="width: ' + width + 'px; height: 750px; background-image: url(' + imgs[i].src + '); background-size: ' + width + 'px; background-position: 100% 100%;"></div>');
+				}
 				if (linkBeforeCurrentPost) {
 					var diff = post.getBoundingClientRect().bottom - oldBottom;
 					worker.console.log(hash, +post.id.match(/\d+/), linkBeforeCurrentPost, diff);
