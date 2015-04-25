@@ -566,6 +566,7 @@ worker.GUIp_i18n = {
 	forbidden_informers_quest_box: 'выдающие мини-квест',
 	forbidden_informers_smelter: 'плавящие золото в кирпич',
 	forbidden_informers_teleporter: 'телепортирующие в город',
+	forbidden_informers_temper_box: 'меняющие характер героя',
 	forbidden_informers_to_arena_box: 'отправляющие на арену',
 	forbidden_informers_transformer: 'меняющие <b>предметы</b> на кирпичи',
 	disable_pm_sound: 'Выключить звук личных сообщений',

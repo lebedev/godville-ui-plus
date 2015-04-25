@@ -245,6 +245,7 @@ return '<p>\n' +
 '							<input class="item-informer informer-checkbox" id="quest_box" name="quest_box" type="checkbox"><label for="quest_box">' + worker.GUIp_i18n.forbidden_informers_quest_box + '</label><br>\n' +
 '							<input class="item-informer informer-checkbox" id="smelter" name="smelter" type="checkbox"><input class="item-informer informer-checkbox" id="smelt!" name="smelt!" type="checkbox" style="display: none;"><label for="smelter">' + worker.GUIp_i18n.forbidden_informers_smelter + '</label><br>\n' +
 '							<input class="item-informer informer-checkbox" id="teleporter" name="teleporter" type="checkbox"><label for="teleporter">' + worker.GUIp_i18n.forbidden_informers_teleporter + '</label><br>\n' +
+'							<input class="item-informer informer-checkbox" id="temper_box" name="temper_box" type="checkbox"><label for="temper_box">' + worker.GUIp_i18n.forbidden_informers_temper_box + '</label><br>\n' +
 '							<input class="item-informer informer-checkbox" id="to_arena_box" name="to_arena_box" type="checkbox"><label for="to_arena_box">' + worker.GUIp_i18n.forbidden_informers_to_arena_box + '</label><br>\n' +
 '							<input class="item-informer informer-checkbox" id="transformer" name="transformer" type="checkbox"><input class="item-informer informer-checkbox" id="transform!" name="transform!" type="checkbox" style="display: none;"><label for="transformer">' + worker.GUIp_i18n.forbidden_informers_transformer + '</label><br>\n' +
 '						</div>\n' +

@@ -423,6 +423,7 @@ worker.GUIp_i18n = {
 	forbidden_informers_quest_box: 'sending hero into a mini-quest',
 	forbidden_informers_smelter: 'melting gold into a brick',
 	forbidden_informers_teleporter: 'teleporting into a town',
+	forbidden_informers_temper_box: 'changing hero\'s alignment',
 	forbidden_informers_to_arena_box: 'sending hero to arena',
 	forbidden_informers_transformer: 'transforming <b>items</b> into golden bricks',
 	disable_pm_sound: 'Disable private message sound',
