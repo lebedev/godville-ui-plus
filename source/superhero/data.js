@@ -56,7 +56,7 @@ ui_data._initForumData = function() {
 ui_data._clearOldDungeonData = function() {
 	if (!this.isFight && !this.isDungeon) {
 		for (var key in localStorage) {
-			if (key.match(/Dungeon:/)) {
+			if (key.match(/:Dungeon:/)) {
 				delete localStorage[key];
 			}
 		}
