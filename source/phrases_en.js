@@ -143,7 +143,7 @@ worker.GUIp_words = function() {
 			'This item can completely restore the hero\'s health',
 			'This item adds one accumulator charge when activated',
 			'This item makes the hero search for allies against an underground boss',
-			'This item kills the monster or tries to melt a golden brick out of gold coins',
+			'This item kills the monster or tries to melt a golden brick out of 3000 gold coins',
 			'This item can teleport the hero into a random town',
 			'This item makes hero\'s alignment more defined',
 			'This item teleports the hero to the arena when activated',
