@@ -63,7 +63,7 @@ ui_storage.clear = function(what) {
 		if (what === 'GUIp' && key.match(/^GUIp_/) ||
 			what === 'Godville' && !key.match(/^GUIp_/) ||
 			what === 'All') {
-			delete localStorage[key];
+			localStorage.removeItem(key);
 		}
 	}
 	location.reload();
@@ -72,14 +72,14 @@ ui_storage._rename = function(from, to) {
 	for (var key in localStorage) {
 		if (key.match(from)) {
 			localStorage[key.replace(from, to)] = localStorage[key];
-			delete localStorage[key];
+			localStorage.removeItem(key);
 		}
 	}
 };
 ui_storage._rename_nesw = function(from, to) {
 	if (ui_storage.get('phrases_walk_' + from)) {
 		ui_storage.set('CustomPhrases:go_' + to, ui_storage.get('phrases_walk_' + from));
-		delete localStorage[ui_storage._get_key('phrases_walk_' + from)];
+		localStorage.removeItem(ui_storage._get_key('phrases_walk_' + from));
 	}
 };
 ui_storage.migrate = function() {
