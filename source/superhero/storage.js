@@ -15,12 +15,12 @@ ui_storage._diff = function(id, value) {
 };
 // stores a value
 ui_storage.set = function(id, value) {
-	localStorage[ui_storage._get_key(id)] = value;
+	localStorage.setItem(ui_storage._get_key(id), value);
 	return value;
 };
 // reads a value
 ui_storage.get = function(id) {
-	var val = localStorage[ui_storage._get_key(id)];
+	var val = localStorage.getItem(ui_storage._get_key(id));
 	if (val === 'true') { return true; }
 	if (val === 'false') { return false; }
 	return val;
@@ -71,7 +71,7 @@ ui_storage.clear = function(what) {
 ui_storage._rename = function(from, to) {
 	for (var key in localStorage) {
 		if (key.match(from)) {
-			localStorage[key.replace(from, to)] = localStorage[key];
+			localStorage.setItem(key.replace(from, to), localStorage.getItem(key));
 			localStorage.removeItem(key);
 		}
 	}
@@ -123,13 +123,13 @@ ui_storage.migrate = function() {
 		var forum2;
 		for (var key in localStorage) {
 			if (key.match('Forum\\d')) {
-				forum2 = JSON.parse(localStorage[key]);
+				forum2 = JSON.parse(localStorage.getItem(key));
 				for (var topic2 in forum2) {
 					if (!isNaN(forum2[topic2])) {
 						forum2[topic2] = { posts: forum2[topic2], date: 0 };
 					}
 				}
-				localStorage[key] = JSON.stringify(forum2);
+				localStorage.setItem(key, JSON.stringify(forum2));
 			}
 		}
 		localStorage.GUIp_migrated = '150419_2';

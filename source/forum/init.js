@@ -22,11 +22,11 @@ var storage = {
 		return "GUIp_" + this.god_name + ':' + key;
 	},
 	set: function(id, value) {
-		localStorage[this._getKey(id)] = value;
+		localStorage.setItem(this._getKey(id), value);
 		return value;
 	},
 	get: function(id) {
-		var value = localStorage[this._getKey(id)];
+		var value = localStorage.getItem(this._getKey(id));
 		if (value === 'true') { return true; }
 		else if (value === 'false') { return false; }
 		else { return value; }

@@ -8,11 +8,11 @@ var storage = {
 		return "GUIp_" + god_name + ':' + key;
 	},
 	set: function(id, value) {
-		localStorage[this._get_key(id)] = value;
+		localStorage.setItem(this._get_key(id), value);
 		return value;
 	},
 	get: function(id) {
-		var val = localStorage[this._get_key(id)];
+		var val = localStorage.getItem(this._get_key(id));
 		if (val) { val = val.replace(/^[NSB]\]/, ''); }
 		if (val === 'true') { return true; }
 		else if (val === 'false') { return false; }
