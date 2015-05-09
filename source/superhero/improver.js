@@ -935,7 +935,7 @@ ui_improver.improveChat = function() {
 	for (i = 0, len = $msgs.length; i < len; i++) {
 		text = $msgs[i].childNodes[0].textContent;
 		$msgs[i].removeChild($msgs[i].childNodes[0]);
-		$msgs[i].insertAdjacentHTML('afterbegin', ui_utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t\, ]+)/g, '<a href="$1" target="_blank" title="' + worker.GUIp_i18n.open_in_a_new_tab + '">$1</a>'));
+		$msgs[i].insertAdjacentHTML('afterbegin', '<span>' + ui_utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t\, ]+)/g, '<a href="$1" target="_blank" title="' + worker.GUIp_i18n.open_in_a_new_tab + '">$1</a>') + '</span>');
 
 		var friend = $msgs[i].getElementsByClassName('gc_fr_god')[0];
 		if (friend && friend.textContent.match(this.friendsRegExp)) {
