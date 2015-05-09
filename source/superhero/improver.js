@@ -461,12 +461,12 @@ ui_improver.improvePet = function() {
 };
 ui_improver.improveEquip = function() {
 	if (!ui_utils.isAlreadyImproved(document.getElementById('equipment'))) {
-		worker.$('#equipment .block_title').after(worker.$('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
+		document.querySelector('#equipment .block_title').insertAdjacentHTML('afterend', '<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>');
 	}
 	var equipBadge = document.getElementById('equip_badge'),
 		averageEquipLevel = 0;
 	for (var i = 1; i <= 7; i++) {
-		averageEquipLevel += ui_stats['Equip' + i];
+		averageEquipLevel += ui_stats['Equip' + i]();
 	}
 	averageEquipLevel = (averageEquipLevel/7).toFixed(1) + '';
 	if (equipBadge.textContent !== averageEquipLevel) {
