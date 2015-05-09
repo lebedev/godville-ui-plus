@@ -26,15 +26,9 @@ function GUIp_log() {
 
 	function deleteOldEntries() {
 		// old entries deletion
-		var len, lines = [];
-		for (i = 0, len = localStorage.length; i < len; i++) {
-			if (localStorage.key(i).match(godname_prefix + 'Log:\\w{5}:') && !localStorage.key(i).match(log + '|' + localStorage[godname_prefix + 'Log:current'])) {
-				lines.push(localStorage.key(i));
-			}
-		}
-		for (i = 0, len = lines.length; i < len; i++) {
-			if (isNaN(localStorage[lines[i]]) || Date.now() - localStorage[lines[i]] > time_frame_seconds*1000) {
-				localStorage.removeItem(lines[i]);
+		for (var key in localStorage) {
+			if (key.match(godname_prefix + 'Log:\\w{5}:') && !key.match(log + '|' + localStorage[godname_prefix + 'Log:current'])) {
+				localStorage.removeItem(key);
 			}
 		}
 	}
