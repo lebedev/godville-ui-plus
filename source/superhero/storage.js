@@ -33,11 +33,11 @@ ui_storage.set_with_diff = function(id, value) {
 };
 // dumps all values related to current god_name
 ui_storage.dump = function(selector) {
-	var lines = [];
-	var r = new worker.RegExp('^GUIp_' + (selector === undefined ? '' : (ui_data.god_name + ':' + selector)));
-	for (var i = 0; i < localStorage.length; i++) {
-		if (localStorage.key(i).match(r)) {
-			lines.push(localStorage.key(i) + ' = ' + localStorage[localStorage.key(i)]);
+	var lines = [],
+		regexp = '^GUIp_' + (selector ? (ui_data.god_name + ':' + selector) : '');
+	for (var key in localStorage) {
+		if (key.match(regexp)) {
+			lines.push(key + ' = ' + localStorage.getItem(key));
 		}
 	}
 	lines.sort();
