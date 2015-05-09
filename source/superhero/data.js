@@ -22,15 +22,15 @@ ui_data.init = function() {
 };
 ui_data._initVariables = function() {
 	this.currentVersion = '$VERSION';
-	this.isFight = worker.so.state.is_fighting();
-	this.isDungeon = worker.so.state.fight_type() === 'dungeon';
+	this.isFight = ui_stats.isFight();
+	this.isDungeon = ui_stats.isDungeon();
 	document.body.classList.add(this.isDungeon ? 'dungeon' : this.isFight ? 'fight' : 'field');
-	this.god_name = worker.so.state.stats.godname.value;
-	this.char_name = worker.so.state.stats.name.value;
-	this.char_sex = worker.so.state.stats.gender.value === 'male' ? worker.GUIp_i18n.hero : worker.GUIp_i18n.heroine;
+	this.god_name = ui_stats.godName();
+	this.char_name = ui_stats.charName();
+	this.char_sex = ui_stats.isMale() ? worker.GUIp_i18n.hero : worker.GUIp_i18n.heroine;
 	ui_storage.set('ui_s', '');
 	localStorage.GUIp_CurrentUser = this.god_name;
-	if (worker.so.state.bricks_cnt() === 1000) {
+	if (ui_stats.Bricks() === 1000) {
 		document.body.classList.add('has_temple');
 		this.hasTemple = true;
 	}

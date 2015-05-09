@@ -118,7 +118,7 @@ ui_inventory._update = function() {
 		ui_informer.update(ui_words.base.usable_items.types[i], flags[i]);
 	}
 	ui_informer.update('transform!', flags[ui_words.base.usable_items.types.indexOf('transformer')] && bold_items >= 2);
-	ui_informer.update('smelt!', flags[ui_words.base.usable_items.types.indexOf('smelter')] && ui_storage.get('Stats:Gold') >= 3000);
+	ui_informer.update('smelt!', flags[ui_words.base.usable_items.types.indexOf('smelter')] && ui_stats.Gold() >= 3000);
 
 	ui_inventory._updateCraftCombos(trophy_boldness);
 };

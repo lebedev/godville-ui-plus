@@ -52,8 +52,8 @@ ui_improver.hardRefresh = function() {
 ui_improver.improve = function() {
 	this.improveInProcess = true;
 	ui_informer.update('fight', ui_data.isFight && !ui_data.isDungeon);
-	ui_informer.update('arena available', worker.so.state.arena_available());
-	ui_informer.update('dungeon available', worker.so.state.dungeon_available());
+	ui_informer.update('arena available', ui_stats.isArenaAvailable());
+	ui_informer.update('dungeon available', ui_stats.isDungeonAvailable());
 
 	this.optionsChanged = this.isFirstTime ? false : ui_storage.get('optionsChanged');
 	if (this.isFirstTime) {
@@ -135,9 +135,7 @@ ui_improver.improveVoiceDialog = function() {
 	//hide_charge_button
 	var charge_button = document.querySelector('#cntrl .hch_link');
 	charge_button.style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
-	// Save stats
-	ui_stats.set('Godpower', worker.so.state.stats.godpower.value);
-	ui_informer.update('full godpower', worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value);
+	ui_informer.update('full godpower', ui_stats.Godpower() === ui_stats.Max_Godpower());
 };
 ui_improver.improveNews = function() {
 	if (!ui_utils.isAlreadyImproved(document.getElementById('news'))) {
@@ -147,14 +145,14 @@ ui_improver.improveNews = function() {
 		isSpecialMonster = false,
 		isTamableMonster = false;
 	// Если герой дерется с монстром
-	var currentMonster = worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value;
+	var currentMonster = ui_stats.monsterName();
 	if (currentMonster) {
 		isWantedMonster = this.wantedMonsters && currentMonster.match(this.wantedMonsters);
 		isSpecialMonster = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
 
-		if (!worker.so.state.has_pet) {
-			var hasArk = parseInt(worker.so.state.stats.wood.value) >= 100;
-			var pet, hero_level = ui_stats.get('Level');
+		if (!ui_stats.heroHasPet) {
+			var hasArk = ui_stats.Logs() >= 1000;
+			var pet, hero_level = ui_stats.Level();
 			for (var i = 0; i < ui_words.base.pets.length; i++) {
 				pet = ui_words.base.pets[i];
 				if (currentMonster.match(pet.name, 'i') && hero_level >= pet.min_level && hero_level <= (pet.min_level + (hasArk ? 28 : 14))) {
@@ -375,44 +373,30 @@ ui_improver.improveStats = function() {
 	};
 
 	if (ui_data.isDungeon) {
-		ui_stats.set('Map_HP', worker.so.state.stats.health.value);
-		ui_stats.set('Map_Exp', worker.so.state.stats.exp_progress.value);
-		ui_stats.set('Map_Gold', worker.so.state.stats.gold.value);
-		ui_stats.set('Map_Inv', worker.so.state.stats.inventory_num.value);
-		ui_stats.set('Map_Charges', worker.so.state.stats.accumulator.value);
-		ui_stats.set('Map_Alls_HP', ui_improver.GroupHP(true));
 		if (ui_storage.get('Logger:Location') === 'Field') {
 			ui_storage.set('Logger:Location', 'Dungeon');
-			ui_storage.set('Logger:Map_HP', ui_stats.get('Map_HP'));
-			ui_storage.set('Logger:Map_Exp', ui_stats.get('Map_Exp'));
-			ui_storage.set('Logger:Map_Gold', ui_stats.get('Map_Gold'));
-			ui_storage.set('Logger:Map_Inv', ui_stats.get('Map_Inv'));
-			ui_storage.set('Logger:Map_Charges',ui_stats.get('Map_Charges'));
-			ui_storage.set('Logger:Map_Alls_HP', ui_stats.get('Map_Alls_HP'));
+			ui_storage.set('Logger:Map_HP', ui_stats.HP());
+			ui_storage.set('Logger:Map_Exp', ui_stats.Exp());
+			ui_storage.set('Logger:Map_Gold', ui_stats.Gold());
+			ui_storage.set('Logger:Map_Inv', ui_stats.Inv());
+			ui_storage.set('Logger:Map_Charges',ui_stats.Charges());
+			ui_storage.set('Logger:Map_Alls_HP', ui_stats.Map_Alls_HP());
 		}
-		//ui_informer.update('low health', +ui_stats.get('Map_HP') < 130);
+		//ui_informer.update('low health', +ui_stats.Map_HP() < 130);
 		return;
 	}
 	if (ui_data.isFight) {
-		ui_stats.set('Hero_HP', worker.so.state.stats.health.value);
-		ui_stats.set('Hero_Gold', worker.so.state.stats.gold.value);
-		ui_stats.set('Hero_Inv', worker.so.state.stats.inventory_num.value);
-		ui_stats.set('Hero_Charges', worker.so.state.stats.accumulator.value);
-		ui_stats.setFromLabelCounter('Enemy_Gold', worker.$('#o_info'), worker.GUIp_i18n.gold_label, gold_parser);
-		ui_stats.setFromLabelCounter('Enemy_Inv', worker.$('#o_info'), worker.GUIp_i18n.inventory_label);
-		ui_stats.set('Hero_Alls_HP', ui_improver.GroupHP(true));
-		ui_stats.set('Enemy_HP', ui_improver.GroupHP(false));
 		if (this.isFirstTime) {
-			ui_storage.set('Logger:Hero_HP', ui_stats.get('Hero_HP'));
-			ui_storage.set('Logger:Hero_Gold', ui_stats.get('Hero_Gold'));
-			ui_storage.set('Logger:Hero_Inv', ui_stats.get('Hero_Inv'));
-			ui_storage.set('Logger:Hero_Charges',ui_stats.get('Hero_Charges'));
-			ui_storage.set('Logger:Enemy_HP', ui_stats.get('Enemy_HP'));
-			ui_storage.set('Logger:Enemy_Gold', ui_stats.get('Enemy_Gold'));
-			ui_storage.set('Logger:Enemy_Inv', ui_stats.get('Enemy_Inv'));
-			ui_storage.set('Logger:Hero_Alls_HP', ui_stats.get('Hero_Alls_HP'));
+			ui_storage.set('Logger:Hero_HP', ui_stats.HP());
+			ui_storage.set('Logger:Hero_Gold', ui_stats.Gold());
+			ui_storage.set('Logger:Hero_Inv', ui_stats.Inv());
+			ui_storage.set('Logger:Hero_Charges', ui_stats.Charges());
+			ui_storage.set('Logger:Enemy_HP', ui_stats.Enemy_HP());
+			ui_storage.set('Logger:Enemy_Gold', ui_stats.Enemy_Gold());
+			ui_storage.set('Logger:Enemy_Inv', ui_stats.Enemy_Inv());
+			ui_storage.set('Logger:Hero_Alls_HP', ui_stats.Hero_Alls_HP());
 		}
-		//ui_informer.update('low health', +ui_stats.get('Hero_HP') < 130);
+		//ui_informer.update('low health', +ui_stats.Hero_HP() < 130);
 		return;
 	}
 	if (ui_storage.get('Logger:Location') !== 'Field') {
@@ -430,22 +414,10 @@ ui_improver.improveStats = function() {
 	if (!document.querySelector('#hk_distance .voice_generator')) {
 		ui_utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : worker.GUIp_i18n.return, 'town', worker.GUIp_i18n.ask14 + ui_data.char_sex[0] + worker.GUIp_i18n.to_return);
 	}
-	ui_stats.set('HP', worker.so.state.stats.health.value);
-	ui_stats.set('Exp', worker.so.state.stats.exp_progress.value);
-	ui_stats.set('Gold', worker.so.state.stats.gold.value);
-	ui_stats.set('Inv', worker.so.state.stats.inventory_num.value);
-	ui_stats.set('Task', worker.so.state.stats.quest_progress.value);
-	ui_stats.set('Level', worker.so.state.stats.level.value);
-	ui_stats.set('Monster', worker.so.state.stats.monsters_killed.value);
-	ui_stats.set('Death', worker.so.state.stats.death_count.value);
-	ui_stats.set('Bricks', worker.so.state.stats.bricks_cnt.value);
-	ui_stats.set('Logs', parseFloat(worker.so.state.stats.wood.value)*10);
-	ui_stats.set('Savings', worker.so.state.stats.retirement && parseInt(worker.so.state.stats.retirement.value));
-	ui_stats.set('Charges', worker.so.state.stats.accumulator.value);
 
-	ui_informer.update('much gold', worker.so.state.stats.gold.value >= (ui_data.hasTemple ? 10000 : 3000));
-	ui_informer.update('dead', worker.so.state.stats.health.value === 0);
-	var questName = worker.so.state.stats.quest.value;
+	ui_informer.update('much gold', ui_stats.Gold() >= (ui_data.hasTemple ? 10000 : 3000));
+	ui_informer.update('dead', ui_stats.HP() === 0);
+	var questName = ui_stats.Task_Name();
 	ui_informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && !questName.match(/\((отменено|cancelled)\)/));
 	ui_informer.update('mini quest', questName.match(/\((мини|mini)\)/) && !questName.match(/\((отменено|cancelled)\)/));
 
@@ -454,9 +426,9 @@ ui_improver.improveStats = function() {
 	if (this.isFirstTime) {
 		digVoice.style.backgroundImage = 'url(' + worker.GUIp_getResource('images/shovel.png') + ')';
 	}
-	if (worker.so.state.stats.gold_we.value.length > 16 - 2*document.getElementsByClassName('page_wrapper_5c').length) {
+	if (ui_stats.goldTextLength() > 16 - 2*document.getElementsByClassName('page_wrapper_5c').length) {
 		digVoice.classList.add('shovel');
-		if (worker.so.state.stats.gold_we.value.length > 20 - 3*document.getElementsByClassName('page_wrapper_5c').length) {
+		if (ui_stats.goldTextLength() > 20 - 3*document.getElementsByClassName('page_wrapper_5c').length) {
 			digVoice.classList.add('compact');
 		} else {
 			digVoice.classList.remove('compact');
@@ -467,9 +439,11 @@ ui_improver.improveStats = function() {
 	//Shovel pictogramm end
 };
 ui_improver.improvePet = function() {
-	if (ui_data.isFight) { return; }
+	if (ui_data.isFight) {
+		return;
+	}
 	var pet_badge;
-	if (worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value) {
+	if (ui_stats.petIsKnockedOut()) {
 		if (!ui_utils.isAlreadyImproved(document.getElementById('pet'))) {
 			document.querySelector('#pet .block_title').insertAdjacentHTML('beforeend', '<div id="pet_badge" class="fr_new_badge equip_badge_pos hidden">0</div>');
 		}
@@ -482,32 +456,22 @@ ui_improver.improvePet = function() {
 			ui_utils.hideElem(pet_badge, true);
 		}
 	}
-	// bruise informer
-	ui_informer.update('pet knocked out', worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value);
-
-	ui_stats.set('Pet_Level', worker.so.state.pet.pet_level && worker.so.state.pet.pet_level.value);
+	// knock out informer
+	ui_informer.update('pet knocked out', ui_stats.petIsKnockedOut());
 };
 ui_improver.improveEquip = function() {
-	// Save stats
-	var seq = 0;
-	for (var i = 7; i >= 1;) {
-		ui_stats.set('Equip' + i--, parseInt(worker.$('#eq_' + i + ' .eq_level').text()));
-		seq += parseInt(worker.$('#eq_' + i + ' .eq_level').text()) || 0;
-	}
 	if (!ui_utils.isAlreadyImproved(document.getElementById('equipment'))) {
 		worker.$('#equipment .block_title').after(worker.$('<div id="equip_badge" class="fr_new_badge equip_badge_pos">0</div>'));
 	}
-	var equipBadge = document.getElementById('equip_badge');
-	if (equipBadge.textContent !== (seq/7).toFixed(1) + '') {
-		equipBadge.textContent = (seq/7).toFixed(1);
+	var equipBadge = document.getElementById('equip_badge'),
+		averageEquipLevel = 0;
+	for (var i = 1; i <= 7; i++) {
+		averageEquipLevel += ui_stats['Equip' + i];
 	}
-};
-ui_improver.GroupHP = function(allies) {
-	var seq = 0, $box = allies ? worker.$('#alls .opp_h') : worker.$('#opps .opp_h');
-	for (var i = 0, len = $box.length; i < len; i++) {
-		seq += parseInt($box[i].textContent) || 0;
+	averageEquipLevel = (averageEquipLevel/7).toFixed(1) + '';
+	if (equipBadge.textContent !== averageEquipLevel) {
+		equipBadge.textContent = averageEquipLevel;
 	}
-	return seq;
 };
 ui_improver.improvePantheons = function() {
 	var pants = document.querySelector('#pantheons .block_content');
@@ -758,18 +722,18 @@ ui_improver.improveChronicles = function() {
 				this.needLog = false;
 				ui_improver.colorDungeonMap();
 			} else if (this.dungeonXHRCount < 5) {
-				ui_utils.getXHR('/duels/log/' + worker.so.state.stats.perm_link.value, ui_improver.parseChronicles.bind(ui_improver));
+				ui_utils.getXHR('/duels/log/' + ui_stats.logId(), ui_improver.parseChronicles.bind(ui_improver));
 			}
 		}
 		// informer
 		ui_informer.update('close to boss', this.chronicles[worker.Object.keys(this.chronicles).reverse()[0]].marks.indexOf('bossHint') !== -1);
 
-		if (ui_storage.get('Log:current') !== worker.so.state.stats.perm_link.value) {
-			ui_storage.set('Log:current', worker.so.state.stats.perm_link.value);
-			ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', '');
+		if (ui_storage.get('Log:current') !== ui_stats.logId()) {
+			ui_storage.set('Log:current', ui_stats.logId());
+			ui_storage.set('Log:' + ui_stats.logId() + ':corrections', '');
 		}
-		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
-		ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':map', JSON.stringify(worker.so.state.d_map));
+		ui_storage.set('Log:' + ui_stats.logId() + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
+		ui_storage.set('Log:' + ui_stats.logId() + ':map', JSON.stringify(worker.so.state.d_map));
 	}
 	ui_improver.improvementDebounce();
 };
@@ -873,7 +837,7 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 			}
 		}
 		if (heroesCoords.x - coords.x === 0 && heroesCoords.y - coords.y === 0) {
-			ui_storage.set('Log:' + worker.so.state.stats.perm_link.value + ':corrections', ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections') + second[i]);
+			ui_storage.set('Log:' + ui_stats.logId() + ':corrections', ui_storage.get('Log:' + ui_stats.logId() + ':corrections') + second[i]);
 			return this.corrections[second[i][0]];
 		}
 	}
@@ -885,7 +849,7 @@ ui_improver.colorDungeonMap = function() {
 		steps_max = steps.length;
 	for (step = 1; step <= steps_max; step++) {
 		if (this.chronicles[step].directionless) {
-			var shortCorrection = ui_storage.get('Log:' + worker.so.state.stats.perm_link.value + ':corrections')[this.directionlessMoveIndex++];
+			var shortCorrection = ui_storage.get('Log:' + ui_stats.logId() + ':corrections')[this.directionlessMoveIndex++];
 			if (shortCorrection) {
 				this.chronicles[step].direction = this.corrections[shortCorrection];
 			} else {
@@ -932,7 +896,7 @@ ui_improver.improveInterface = function() {
 			ui_improver.windowResizeInt = worker.setTimeout(ui_improver.whenWindowResize.bind(ui_improver), 250);
 		};
 		if (ui_data.isFight) {
-			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + worker.so.state.stats.perm_link.value + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
+			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + ui_stats.logId() + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
 		}
 	}
 	if (this.isFirstTime || ui_storage.get('UserCssChanged') === true) {
@@ -1035,15 +999,15 @@ ui_improver.improveAllies = function() {
 	}
 };
 ui_improver.calculateButtonsVisibility = function() {
-	var i, len, baseCond = worker.so.state.stats.godpower.value >= 5 && !ui_storage.get('Option:disableVoiceGenerators'),
-		isMonster = worker.so.state.stats.monster_name && worker.so.state.stats.monster_name.value;
+	var i, len, baseCond = ui_stats.Godpower() >= 5 && !ui_storage.get('Option:disableVoiceGenerators'),
+		isMonster = ui_stats.monsterName();
 	if (!ui_data.isFight) {
 		// pantheon links
 		var pantLinks = document.querySelectorAll('#pantheons .arena_link_wrap, #pantheons .chf_link_wrap'),
 			pantBefore = [], pantAfter = [];
 		for (i = 0, len = pantLinks.length; i < len; i++) {
 			pantBefore[i] = !pantLinks[i].classList.contains('hidden');
-			pantAfter[i] = worker.so.state.stats.godpower.value >= 50;
+			pantAfter[i] = ui_stats.Godpower() >= 50;
 		}
 		ui_improver.setButtonsVisibility(pantLinks, pantBefore, pantAfter);
 		// inspect buttons
@@ -1088,9 +1052,9 @@ ui_improver.calculateButtonsVisibility = function() {
 			isTown = worker.so.state.stats.town_name && worker.so.state.stats.town_name.value,
 			isSearching = worker.so.state.last_news && worker.so.state.last_news.value.match('дорогу'),
 			dieIsDisabled = ui_storage.get('Option:disableDieButton'),
-			isFullGP = worker.so.state.stats.godpower.value === worker.so.state.stats.max_gp.value,
-			isFullHP = worker.so.state.stats.health.value === worker.so.state.stats.max_health.value,
-			canQuestBeAffected = !worker.so.state.stats.quest.value.match(/\((?:выполнено|completed|отменено|cancelled)\)/);
+			isFullGP = ui_stats.Godpower() === ui_stats.Max_Godpower(),
+			isFullHP = ui_stats.HP() === ui_stats.Max_HP(),
+			canQuestBeAffected = !ui_stats.Task_Name().match(/\((?:выполнено|completed|отменено|cancelled)\)/);
 		specialClasses = ['heal', 'do_task', 'cancel_task', 'die', 'exp', 'dig', 'town', 'pray'];
 		specialConds = [isMonster || isGoingBack || isTown || isSearching || isFullHP,				// heal
 						isMonster || isGoingBack || isTown || isSearching || !canQuestBeAffected,	// do_task

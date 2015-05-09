@@ -82,6 +82,13 @@ ui_storage._rename_nesw = function(from, to) {
 		localStorage.removeItem(ui_storage._get_key('phrases_walk_' + from));
 	}
 };
+ui_storage._delete = function(regexp) {
+	for (var key in localStorage) {
+		if (key.match(/^GUIp_/) && key.match(regexp)) {
+			localStorage.removeItem(key);
+		}
+	}
+};
 ui_storage.migrate = function() {
 	if (!localStorage.GUIp_migrated) {
 		ui_storage._rename(/^GM/, 'GUIp_');
@@ -126,5 +133,9 @@ ui_storage.migrate = function() {
 			}
 		}
 		localStorage.GUIp_migrated = '150419_2';
+	}
+	if (localStorage.GUIp_migrated < '150510') {
+		ui_storage._delete(':Stats:');
+		localStorage.GUIp_migrated = '150510';
 	}
 };

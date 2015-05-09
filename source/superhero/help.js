@@ -31,7 +31,6 @@ ui_help._createButtons = function() {
 	if (ui_storage.get('Option:enableDebugMode')) {
 		ui_help._addDumpButton('<span>dump: </span>', 'all');
 		ui_help._addDumpButton('<span>, </span>', 'options', 'Option');
-		ui_help._addDumpButton('<span>, </span>', 'stats', 'Stats');
 		ui_help._addDumpButton('<span>, </span>', 'logger', 'Logger');
 		ui_help._addDumpButton('<span>, </span>', 'forum', 'Forum');
 		ui_help._addDumpButton('<span>, </span>', 'log', 'Log:');

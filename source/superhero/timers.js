@@ -93,7 +93,8 @@ ui_timers._formatTime = function(maxHours, totalMinutes) {
 ui_timers._calculateExp = function(totalMinutes) {
 	var baseExp = Math.min(totalMinutes/36/60*2, 2),
 		amountMultiplier = [1, 2, 2.5],
-		levelMultiplier = ui_stats.get('Level') < 100 ? 1 : ui_stats.get('Level') < 125 ? 0.5 : 0.25,
+		level = ui_stats.Level(),
+		levelMultiplier = level < 100 ? 1 : level < 125 ? 0.5 : 0.25,
 		title = [];
 	for (var i = 1; i <= 3; i++) {
 		title.push(i + '0k gld → ' + ((i + baseExp*amountMultiplier[i - 1])*levelMultiplier).toFixed(1) + '% exp');

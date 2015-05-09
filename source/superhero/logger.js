@@ -67,17 +67,17 @@ ui_logger._appendStr = function(id, klass, str, descr) {
 };
 ui_logger._watchStatsValue = function(id, name, descr, klass) {
 	klass = (klass || id).toLowerCase();
-	var s, diff = ui_storage.set_with_diff('Logger:' + id, ui_stats.get(id));
+	var s, diff = ui_storage.set_with_diff('Logger:' + id, ui_stats[id]());
 	if (diff) {
 		// Если нужно, то преобразовываем в число с одним знаком после запятой
 		if (parseInt(diff) !== diff) { diff = diff.toFixed(1); }
 		// Добавление плюcа, минуса или стрелочки
 		if (diff < 0) {
-			if (name === 'exp' && +ui_storage.get('Logger:Level') !== worker.so.state.stats.level.value) {
-				s = '→' + ui_stats.get(id);
-			} else if (name === 'tsk' && ui_storage.get('Stats:Task_Name') !== worker.so.state.stats.quest.value) {
-				ui_storage.set('Stats:Task_Name', worker.so.state.stats.quest.value);
-				s = '→' + ui_stats.get(id);
+			if (name === 'exp' && +ui_storage.get('Logger:Level') !== ui_stats.Level()) {
+				s = '→' + ui_stats.Exp();
+			} else if (name === 'tsk' && ui_storage.get('Logger:Task_Name') !== ui_stats.Task_Name()) {
+				ui_storage.set('Logger:Task_Name', ui_stats.Task_Name());
+				s = '→' + ui_stats.Task();
 			} else {
 				s = diff;
 			}
