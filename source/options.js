@@ -35,10 +35,9 @@ var storage = {
 	},
 	exportOptions: function() {
 		var options = {};
-		var r = new worker.RegExp(this._get_key(''));
-		for (var i = 0; i < localStorage.length; i++) {
-			if (localStorage.key(i).match(r) && !localStorage.key(i).match(/Stats|Logger/)) {
-				options[localStorage.key(i).replace(r, '')] = localStorage[localStorage.key(i)];
+		for (var key in localStorage) {
+			if (key.match(this._get_key('')) && !key.match(/Logger/)) {
+				options[key.replace(this._get_key(''), '')] = localStorage.getItem(key);
 			}
 		}
 		return JSON.stringify(options);
