@@ -56,9 +56,9 @@ window.addEventListener('DOMContentLoaded', function(e) {
 			log: 'log.js'
 		};
 		var site = window.location.href;
-		if (site.match(/^https?:\/\/godville.net/)) {
+		if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk)/)) {
 			checkPathFor('ru');
-		} else if (site.match(/^https?:\/\/godvillegame.com/)) {
+		} else if (site.match(/^https?:\/\/godvillegame\.com/)) {
 			checkPathFor('en');
 		}
 	}

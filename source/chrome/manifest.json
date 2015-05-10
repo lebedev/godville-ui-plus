@@ -36,7 +36,9 @@
 			"https://godvillegame.com/forums/show/*",
 			"https://godvillegame.com/forums/show_topic/*",
 			"http://godvillegame.com/duels/log/*",
-			"https://godvillegame.com/duels/log/*"
+			"https://godvillegame.com/duels/log/*",
+			"http://gdvl.tk/duels/log/*",
+			"https://gdvl.tk/duels/log/*"
 		]
 	}],
 

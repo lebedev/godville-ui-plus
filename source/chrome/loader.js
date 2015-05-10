@@ -1,14 +1,4 @@
 (function() {
-	function createScripts(urls, locale) {
-		urls = [scripts.common, scripts.guip_chrome, scripts['phrases_' + locale]].concat(urls);
-		for (var i = 0, len = urls.length; i < len; i++) {
-			var scr = document.createElement('script');
-			scr.type = 'text/javascript';
-			scr.src = urls[i];
-			scr.id = 'godville-ui-plus';
-			document.head.appendChild(scr);
-		}
-	}
 	var prefix = window.chrome.extension.getURL('');
 	localStorage.setItem('GUIp_prefix', prefix);
 	var scripts = {
@@ -23,6 +13,16 @@
 		forum: prefix + 'forum.js',
 		log: prefix + 'log.js'
 	};
+	function createScripts(urls, locale) {
+		urls = [scripts.common, scripts.guip_chrome, scripts['phrases_' + locale]].concat(urls);
+		for (var i = 0, len = urls.length; i < len; i++) {
+			var scr = document.createElement('script');
+			scr.type = 'text/javascript';
+			scr.src = urls[i];
+			scr.id = 'godville-ui-plus';
+			document.head.appendChild(scr);
+		}
+	}
 	function checkPathFor(locale) {
 		var path = location.pathname;
 		if (path.match(/^\/superhero/)) {
@@ -37,9 +37,9 @@
 	}
 
 	var site = location.href;
-	if (site.match(/^https?:\/\/godville.net/)) {
+	if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk)/)) {
 		checkPathFor('ru');
-	} else if (site.match(/^https?:\/\/godvillegame.com/)) {
+	} else if (site.match(/^https?:\/\/godvillegame\.com/)) {
 		checkPathFor('en');
 	}
 })();
