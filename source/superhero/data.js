@@ -29,7 +29,7 @@ ui_data._initVariables = function() {
 	this.char_name = ui_stats.charName();
 	this.char_sex = ui_stats.isMale() ? worker.GUIp_i18n.hero : worker.GUIp_i18n.heroine;
 	ui_storage.set('ui_s', '');
-	localStorage.GUIp_CurrentUser = this.god_name;
+	localStorage.setItem('GUIp_CurrentUser', this.god_name);
 	if (ui_stats.Bricks() === 1000) {
 		document.body.classList.add('has_temple');
 		this.hasTemple = true;

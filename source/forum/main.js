@@ -4,7 +4,7 @@ var setInitVariables = function() {
 	isTopic = location.pathname.match(/topic/) !== null;
 	forum_no = 'Forum' + (isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
 									  : location.pathname.match(/forums\/show\/(\d+)/)[1]);
-	storage.god_name = localStorage.GUIp_CurrentUser;
+	storage.god_name = localStorage.getItem('GUIp_CurrentUser');
 	topics = JSON.parse(storage.get(forum_no));
 };
 var GUIp_forum = function() {

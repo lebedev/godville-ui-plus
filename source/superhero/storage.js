@@ -90,23 +90,23 @@ ui_storage._delete = function(regexp) {
 	}
 };
 ui_storage.migrate = function() {
-	if (!localStorage.GUIp_migrated) {
+	if (!localStorage.getItem('GUIp_migrated')) {
 		ui_storage._rename(/^GM/, 'GUIp_');
-		localStorage.GUIp_migrated = '141115';
+		localStorage.setItem('GUIp_migrated', '141115');
 	}
-	if (localStorage.GUIp_migrated < '150113') {
+	if (localStorage.getItem('GUIp_migrated') < '150113') {
 		ui_storage._rename_nesw('n', 'north');
 		ui_storage._rename_nesw('e', 'east');
 		ui_storage._rename_nesw('s', 'south');
 		ui_storage._rename_nesw('w', 'west');
 		ui_storage._rename(/:phrases_/, ':CustomPhrases:');
-		localStorage.GUIp_migrated = '150113';
+		localStorage.setItem('GUIp_migrated', '150113');
 	}
-	if (localStorage.GUIp_migrated < '150228') {
+	if (localStorage.getItem('GUIp_migrated') < '150228') {
 		ui_storage._rename(/:thirdEye(.+)Entry/, ':ThirdEye:$1');
-		localStorage.GUIp_migrated = '150228';
+		localStorage.setItem('GUIp_migrated', '150228');
 	}
-	if (localStorage.GUIp_migrated < '150419') {
+	if (localStorage.getItem('GUIp_migrated') < '150419') {
 		var forum;
 		for (var i = 1; i <= (worker.GUIp_locale === 'ru' ? 6 : 4); i++) {
 			forum = JSON.parse(ui_storage.get('Forum' + i));
@@ -117,9 +117,9 @@ ui_storage.migrate = function() {
 			}
 			ui_storage.set('Forum' + i, JSON.stringify(forum));
 		}
-		localStorage.GUIp_migrated = '150419';
+		localStorage.setItem('GUIp_migrated', '150419');
 	}
-	if (localStorage.GUIp_migrated < '150419_2') {
+	if (localStorage.getItem('GUIp_migrated') < '150419_2') {
 		var forum2;
 		for (var key in localStorage) {
 			if (key.match('Forum\\d')) {
@@ -132,10 +132,10 @@ ui_storage.migrate = function() {
 				localStorage.setItem(key, JSON.stringify(forum2));
 			}
 		}
-		localStorage.GUIp_migrated = '150419_2';
+		localStorage.setItem('GUIp_migrated', '150419_2');
 	}
-	if (localStorage.GUIp_migrated < '150510') {
+	if (localStorage.getItem('GUIp_migrated') < '150510') {
 		ui_storage._delete(':Stats:');
-		localStorage.GUIp_migrated = '150510';
+		localStorage.setItem('GUIp_migrated', '150510');
 	}
 };

@@ -55,7 +55,7 @@ function addMenu() {
 }
 
 function loadOptions() {
-	if (!(localStorage.GUIp_CurrentUser || $j('#profile_main').length)) {
+	if (!(localStorage.getItem('GUIp_CurrentUser') || $j('#profile_main').length)) {
 		worker.setTimeout(loadOptions, 100);
 		return;
 	}
@@ -338,7 +338,7 @@ function set_user_css() {
 	$j('#gui_css_progress').fadeOut("slow");
 }
 
-// Restores select box state to saved value from localStorage.
+// Restores select box state to saved value from localStorage
 function restore_options() {
 	var i, r = new worker.RegExp('^' + storage._get_key('Option:'));
 	for (i = 0; i < localStorage.length; i++) {
@@ -458,9 +458,9 @@ var starterInt = worker.setInterval(function() {
 		worker.clearInterval(starterInt);
 		god_name = $j('#opt_change_profile div:first div:first').text();
 		if (god_name) {
-			localStorage.GUIp_CurrentUser = god_name;
+			localStorage.setItem('GUIp_CurrentUser', god_name);
 		} else {
-			god_name = localStorage.GUIp_CurrentUser;
+			god_name = localStorage.getItem('GUIp_CurrentUser');
 		}
 		addMenu();
 		if (location.hash === "#ui_settings") {

@@ -9,7 +9,8 @@
 			document.head.appendChild(scr);
 		}
 	}
-	var prefix = localStorage.GUIp_prefix = window.chrome.extension.getURL('');
+	var prefix = window.chrome.extension.getURL('');
+	localStorage.setItem('GUIp_prefix', prefix);
 	var scripts = {
 		common: prefix + 'common.js',
 		superhero: prefix + 'superhero.js',

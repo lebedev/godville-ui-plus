@@ -38,7 +38,7 @@ function GUIp_log() {
 	}
 
 	try {
-		var godname_prefix = 'GUIp_' + localStorage.GUIp_CurrentUser + ':',
+		var godname_prefix = 'GUIp_' + localStorage.getItem('GUIp_CurrentUser') + ':',
 			log = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':',
 			steps = +document.getElementById('fight_log_capt').textContent.match(/(?:Хроника подземелья \(шаг|Dungeon Journal \(step) (\d+)\)/)[1];
 		if (!document.querySelector('#dmap') && steps === +localStorage.getItem(godname_prefix + log + 'steps')) {
@@ -127,9 +127,9 @@ function GUIp_log() {
 		match.onchange = function() {
 			search_mode.style.display = search_mode.style.display === 'none' ? 'block' : 'none';
 		};
-		high_contrast.checked = localStorage.GUIp_highContrast === 'true';
+		high_contrast.checked = localStorage.getItem('GUIp_highContrast') === 'true';
 		high_contrast.onchange = function() {
-			localStorage.GUIp_highContrast = document.getElementById('high_contrast').checked;
+			localStorage.setItem('GUIp_highContrast', document.getElementById('high_contrast').checked);
 		};
 	} catch(e) {
 		worker.console.log(e);
