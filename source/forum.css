@@ -82,6 +82,7 @@
 }
 .img_container a {
 	display: inline-block;
+	position: relative;
 }
 .img_container img {
 	max-width: 456px;
