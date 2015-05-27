@@ -707,3 +707,8 @@ a.broadcast {
 #msgerror li {
 	text-align: left;
 }
+
+/* hide godville allies pm-links */
+#alls .pm_link {
+	display: none !important;
+}
