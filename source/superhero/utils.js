@@ -196,14 +196,15 @@ ui_utils.openChatWith = function(friend, e) {
 		e.preventDefault();
 		e.stopPropagation();
 	}
-	var current, friends = document.querySelectorAll('.msgDockPopupW .frline');
+	worker.so.nm.bindings.show_friend[0].update(friend);
+	/*var current, friends = document.querySelectorAll('.msgDockPopupW .frline');
 	for (var i = 0, len = friends.length; i < len; i++) {
 		current = friends[i].querySelector('.frname');
 		if (current.textContent === friend) {
 			current.click();
 			break;
 		}
-	}
+	}*/
 };
 ui_utils.dateToMoscowTimeZone = function(date) {
 	var temp = new Date(date);
