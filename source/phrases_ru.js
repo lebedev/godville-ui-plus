@@ -337,10 +337,6 @@ worker.GUIp_i18n = {
 		'<li>Скачайте новую версию экстеншона по ссылке и установите ее. ' +
 		worker.GUIp_github_link + 'release/godville-ui-plus@badluck.dicey.oex"  title="Откроется в новой вкладке">Ссылка на новую версию.</a></li>',
 	help_useful_links: 'Полезные ссылки: ' +
-		'<a href="/gods/Бэдлак" title="Откроется в новой вкладке" target="about:blank">Бэдлак</a>, ' +
-		'его <a href="skype:angly_cat">скайп</a>, ' +
-		'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list" title="Откроется в новой вкладке" ' +
-			'target="_blank">список багов и идей (aka "блокнотик")</a>, ' +
 		'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
 		'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
 		'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.',
@@ -457,7 +453,7 @@ worker.GUIp_i18n = {
 	press_here_to_reload: 'нажмите сюда, чтоб обновить страницу.',
 	if_repeats: 'Если ошибка повторяется — ',
 	press_here_to_show_details: 'нажмите сюда, чтоб показать детали ошибки.',
-	error_message_subtitle: 'Пожалуйста, сообщите разработчику Godville&nbsp;UI+ следующую информацию:',
+	error_message_subtitle: 'Вам с этим никто не поможет:',
 	error_message_text: 'Текст ошибки:',
 	error_message_stack_trace: 'Трассировка стека',
 	error_message_in_old_version: 'Произошла ошибка. Однако, ваша версия Godville&nbsp;UI+ устарела. Обновитесь по инструкции из окошка помощи (оно сейчас открыто).',

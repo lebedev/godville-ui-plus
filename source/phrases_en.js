@@ -194,10 +194,6 @@ worker.GUIp_i18n = {
 		'<li>Download new version of the extension from the following link and install it. ' +
 		worker.GUIp_github_link + 'release/godville-ui-plus@badluck.dicey.oex"  title="Opens in a new tab">Link to the new version.</a></li>',
 	help_useful_links: 'Useful links: ' +
-		'<a href="/gods/Bad Luck" title="Opens in a new tab" target="about:blank">Bad Luck</a>, ' +
-		'his <a href="skype:angly_cat">skype</a>, ' +
-		'<a href="https://github.com/zeird/godville-ui-plus/wiki/TODO-list-en" title="Opens in a new tab" ' +
-			'target="_blank">bugs and ideas list</a>, ' +
 		'<a href="/forums/show_topic/2800" title="Opens in a new tab" target="_blank">forum thread</a>, ' +
 		//'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
 		'<a href="/gods/God%20Of%20Dungeons" title="Opens in a new tab" target="about:blank">dungeon phrases</a>.',
@@ -314,7 +310,7 @@ worker.GUIp_i18n = {
 	press_here_to_reload: 'press here to reload the page.',
 	if_repeats: 'If this error repeats — ',
 	press_here_to_show_details: 'press here to show the details of the error.',
-	error_message_subtitle: 'Please report the following to the Godville&nbsp;UI+ developer:',
+	error_message_subtitle: 'No one will help you with this:',
 	error_message_text: 'Text of the error:',
 	error_message_stack_trace: 'Stack trace',
 	error_message_in_old_version: 'An error has occurred. However, your Godville&nbsp;UI+ version is outdated. Update as per the instrucions from the help dialog (it\'s opened now).',

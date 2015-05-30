@@ -136,7 +136,7 @@ ui_utils.messages = {
 			'&emsp;Касательно форумных информеров: по умолчанию, вы подписаны только на тему дополнения и, скорее всего, видите ее <i>форумный информер</i> в левом верхнем углу.<br>' +
 
 			'&emsp;Если с каким-то функционалом дополнения не удалось интуитивно разобраться — прочтите <b>статью дополнения в богии</b> ' +
-			'или задайте вопрос мне (богу <b>Бэдлак</b>) или в соответствующей <b>теме на форуме</b>.<br>' +
+			'или в соответствующей <b>теме на форуме</b>.<br>' +
 
 			'&emsp;Инструкции на случай проблем можно прочесть в <i>диалоговом окне помощи</i> (оно сейчас открыто), которое открывается/закрывается ' +
 			'по щелчку на кнопке <b style="text-decoration: underline;">help</b> в верхнем меню. Ссылки на все ранее упомянутое находятся там же.<br>' +
@@ -148,9 +148,15 @@ ui_utils.messages = {
 				ui_help.toggleDialog();
 			}
 		}
+	},
+	{
+		msg_no: 8, // 0..7 are used
+		title: 'Godville UI+: Разработка прекращена',
+		content: '<div style="text-align: justify;">&emsp;Вы ничего не можете с этим поделать.</div>' +
+				 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
 	}
 	/*{
-		msg_no: 8, // 0..7 are used
+		msg_no: 9, // 0..8 are used
 		title: 'Godville UI+: Заголовок',
 		content: '<div style="text-align: justify;">&emsp;Текст.</div>' +
 				 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
@@ -164,7 +170,7 @@ ui_utils.messages = {
 
 			'&emsp;In respect to forum informers, by default you are only subscribed to the topic for this addon, and most likely you can see it <i>in the upper left corner</i> right now.<br>' +
 
-			'&emsp;If you can\'t figure out some functions of the ' + (worker.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask me (god <b>Bad&nbsp;Luck</b>) directly or in the forums.<br>' +
+			'&emsp;If you can\'t figure out some functions of the ' + (worker.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask in the forums.<br>' +
 
 			'&emsp;Guides for handling errors can be found in the <i>help dialog</i> (which is open now), that can be shown or hidden by clicking <b style="text-decoration: underline;">ui+ help</b> in the top menu. ' +
 			'Links to everything mentioned above can also be found there.<br>' +
@@ -176,9 +182,15 @@ ui_utils.messages = {
 				ui_help.toggleDialog();
 			}
 		}
+	},
+	{
+		msg_no: 3, // 0..2 are used
+		title: 'Godville UI+: The Development is Discontinued',
+		content: '<div style="text-align: justify;">&emsp;And you can\'t do anything with it.</div>' +
+				 '<div style="text-align: right;">Signature.<br>~~Bad Luck</div>'
 	}
 	/*{
-		msg_no: 3, // 0..2 are used
+		msg_no: 4, // 0..3 are used
 		title: 'Godville UI+: Title',
 		content: '<div style="text-align: justify;">&emsp;Text.</div>' +
 				 '<div style="text-align: right;">Signature.<br>~~Bad Luck</div>'
