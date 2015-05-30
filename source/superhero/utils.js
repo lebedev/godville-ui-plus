@@ -233,8 +233,8 @@ ui_utils.hideElem = function(elem, hide) {
 	}
 };
 ui_utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCallback, xhr) {
-	var match;
-	if ((match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/))) {
+	var match = xhr.responseText.match(/Godville UI\+ (\d+\.\d+\.\d+\.\d+)/);
+	if (match) {
 		var temp_cur = ui_data.currentVersion.split('.'),
 			last_version = match[1],
 			temp_last = last_version.split('.'),
@@ -245,7 +245,6 @@ ui_utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCal
 					   +temp_cur[2] < +temp_last[2] ? false :
 					   +temp_cur[2] > +temp_last[2] ? true :
 					   +temp_cur[3] < +temp_last[3] ? false : true;
-		worker.console.log(isNewest);
 		if (isNewest) {
 			if (isNewestCallback) {
 				isNewestCallback();
