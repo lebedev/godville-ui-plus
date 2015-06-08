@@ -4,7 +4,7 @@
 
 // @see http://mxr.mozilla.org/mozilla-central/source/js/src/xpconnect/loader/mozJSComponentLoader.cpp
 
-//'use strict';
+'use strict';
 
 // IMPORTANT: Avoid adding any initialization tasks here, if you need to do
 // something before add-on is loaded consider addon/runner module instead!
@@ -61,7 +61,7 @@ function readURI(uri) {
   do {
     read = cstream.readString(0xffffffff, str);
     data += str.value;
-  } while (read !== 0);
+  } while (read != 0);
 
   cstream.close();
 
@@ -89,10 +89,10 @@ function startup(data, reasonCode) {
     let name = options.name;
 
     // Clean the metadata
-    options.metadata[name].permissions = options.metadata[name].permissions || {};
+    options.metadata[name]['permissions'] = options.metadata[name]['permissions'] || {};
 
     // freeze the permissionss
-    Object.freeze(options.metadata[name].permissions);
+    Object.freeze(options.metadata[name]['permissions']);
     // freeze the metadata
     Object.freeze(options.metadata[name]);
 
@@ -123,14 +123,14 @@ function startup(data, reasonCode) {
 
     // Maps addon lib and tests ressource folders for each package
     paths = Object.keys(options.metadata).reduce(function(result, name) {
-      result[name + '/'] = prefixURI + name + '/lib/';
-      result[name + '/tests/'] = prefixURI + name + '/tests/';
+      result[name + '/'] = prefixURI + name + '/lib/'
+      result[name + '/tests/'] = prefixURI + name + '/tests/'
       return result;
     }, paths);
 
     // We need to map tests folder when we run sdk tests whose package name
     // is stripped
-    if (name === 'addon-sdk')
+    if (name == 'addon-sdk')
       paths['tests/'] = prefixURI + name + '/tests/';
 
     let useBundledSDK = options['force-use-bundled-sdk'];
@@ -153,7 +153,7 @@ function startup(data, reasonCode) {
       // test.js is usually found in root commonjs or SDK_ROOT/lib/ folder,
       // so that it isn't shipped in the xpi. Keep a copy of it in sdk/ folder
       // until we no longer support SDK modules in XPI:
-      paths.test = prefixURI + 'addon-sdk/lib/sdk/test.js';
+      paths['test'] = prefixURI + 'addon-sdk/lib/sdk/test.js';
     }
 
     // Retrieve list of module folder overloads based on preferences in order to
@@ -250,7 +250,8 @@ function startup(data, reasonCode) {
 
     require('sdk/addon/runner').startup(reason, {
       loader: loader,
-      main: main
+      main: main,
+      prefsURI: rootURI + 'defaults/preferences/prefs.js'
     });
   } catch (error) {
     dump('Bootstrap error: ' +
@@ -258,7 +259,7 @@ function startup(data, reasonCode) {
          (error.stack || error.fileName + ': ' + error.lineNumber) + '\n');
     throw error;
   }
-}
+};
 
 function loadSandbox(uri) {
   let proto = {
@@ -303,7 +304,7 @@ function shutdown(data, reasonCode) {
     unload = null;
 
     // Don't waste time cleaning up if the application is shutting down
-    if (reason !== "shutdown") {
+    if (reason != "shutdown") {
       // Avoid leaking all modules when something goes wrong with one particular
       // module. Do not clean it up immediatly in order to allow executing some
       // actions on addon disabling.
@@ -314,10 +315,10 @@ function shutdown(data, reasonCode) {
       // Bug 944951 - bootstrap.js must remove the added resource: URIs on unload
       resourceDomains.forEach(domain => {
         resourceHandler.setSubstitution(domain, null);
-      });
+      })
     }
   }
-}
+};
 
 function nukeModules() {
   nukeTimer = null;
