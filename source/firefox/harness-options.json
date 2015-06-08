@@ -10,7 +10,7 @@
 	"manifest": {
 		"godville-ui-plus/main": {
 			"docsSHA256": null,
-			"jsSHA256": "4898a035fe1746d59a53d78750e6dec1689e095c78b70e362b167bc330d7ceea",
+			"jsSHA256": "9a7fd9c7263a3c57e1e9a783ee6ab172a3589166dfd63b6956e709242582d261",
 			"moduleName": "main",
 			"packageName": "godville-ui-plus",
 			"requirements": {
