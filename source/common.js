@@ -6,6 +6,6 @@ worker.GUIp_addCSSFromString = function(text) {
 	if (!document.getElementById('guip_user_css')) {
 		document.head.insertAdjacentHTML('beforeend', '<style id="guip_user_css" />');
 	}
-	document.getElementById('guip_user_css').innerHTML = text;
+	document.getElementById('guip_user_css').textContent = text;
 };
 worker.GUIp_github_link = '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/';
