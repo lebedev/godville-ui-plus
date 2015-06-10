@@ -9,6 +9,10 @@ var $id = function(id) {
 	return doc.getElementById(id);
 };
 
+var $C = function(classname) {
+	return doc.getElementsByClassName(classname);
+};
+
 var storage = {
 	_get_key: function(key) {
 		return "GUIp_" + god_name + ':' + key;
@@ -57,6 +61,13 @@ function addMenu() {
 	}
 }
 
+var setAllCheckboxesToState = function(classname, state) {
+	var checkboxes = $C(classname);
+	for (var i = 0, len = checkboxes.length; i < len; i++) {
+		checkboxes[i].checked = state;
+	}
+};
+
 function loadOptions() {
 	if (!(localStorage.getItem('GUIp_CurrentUser') || $id('profile_main'))) {
 		worker.setTimeout(loadOptions, 100);
@@ -84,11 +95,11 @@ function loadOptions() {
 		$j('#background_desc').slideToggle("slow");
 	};
 	$id('custom_file').onclick = function() {
-		$j('#custom_background').click();
-		$j('#custom_file').val('');
+		$id('custom_background').click();
+		$id('custom_file').value = '';
 	};
 	$id('custom_link').onclick = function() {
-		$j('#custom_background').click();
+		$id('custom_background').click();
 	};
 	$id('voice_timeout').onclick = function() {
 		$j('#voice_timeout_choice').slideToggle("slow");
@@ -99,11 +110,11 @@ function loadOptions() {
 		$j('#freeze_voice_button_desc').slideToggle("slow");
 	};
 	$id('check_all').onclick = function() {
-		$j('.item-informer').prop('checked', true);
+		setAllCheckboxesToState('item-informer', true);
 		return false;
 	};
 	$id('uncheck_all').onclick = function() {
-		$j('.item-informer').prop('checked', false);
+		setAllCheckboxesToState('item-informer', false);
 		return false;
 	};
 	$id('disable_voice_generators').onclick = function() {
@@ -116,12 +127,12 @@ function loadOptions() {
 	}
 
 	$j(document).on('change keypress paste focus textInput input', '#ta_edit', function() {
-		$j(this).attr('rows', $j(this).val().split('\n').length || 1);
+		this.setAttribute('rows', this.value.split('\n').length || 1);
 		setSaveWordsButtonState();
 	}).attr('rows', 1);
 
 	$j(document).on('change keypress paste focus textInput input', '#user_css', function() {
-		$j(this).attr('rows', $j(this).val().split('\n').length || 1);
+		this.setAttribute('rows', this.value.split('\n').length || 1);
 	});
 
 	$id('GUIp_import').onclick = function() {
@@ -179,18 +190,18 @@ function save_words() {
 }
 
 function save_options() {
-	var i;
 	$j('#gui_settings_progress').show();
 
-	for (i = 0; i < $j('.option-checkbox').length; i++) {
-		var option = $j('.option-checkbox')[i].id;
-		// option = "first_second_third" to option = "firstSecondThird"
-		var parts = option.split('_');
+	var i, len, option_checkboxes = $C('option-checkbox');
+	for (i = 0, len = option_checkboxes.length; i < len; i++) {
+		var id = option_checkboxes[i].id;
+		// id = "first_second_third" to option_name = "firstSecondThird"
+		var parts = id.split('_');
 		for (var k = 1; k < parts.length; k++) {
 			parts[k] = parts[k][0].toUpperCase() + parts[k].slice(1);
 		}
-		option = parts.join('');
-		storage.set('Option:' + option, $j('.option-checkbox')[i].checked);
+		var option_name = parts.join('');
+		storage.set('Option:' + option_name, option_checkboxes[i].checked);
 	}
 
 	if ($id('relocate_duel_buttons').checked) {
@@ -215,7 +226,7 @@ function save_options() {
 
 	if ($id('use_background').checked) {
 		if ($id('custom_background').checked) {
-			var custom_file = $j('#custom_file')[0].files[0],
+			var custom_file = $id('custom_file').files[0],
 				custom_link = $id('custom_link').value.match(/https?:\/\/.*/),
 				cb_status = $id('cb_status');
 			if (custom_file && custom_file.type.match(/^image\/(bmp|cis\-cod|gif|ief|jpeg|jpg|pipeg|png|svg\+xml|tiff|x\-cmu\-raster|x\-cmx|x\-icon|x\-portable\-anymap|x\-portable\-bitmap|x\-portable\-graymap|x\-portable\-pixmap|x\-rgb|x\-xbitmap|x\-xpixmap|x\-xwindowdump)$/i)) {
@@ -276,24 +287,26 @@ function save_options() {
 	}
 
 	if (!$id('forbidden_informers').checked) {
-		$j('.informer-checkbox').prop('checked', true);
+		setAllCheckboxesToState('informer-checkbox', true);
 	}
 	if (!$id('forbidden_craft').checked) {
-		$j('.craft-checkbox').prop('checked', true);
+		setAllCheckboxesToState('craft-checkbox', true);
 	}
 	$id('smelt!').checked = $id('smelter').checked;
 	$id('transform!').checked = $id('transformer').checked;
-	var forbiddenInformers = [];
-	for (i = 0; i < $j('.informer-checkbox').length; i++) {
-		if (!$j('.informer-checkbox')[i].checked) {
-			forbiddenInformers.push($j('.informer-checkbox')[i].id);
+	var forbiddenInformers = [],
+		fiCheckboxes = $C('informer-checkbox');
+	for (i = 0, len = fiCheckboxes.length; i < len; i++) {
+		if (!fiCheckboxes[i].checked) {
+			forbiddenInformers.push(fiCheckboxes[i].id);
 		}
 	}
 	storage.set('Option:forbiddenInformers', forbiddenInformers.join());
-	var forbiddenCraft = [];
-	for (i = 0; i < $j('.craft-checkbox').length; i++) {
-		if (!$j('.craft-checkbox')[i].checked) {
-			forbiddenCraft.push($j('.craft-checkbox')[i].id);
+	var forbiddenCraft = [],
+		fcCheckboxes = $C('craft-checkbox');
+	for (i = 0, len = fcCheckboxes.length; i < len; i++) {
+		if (!fcCheckboxes[i].checked) {
+			forbiddenCraft.push(fcCheckboxes[i].id);
 		}
 	}
 	storage.set('Option:forbiddenCraft', forbiddenCraft.join());
@@ -327,9 +340,12 @@ function setText(sect) {
 	curr_sect = sect;
 	$j('#words a.selected').removeClass('selected');
 	$j('#words a#l_' + curr_sect).addClass('selected');
-	var text_list = storage.get('CustomPhrases:' + curr_sect);
-	var text = text_list ? text_list.split('||') : def.phrases[curr_sect];
-	$j('#ta_edit').removeAttr('disabled').attr('rows', text.length).val(text.join('\n'));
+	var text_list = storage.get('CustomPhrases:' + curr_sect),
+		text = text_list ? text_list.split('||') : def.phrases[curr_sect],
+		textarea = $id('ta_edit');
+	textarea.removeAttribute('disabled');
+	textarea.setAttribute('rows', text.length);
+	textarea.value = text.join('\n');
 	setSaveWordsButtonState();
 	setDefaultWordsButtonState(text_list);
 }
@@ -401,26 +417,28 @@ function restore_options() {
 	}
 	var forbiddenInformers = storage.get('Option:forbiddenInformers');
 	if (forbiddenInformers) {
-		forbiddenInformers = forbiddenInformers.split(',');
-		for (i = 0; i < $j('.informer-checkbox').length; i++) {
-			if (forbiddenInformers.indexOf($j('.informer-checkbox')[i].id) === -1) {
-				$j('.informer-checkbox')[i].checked = true;
+		var fiArray = forbiddenInformers.split(','),
+			fiCheckboxes = $C('informer-checkbox');
+		for (i = 0, len = fiCheckboxes.length; i < len; i++) {
+			if (fiArray.indexOf(fiCheckboxes[i].id) === -1) {
+				fiCheckboxes[i].checked = true;
 			}
 		}
 	} else {
-		$j('.informer-checkbox').prop('checked', true);
+		setAllCheckboxesToState('informer-checkbox', true);
 		$j('#informers').hide();
 	}
 	var forbiddenCraft = storage.get('Option:forbiddenCraft');
 	if (forbiddenCraft) {
-		forbiddenCraft = forbiddenCraft.split(',');
-		for (i = 0; i < $j('.craft-checkbox').length; i++) {
-			if (forbiddenCraft.indexOf($j('.craft-checkbox')[i].id) === -1) {
-				$j('.craft-checkbox')[i].checked = true;
+		var fcArray = forbiddenCraft.split(','),
+			fcCheckboxes = $C('craft-checkbox');
+		for (i = 0, len = fcCheckboxes.length; i < len; i++) {
+			if (fcArray.indexOf(fcCheckboxes[i].id) === -1) {
+				fcCheckboxes[i].checked = true;
 			}
 		}
 	} else {
-		$j('.craft-checkbox').prop('checked', true);
+		setAllCheckboxesToState('craft-checkbox', true);
 		$j('#craft_categories').hide();
 	}
 	if ($id('disable_voice_generators').checked) {
@@ -428,7 +446,7 @@ function restore_options() {
 		$j('#GUIp_words').hide();
 	}
 
-	$j('#user_css').val(storage.get('UserCss') || '');
+	$id('user_css').value = storage.get('UserCss') || '';
 }
 
 function improve_blocks() {
