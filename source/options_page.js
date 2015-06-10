@@ -341,8 +341,7 @@ return '<p>\n' +
 '				<div class="new_line">\n' +
 '					<textarea id="user_css" class="rounded_field" wrap="virtual;" style="width: 98%; resize: none;"></textarea>\n' +
 '				</div>\n' +
-'				<input class="input_btn" type="submit" id="set_user_css" value="' + worker.GUIp_i18n.apply + '">\n' +
-'				<img align="middle" alt="Spinner" border="0" id="gui_css_progress" src="/images/spinner.gif" style="vertical-align:bottom; display: none;">\n' +
+'				<input class="input_btn" type="submit" id="set_user_css" value="' + worker.GUIp_i18n.apply + '" disabled>\n' +
 '			</div>\n' +
 '		</div>\n' +
 '	</div>\n' +

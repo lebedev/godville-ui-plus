@@ -145,7 +145,7 @@ function loadOptions() {
 
 	setTextareaResize('ta_edit', setSaveWordsButtonState);
 
-	setTextareaResize('user_css');
+	setTextareaResize('user_css', setUserCSSApplyButtonState);
 
 	$id('GUIp_import').onclick = function() {
 		storage.importOptions($id('guip_settings').value);
@@ -363,10 +363,18 @@ function setText(sect) {
 }
 
 function set_user_css() {
-	$j('#gui_css_progress').show();
 	storage.set('UserCss', $id('user_css').value);
 	storage.set('UserCssChanged', true);
-	$j('#gui_css_progress').fadeOut("slow");
+	setUserCSSApplyButtonState();
+}
+
+function setUserCSSApplyButtonState() {
+	var apply_user_css = $id('set_user_css');
+	if ($id('user_css').value !== storage.get('UserCss')) {
+		apply_user_css.removeAttribute('disabled');
+	} else {
+		apply_user_css.setAttribute('disabled', 'disabled');
+	}
 }
 
 // Restores select box state to saved value from localStorage
