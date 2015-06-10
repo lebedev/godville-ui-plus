@@ -47,7 +47,7 @@ var storage = {
 	remove: function(id) {
 		localStorage.removeItem(this._get_key(id));
 	},
-	importOptions: function(options_string) {
+	importSettings: function(options_string) {
 		try {
 			var options = JSON.parse(options_string);
 			for (var key in options) {
@@ -59,7 +59,7 @@ var storage = {
 			worker.alert(worker.GUIp_i18n.import_fail);
 		}
 	},
-	exportOptions: function() {
+	exportSettings: function() {
 		var options = {};
 		for (var key in localStorage) {
 			if (key.match(this._get_key('')) && !key.match(/Logger/)) {
@@ -136,7 +136,7 @@ function loadOptions() {
 	};
 	$id('disable_voice_generators').onclick = function() {
 		$j('#voice_menu').slideToggle("slow");
-		$j('#GUIp_words').slideToggle("slow");
+		$j('#words').slideToggle("slow");
 	};
 	if (!storage.get('charIsMale')) {
 		$q('#voice_menu .l_capt').textContent = $q('#voice_menu .l_capt').textContent.replace('героя', 'героини');
@@ -145,13 +145,13 @@ function loadOptions() {
 
 	setTextareaResize('ta_edit', setSaveWordsButtonState);
 
-	setTextareaResize('user_css', setUserCSSApplyButtonState);
+	setTextareaResize('user_css', setUserCSSSaveButtonState);
 
-	$id('GUIp_import').onclick = function() {
-		storage.importOptions($id('guip_settings').value);
+	$id('settings_import').onclick = function() {
+		storage.importSettings($id('guip_settings').value);
 	};
-	$id('GUIp_export').onclick = function() {
-		$id('guip_settings').value = storage.exportOptions();
+	$id('settings_export').onclick = function() {
+		$id('guip_settings').value = storage.exportSettings();
 	};
 }
 
@@ -159,10 +159,10 @@ function setForm() {
 	for (var sect in def.phrases) {
 		addOnClick(sect);
 	}
-	$id('words').onsubmit = function() { save_words(); return false; };
-	$id('GUIp_options').onsubmit = function() { save_options(); return false; };
+	$id('save_words').onclick = function() { saveWords(); return false; };
+	$id('save_options').onclick = function() { saveOptions(); return false; };
 	$id('set_default').onclick = function() { delete_custom_words(); return false; };
-	$id('set_user_css').onclick = function() { set_user_css(); return false; };
+	$id('save_user_css').onclick = function() { saveUserCSS(); return false; };
 }
 
 function addOnClick(sect) {
@@ -183,8 +183,7 @@ function delete_custom_words() {
 	setDefaultWordsButtonState(false);
 }
 
-function save_words() {
-	$j('#gui_word_progress').show();
+function saveWords() {
 	var text = $id('ta_edit').value;
 	if (text === "") { return; }
 	var t_list = text.split("\n"),
@@ -195,13 +194,12 @@ function save_words() {
 		}
 	}
 	storage.set('CustomPhrases:' + curr_sect, t_out.join('||'));
-	$j('#gui_word_progress').fadeOut("slow");
 	storage.set('phrasesChanged', 'true');
 	setSaveWordsButtonState();
 	setDefaultWordsButtonState(true);
 }
 
-function save_options() {
+function saveOptions() {
 	$j('#gui_settings_progress').show();
 
 	var i, len, option_checkboxes = $C('option-checkbox');
@@ -220,7 +218,6 @@ function save_options() {
 		var buttons = [];
 		if ($id('relocate_arena').checked) { buttons.push('arena'); }
 		if ($id('relocate_chf').checked) { buttons.push('chf'); }
-		if ($id('relocate_cvs').checked) { buttons.push('cvs'); }
 		storage.set('Option:relocateDuelButtons', buttons.join());
 	} else {
 		storage.set('Option:relocateDuelButtons', '');
@@ -362,18 +359,18 @@ function setText(sect) {
 	setDefaultWordsButtonState(text_list);
 }
 
-function set_user_css() {
+function saveUserCSS() {
 	storage.set('UserCss', $id('user_css').value);
 	storage.set('UserCssChanged', true);
-	setUserCSSApplyButtonState();
+	setUserCSSSaveButtonState();
 }
 
-function setUserCSSApplyButtonState() {
-	var apply_user_css = $id('set_user_css');
+function setUserCSSSaveButtonState() {
+	var save_user_css = $id('save_user_css');
 	if ($id('user_css').value !== storage.get('UserCss')) {
-		apply_user_css.removeAttribute('disabled');
+		save_user_css.removeAttribute('disabled');
 	} else {
-		apply_user_css.setAttribute('disabled', 'disabled');
+		save_user_css.setAttribute('disabled', 'disabled');
 	}
 }
 
@@ -398,7 +395,6 @@ function restore_options() {
 		var buttons = storage.get('Option:relocateDuelButtons');
 		if (buttons.match('arena')) { $id('relocate_arena').checked = true; }
 		if (buttons.match('chf')) { $id('relocate_chf').checked = true; }
-		if (buttons.match('cvs')) { $id('relocate_cvs').checked = true; }
 	} else {
 		$j('#relocate_duel_buttons_choice').hide();
 	}
@@ -463,7 +459,7 @@ function restore_options() {
 	}
 	if ($id('disable_voice_generators').checked) {
 		$j('#voice_menu').hide();
-		$j('#GUIp_words').hide();
+		$j('#words').hide();
 	}
 
 	$id('user_css').value = storage.get('UserCss') || '';
