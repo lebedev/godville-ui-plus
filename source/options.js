@@ -108,7 +108,7 @@ function loadOptions() {
 		$j('#voice_menu').slideToggle("slow");
 		$j('#GUIp_words').slideToggle("slow");
 	});
-	if (storage.get('sex') === 'female') {
+	if (!storage.get('charIsMale')) {
 		$j('#voice_menu .l_capt:first').text($j('#voice_menu .l_capt:first').text().replace('героя', 'героини'));
 		$j('#voice_menu .g_desc:first').text($j('#voice_menu .g_desc:first').text().replace('герою', 'героине'));
 	}
