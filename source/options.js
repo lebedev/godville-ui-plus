@@ -3,6 +3,12 @@
 
 var worker = window.wrappedJSObject || window;
 
+var doc = document;
+
+var $id = function(id) {
+	return doc.getElementById(id);
+};
+
 var storage = {
 	_get_key: function(key) {
 		return "GUIp_" + god_name + ':' + key;
@@ -13,7 +19,6 @@ var storage = {
 	},
 	get: function(id) {
 		var val = localStorage.getItem(this._get_key(id));
-		if (val) { val = val.replace(/^[NSB]\]/, ''); }
 		if (val === 'true') { return true; }
 		else if (val === 'false') { return false; }
 		else { return val; }
@@ -45,69 +50,66 @@ var storage = {
 };
 
 function addMenu() {
-	if (god_name === "") { return; }
-	if ($j('#ui_settings').length === 0) {
+	if (!god_name) { return; }
+	if (!$id('ui_settings')) {
 		$j('#profile_main p:first').append(' | <a id="ui_settings" href="#ui_settings">' + worker.GUIp_i18n.ui_settings + '</a>');
-		$j('#ui_settings').click(function() {
-			loadOptions();
-		});
+		$id('ui_settings').onclick = loadOptions;
 	}
 }
 
 function loadOptions() {
-	if (!(localStorage.getItem('GUIp_CurrentUser') || $j('#profile_main').length)) {
+	if (!(localStorage.getItem('GUIp_CurrentUser') || $id('profile_main'))) {
 		worker.setTimeout(loadOptions, 100);
 		return;
 	}
-	$j('#profile_main').empty();
-	$j('#profile_main').append(worker.getOptionsPage());
+	$id('profile_main').innerHTML = worker.getOptionsPage();
 	setForm();
 	restore_options();
-	$j('#forbidden_informers').click(function() {
+	$id('forbidden_informers').onclick = function() {
 		$j('#informers').slideToggle("slow");
-	});
-	$j('#forbidden_craft').click(function() {
+	};
+	$id('forbidden_craft').onclick = function() {
 		$j('#craft_categories').slideToggle("slow");
-	});
-	$j('#relocate_duel_buttons').click(function() {
+	};
+	$id('relocate_duel_buttons').onclick = function() {
 		$j('#relocate_duel_buttons_desc').slideToggle("slow");
 		$j('#relocate_duel_buttons_choice').slideToggle("slow");
-	});
-	$j('#forbidden_title_notices').click(function() {
+	};
+	$id('forbidden_title_notices').onclick = function() {
 		$j('#forbidden_title_notices_desc').slideToggle("slow");
 		$j('#forbidden_title_notices_choice').slideToggle("slow");
-	});
-	$j('#use_background').click(function() {
+	};
+	$id('use_background').onclick = function() {
 		$j('#background_choice').slideToggle("slow");
 		$j('#background_desc').slideToggle("slow");
-	});
-	$j('#custom_file').click(function() {
+	};
+	$id('custom_file').onclick = function() {
 		$j('#custom_background').click();
 		$j('#custom_file').val('');
-	});
-	$j('#custom_link').click(function() {
+	};
+	$id('custom_link').onclick = function() {
 		$j('#custom_background').click();
-	});
-	$j('#voice_timeout').click(function() {
+	};
+	$id('voice_timeout').onclick = function() {
 		$j('#voice_timeout_choice').slideToggle("slow");
 		$j('#voice_timeout_desc').slideToggle("slow");
-	});
-	$j('#freeze_voice_button').click(function() {
+	};
+	$id('freeze_voice_button').onclick = function() {
 		$j('#freeze_voice_button_choice').slideToggle("slow");
 		$j('#freeze_voice_button_desc').slideToggle("slow");
-	});
-	$j('#check_all').click(function() {
+	};
+	$id('check_all').onclick = function() {
 		$j('.item-informer').prop('checked', true);
 		return false;
-	});
-	$j('#uncheck_all').click(function() {
+	};
+	$id('uncheck_all').onclick = function() {
 		$j('.item-informer').prop('checked', false);
 		return false;
-	});
-	$j('#disable_voice_generators').click(function() {
+	};
+	$id('disable_voice_generators').onclick = function() {
 		$j('#voice_menu').slideToggle("slow");
 		$j('#GUIp_words').slideToggle("slow");
-	});
+	};
 	if (!storage.get('charIsMale')) {
 		$j('#voice_menu .l_capt:first').text($j('#voice_menu .l_capt:first').text().replace('героя', 'героини'));
 		$j('#voice_menu .g_desc:first').text($j('#voice_menu .g_desc:first').text().replace('герою', 'героине'));
@@ -122,36 +124,36 @@ function loadOptions() {
 		$j(this).attr('rows', $j(this).val().split('\n').length || 1);
 	});
 
-	$j('#GUIp_import').click(function() {
-		storage.importOptions($j('#guip_settings').val());
-	});
-	$j('#GUIp_export').click(function() {
-		$j('#guip_settings').val(storage.exportOptions());
-	});
+	$id('GUIp_import').onclick = function() {
+		storage.importOptions($id('guip_settings').value);
+	};
+	$id('GUIp_export').onclick = function() {
+		$id('guip_settings').value = storage.exportOptions();
+	};
 }
 
 function setForm() {
 	for (var sect in def.phrases) {
-		addOnClick($j('#l_' + sect), sect);
+		addOnClick(sect);
 	}
-	$j('#words').submit(function() { save_words(); return false; });
-	$j('#GUIp_options').submit(function() { save_options(); return false; });
-	$j('#set_default').click(function() { delete_custom_words(); return false; });
-	$j('#set_user_css').click(function() { set_user_css(); return false; });
+	$id('words').onsubmit = function() { save_words(); return false; };
+	$id('GUIp_options').onsubmit = function() { save_options(); return false; };
+	$id('set_default').onclick = function() { delete_custom_words(); return false; };
+	$id('set_user_css').onclick = function() { set_user_css(); return false; };
 }
 
-function addOnClick($el, sect) {
-	$el.click(function() {
+function addOnClick(sect) {
+	$id('l_' + sect).onclick = function() {
 		setText(sect);
 		return false;
-	});
+	};
 }
 
 function delete_custom_words() {
-	var $elem = $j('#ta_edit');
-	var text = def.phrases[curr_sect];
-	$elem.attr('rows', text.length);
-	$elem.val(text.join("\n"));
+	var ta = $id('ta_edit'),
+		text = def.phrases[curr_sect];
+	ta.setAttribute('rows', text.length);
+	ta.value = text.join('\n');
 	storage.remove('CustomPhrases:' + curr_sect);
 	storage.set('phrasesChanged', 'true');
 	setSaveWordsButtonState();
@@ -160,7 +162,7 @@ function delete_custom_words() {
 
 function save_words() {
 	$j('#gui_word_progress').show();
-	var text = $j('#ta_edit').val();
+	var text = $id('ta_edit').value;
 	if (text === "") { return; }
 	var t_list = text.split("\n"),
 		t_out = [];
@@ -169,7 +171,7 @@ function save_words() {
 			t_out.push(t_list[i]);
 		}
 	}
-	storage.set('CustomPhrases:' + curr_sect, t_out.join("||"));
+	storage.set('CustomPhrases:' + curr_sect, t_out.join('||'));
 	$j('#gui_word_progress').fadeOut("slow");
 	storage.set('phrasesChanged', 'true');
 	setSaveWordsButtonState();
@@ -312,11 +314,11 @@ function setSaveWordsButtonState() {
 }
 
 function setDefaultWordsButtonState(condition) {
-	var set_default = $j('#set_default');
+	var set_default = $id('set_default');
 	if (condition) {
-		set_default.removeAttr('disabled');
+		set_default.removeAttribute('disabled');
 	} else {
-		set_default.attr('disabled', 'disabled');
+		set_default.setAttribute('disabled', 'disabled');
 	}
 }
 
@@ -326,14 +328,14 @@ function setText(sect) {
 	$j('#words a#l_' + curr_sect).addClass('selected');
 	var text_list = storage.get('CustomPhrases:' + curr_sect);
 	var text = text_list ? text_list.split('||') : def.phrases[curr_sect];
-	$j('#ta_edit').removeAttr('disabled').attr('rows', text.length).val(text.join("\n"));
+	$j('#ta_edit').removeAttr('disabled').attr('rows', text.length).val(text.join('\n'));
 	setSaveWordsButtonState();
 	setDefaultWordsButtonState(text_list);
 }
 
 function set_user_css() {
 	$j('#gui_css_progress').show();
-	storage.set('UserCss', $j('#user_css').val());
+	storage.set('UserCss', $id('user_css').value);
 	storage.set('UserCssChanged', true);
 	$j('#gui_css_progress').fadeOut("slow");
 }
