@@ -17,6 +17,19 @@ var $q = function(selector) {
 	return doc.querySelector(selector);
 };
 
+var setTextareaResize = function(id, inner_func) {
+	var ta = $id(id);
+	ta.onchange =
+	ta.oncut =
+	ta.onfocus =
+	ta.oninput =
+	ta.onkeypress =
+	ta.onpaste = function() {
+		this.setAttribute('rows', this.value.match(/\n/g).length + 1);
+		if (inner_func) { inner_func(); }
+	};
+};
+
 var storage = {
 	_get_key: function(key) {
 		return "GUIp_" + god_name + ':' + key;
@@ -130,14 +143,9 @@ function loadOptions() {
 		$q('#voice_menu .g_desc').textContent = $q('#voice_menu .g_desc').textContent.replace('герою', 'героине');
 	}
 
-	$j(document).on('change keypress paste focus textInput input', '#ta_edit', function() {
-		this.setAttribute('rows', this.value.split('\n').length || 1);
-		setSaveWordsButtonState();
-	}).attr('rows', 1);
+	setTextareaResize('ta_edit', setSaveWordsButtonState);
 
-	$j(document).on('change keypress paste focus textInput input', '#user_css', function() {
-		this.setAttribute('rows', this.value.split('\n').length || 1);
-	});
+	setTextareaResize('user_css');
 
 	$id('GUIp_import').onclick = function() {
 		storage.importOptions($id('guip_settings').value);
