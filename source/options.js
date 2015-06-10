@@ -94,22 +94,31 @@ function loadOptions() {
 	setForm();
 	restore_options();
 	$id('forbidden_informers').onclick = function() {
-		$j('#informers').slideToggle("slow");
+		//jQuery('#informers').slideToggle("slow");
+		$id('informers').style.display = $id('informers').style.display === 'none' ? 'block' : 'none';
 	};
 	$id('forbidden_craft').onclick = function() {
-		$j('#craft_categories').slideToggle("slow");
+		//jQuery('#craft_categories').slideToggle("slow");
+		$id('craft_categories').style.display = $id('craft_categories').style.display === 'none' ? 'block' : 'none';
 	};
 	$id('relocate_duel_buttons').onclick = function() {
-		$j('#relocate_duel_buttons_desc').slideToggle("slow");
-		$j('#relocate_duel_buttons_choice').slideToggle("slow");
+		//jQuery('#relocate_duel_buttons_desc').slideToggle("slow");
+		worker.console.log($id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none');
+		$id('relocate_duel_buttons_desc').style.display = $id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none';
+		//jQuery('#relocate_duel_buttons_choice').slideToggle("slow");
+		$id('relocate_duel_buttons_choice').style.display = $id('relocate_duel_buttons_choice').style.display === 'none' ? 'block' : 'none';
 	};
 	$id('forbidden_title_notices').onclick = function() {
-		$j('#forbidden_title_notices_desc').slideToggle("slow");
-		$j('#forbidden_title_notices_choice').slideToggle("slow");
+		//jQuery('#forbidden_title_notices_desc').slideToggle("slow");
+		$id('forbidden_title_notices_desc').style.display = $id('forbidden_title_notices_desc').style.display === 'none' ? 'block' : 'none';
+		//jQuery('#forbidden_title_notices_choice').slideToggle("slow");
+		$id('forbidden_title_notices_choice').style.display = $id('forbidden_title_notices_choice').style.display === 'none' ? 'block' : 'none';
 	};
 	$id('use_background').onclick = function() {
-		$j('#background_choice').slideToggle("slow");
-		$j('#background_desc').slideToggle("slow");
+		//jQuery('#background_choice').slideToggle("slow");
+		$id('background_choice').style.display = $id('background_choice').style.display === 'none' ? 'block' : 'none';
+		//jQuery('#background_desc').slideToggle("slow");
+		$id('background_desc').style.display = $id('background_desc').style.display === 'none' ? 'block' : 'none';
 	};
 	$id('custom_file').onclick = function() {
 		$id('custom_background').click();
@@ -119,12 +128,16 @@ function loadOptions() {
 		$id('custom_background').click();
 	};
 	$id('voice_timeout').onclick = function() {
-		$j('#voice_timeout_choice').slideToggle("slow");
-		$j('#voice_timeout_desc').slideToggle("slow");
+		//jQuery('#voice_timeout_choice').slideToggle("slow");
+		$id('voice_timeout_choice').style.display = $id('voice_timeout_choice').style.display === 'none' ? 'block' : 'none';
+		//jQuery('#voice_timeout_desc').slideToggle("slow");
+		$id('voice_timeout_desc').style.display = $id('voice_timeout_desc').style.display === 'none' ? 'block' : 'none';
 	};
 	$id('freeze_voice_button').onclick = function() {
-		$j('#freeze_voice_button_choice').slideToggle("slow");
-		$j('#freeze_voice_button_desc').slideToggle("slow");
+		//jQuery('#freeze_voice_button_choice').slideToggle("slow");
+		$id('freeze_voice_button_choice').style.display = $id('freeze_voice_button_choice').style.display === 'none' ? 'block' : 'none';
+		//jQuery('#freeze_voice_button_desc').slideToggle("slow");
+		$id('freeze_voice_button_desc').style.display = $id('freeze_voice_button_desc').style.display === 'none' ? 'block' : 'none';
 	};
 	$id('check_all').onclick = function() {
 		setAllCheckboxesToState('item-informer', true);
@@ -135,8 +148,10 @@ function loadOptions() {
 		return false;
 	};
 	$id('disable_voice_generators').onclick = function() {
-		$j('#voice_menu').slideToggle("slow");
-		$j('#words').slideToggle("slow");
+		//jQuery('#voice_menu').slideToggle("slow");
+		$id('voice_menu').style.display = $id('voice_menu').style.display === 'none' ? 'block' : 'none';
+		//jQuery('#words').slideToggle("slow");
+		$id('words').style.display = $id('words').style.display === 'none' ? 'block' : 'none';
 	};
 	if (!storage.get('charIsMale')) {
 		$q('#voice_menu .l_capt').textContent = $q('#voice_menu .l_capt').textContent.replace('героя', 'героини');
@@ -200,7 +215,8 @@ function saveWords() {
 }
 
 function saveOptions() {
-	$j('#gui_settings_progress').show();
+	//jQuery('#general_settings_spinner').show();
+	$id('general_settings_spinner').style.display = 'inline';
 
 	var i, len, option_checkboxes = $C('option-checkbox');
 	for (i = 0, len = option_checkboxes.length; i < len; i++) {
@@ -261,9 +277,11 @@ function saveOptions() {
 				}, 150);
 				storage.set('Option:useBackground', 'cloud');
 			}
-			$j('#cb_status').fadeIn();
+			//jQuery('#cb_status').fadeIn();
+			$id('cb_status').style.display = 'block';
 			worker.setTimeout(function() {
-				$j('#cb_status').fadeOut();
+				//jQuery('#cb_status').fadeOut();
+				$id('cb_status').style.display = 'none';
 			}, 1000);
 		}
 		else if ($id('cloud_background').checked) {
@@ -320,7 +338,10 @@ function saveOptions() {
 	}
 	storage.set('Option:forbiddenCraft', forbiddenCraft.join());
 
-	$j('#gui_settings_progress').fadeOut('slow');
+	//jQuery('#general_settings_spinner').fadeOut('slow');
+	worker.setTimeout(function() {
+		$id('general_settings_spinner').style.display = 'none';
+	}, 300);
 
 	set_theme_and_background();
 
@@ -391,45 +412,55 @@ function restore_options() {
 	}
 
 	if ($id('relocate_duel_buttons').checked) {
-		$j('#relocate_duel_buttons_desc').hide();
+		//jQuery('#relocate_duel_buttons_desc').hide();
+		$id('relocate_duel_buttons_desc').style.display = 'none';
 		var buttons = storage.get('Option:relocateDuelButtons');
 		if (buttons.match('arena')) { $id('relocate_arena').checked = true; }
 		if (buttons.match('chf')) { $id('relocate_chf').checked = true; }
 	} else {
-		$j('#relocate_duel_buttons_choice').hide();
+		//jQuery('#relocate_duel_buttons_choice').hide();
+		$id('relocate_duel_buttons_choice').style.display = 'none';
 	}
 	if ($id('forbidden_title_notices').checked) {
-		$j('#forbidden_title_notices_desc').hide();
+		//jQuery('#forbidden_title_notices_desc').hide();
+		$id('forbidden_title_notices_desc').style.display = 'none';
 		var notices = storage.get('Option:forbiddenTitleNotices');
 		if (notices.match('pm')) { $id('title_notice_pm').checked = false; }
 		if (notices.match('gm')) { $id('title_notice_gm').checked = false; }
 		if (notices.match('fi')) { $id('title_notice_fi').checked = false; }
 	} else {
-		$j('#forbidden_title_notices_choice').hide();
+		//jQuery('#forbidden_title_notices_choice').hide();
+		$id('forbidden_title_notices_choice').style.display = 'none';
 	}
 	if ($id('use_background').checked) {
-		$j('#background_desc').hide();
+		//jQuery('#background_desc').hide();
+		$id('background_desc').style.display = 'none';
 		var bg = storage.get('Option:useBackground');
 		if (bg !== 'cloud') {
 			$id('custom_background').click();
 		}
 	} else {
-		$j('#background_choice').hide();
+		//jQuery('#background_choice').hide();
+		$id('background_choice').style.display = 'none';
 	}
 	if ($id('voice_timeout').checked) {
-		$j('#voice_timeout_desc').hide();
+		//jQuery('#voice_timeout_desc').hide();
+		$id('voice_timeout_desc').style.display = 'none';
 		$id('voice_timeout_value').value = storage.get('Option:voiceTimeout');
 	} else {
-		$j('#voice_timeout_choice').hide();
+		//jQuery('#voice_timeout_choice').hide();
+		$id('voice_timeout_choice').style.display = 'none';
 		$id('voice_timeout_value').value = '20';
 	}
 	if ($id('freeze_voice_button').checked) {
-		$j('#freeze_voice_button_desc').hide();
+		//jQuery('#freeze_voice_button_desc').hide();
+		$id('freeze_voice_button_desc').style.display = 'none';
 		var cases = storage.get('Option:freezeVoiceButton');
 		if (cases.match('after_voice')) { $id('freeze_after_voice').checked = true; }
 		if (cases.match('when_empty')) { $id('freeze_when_empty').checked = true; }
 	} else {
-		$j('#freeze_voice_button_choice').hide();
+		//jQuery('#freeze_voice_button_choice').hide();
+		$id('freeze_voice_button_choice').style.display = 'none';
 	}
 	var forbiddenInformers = storage.get('Option:forbiddenInformers');
 	if (forbiddenInformers) {
@@ -442,7 +473,8 @@ function restore_options() {
 		}
 	} else {
 		setAllCheckboxesToState('informer-checkbox', true);
-		$j('#informers').hide();
+		//jQuery('#informers').hide();
+		$id('informers').style.display = 'none';
 	}
 	var forbiddenCraft = storage.get('Option:forbiddenCraft');
 	if (forbiddenCraft) {
@@ -455,11 +487,14 @@ function restore_options() {
 		}
 	} else {
 		setAllCheckboxesToState('craft-checkbox', true);
-		$j('#craft_categories').hide();
+		//jQuery('#craft_categories').hide();
+		$id('craft_categories').style.display = 'none';
 	}
 	if ($id('disable_voice_generators').checked) {
-		$j('#voice_menu').hide();
-		$j('#words').hide();
+		//jQuery('#voice_menu').hide();
+		$id('voice_menu').style.display = 'none';
+		//jQuery('#words').hide();
+		$id('words').style.display = 'none';
 	}
 
 	$id('user_css').value = storage.get('UserCss') || '';
@@ -486,11 +521,10 @@ function set_theme_and_background() {
 	}
 }
 
-var def, $j, curr_sect, god_name;
+var def, curr_sect, god_name;
 
 var starterInt = worker.setInterval(function() {
-	if (worker.jQuery && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL) {
-		$j = worker.jQuery.noConflict();
+	if (worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL) {
 		def = worker.GUIp_words();
 		worker.clearInterval(starterInt);
 		god_name = $q('#opt_change_profile div div').textContent;

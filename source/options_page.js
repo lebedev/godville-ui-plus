@@ -287,8 +287,8 @@ return '<p>\n' +
 '				</div>\n' +
 '				<div class="new_line">\n' +
 '					<input id="save_options" class="input_btn" type="submit" value="' + worker.GUIp_i18n.apply + '">\n' +
-'					<img align="middle" alt="Spinner" border="0" id="gui_settings_progress"\n' +
-'						 src="/images/spinner.gif" style="vertical-align:bottom; display: none;">\n' +
+'					<img align="middle" alt="Spinner" border="0" id="general_settings_spinner"\n' +
+'						 src="/images/spinner.gif" style="vertical-align:middle; display: none;">\n' +
 '				</div>\n' +
 '			</div>\n' +
 '		</div>\n' +
