@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', function(e) {
 				createScripts([scripts.wm, scripts.mo, scripts.superhero], locale);
 				createCSS('superhero.css');
 			} else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-				createScripts([scripts.jquery, scripts.options_page, scripts.options], locale);
+				createScripts([scripts.options_page, scripts.options], locale);
 				createCSS('options.css');
 			} else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
 				createScripts([scripts.wm, scripts.mo, scripts.forum], locale);
@@ -49,7 +49,6 @@ window.addEventListener('DOMContentLoaded', function(e) {
 			phrases_ru: 'phrases_ru.js',
 			phrases_en: 'phrases_en.js',
 			guip_opera: 'guip_opera.js',
-			jquery: 'jquery-1.10.2.min.js',
 			options_page: 'options_page.js',
 			options: 'options.js',
 			forum: 'forum.js',

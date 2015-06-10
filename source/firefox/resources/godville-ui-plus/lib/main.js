@@ -6,7 +6,7 @@ function mod(hostname, locale) {
 		commonScripts = [selfUrl('common.js'), selfUrl('guip_firefox.js'), selfUrl('phrases_' + locale + '.js')];
 	var scripts = [
 		selfUrl('superhero.js'),
-		[selfUrl('jquery-1.10.2.min.js'), selfUrl('options_page.js'), selfUrl('options.js')],
+		[selfUrl('options_page.js'), selfUrl('options.js')],
 		selfUrl('forum.js'),
 		selfUrl('log.js')
 	];

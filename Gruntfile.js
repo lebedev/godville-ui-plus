@@ -14,7 +14,6 @@ module.exports = function(grunt) {
         files: [
           {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
           {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/', filter: 'isFile'},
-          {expand: true, cwd: 'source/vendor/', src: 'jquery-1.10.2.min.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'},
           {expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile'},
           {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/'},
           {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'}
