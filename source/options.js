@@ -13,6 +13,10 @@ var $C = function(classname) {
 	return doc.getElementsByClassName(classname);
 };
 
+var $q = function(selector) {
+	return doc.querySelector(selector);
+};
+
 var storage = {
 	_get_key: function(key) {
 		return "GUIp_" + god_name + ':' + key;
@@ -56,7 +60,7 @@ var storage = {
 function addMenu() {
 	if (!god_name) { return; }
 	if (!$id('ui_settings')) {
-		$j('#profile_main p:first').append(' | <a id="ui_settings" href="#ui_settings">' + worker.GUIp_i18n.ui_settings + '</a>');
+		$q('#profile_main p').insertAdjacentHTML('beforeend', ' | <a id="ui_settings" href="#ui_settings">' + worker.GUIp_i18n.ui_settings + '</a>');
 		$id('ui_settings').onclick = loadOptions;
 	}
 }
@@ -122,8 +126,8 @@ function loadOptions() {
 		$j('#GUIp_words').slideToggle("slow");
 	};
 	if (!storage.get('charIsMale')) {
-		$j('#voice_menu .l_capt:first').text($j('#voice_menu .l_capt:first').text().replace('героя', 'героини'));
-		$j('#voice_menu .g_desc:first').text($j('#voice_menu .g_desc:first').text().replace('герою', 'героине'));
+		$q('#voice_menu .l_capt').textContent = $q('#voice_menu .l_capt').textContent.replace('героя', 'героини');
+		$q('#voice_menu .g_desc').textContent = $q('#voice_menu .g_desc').textContent.replace('герою', 'героине');
 	}
 
 	$j(document).on('change keypress paste focus textInput input', '#ta_edit', function() {
@@ -338,8 +342,8 @@ function setDefaultWordsButtonState(condition) {
 
 function setText(sect) {
 	curr_sect = sect;
-	$j('#words a.selected').removeClass('selected');
-	$j('#words a#l_' + curr_sect).addClass('selected');
+	if ($q('#words a.selected')) { $q('#words a.selected').classList.remove('selected'); }
+	$q('#words a#l_' + curr_sect).classList.add('selected');
 	var text_list = storage.get('CustomPhrases:' + curr_sect),
 		text = text_list ? text_list.split('||') : def.phrases[curr_sect],
 		textarea = $id('ta_edit');
@@ -359,8 +363,8 @@ function set_user_css() {
 
 // Restores select box state to saved value from localStorage
 function restore_options() {
-	var i, r = new worker.RegExp('^' + storage._get_key('Option:'));
-	for (i = 0; i < localStorage.length; i++) {
+	var i, len, r = new worker.RegExp('^' + storage._get_key('Option:'));
+	for (i = 0, len = localStorage.length; i < len; i++) {
 		if (localStorage.key(i).match(r)) {
 			var option = localStorage.key(i).replace(r, '');
 			if (storage.get(localStorage.key(i).replace(storage._get_key(''), ''))) {
@@ -477,7 +481,7 @@ var starterInt = worker.setInterval(function() {
 		$j = worker.jQuery.noConflict();
 		def = worker.GUIp_words();
 		worker.clearInterval(starterInt);
-		god_name = $j('#opt_change_profile div:first div:first').text();
+		god_name = $q('#opt_change_profile div div').textContent;
 		if (god_name) {
 			localStorage.setItem('GUIp_CurrentUser', god_name);
 		} else {
@@ -494,7 +498,7 @@ var starterInt = worker.setInterval(function() {
 		improve_blocks();
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
-			if (!$j('#profile_main p:first').text().match(worker.GUIp_i18n.ui_settings.replace('+', '\\+'))) {
+			if (!$q('#profile_main p').textContent.match(worker.GUIp_i18n.ui_settings.replace('+', '\\+'))) {
 				worker.setTimeout(addMenu, 0);
 			}
 			improve_blocks();
