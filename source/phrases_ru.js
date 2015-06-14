@@ -529,6 +529,8 @@ worker.GUIp_i18n = {
 	disable_laying_timer_desc: 'для тех, кому он мозолит глаза',
 	forbidden_informers: 'Выбрать информеры вручную',
 	forbidden_informers_desc: 'позволяет выбрать отображаемые информеры',
+	forbidden_informers_hp_60: 'ХП ниже 60%',
+	forbidden_informers_hp_30: 'ХП ниже 30%',
 	forbidden_informers_full_godpower: 'полная прана',
 	forbidden_informers_much_gold: 'много золота',
 	forbidden_informers_dead: 'смерть',

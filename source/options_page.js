@@ -216,6 +216,8 @@ return '<p>\n' +
 '					<div class="new_line">\n' +
 '						<div class="g_desc">' + worker.GUIp_i18n.forbidden_informers_desc + '</div>\n' +
 '						<div class="g_desc" id="informers">\n' +
+'							<input class="informer-checkbox" id="hp_60" name="hp_60" type="checkbox"><label for="hp_60">' + worker.GUIp_i18n.forbidden_informers_hp_60 + '</label><br>\n' +
+'							<input class="informer-checkbox" id="hp_30" name="hp_30" type="checkbox"><label for="hp_30">' + worker.GUIp_i18n.forbidden_informers_hp_30 + '</label><br>\n' +
 '							<input class="informer-checkbox" id="full_godpower" name="full_godpower" type="checkbox"><label for="full_godpower">' + worker.GUIp_i18n.forbidden_informers_full_godpower + '</label><br>\n' +
 '							<input class="informer-checkbox" id="much_gold" name="much_gold" type="checkbox"><label for="much_gold">' + worker.GUIp_i18n.forbidden_informers_much_gold + '</label><br>\n' +
 '							<input class="informer-checkbox" id="dead" name="dead" type="checkbox"><label for="dead">' + worker.GUIp_i18n.forbidden_informers_dead + '</label><br>\n' +

@@ -140,3 +140,9 @@ ui_stats.monsterName = function() {
 ui_stats.logId = function() {
 	return worker.so.state.stats.perm_link.value;
 };
+ui_stats.isHeroHpBelow60 = function() {
+	return ((worker.so.state.stats.health.value > 0) && (worker.so.state.stats.health.value/worker.so.state.stats.max_health.value) <= 0.6);
+};
+ui_stats.isHeroHpBelow30 = function() {
+	return ((worker.so.state.stats.health.value > 0) && (worker.so.state.stats.health.value/worker.so.state.stats.max_health.value) <= 0.3);
+};

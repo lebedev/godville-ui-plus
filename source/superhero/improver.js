@@ -416,6 +416,8 @@ ui_improver.improveStats = function() {
 	}
 
 	ui_informer.update('much gold', ui_stats.Gold() >= (ui_data.hasTemple ? 10000 : 3000));
+	ui_informer.update('hp 60', ui_stats.isHeroHpBelow60);
+	ui_informer.update('hp 30', ui_stats.isHeroHpBelow30);
 	ui_informer.update('dead', ui_stats.HP() === 0);
 	var questName = ui_stats.Task_Name();
 	ui_informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && !questName.match(/\((отменено|cancelled)\)/));
