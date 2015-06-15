@@ -152,4 +152,4 @@ ui_stats.isHeroHpBelow = function(percent) {
 		return false;
 	}
 	return ((worker.so.state.stats.health.value > 1) && (worker.so.state.stats.health.value/worker.so.state.stats.max_health.value) <= (percent/100));
-}
+};
