@@ -140,9 +140,16 @@ ui_stats.monsterName = function() {
 ui_stats.logId = function() {
 	return worker.so.state.stats.perm_link.value;
 };
-ui_stats.isHeroHpBelow60 = function() {
-	return ((worker.so.state.stats.health.value > 0) && (worker.so.state.stats.health.value/worker.so.state.stats.max_health.value) <= 0.6);
-};
-ui_stats.isHeroHpBelow30 = function() {
-	return ((worker.so.state.stats.health.value > 0) && (worker.so.state.stats.health.value/worker.so.state.stats.max_health.value) <= 0.3);
-};
+
+/**
+ * Проверяем ниже ли значение ХП процентного порога, при этом ХП > 1 (проигрыш дуэли/боя/смерть)
+ *
+ * @param int percent - процентный порог
+ * @returns boolean
+ */
+ui_stats.isHeroHpBelow = function(percent) {
+	if((typeof percent !== 'number') || percent > 100 || percent < 0) {
+		return false;
+	}
+	return ((worker.so.state.stats.health.value > 1) && (worker.so.state.stats.health.value/worker.so.state.stats.max_health.value) <= (percent/100));
+}
