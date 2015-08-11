@@ -1,10 +1,10 @@
 # По-русски (in russian):
-## Как собрать дополнение из сорцов:
+## Как собрать дополнение из исходников:
 
 1. Склонировать репозиторий.
 2. Установить `nodejs`.
 3. Выполнить `npm install` в корне репозитория.
-4. Выполнить `grunt debug` в корне репозитория для однократной сборки или `grunt --force` для слежения за изменениями в папке `source` и автосборке.
+4. Выполнить `grunt debug` в корне репозитория для однократной сборки или `grunt --force` для слежения за изменениями в папке `source` и автосборки.
 5. Таким образом, в папке `debug` будет папочка `chrome` (экстеншон для Хрома) и файл `godville-ui-plus@badluck.dicey.xpi` (аддон для ФФ).
 
 ## Что куда собирается и где запускается:
@@ -29,7 +29,7 @@
 Обычно код редактируется только в `source/*`, `source/superhero/*` и `source/forum/*`.
 
 # In english (по-английски):
-## Hot to build extension from source:
+## How to build extension from source:
 
 1. Clone the repo.
 2. Install `nodejs`.
@@ -47,7 +47,7 @@
     .
     |-help_guide/ (images for help dialog)
     |-images/ (images: default background and shovel)
-    |-release/ (current releasse versions of add-on and extension)
+    |-release/ (current release versions of add-on and extension)
     |-source/ (all the source code)
         |-chrome/ (Chrome extension specific files)
         |-firefox/ (Firefox add-on specific files)
