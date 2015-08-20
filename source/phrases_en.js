@@ -514,8 +514,10 @@ worker.GUIp_i18n = {
 	clear_voice_input: 'Clear voice input',
 	trophy: 'trophy ',
 	high_contrast: 'High contrast mode (for vision impared)',
+	map_pointer: 'Pointer',
 	coords_error_title: 'Chronicle parsing failed!',
 	coords_error_desc: 'Coordinates mismatch',
+	step_n: 'Step #',
 };
 
 delete worker.GUIp_github_link;
