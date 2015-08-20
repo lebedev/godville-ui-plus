@@ -820,93 +820,60 @@ ui_improver.moveCoords = function(coords, chronicle) {
 		}
 	}
 };
+
+ui_improver.getRPerms = function(array, size, initialStuff, output) {
+	if (initialStuff.length >= size) {
+		output.push(initialStuff);
+	} else {
+		for (var i = 0; i < array.length; ++i) {	
+			this.getRPerms(array, size, initialStuff.concat(array[i]), output);
+		}
+	}
+}
+
+ui_improver.getAllRPerms = function(array, size) {
+	var output = []
+	this.getRPerms(array, size, [], output);
+	return output;
+}
+
 ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
-	var i, len, j, len2, temp, coords = { x: initCoords.x, y: initCoords.y },
+	var i, len, j, len2, coords = { x: initCoords.x, y: initCoords.y },
+		dmap = document.querySelectorAll('#map .dml'),
 		heroesCoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]),
+		steps = worker.Object.keys(this.chronicles),
 		directionless = 0;
-	for (i = initStep, len = this.chronicles.length; i < len; i++) {
+
+	worker.console.log('going to calculate directionless move from step #'+initStep);
+	for (i = initStep, len = steps.length; i <= len; i++) {
 		if (this.chronicles[i].directionless) {
 			directionless++;
 		}
 		ui_improver.moveCoords(coords, this.chronicles[i]);
 	}
-	var diff = { x: heroesCoords.x - coords.x, y: heroesCoords.y - coords.y };
-	var first = '';
-	while (diff.y < 0) {
-		diff.y++;
-		directionless--;
-		first += 'n';
-	}
-	while (diff.x > 0) {
-		diff.x--;
-		directionless--;
-		first += 'e';
-	}
-	while (diff.y > 0) {
-		diff.y--;
-		directionless--;
-		first += 's';
-	}
-	while (diff.x < 0) {
-		diff.x++;
-		directionless--;
-		first += 'w';
-	}
-	first = [first];
-	while (directionless > 0) {
-		directionless -= 2;
-		temp = [];
-		for (i = 0, len = first.length; i < len; i++) {
-			temp.push(first[i] + 'ns');
-			temp.push(first[i] + 'ew');
-		}
-		first = temp;
-	}
-	var second = [];
-	for (i = 0, len = first.length; i < len; i++) {
-		var last = first[i].split('').sort();
-		second.push(last.join(''));
-		// Narayana algorithm
-		while (true) {
-			// calculate k
-			var k = last.length - 2;
-			while (k >= 0 && last[k] >= last[k + 1]) {
-				k--;
-			}
-			// exit if there's no more changes
-			if (k === -1) {
-				break;
-			}
-			// calculate t
-			var t = last.length - 1;
-			while (last[k] >= last[t] && t >= k + 1) {
-				t--;
-			}
-			// swap k with t
-			temp = last[k]; last[k] = last[t]; last[t] = temp;
-			// reverse k+1..n
-			last = last.slice(0, k + 1).concat(last.slice(k + 1).reverse());
-
-			second.push(last.join(''));
-		}
-	}
-	for (i = 0, len = second.length; i < len; i++) {
+	
+	var variations = this.getAllRPerms('nesw'.split(''),directionless);
+	
+	for (i = 0, len = variations.length; i < len; i++) {
+		//worker.console.log('trying combo '+variations[i].join());
 		coords = { x: initCoords.x, y: initCoords.y };
 		directionless = 0;
-		for (j = initStep, len2 = this.chronicles.length; j < len2; j++) {
+		for (j = initStep, len2 = steps.length; j <= len2; j++) {
 			if (this.chronicles[j].directionless) {
-				ui_improver.moveCoords(coords, { direction: this.corrections[second[i][directionless]] });
+				ui_improver.moveCoords(coords, { direction: this.corrections[variations[i][directionless]] });
 				directionless++;
 			} else {
 				ui_improver.moveCoords(coords, this.chronicles[j]);
 			}
-			if (document.querySelectorAll('#map .dml')[coords.y].children[coords.x].textContent.match(/#|!|\?/)) {
+			if (!dmap[coords.y] || !dmap[coords.y].children[coords.x] || dmap[coords.y].children[coords.x].textContent.match(/#|!|\?/)) {
 				break;
 			}
 		}
 		if (heroesCoords.x - coords.x === 0 && heroesCoords.y - coords.y === 0) {
-			ui_storage.set('Log:' + ui_stats.logId() + ':corrections', ui_storage.get('Log:' + ui_stats.logId() + ':corrections') + second[i]);
-			return this.corrections[second[i][0]];
+			var currentCorrections = ui_storage.get('Log:' + ui_stats.logId() + ':corrections') || '';
+			worker.console.log('found result: '+variations[i].join());
+			ui_storage.set('Log:' + ui_stats.logId() + ':corrections', currentCorrections + variations[i].join(''));
+			return this.corrections[variations[i][0]];
 		}
 	}
 };
