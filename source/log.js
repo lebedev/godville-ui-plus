@@ -672,6 +672,88 @@ ui_log.updateButton = function() {
 	}
 };
 
+ui_log.saverSendLog = function() {
+	var i, div = document.createElement('div'), inputs = '<input type="hidden" name="bosses_count" value="' + ui_log.saverBossesCnt + '"><input type="hidden" name="log_id" value="' + ui_log.saverLogId + '">';
+	for (i = 0; i < ui_log.saverPages.length; i++) {
+		inputs += '<input type="hidden" name="' + i + '">';
+	}
+	div.insertAdjacentHTML('beforeend', '<form method="post" action="'+ui_log.saverURL+'" enctype="multipart/form-data" accept-charset="utf-8">' + inputs + '</form>');
+	for (i = 0; i < ui_log.saverPages.length; i++) {
+		div.querySelector('input[name="' + i + '"]').setAttribute('value', ui_log.saverPages[i]);
+	}
+	document.body.appendChild(div);
+	div.firstChild.submit();
+	document.body.removeChild(div);
+};
+
+ui_log.saverFetchPage = function(boss_no) {
+	ui_log.xhrCount = 0;
+	ui_log.getXHR(location.protocol + '//' + location.host + location.pathname + (boss_no ? '?boss=' + boss_no : ''), ui_log.saverProcessPage.bind(null), ui_log.saverFetchFailed.bind(null), boss_no);
+};
+
+ui_log.saverProcessPage = function(xhr) {
+	var boss_no = xhr.extra_arg || 0;
+	if (!xhr.responseText.match(/Извините, но по этой ссылке найти хронику не удалось./)) {
+		ui_log.saverPages.push(xhr.responseText.replace(/<img[^>]+>/g, '')
+								 .replace(/<script[\s\S]+?<\/script>/g, '')
+								 .replace(/\.css\?\d+/g, '.css')
+								 .replace(/трое суток/, ui_log.saverBanner));
+		if (boss_no < ui_log.saverBossesCnt) {
+			ui_log.saverFetchPage(boss_no + 1);
+		} else {
+			ui_log.saverSendLog();
+		}
+	} else {
+		ui_log.saverRemoveLoader();
+		worker.alert('При сохранении произошла ошибка - хроника не существует.');
+	}
+};
+
+ui_log.saverFetchFailed = function() {
+	ui_log.saverRemoveLoader();
+	worker.alert('При запросе хроники произошла ошибка.\nПопробуйте еще раз.');
+};
+
+ui_log.saverAddLoader = function() {
+	document.body.insertAdjacentHTML('beforeend', '<div id="godvillepehu_loader" style="position: fixed; left: 50%; top: 50%; margin: -24px; padding: 8px; background: rgba(255,255,255,0.9);"><img src="'+ui_log.saverLoaderGIF+'"></div>');
+};
+
+ui_log.saverRemoveLoader = function() {
+	if (document.getElementById('godvillepehu_loader')) {
+		document.body.removeChild(document.getElementById('godvillepehu_loader'));
+	}
+};
+
+ui_log.saverPrepareLog = function(svc) {
+	ui_log.saverURL = '//gdvl.tk/upload.php';
+	ui_log.saverBanner = 'до тепловой смерти Вселенной (или пока не умрет сервер) благодаря <a href="//godville.net/gods/Mave">Mave</a> и <a href="//godville.net/gods/Бэдлак">Бэдлаку</a>';
+	ui_log.saverLoaderGIF = 'http://gdvl.tk/images/loader.gif';
+	try {
+		ui_log.saverLogId = (location.href.match(/^https?:\/\/godville.net\/duels\/log\/(.{5})/) || [])[1];
+		ui_log.saverPages = [];
+		if (!ui_log.saverLogId) {
+			throw 'можно загружать только логи Годвилля';
+		}
+		if (document.getElementById('search_status') && document.getElementById('search_status').textContent.match(/Извините, но по этой ссылке найти хронику не удалось./)) {
+			throw 'лог отсутствует';
+		}
+		if (document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/)) {
+			throw 'нельзя загрузить трансляцию';
+		}
+		if (document.getElementById('godvillepehu_loader')) {
+			worker.alert('Лог уже загружается!');
+			return;
+		} else {
+			ui_log.saverAddLoader();
+		}
+		ui_log.saverBossesCnt = document.querySelectorAll('a[href*="boss"]').length;
+		ui_log.saverFetchPage(null);
+	} catch(e) {
+		ui_log.saverRemoveLoader();
+		worker.alert('Ошибка: ' + e);
+	}
+};
+
 ui_log.starter = function() {
 	if (!worker.GUIp_locale || !worker.GUIp_i18n) { return; }
 	worker.clearInterval(starterInt);
@@ -679,6 +761,17 @@ ui_log.starter = function() {
 	// add some styles
 	if (worker.GUIp_browser !== 'Opera') {
 		worker.GUIp_addCSSFromURL(worker.GUIp_getResource('superhero.css'), 'guip_css');
+	}
+
+	// add save links
+	if (!ui_log.customDomain && worker.GUIp_locale === 'ru' && !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/)) {
+		var savelnk, savediv = document.createElement('div');
+		savelnk = document.createElement('a');
+		savelnk.onclick = ui_log.saverPrepareLog.bind(null,'gdvl.tk');
+		savelnk.textContent = 'gdvl.tk';
+		savediv.insertBefore(document.createTextNode(worker.GUIp_i18n.save_log_to + ' '), null);
+		savediv.insertBefore(savelnk, null);
+		document.getElementsByClassName('lastduelpl_f')[1].insertBefore(savediv,null);
 	}
 
 	if (location.href.match('boss=') || !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/)) {

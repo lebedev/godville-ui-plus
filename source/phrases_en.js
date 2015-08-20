@@ -514,6 +514,7 @@ worker.GUIp_i18n = {
 	clear_voice_input: 'Clear voice input',
 	trophy: 'trophy ',
 	high_contrast: 'High contrast mode (for vision impared)',
+	save_log_to: 'Save to',
 	map_pointer: 'Pointer',
 	coords_error_title: 'Chronicle parsing failed!',
 	coords_error_desc: 'Coordinates mismatch',

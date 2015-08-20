@@ -657,6 +657,7 @@ worker.GUIp_i18n = {
 	clear_voice_input: 'Очистить поле гласа',
 	trophy: 'трофей ',
 	high_contrast: 'Высококонтрастный режим (для слабовидящих)',
+	save_log_to: 'Сохранить в',
 	map_pointer: 'Указатель',
 	coords_error_title: 'Ошибка обработки хроники!',
 	coords_error_desc: 'Разница координат',
