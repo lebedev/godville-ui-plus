@@ -173,25 +173,6 @@ ui_improver.improveNews = function() {
 		ui_timers.tick();
 	}
 };
-ui_improver.MapIteration = function(MapThermo, iPointer, jPointer, step, kRow, kColumn) {
-	step++;
-	for (var iStep = -1; iStep <= 1; iStep++) {
-		for (var jStep = -1; jStep <= 1; jStep++) {
-			if (iStep !== jStep && (iStep === 0 || jStep === 0)) {
-				var iNext = iPointer + iStep,
-					jNext = jPointer + jStep;
-				if (iNext >= 0 && iNext < kRow && jNext >= 0 && jNext < kColumn) {
-					if (MapThermo[iNext][jNext] !== -1) {
-						if (MapThermo[iNext][jNext] > step || MapThermo[iNext][jNext] === 0) {
-							MapThermo[iNext][jNext] = step;
-							ui_improver.MapIteration(MapThermo, iNext, jNext, step, kRow, kColumn);
-						}
-					}
-				}
-			}
-		}
-	}
-};
 ui_improver.improveMap = function() {
 	if (this.isFirstTime) {
 		document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
@@ -238,8 +219,9 @@ ui_improver.improveMap = function() {
 			kRow = $boxML.length,
 			kColumn = $boxML[0].textContent.length,
 			isJumping = document.getElementById('map').textContent.match(/Прыгучести|Jumping/),
-			MaxMap = 0,	// Счетчик указателей
-			MapArray = []; // Карта возможного клада
+			MaxMap = 0,      	// count of any pointers
+			MaxMapThermo = 0, // count of thermo pointers
+			MapArray = [];
 		for (i = 0; i < kRow; i++) {
 			MapArray[i] = [];
 			for (j = 0; j < kColumn; j++) {
@@ -309,7 +291,7 @@ ui_improver.improveMap = function() {
 											'↘↗'.indexOf(ttl[ij]) !== -1 && jk > sj + jstep ||
 											'↙↖'.indexOf(ttl[ij]) !== -1 && jk < sj - jstep) {
 											if (MapArray[ik][jk] >= 0) {
-												MapArray[ik][jk]++;
+												MapArray[ik][jk]+=1024;
 											}
 										}
 									}
@@ -318,8 +300,8 @@ ui_improver.improveMap = function() {
 						}
 					}
 				}
-				if ('✺☀♨☁❄✵'.indexOf(pointer) !== -1) {
-					MaxMap++;
+				if ('✺☀♨☁❄✵'.indexOf(pointer) !== -1 || ttl.length && '✺☀♨☁❄✵'.indexOf(ttl) !== -1) {
+					MaxMapThermo++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
 					var ThermoMinStep = 0;	//	Минимальное количество шагов до клада
 					var ThermoMaxStep = 0;	//	Максимальное количество шагов до клада
@@ -331,20 +313,65 @@ ui_improver.improveMap = function() {
 						case '❄': ThermoMinStep = 14; ThermoMaxStep = 18; break;	//	❄ - холодно(14-18)
 						case '✵': ThermoMinStep = 19; ThermoMaxStep = 100; break;	//	✵ - очень холодно(19)
 					}
-					//	Временная карта возможных ходов
-					var MapThermo = [];
-					for (ik = 0; ik < kRow; ik++) {
-						MapThermo[ik] = [];
-						for (jk = 0; jk < kColumn; jk++) {
-							MapThermo[ik][jk] = ($boxML[ik].textContent[jk] === '#' || ((Math.abs(jk - sj) + Math.abs(ik - si)) > ThermoMaxStep)) ? -1 : 0;
+					//	thermo map data
+					var MapData = {
+						kColumn: kColumn,
+						kRow: kRow,
+						minStep: ThermoMinStep,
+						maxStep: ThermoMaxStep,
+						scanList: []
+					};
+					for (ik = -1; ik <= kRow; ik++) {
+						for (jk = -1; jk <= kColumn; jk++) {
+							if (ik < 0 || jk < 0 || ik == kRow || jk == kColumn) {
+								MapData[ik+':'+jk] = { explored: false, specway: false, scanned: false, wall: false, unknown: true };
+								continue;
+							}
+							MapData[ik+':'+jk] = {
+								explored: '#?!'.indexOf($boxML[ik].textContent[jk]) === -1,
+								specway: false,
+								scanned: false,
+								wall: $boxML[ik].textContent[jk] === '#',
+								unknown: $boxML[ik].textContent[jk] === '?'
+							}
 						}
 					}
-					//	Запускаем итерацию
-					ui_improver.MapIteration(MapThermo, si, sj, 0, kRow, kColumn);
-					//	Метим возможный клад
+					// remove unknown marks from cells located near explored ones
+					for (ik = 0; ik < kRow; ik++) {
+						for (jk = 0; jk < kColumn; jk++) {
+							if (MapData[ik+':'+jk].explored) {
+								for (i = -1; i <= 1; i++) {
+									for (j = -1; j <= 1; j++) {
+										if (MapData[(ik+i)+':'+(jk+j)]) { MapData[(ik+i)+':'+(jk+j)].unknown = false; }
+									}
+								}
+							}
+						}
+					}
+					// 
+					worker.GUIp_mapIteration(MapData, si, sj, 0, false);
+					//
+					for (ik = 0; ik < kRow; ik++) {
+						for (jk = 0; jk < kColumn; jk++) {
+							if (MapData[ik+':'+jk].step < ThermoMinStep && MapData[ik+':'+jk].explored && !MapData[ik+':'+jk].specway) {
+								MapData[ik+':'+jk].scanned = true;
+								MapData['scanList'].push({i:ik, j:jk, lim:(ThermoMinStep - MapData[ik+':'+jk].step)});
+							}
+						}
+					}
+					while (MapData['scanList'].length) {
+						var scanCell = MapData['scanList'].shift();
+						for (var cell in MapData) { if (MapData[cell].substep) MapData[cell].substep = 0; }
+						worker.GUIp_mapSubIteration(MapData, scanCell.i, scanCell.j, 0, scanCell.lim, false);
+					}
+					//
 					for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++) {
 						for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++) {
-							if (MapThermo[ik][jk] >= ThermoMinStep & MapThermo[ik][jk] <= ThermoMaxStep) {
+							if (MapData[ik+':'+jk].step >= ThermoMinStep & MapData[ik+':'+jk].step <= ThermoMaxStep) {
+								if (MapArray[ik][jk] >= 0) {
+									MapArray[ik][jk]+=128;
+								}
+							} else if (MapData[ik+':'+jk].step < ThermoMinStep && MapData[ik+':'+jk].specway) {
 								if (MapArray[ik][jk] >= 0) {
 									MapArray[ik][jk]++;
 								}
@@ -355,11 +382,17 @@ ui_improver.improveMap = function() {
 			}
 		}
 		//	Отрисовываем возможный клад
-		if (MaxMap !== 0) {
+		if (MaxMap !== 0 || MaxMapThermo !== 0) {
 			for (i = 0; i < kRow; i++) {
 				for (j = 0; j < kColumn; j++) {
-					if (MapArray[i][j] === MaxMap) {
+					if (MapArray[i][j] == 1024*MaxMap + 128*MaxMapThermo) {
 						$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'red';
+					} else {
+						for (ik = 0; ik < MaxMapThermo; ik++) {
+							if (MapArray[i][j] == 1024*MaxMap + 128*ik + (MaxMapThermo - ik)) {
+								$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'darkorange';
+							}
+						}
 					}
 				}
 			}
