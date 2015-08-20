@@ -403,13 +403,15 @@ worker.GUIp_i18n = {
 	boss_slay_hint: 'босс',
 	small_prayer_hint: 'слабая молилка',
 	small_healing_hint: 'слабая лечилка',
-	unknown_trap_hint: 'ловушка, заблокированная петом',
+	unknown_trap_hint: 'ловушка, блокированная питомцем',
 	trophy_loss_trap_hint: 'ловушка: золото или трофеи',
 	low_damage_trap_hint: 'ловушка: слабый урон',
 	moderate_damage_trap_hint: 'ловушка: средний урон',
 	move_loss_trap_hint: 'ловушка: пропуск хода',
 	boss_warning_and_trap_hint: 'близость к боссу и ловушка',
 	boss_slay_and_trap_hint: 'босс и ловушка',
+	treasury_hint: 'возможное <abbr title="Клетка соответствует найденным указателям">место клада</abbr>',
+	treasury_th_hint: 'возможное <abbr title="Клетка соответствует найденным указателям при условии, что на кратчайшем пути между ею и указателем есть неизвестная стена">место клада</abbr> в термодинамике',
 	health_label: 'Здоровье',
 	gold_label: 'Золота',
 	inventory_label: 'Инвентарь',
@@ -654,7 +656,9 @@ worker.GUIp_i18n = {
 	version: 'Версия:',
 	clear_voice_input: 'Очистить поле гласа',
 	trophy: 'трофей ',
-	high_contrast: 'Высококонтрастный режим (для слабовидящих)'
+	high_contrast: 'Высококонтрастный режим (для слабовидящих)',
+	coords_error_title: 'Ошибка обработки хроники!',
+	coords_error_desc: 'Разница координат',
 };
 
 delete worker.GUIp_github_link;

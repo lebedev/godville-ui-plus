@@ -267,6 +267,8 @@ worker.GUIp_i18n = {
 	move_loss_trap_hint: 'trap: move loss',
 	boss_warning_and_trap_hint: 'boss warning and trap',
 	boss_slay_and_trap_hint: 'boss and trap',
+	treasury_hint: '<abbr title="Treasury might be located in this cell according to known hints">possible treasury</abbr>',
+	treasury_th_hint: '<abbr title="Treasury might be located in this cell if an unknown wall exists between this cell and the hint">possible treasury</abbr> in Hotness Dungeon',
 	health_label: 'Health',
 	gold_label: 'Gold',
 	inventory_label: 'Inventory',
@@ -511,7 +513,9 @@ worker.GUIp_i18n = {
 	version: 'Version:',
 	clear_voice_input: 'Clear voice input',
 	trophy: 'trophy ',
-	high_contrast: 'High contrast mode (for vision impared)'
+	high_contrast: 'High contrast mode (for vision impared)',
+	coords_error_title: 'Chronicle parsing failed!',
+	coords_error_desc: 'Coordinates mismatch',
 };
 
 delete worker.GUIp_github_link;

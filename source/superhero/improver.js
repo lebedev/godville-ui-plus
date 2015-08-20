@@ -72,7 +72,7 @@ ui_improver.improve = function() {
 		ui_improver.improveEquip();
 		ui_improver.improvePantheons();
 	}
-	if (ui_data.isDungeon) {
+	if (this.isFirstTime && ui_data.isDungeon) {
 		ui_improver.improveMap();
 	}
 	ui_improver.improveInterface();
@@ -175,7 +175,9 @@ ui_improver.improveNews = function() {
 };
 ui_improver.improveMap = function() {
 	if (this.isFirstTime) {
-		document.getElementsByClassName('map_legend')[0].nextElementSibling.insertAdjacentHTML('beforeend',
+		var legendDiv = document.getElementsByClassName('map_legend')[0].nextElementSibling;
+		legendDiv.style.marginLeft = 0;
+		legendDiv.insertAdjacentHTML('beforeend',
 			'<div class="guip_legend"><div class="dmc bossHint"></div><div> - ' + worker.GUIp_i18n.boss_warning_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc boss"></div><div> - ' + worker.GUIp_i18n.boss_slay_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc bonusGodpower"></div><div> - ' + worker.GUIp_i18n.small_prayer_hint + '</div></div>' +
@@ -186,7 +188,9 @@ ui_improver.improveMap = function() {
 			'<div class="guip_legend"><div class="dmc trapModerateDamage"></div><div> - ' + worker.GUIp_i18n.moderate_damage_trap_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.move_loss_trap_hint + '</div></div>' +
 			'<div class="guip_legend"><div class="dmc bossHint trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_warning_and_trap_hint + '</div></div>' +
-			'<div class="guip_legend"><div class="dmc boss trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>'
+			'<div class="guip_legend"><div class="dmc boss trapMoveLoss"></div><div> - ' + worker.GUIp_i18n.boss_slay_and_trap_hint + '</div></div>' +
+			'<div class="guip_legend"><div class="dmc" style="color: red;">?</div><div> - ' + worker.GUIp_i18n.treasury_hint + '</div></div>' +
+			'<div class="guip_legend"><div class="dmc" style="color: darkorange;">?</div><div> - ' + worker.GUIp_i18n.treasury_th_hint + '</div></div>'
 		);
 	}
 	if (this.isFirstTime || this.optionsChanged) {
@@ -212,7 +216,7 @@ ui_improver.improveMap = function() {
 		}
 	}
 	if (document.querySelectorAll('#map .dml').length) {
-		var i, j, len,
+		var i, j, len, chronolen = +worker.Object.keys(this.chronicles).reverse()[0],
 			$box = worker.$('#cntrl .voice_generator'),
 			$boxML = worker.$('#map .dml'),
 			$boxMC = worker.$('#map .dmc'),
@@ -236,11 +240,9 @@ ui_improver.improveMap = function() {
 			// Ищем где мы находимся
 			j = $boxML[si].textContent.indexOf('@');
 			if (j !== -1) {
-				var chronicles = document.querySelectorAll('#m_fight_log .d_line'),
-					isMoveLoss = [];
-				len = +worker.Object.keys(this.chronicles).reverse()[0];
+				var isMoveLoss = [];
 				for (i = 0; i < 4; i++) {
-					isMoveLoss[i] = len > i && this.chronicles[len - i].marks.indexOf('trapMoveLoss') !== -1;
+					isMoveLoss[i] = chronolen > i && this.chronicles[chronolen - i].marks.indexOf('trapMoveLoss') !== -1;
 				}
 				var directionsShouldBeShown = !isMoveLoss[0] || (isMoveLoss[1] && (!isMoveLoss[2] || isMoveLoss[3]));
 				if (directionsShouldBeShown) {
@@ -261,19 +263,48 @@ ui_improver.improveMap = function() {
 			}
 			//	Ищем указатели
 			for (var sj = 0; sj < kColumn; sj++) {
-				var ik, jk, ij, ttl,
-					pointer = $boxML[si].textContent[sj];
-				if ('←→↓↑↙↘↖↗↻↺↬↫⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1) {
+				var ik, jk, ij, ttl = '',
+					pointer = $boxML[si].textContent[sj],
+					chronopointers = chronolen > 1 ? this.chronicles[chronolen].pointers : [];
+				/* [E] check if current position has some directions in chronicle */
+				if (pointer == '@' && chronopointers.length) {
+					for (i = 0, len = chronopointers.length; i < len; i++) {
+						switch (chronopointers[i]) {
+							case 'north_east': ttl += '↗'; break;
+							case 'north_west': ttl += '↖'; break;
+							case 'south_east': ttl += '↘'; break;
+							case 'south_west': ttl += '↙'; break;
+							case 'north':      ttl += '↑'; break;
+							case 'east':       ttl += '→'; break;
+							case 'south':      ttl += '↓'; break;
+							case 'west':       ttl += '←'; break;
+							case 'freezing': ttl += '✵'; break;
+							case 'cold':     ttl += '❄'; break;
+							case 'mild':     ttl += '☁'; break;
+							case 'warm':     ttl += '♨'; break;
+							case 'hot':      ttl += '☀'; break;
+							case 'burning':  ttl += '✺'; break;
+						}
+					}
+					worker.console.log("current position has pointers: "+ttl);
+				}
+				if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1 || ttl.length && ttl.match('←|→|↓|↑|↙|↘|↖|↗')) {
 					MaxMap++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
-					ttl = $boxMC[si * kColumn + sj].title.replace(/северо-восток|north-east/,'↗')
-														 .replace(/северо-запад|north-west/,'↖')
-														 .replace(/юго-восток|south-east/,'↘')
-														 .replace(/юго-запад|south-west/,'↙')
-														 .replace(/север|north/,'↑')
-														 .replace(/восток|east/,'→')
-														 .replace(/юг|south/,'↓')
-														 .replace(/запад|west/, '←');
+					/* [E] get directions from the arrows themselves, not relying on parsed chronicles */
+					if (!ttl.length) {
+						switch (pointer) {
+							case '⌊': ttl = '↑→'; break;
+							case '⌋': ttl = '↑←'; break;
+							case '⌈': ttl = '↓→'; break;
+							case '⌉': ttl = '↓←'; break;
+							case '∨': ttl = '↖↗'; break;
+							case '<': ttl = '↗↘'; break;
+							case '∧': ttl = '↙↘'; break;
+							case '>': ttl = '↖↙'; break;
+							default: ttl = pointer; break;
+						}
+					}
 					for (ij = 0, len = ttl.length; ij < len; ij++){
 						if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) !== - 1){
 							for (ik = 0; ik < kRow; ik++) {
@@ -303,6 +334,10 @@ ui_improver.improveMap = function() {
 				if ('✺☀♨☁❄✵'.indexOf(pointer) !== -1 || ttl.length && '✺☀♨☁❄✵'.indexOf(ttl) !== -1) {
 					MaxMapThermo++;
 					$boxMC[si * kColumn + sj].style.color = 'green';
+					/* [E] if we're standing on the pointer - use parsed value from chronicle */
+					if (ttl.length) {
+						pointer = ttl;
+					}
 					var ThermoMinStep = 0;	//	Минимальное количество шагов до клада
 					var ThermoMaxStep = 0;	//	Максимальное количество шагов до клада
 					switch(pointer) {
@@ -583,7 +618,7 @@ ui_improver.parseSingleChronicle = function(texts, step) {
 		}
 		var firstSentence = texts[j].match(/^.*?[\.!\?](?:\s|$)/);
 		if (firstSentence) {
-			var direction = firstSentence[0].match(/[^\wА-Яа-я](север|восток|юг|запад|north|east|south|west)/);
+			var direction = firstSentence[0].match(/[^\w\-А-Яа-я](север|восток|юг|запад|north|east|south|west)/);
 			if (direction) {
 				chronicle.direction = direction[1];
 			}
@@ -663,9 +698,9 @@ ui_improver.parseChronicles = function(xhr) {
 		ui_improver.parseSingleChronicle(texts, step);
 	}
 
-			worker.console.log('after log chronicles');
-			worker.console.log(this.chronicles);
-			worker.console.log(JSON.stringify(this.chronicles));
+	worker.console.log('after log chronicles');
+	worker.console.log(this.chronicles);
+	worker.console.log(JSON.stringify(this.chronicles));
 
 	ui_improver.colorDungeonMap();
 };
@@ -876,7 +911,17 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 	}
 };
 ui_improver.colorDungeonMap = function() {
-	var step, mark_no, marks_length, currentCell,
+	if (ui_improver.colorDungeonMapTimer) {
+		worker.clearTimeout(ui_improver.colorDungeonMapTimer);
+	}
+	ui_improver.colorDungeonMapTimer = worker.setTimeout(ui_improver.colorDungeonMapInternal.bind(ui_improver), 150);
+};
+ui_improver.colorDungeonMapTimer = null;
+ui_improver.colorDungeonMapInternal = function() {
+	if (!ui_data.isDungeon) return;
+	ui_improver.improveMap();
+	var step, mark_no, marks_length, steptext, lasttext, titlemod, titletext, currentCell,
+		trapMoveLossCount = 0,
 		coords = ui_improver.calculateExitXY(),
 		steps = worker.Object.keys(this.chronicles),
 		steps_max = steps.length;
@@ -895,8 +940,46 @@ ui_improver.colorDungeonMap = function() {
 		for (mark_no = 0, marks_length = this.chronicles[step].marks.length; mark_no < marks_length; mark_no++) {
 			currentCell.classList.add(this.chronicles[step].marks[mark_no]);
 		}
-		if (this.chronicles[step].pointers.length) {
-			currentCell.title = worker.GUIp_i18n[this.chronicles[step].pointers[0]] + (this.chronicles[step].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[step].pointers[1]] : '');
+		if (!currentCell.title.length && this.chronicles[step].pointers.length) {
+			currentCell.title = '[' + worker.GUIp_i18n.map_pointer + ': ' + worker.GUIp_i18n[this.chronicles[step].pointers[0]] + (this.chronicles[step].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[step].pointers[1]] : '') + ']';
+		}
+		//currentCell.title += (currentCell.title.length ? '\n\n' : '') + '#' + step + ' : ' + this.chronicles[step].text;
+		steptext = this.chronicles[step].text.replace('.»','».').replace(/(\!»|\?»)/g,'$1.'); // we're not going to do natural language processing, so just simplify nested sentence (yeah, result will be a bit incorrect)
+		steptext = steptext.match(/[^\.]+[\.]+/g);
+		if (step == 1) {
+			steptext = steptext.slice(0,-1);
+		} else if (step == steps_max) {
+			steptext = steptext.slice(1);
+		} else if (this.chronicles[step].marks.indexOf('boss') !== -1) {
+			steptext = steptext.slice(1,-2);
+		} else if (this.chronicles[step].marks.indexOf('trapMoveLoss') !== -1 || trapMoveLossCount) {
+			if (!trapMoveLossCount) {
+				steptext = steptext.slice(1);
+				trapMoveLossCount++;
+			} else {
+				steptext = steptext.slice(0,-1);
+				trapMoveLossCount = 0;
+			}
+		} else {
+			steptext = steptext.length > 2 ? steptext.slice(1,-1) : steptext.slice(0,-1);
+		}
+		steptext = steptext.join('').trim();
+		if (currentCell.title.length) {
+			titlemod = false, titletext = currentCell.title.split('\n');
+			for (var i = 0, len = titletext.length; i < len; i++) {
+				lasttext = titletext[i].match(/^(.*?) : (.*?)$/);
+				if (lasttext && lasttext[2] == steptext) {
+					titletext[i] = lasttext[1] + ', #' + step + ' : ' + steptext;
+					titlemod = true;
+					break;
+				}
+			}
+			if (!titlemod) {
+				titletext.push('#' + step + ' : ' + steptext);
+			}
+			currentCell.title = titletext.join('\n');
+		} else {
+			currentCell.title = '#' + step + ' : ' + steptext;
 		}
 	}
 	var heroesCoords = ui_improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
@@ -908,8 +991,8 @@ ui_improver.colorDungeonMap = function() {
 		worker.console.log(document.getElementById('m_fight_log').innerHTML);
 		if (ui_utils.hasShownInfoMessage !== true) {
 			ui_utils.showMessage('info', {
-				title: 'Хера! Ошибка!',
-				content: '<div>Кароч, разница координат: по x: ' + (heroesCoords.x - coords.x) + ', по y: ' + (heroesCoords.y - coords.y) + '.</div>'
+				title: worker.GUIp_i18n.coords_error_title,
+				content: '<div>' + worker.GUIp_i18n.coords_error_desc + ': [x:' + (heroesCoords.x - coords.x) + ', y:' + (heroesCoords.y - coords.y) + '].</div>'
 			});
 			ui_utils.hasShownInfoMessage = true;
 		}
