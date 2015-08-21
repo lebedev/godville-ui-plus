@@ -43,6 +43,9 @@ ui_words.longPhrase = function(sect, item_name, len) {
 		ui_words.init();
 		ui_storage.set('phrasesChanged', 'false');
 	}
+	if (!ui_data.isFight && ['heal', 'pray', 'hit'].indexOf(sect) >= 0) {
+		sect += '_field';
+	}
 	var prefix = ui_words._addHeroName(ui_words._addExclamation(''));
 	var phrases;
 	if (item_name) {

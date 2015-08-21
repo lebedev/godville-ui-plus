@@ -367,11 +367,14 @@ return '<p>\n' +
 '			<div class="bl_capt">' + worker.GUIp_i18n.voices_capt + '</div>\n' +
 '			<div class="bl_content">\n' +
 '				<a id="l_heal">' + worker.GUIp_i18n.voices_heal + '</a>\n' +
+'				<a id="l_heal_field">' + worker.GUIp_i18n.voices_heal_field + '</a>\n' +
 '				<a id="l_pray">' + worker.GUIp_i18n.voices_pray + '</a>\n' +
+'				<a id="l_pray_field">' + worker.GUIp_i18n.voices_pray_field + '</a>\n' +
 '				<a id="l_sacrifice">' + worker.GUIp_i18n.voices_sacrifice + '</a>\n' +
 '				<a id="l_exp" href="#">' + worker.GUIp_i18n.voices_exp + '</a>\n' +
 '				<a id="l_dig" href="#">' + worker.GUIp_i18n.voices_dig + '</a>\n' +
 '				<a id="l_hit" href="#">' + worker.GUIp_i18n.voices_hit + '</a>\n' +
+'				<a id="l_hit_field" href="#">' + worker.GUIp_i18n.voices_hit_field + '</a>\n' +
 '				<a id="l_do_task">' + worker.GUIp_i18n.voices_do_task + '</a>\n' +
 '				<a id="l_cancel_task">' + worker.GUIp_i18n.voices_cancel_task + '</a>\n' +
 '				<a id="l_die" href="#">' + worker.GUIp_i18n.voices_die + '</a>\n' +

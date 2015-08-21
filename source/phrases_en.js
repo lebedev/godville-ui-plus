@@ -11,19 +11,30 @@ worker.GUIp_words = function() {
 	// Меняется только при _структурных_ изменениях.
 	// Например: добавление, удаление, переименование секций.
 	// Добавление фраз — НЕ структурное изменение
-	version: 13,
+	version: 14,
 
 	// Фразы
 	phrases: {
 		// Ключевые корни: лечис, зелёнка
 		heal: [
 			"Do something about your wounds!", "Heal yourself, my hero.", "You look like you need a drink.", "Take a moment to rest!",
-			"Try to stay alive!"
+			"Try to stay alive!", "Take a break and eat something!", "Some rest would do you good!", "Don't deny that you love drinking! Do it!"
+		],
+
+		heal_field: [
+			"Do something about your wounds!", "Heal yourself, my hero.", "You look like you need a drink.", "Take a moment to rest!",
+			"Try to stay alive!", "Take a break and eat something!", "Some rest would do you good.", "Don't deny that you love drinking."
 		],
 
 		// Ключевые корни: молись,
 		pray: [
-			"Pray to me, mortal!", "I demand worship!", "Praise me, for I am your god!", "I will show you the light."
+			"Pray to me, mortal!", "I demand worship!", "Praise me, for I am your god!", "I will show you the light.", "I'm with you, my champion.",
+			"Help me to help you and pray.", "Kneel in prayer!"
+		],
+
+		pray_field: [
+			"Pray to me, mortal!", "I demand worship!", "Praise me, for I am your god!", "I will show you the light.", "How long ago have you been in a temple?",
+			"I'm watching you.", "Praise me daily and nightly!", "Help me to help you and pray.", "Kneel in prayer!"
 		],
 
 		// Ключевые корни: жертва
@@ -39,20 +50,28 @@ worker.GUIp_words = function() {
 		// Ключевые корни: золото клад
 		dig: [
 			"Dig a hole!", "Look for some treasure!", "Dig up something of value!", "I hear there is treasure underground!",
-			"Search for gold!"
+			"Search for gold!", "There is plenty of gold underground.", "Dig right here, it's a good spot!", "Stop right there and dig.",
+			"There is a treasure under that tree!", "Digging is the best excercise!"
 		],
 
 		// Работает: бей, ударь, ударов
-		// Не работает: бить, удар
 		hit: [
     		"Hit the monster harder!", "Smite your foe!", "Destroy your rival!", "Use your special attack!", "Knock your rival out!",
-    		"Kick them where it hurts!"
+    		"Kick them where it hurts!", "Bring your wrath upon the opponent!", "Attack with all your might!", "Strike like a lightning!",
+    		"Hit your enemy twice!", "Attack out of turn!"
+		],
+
+		hit_field: [
+    		"Hit the monster harder!", "Smite your foe!", "Destroy your rival!", "Use your special attack!", "Knock your rival out!",
+    		"Kick them where it hurts!", "Bring your wrath upon the opponent!", "Attack with all your might!", "Strike like a lightning!",
+    		"Hit your enemy twice!", "Attack out of turn!"
 		],
 
 		// Ключевые корни: отби, щит
 		// Ключевое слово: защищайся
 		defend: [
-			"Duck and cover!", "Use your shield!", "Try to block incoming damage!", "Defend yourself!", "Resistance is futile!"
+			"Duck and cover!", "Use your shield!", "Try to block incoming damage!", "Defend yourself!", "Resistance is futile!",
+			"Come back with your shield - or on it!", "Take cover!", "Duck and dodge!", "Roll over and duck!"
 		],
 
 		do_task: [
@@ -69,7 +88,7 @@ worker.GUIp_words = function() {
 		],
 
 		town: [
-    		"Go to town!", "Turn back!", "Return to town!"
+    		"Go to town!", "Turn back!", "Return to town!", "Return to town with glory!"
 		],
 
 		// Ключевые корни: Север
@@ -105,7 +124,7 @@ worker.GUIp_words = function() {
 		// Префиксы во имя
 		exclamation: [
 			"For my pleasure", "For science", "Please", "For the Godville", "I command you", "Hey", "Quick",
-			"I need you to do something for me"
+			"I need you to do something for me", "Without hesitation"
 		]
 	},
 
@@ -454,11 +473,14 @@ worker.GUIp_i18n = {
 	apply: 'Apply',
 	voices_capt: 'Voice phrases',
 	voices_heal: 'Heal',
+	voices_heal_field: 'Heal (field)',
 	voices_pray: 'Pray',
+	voices_pray_field: 'Pray (field)',
 	voices_sacrifice: 'Sacrifice',
 	voices_exp: 'Study',
 	voices_dig: 'Dig',
 	voices_hit: 'Hit',
+	voices_hit_field: 'Hit (field)',
 	voices_do_task: 'Do task',
 	voices_cancel_task: 'Cancel task',
 	voices_die: 'Die',
