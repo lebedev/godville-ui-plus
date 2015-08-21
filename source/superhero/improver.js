@@ -1017,6 +1017,69 @@ ui_improver.whenWindowResize = function() {
 	//body widening
 	worker.$('body').width(worker.$(worker).width() < worker.$('#main_wrapper').width() ? worker.$('#main_wrapper').width() : '');
 };
+ui_improver._clockToggle = function(e) {
+	e && e.stopPropagation();
+	if (!ui_improver.clockToggling) ui_improver.clockToggling = true; else return;
+	var restoreText, clockElem = worker.$('#control .block_title');
+	if (ui_improver.clock) {
+		worker.clearInterval(ui_improver.clock.updateTimer);
+		restoreText = ui_improver.clock.prevText;
+		clockElem.fadeOut(500, function() {
+			clockElem.css('color', '');
+			clockElem.text(restoreText).fadeIn(500);
+			clockElem.prop('title', worker.GUIp_i18n.show_godville_clock);
+			ui_improver.clockToggling = false;
+		});
+		delete ui_improver.clock;
+	} else {
+		ui_improver.clock = {};
+		ui_improver.clock.prevText = clockElem.text();
+		ui_improver.clock.blocked = true;
+		clockElem.fadeOut(500, function() {
+			clockElem.text('--:--:--').fadeIn(500);
+			clockElem.prop('title', worker.GUIp_i18n.hide_godville_clock);
+			ui_improver.clock.timeBegin = new Date();
+			ui_improver.clock.useGVT = (document.location.protocol == 'https:');
+			if (ui_improver.clock.useGVT) {
+				ui_utils.getXHR('/forums', ui_improver._clockSync, function(xhr) {ui_improver.clockToggling = false; ui_improver._clockToggle(e);}); /* syncing this way is too inaccurate unfortunately */
+			} else {
+				ui_utils.getXHR('http://time.akamai.com/?iso', ui_improver._clockSync, function(xhr) {ui_improver.clockToggling = false; ui_improver._clockToggle();});
+			}
+		});
+	}
+};
+ui_improver._clockSync = function(xhr) {
+	ui_improver.clockToggling = false;
+	var currentTime = new Date(),
+		offsetHours = ui_storage.get("Option:offsetGodvilleClock") || 3,
+		clockTitle = worker.$('#control .block_title');
+	if (currentTime - ui_improver.clock.timeBegin > 500) {
+		clockTitle.css('color', '#CC0000');
+	}
+	if (!ui_improver.clock.useGVT) {
+		ui_improver.clock.timeDiff = new Date(xhr.responseText) - currentTime + (ui_storage.get('Option:localtimeGodvilleClock') ? (currentTime.getTimezoneOffset() * -60000) : (offsetHours * 3600000));
+	} else {
+		ui_improver.clock.timeDiff = new Date(xhr.getResponseHeader("Date")) - currentTime + (ui_storage.get('Option:localtimeGodvilleClock') ? (currentTime.getTimezoneOffset() * -60000) : (offsetHours * 3600000));
+	}
+	ui_improver.clock.updateTimer = worker.setInterval(ui_improver._clockUpdate, 250);
+	ui_improver._clockUpdate();
+};
+ui_improver._clockUpdate = function() {
+	var currentTime = new Date();
+	if (currentTime.getTime() - ui_improver.clock.timeBegin.getTime() > (300 * 1000)) {
+		ui_improver._clockToggle();
+		return;
+	}
+	var clockElem = worker.$('#control .block_title'),
+		godvilleTime = new Date(currentTime.getTime() + ui_improver.clock.timeDiff);
+	if (!ui_improver.clock.useGVT) {
+		clockElem.text(ui_utils.formatClock(godvilleTime));
+	} else {
+		clockElem.text(ui_utils.formatClock(godvilleTime) + ' (via GVT)');
+		clockElem.prop('title', worker.GUIp_i18n.warning_godville_clock);
+	}
+}
+
 ui_improver.improveInterface = function() {
 	if (this.isFirstTime) {
 		worker.$('a[href=#]').removeAttr('href');
@@ -1027,6 +1090,13 @@ ui_improver.improveInterface = function() {
 		};
 		if (ui_data.isFight) {
 			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + ui_stats.logId() + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
+		}
+		/* [E] clock is to be initialized somewhere here */
+		else if (!ui_storage.get('Option:disableGodvilleClock') && document.querySelector('#control .block_title')) {
+			var controlTitle = document.querySelector('#control .block_title');
+			controlTitle.title = worker.GUIp_i18n.show_godville_clock;
+			controlTitle.style.cursor = 'pointer';
+			controlTitle.onclick = ui_improver._clockToggle.bind(null);
 		}
 	}
 	if (this.isFirstTime || ui_storage.get('UserCssChanged') === true) {

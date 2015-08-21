@@ -153,6 +153,10 @@ function loadOptions() {
 		$id('informer_alerts_timeout_choice').style.display = $id('informer_alerts_timeout_choice').style.display === 'none' ? 'block' : 'none';
 		$id('informer_alerts_timeout_desc').style.display = $id('informer_alerts_timeout_desc').style.display === 'none' ? 'block' : 'none';
 	};
+	$id('disable_godville_clock').onclick = function() {
+		$id('localtime_godville_clock_h').style.display = $id('disable_godville_clock').checked ? 'none' : 'block';
+		$id('localtime_godville_clock_desc').style.display = $id('disable_godville_clock').checked ? 'none' : 'block';
+	};
 	$id('disable_logger').onclick = function() {
 		$id('sum_allies_hp_h').style.display = $id('disable_logger').checked ? 'none' : 'block';
 		$id('sum_allies_hp_desc').style.display = $id('disable_logger').checked ? 'none' : 'block';
@@ -501,6 +505,13 @@ function restore_options() {
 	} else {
 		$id('informer_alerts_timeout_choice').style.display = 'none';
 		$id('informer_alerts_timeout_value').value = '5';
+	}
+	if ($id('disable_godville_clock').checked) {
+		$id('localtime_godville_clock_h').style.display = 'none';
+		$id('localtime_godville_clock_desc').style.display = 'none';
+	} else {
+		$id('localtime_godville_clock_h').style.display = 'block';
+		$id('localtime_godville_clock_desc').style.display = 'block';
 	}
 	if ($id('disable_logger').checked) {
 		$id('sum_allies_hp_h').style.display = 'none';

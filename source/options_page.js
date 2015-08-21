@@ -314,6 +314,24 @@ return '<p>\n' +
 '					<div class="g_desc">' + worker.GUIp_i18n.disable_links_autoreplace_desc + '</div>\n' +
 '				</div>\n' +
 '				<div class="new_line">\n' +
+'					<label class="l_capt" for="disable_godville_clock">' + worker.GUIp_i18n.disable_godville_clock + '</label>\n' +
+'					<div class="field_content">\n' +
+'						<input id="disable_godville_clock" name="disable_godville_clock" class="option-checkbox" type="checkbox">\n' +
+'					</div>\n' +
+'				</div>\n' +
+'				<div class="new_line">\n' +
+'					<div class="g_desc">' + worker.GUIp_i18n.disable_godville_clock_desc + '</div>\n' +
+'				</div>\n' +
+'				<div class="new_line" id="localtime_godville_clock_h">\n' +
+'					<label class="l_capt" for="localtime_godville_clock">' + worker.GUIp_i18n.localtime_godville_clock + '</label>\n' +
+'					<div class="field_content">\n' +
+'						<input id="localtime_godville_clock" name="localtime_godville_clock" class="option-checkbox" type="checkbox">\n' +
+'					</div>\n' +
+'				</div>\n' +
+'				<div class="new_line" id="localtime_godville_clock_desc">\n' +
+'					<div class="g_desc">' + worker.GUIp_i18n.localtime_godville_clock_desc + '</div>\n' +
+'				</div>\n' +
+'				<div class="new_line">\n' +
 '					<label class="l_capt" for="enable_debug_mode">' + worker.GUIp_i18n.enable_debug_mode + '</label>\n' +
 '					<div class="field_content">\n' +
 '						<input id="enable_debug_mode" name="enable_debug_mode" class="option-checkbox" type="checkbox">\n' +
