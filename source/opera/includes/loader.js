@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', function(e) {
 	// Path to the library:
-	if (window.location.host.match(/godville\.net|godvillegame\.com/)) {
+	if (window.location.host.match(/godville\.net|godvillegame\.com|gdvl\.tk|gv\.erinome\.net/)) {
 		var createElement = function(type) {
 			var el = document.createElement(type);
 			el.id = 'godville-ui-plus';
@@ -39,6 +39,7 @@ window.addEventListener('DOMContentLoaded', function(e) {
 				createCSS('forum.css');
 			} else if (path.match(/^\/(?:duels\/log|hero\/duel_perm_link)\//)) {
 				createScripts(scripts.log, locale);
+				createCSS('superhero.css');
 			}
 		};
 		var scripts = {
@@ -55,7 +56,7 @@ window.addEventListener('DOMContentLoaded', function(e) {
 			log: 'log.js'
 		};
 		var site = window.location.href;
-		if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk)/)) {
+		if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk|gv\.erinome\.net)/)) {
 			checkPathFor('ru');
 		} else if (site.match(/^https?:\/\/godvillegame\.com/)) {
 			checkPathFor('en');

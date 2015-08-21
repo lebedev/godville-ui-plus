@@ -19,5 +19,5 @@ function mod(hostname, locale) {
 	}
 }
 
-mod('https?:\/\/(godville\\.net|gdvl\\.tk)\/', 'ru');
+mod('https?:\/\/(godville\\.net|gdvl\\.tk|gv\\.erinome\\.net)\/', 'ru');
 mod('https?:\/\/godvillegame\\.com\/', 'en');

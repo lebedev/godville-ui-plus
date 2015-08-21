@@ -36,7 +36,7 @@
 	}
 
 	var site = location.href;
-	if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk)/)) {
+	if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk|gv\.erinome\.net)/)) {
 		checkPathFor('ru');
 	} else if (site.match(/^https?:\/\/godvillegame\.com/)) {
 		checkPathFor('en');
