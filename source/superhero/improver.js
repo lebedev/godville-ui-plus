@@ -452,7 +452,9 @@ ui_improver.improveStats = function() {
 			for (var i = 1; i <= 4; i++) {
 				ui_storage.set('Logger:Map_Ally'+i+'_HP', ui_stats.Map_Ally_HP(i));
 			}
-		//ui_informer.update('low health', +ui_stats.Map_HP() < 130);
+		}
+		/* [E] informer to notify about low health when in dungeon mode */
+		ui_informer.update('low health', ui_stats.Map_HP() < 130 && ui_stats.Map_HP() > 1);
 		return;
 	}
 	if (ui_data.isFight) {
@@ -471,7 +473,24 @@ ui_improver.improveStats = function() {
 			for (var i = 1; i <= 5; i++) {
 				ui_storage.set('Logger:Enemy'+i+'_HP', ui_stats.EnemySingle_HP(i));
 			}
-		//ui_informer.update('low health', +ui_stats.Hero_HP() < 130);
+			ui_storage.set('Logger:Enemy_AliveCount', ui_stats.Enemy_AliveCount());
+		}
+		/* [E] informer to notify about low health when in fight mode */
+		var health_lim;
+		if (ui_stats.Hero_Alls_Count() == 0 && ui_stats.Enemy_Count() > 2) { // corovan
+			health_lim = ui_stats.Max_HP() * 0.05 * ui_stats.Enemy_AliveCount();
+		} else if (ui_stats.Hero_Alls_Count() == 0) { // single enemy
+			health_lim = ui_stats.Max_HP() * 0.15;
+		} else { // raid boss or dungeon boss
+			health_lim = (ui_stats.Hero_Alls_MaxHP() + ui_stats.Max_HP()) * (ui_stats.Enemy_HasAbility("second_strike") ? 0.094 : 0.068);
+			if (ui_stats.Enemy_AliveCount() > 1) { // boss has an active minion
+				health_lim *= 1.3;
+			}
+			if (ui_stats.Hero_Alls_Count() < 4) { // allies count less than 4 -- clearly speculative calculation below!
+				health_lim *= (4 - ui_stats.Hero_Alls_Count()) * 0.2 + 1;
+			}
+		}
+		ui_informer.update('low health', ui_stats.HP() < health_lim && ui_stats.HP() > 1);
 		return;
 	}
 	if (ui_storage.get('Logger:Location') !== 'Field') {

@@ -111,8 +111,8 @@ ui_informer._updateTitle = function(activeFlags) {
 	}
 };
 ui_informer.update = function(flag, value) {
-	if (value && (flag === 'fight' || !(ui_data.isFight && !ui_data.isDungeon)) && !(ui_storage.get('Option:forbiddenInformers') &&
-		ui_storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))) {
+	if (value && (flag === 'fight' || flag === 'low health' || !(ui_data.isFight && !ui_data.isDungeon)) && !(flag === 'much gold' && ui_data.hasTemple && ui_stats.townName()) &&
+		!(ui_storage.get('Option:forbiddenInformers') && ui_storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))) {
 		if (this.flags[flag] === undefined) {
 			this.flags[flag] = true;
 			ui_informer._createLabel(flag);

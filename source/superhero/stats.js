@@ -28,10 +28,29 @@ ui_stats.EnemySingle_HP = function(enemy) {
 ui_stats.Enemy_Inv = function() {
 	return worker.so.state.o_stats.inventory_num.value;
 };
+ui_stats.Enemy_HasAbility = function(ability) {
+	for (var opp in worker.so.state.opps) {
+		for (var ab in worker.so.state.opps[opp].ab) {
+			if (worker.so.state.opps[opp].ab[ab].id === ability) {
+				return true;
+			}
+		}
+	}
+	return false;
+};
 ui_stats.Enemy_Count = function() {
 	var enemies_cnt = 0;
 	for (var opp in worker.so.state.opps) {
 		enemies_cnt++;
+	}
+	return enemies_cnt;
+}
+ui_stats.Enemy_AliveCount = function() {
+	var enemies_cnt = 0;
+	for (var opp in worker.so.state.opps) {
+		if (worker.so.state.opps[opp].hp > 0) {
+			enemies_cnt++;
+		}
 	}
 	return enemies_cnt;
 }

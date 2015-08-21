@@ -227,6 +227,7 @@ return '<p>\n' +
 '						<input class="informer-checkbox" id="full_godpower" name="full_godpower" type="checkbox"><label for="full_godpower">' + worker.GUIp_i18n.forbidden_informers_full_godpower + '</label><br>\n' +
 '						<input class="informer-checkbox" id="much_gold" name="much_gold" type="checkbox"><label for="much_gold">' + worker.GUIp_i18n.forbidden_informers_much_gold + '</label><br>\n' +
 '						<input class="informer-checkbox" id="dead" name="dead" type="checkbox"><label for="dead">' + worker.GUIp_i18n.forbidden_informers_dead + '</label><br>\n' +
+'						<input class="informer-checkbox" id="low_health" name="low_health" type="checkbox"><label for="low_health">' + worker.GUIp_i18n.forbidden_informers_low_health + '</label><br>\n' +
 '						<input class="informer-checkbox" id="fight" name="fight" type="checkbox"><label for="fight">' + worker.GUIp_i18n.forbidden_informers_fight + '</label><br>\n' +
 '						<input class="informer-checkbox" id="arena_available" name="arena_available" type="checkbox"><label for="arena_available">' + worker.GUIp_i18n.forbidden_informers_arena_available + '</label><br>\n' +
 '						<input class="informer-checkbox" id="dungeon_available" name="dungeon_available" type="checkbox"><label for="dungeon_available">' + worker.GUIp_i18n.forbidden_informers_dungeon_available + '</label><br>\n' +
