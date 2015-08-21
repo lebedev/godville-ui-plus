@@ -141,7 +141,7 @@ ui_improver.improveVoiceDialog = function() {
 	//hide_charge_button
 	var charge_button = document.querySelector('#cntrl .hch_link');
 	charge_button.style.visibility = ui_storage.get('Option:hideChargeButton') ? 'hidden' : '';
-	ui_informer.update('full godpower', ui_stats.Godpower() === ui_stats.Max_Godpower());
+	ui_informer.update('full godpower', ui_stats.Godpower() === ui_stats.Max_Godpower() && !ui_data.isDungeon);
 };
 ui_improver.improveNews = function() {
 	if (!ui_utils.isAlreadyImproved(document.getElementById('news'))) {

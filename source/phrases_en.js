@@ -263,7 +263,7 @@ worker.GUIp_i18n = {
 	ui_settings_top_menu: '<strong>ui+</strong>&nbsp;settings',
 	getting_version_no: 'Getting the latest addon version number...',
 	is_last_version: 'You have the latest version.',
-	is_not_last_version_1: 'Last version — <b>',
+	is_not_last_version_1: 'Latest version — <b>',
 	is_not_last_version_2: '</b>. Manual update is required.',
 	proceed_to_next_step: ' Continue to the next step.',
 	getting_version_failed: 'Unable to determine the latest version number. If you have not updated manually, continue to step 3, otherwise to step 6.',

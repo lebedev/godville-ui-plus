@@ -373,19 +373,19 @@ worker.GUIp_i18n = {
 		'<li>Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку ' +
 		'"Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
 		worker.GUIp_github_link + 'help_guide/chrome_manual_update_2.png" title="Откроется в новой вкладке">Картинка</a>.</li>',
-	help_update_Opera: '<li>Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию экстеншона. ' +
+	help_update_Opera: '<li>Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию расширения. ' +
 		worker.GUIp_github_link + 'help_guide/opera_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.</li>' +
-		'<li>Скачайте новую версию экстеншона по ссылке и установите ее. ' +
+		'<li>Скачайте новую версию расширения по ссылке и установите ее. ' +
 		worker.GUIp_github_link + 'release/godville-ui-plus@badluck.dicey.oex"  title="Откроется в новой вкладке">Ссылка на новую версию.</a></li>',
 	help_useful_links: 'Полезные ссылки: ' +
 		'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
 		'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
-		'<a href="/gods/Спандарамет" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.',
+		'<a href="/gods/Dungeoneer" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.',
 	ui_settings_top_menu: 'настройки&nbsp;<strong>ui+</strong>',
 	getting_version_no: 'Получения номера последней версии дополнения...',
 	is_last_version: 'У вас последняя версия.',
-	is_not_last_version_1: 'Последняя версия — <b>',
-	is_not_last_version_2: '</b>. Нужно обновить вручную.',
+	is_not_last_version_1: 'Обнаружена новая версия — <b>',
+	is_not_last_version_2: '</b>. Можно обновить вручную.',
 	proceed_to_next_step: ' Переходите к следующему шагу.',
 	getting_version_failed: 'Не удалось узнать номер последней версии. Если вы еще не обновлялись вручную, переходите к шагу 3, иначе к шагу 6.',
 	hero_health: 'Здоровье героя',

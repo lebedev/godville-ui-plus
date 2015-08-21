@@ -143,7 +143,7 @@ ui_stats.Pet_Level = function() {
 	return worker.so.state.pet.pet_level && worker.so.state.pet.pet_level.value;
 };
 ui_stats.Pet_NameType = function() {
-	var pName = worker.so.state.pet.pet_name && worker.so.state.pet.pet_name.value.match(/^(.*?)(\ «.*»)?$/) || '',
+	var pName = worker.so.state.pet.pet_name && worker.so.state.pet.pet_name.value.match(/^(.*?)(\ Â«.*Â»)?$/) || '',
 		pType = worker.so.state.pet.pet_class && worker.so.state.pet.pet_class.value || '';
 	return pName[1] + ':' + pType;
 };
