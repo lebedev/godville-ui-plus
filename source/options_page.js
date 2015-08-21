@@ -85,6 +85,15 @@ return '<p>\n' +
 '				<div class="new_line">\n' +
 '					<div class="g_desc">' + worker.GUIp_i18n.disable_logger_desc + '</div>\n' +
 '				</div>\n' +
+'				<div class="new_line" id="sum_allies_hp_h">\n' +
+'					<label class="l_capt" for="sum_allies_hp">' + worker.GUIp_i18n.sum_allies_hp + '</label>\n' +
+'					<div class="field_content">\n' +
+'						<input id="sum_allies_hp" name="sum_allies_hp" class="option-checkbox" type="checkbox">\n' +
+'					</div>\n' +
+'				</div>\n' +
+'				<div class="new_line" id="sum_allies_hp_desc">\n' +
+'					<div class="g_desc">' + worker.GUIp_i18n.sum_allies_hp_desc + '</div>\n' +
+'				</div>\n' +
 '				<div class="new_line">\n' +
 '					<label class="l_capt" for="relocate_duel_buttons">' + worker.GUIp_i18n.relocate_duel_buttons + '</label>\n' +
 '					<div class="field_content">\n' +

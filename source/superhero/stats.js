@@ -22,9 +22,19 @@ ui_stats.Enemy_HP = function() {
 	}
 	return opps_hp;
 };
+ui_stats.EnemySingle_HP = function(enemy) {
+	return worker.so.state.opps[enemy-1] && worker.so.state.opps[enemy-1].hp || 0;
+};
 ui_stats.Enemy_Inv = function() {
 	return worker.so.state.o_stats.inventory_num.value;
 };
+ui_stats.Enemy_Count = function() {
+	var enemies_cnt = 0;
+	for (var opp in worker.so.state.opps) {
+		enemies_cnt++;
+	}
+	return enemies_cnt;
+}
 ui_stats.Equip1 = function() {
 	return +worker.so.state.equipment.weapon.level;
 };
@@ -83,6 +93,17 @@ ui_stats.Hero_Alls_HP = function() {
 	}
 	return allies_hp;
 };
+ui_stats.Map_Ally_HP =
+ui_stats.Hero_Ally_HP = function(ally) {
+	return worker.so.state.alls[ally-1] && worker.so.state.alls[ally-1].hp || 0;
+};
+ui_stats.Hero_Alls_MaxHP = function() {
+	var allies_hp = 0;
+	for (var ally in worker.so.state.alls) {
+		allies_hp += worker.so.state.alls[ally].hpm;
+	}
+	return allies_hp;
+};
 ui_stats.Hero_Alls_Count = function() {
 	var allies_cnt = 0;
 	for (var ally in worker.so.state.alls) {
@@ -102,6 +123,11 @@ ui_stats.Monster = function() {
 ui_stats.Pet_Level = function() {
 	return worker.so.state.pet.pet_level && worker.so.state.pet.pet_level.value;
 };
+ui_stats.Pet_NameType = function() {
+	var pName = worker.so.state.pet.pet_name && worker.so.state.pet.pet_name.value.match(/^(.*?)(\ «.*»)?$/) || '',
+		pType = worker.so.state.pet.pet_class && worker.so.state.pet.pet_class.value || '';
+	return pName[1] + ':' + pType;
+};
 ui_stats.Task = function() {
 	return worker.so.state.stats.quest_progress.value;
 };
@@ -109,7 +135,15 @@ ui_stats.Task_Name = function() {
 	return worker.so.state.stats.quest.value;
 };
 ui_stats.Savings = function() {
-	return worker.so.state.stats.retirement && parseInt(worker.so.state.stats.retirement.value);
+	if (worker.so.state.stats.retirement) {
+		var savingsValue = worker.so.state.stats.retirement.value.match(/^((\d+)M, )?(\d+)k$/i);
+		if (savingsValue) {
+			return 1000 * savingsValue[2] + 1 * savingsValue[3];
+		} else {
+			return parseInt(worker.so.state.stats.retirement.value)
+		}
+	}
+	return null;
 };
 ui_stats.petIsKnockedOut = function() {
 	return worker.so.state.pet.pet_is_dead && worker.so.state.pet.pet_is_dead.value;

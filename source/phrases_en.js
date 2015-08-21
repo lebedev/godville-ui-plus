@@ -347,6 +347,8 @@ worker.GUIp_i18n = {
 	disable_die_button_desc: 'for those, who are nervous about it',
 	disable_logger: 'Disable logger',
 	disable_logger_desc: 'Disable the ticker with colorful numbers',
+	sum_allies_hp: 'Sum health in logger',
+	sum_allies_hp_desc: 'while in battle, otherwise show values individually',
 	relocate_duel_buttons: 'Move duel buttons',
 	relocate_duel_buttons_desc: 'allows to move duel buttons into the pantheons section',
 	relocate_duel_buttons_hint: 'which ones?',

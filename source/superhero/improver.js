@@ -449,7 +449,9 @@ ui_improver.improveStats = function() {
 			ui_storage.set('Logger:Map_Inv', ui_stats.Inv());
 			ui_storage.set('Logger:Map_Charges',ui_stats.Charges());
 			ui_storage.set('Logger:Map_Alls_HP', ui_stats.Map_Alls_HP());
-		}
+			for (var i = 1; i <= 4; i++) {
+				ui_storage.set('Logger:Map_Ally'+i+'_HP', ui_stats.Map_Ally_HP(i));
+			}
 		//ui_informer.update('low health', +ui_stats.Map_HP() < 130);
 		return;
 	}
@@ -463,7 +465,12 @@ ui_improver.improveStats = function() {
 			ui_storage.set('Logger:Enemy_Gold', ui_stats.Enemy_Gold());
 			ui_storage.set('Logger:Enemy_Inv', ui_stats.Enemy_Inv());
 			ui_storage.set('Logger:Hero_Alls_HP', ui_stats.Hero_Alls_HP());
-		}
+			for (var i = 1; i <= 4; i++) {
+				ui_storage.set('Logger:Hero_Ally'+i+'_HP', ui_stats.Hero_Ally_HP(i));
+			}
+			for (var i = 1; i <= 5; i++) {
+				ui_storage.set('Logger:Enemy'+i+'_HP', ui_stats.EnemySingle_HP(i));
+			}
 		//ui_informer.update('low health', +ui_stats.Hero_HP() < 130);
 		return;
 	}

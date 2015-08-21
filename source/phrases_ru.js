@@ -490,6 +490,8 @@ worker.GUIp_i18n = {
 	disable_die_button_desc: 'для тех, кого она нервирует',
 	disable_logger: 'Отключить логгер',
 	disable_logger_desc: 'отключает бегущую строку с красивыми разноцветными циквирками',
+	sum_allies_hp: 'Суммировать здоровье в логгере',
+	sum_allies_hp_desc: 'в режиме боя, иначе - показывать для каждого отдельно',
 	relocate_duel_buttons: 'Переместить дуэльные кнопки',
 	relocate_duel_buttons_desc: 'позволяет переместить дуэльные кнопки в пантеоны',
 	relocate_duel_buttons_hint: 'какие из них?',
