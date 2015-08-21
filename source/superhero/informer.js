@@ -120,6 +120,12 @@ ui_informer.update = function(flag, value) {
 			if (!this.tref) {
 				ui_informer._tick();
 			}
+			/* [E] if flag is 'tamable' then play arena sound (as no other sounds are available). feature requested by... заядлые звероводы из Рядов Фурье ^_^ */
+			if (flag === 'tamable monster') {
+				if (worker.so.play_sound_orig) {
+					worker.so.play_sound_orig('arena.mp3',false);
+				}
+			}
 		}
 	} else if (this.flags[flag] !== undefined) {
 		delete this.flags[flag];

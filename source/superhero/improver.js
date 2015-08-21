@@ -150,12 +150,12 @@ ui_improver.improveNews = function() {
 		isWantedMonster = this.wantedMonsters && currentMonster.match(this.wantedMonsters);
 		isSpecialMonster = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
 
-		if (!ui_stats.heroHasPet) {
+		if (!ui_stats.heroHasPet()) {
 			var hasArk = ui_stats.Logs() >= 1000;
 			var pet, hero_level = ui_stats.Level();
 			for (var i = 0; i < ui_words.base.pets.length; i++) {
 				pet = ui_words.base.pets[i];
-				if (currentMonster.match(pet.name, 'i') && hero_level >= pet.min_level && hero_level <= (pet.min_level + (hasArk ? 28 : 14))) {
+				if (currentMonster.toLowerCase() == pet.name.toLowerCase() && hero_level >= pet.min_level && hero_level <= (pet.min_level + (hasArk ? 29 : 14))) {
 					isTamableMonster = true;
 					break;
 				}
