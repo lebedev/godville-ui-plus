@@ -161,7 +161,7 @@ return '<p>\n' +
 '				</div>\n' +
 '				<div class="new_line" id="voice_timeout_choice">\n' +
 '					<div class="g_desc">\n' +
-'						<label for="voice_timeout">' + worker.GUIp_i18n.voice_timeout_hint + '</label>\n' +
+'						<label for="voice_timeout_value">' + worker.GUIp_i18n.voice_timeout_hint + '</label>\n' +
 '						<input type="number" id="voice_timeout_value" style="width: 136px;"/>\n' +
 '					</div>\n' +
 '				</div>\n' +

@@ -25,7 +25,10 @@ var setTextareaResize = function(id, inner_func) {
 	ta.oninput =
 	ta.onkeypress =
 	ta.onpaste = function() {
-		this.setAttribute('rows', this.value.match(/\n/g).length + 1);
+		var rows = this.value.match(/\n/g);
+		if (rows) {
+			this.setAttribute('rows', rows.length + 1);
+		}
 		if (inner_func) { inner_func(); }
 	};
 };
@@ -73,7 +76,14 @@ var storage = {
 function addMenu() {
 	if (!god_name) { return; }
 	if (!$id('ui_settings')) {
-		$q('#profile_main p').insertAdjacentHTML('beforeend', ' | <a id="ui_settings" href="#ui_settings">' + worker.GUIp_i18n.ui_settings + '</a>');
+		var newNode;
+		newNode = doc.createTextNode(' | ');
+		$q('#profile_main p').appendChild(newNode);
+		newNode = doc.createElement('a');
+		newNode.id = 'ui_settings';
+		newNode.href = '#ui_settings';
+		newNode.textContent = worker.GUIp_i18n.ui_settings;
+		$q('#profile_main p').appendChild(newNode);
 		$id('ui_settings').onclick = loadOptions;
 	}
 }
@@ -142,6 +152,10 @@ function loadOptions() {
 	$id('informer_alerts_timeout').onclick = function() {
 		$id('informer_alerts_timeout_choice').style.display = $id('informer_alerts_timeout_choice').style.display === 'none' ? 'block' : 'none';
 		$id('informer_alerts_timeout_desc').style.display = $id('informer_alerts_timeout_desc').style.display === 'none' ? 'block' : 'none';
+	};
+	$id('disable_logger').onclick = function() {
+		$id('sum_allies_hp_h').style.display = $id('disable_logger').checked ? 'none' : 'block';
+		$id('sum_allies_hp_desc').style.display = $id('disable_logger').checked ? 'none' : 'block';
 	};
 	$id('check_all').onclick = function() {
 		setAllCheckboxesToState('item-informer', true);
@@ -423,7 +437,9 @@ function restore_options() {
 				while ((pos = option.indexOf(option.match('[A-Z]'))) !== -1) {
 					option = option.slice(0, pos) + '_' + option.charAt(pos).toLowerCase() + option.slice(pos + 1);
 				}
-				$id(option).checked = true;
+				if ($id(option)) {
+					$id(option).checked = true;
+				}
 			}
 		}
 	}
@@ -485,6 +501,13 @@ function restore_options() {
 	} else {
 		$id('informer_alerts_timeout_choice').style.display = 'none';
 		$id('informer_alerts_timeout_value').value = '5';
+	}
+	if ($id('disable_logger').checked) {
+		$id('sum_allies_hp_h').style.display = 'none';
+		$id('sum_allies_hp_desc').style.display = 'none';
+	} else {
+		$id('sum_allies_hp_h').style.display = 'block';
+		$id('sum_allies_hp_desc').style.display = 'block';
 	}
 	var forbiddenInformers = storage.get('Option:forbiddenInformers');
 	if (forbiddenInformers) {
