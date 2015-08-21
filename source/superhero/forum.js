@@ -66,14 +66,14 @@ ui_forum._parse = function(xhr) {
 	for (var topic in topics) {
 		temp = xhr.responseText.match("show_topic\\/" + topic + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<abbr class=\"updated\" title=\"([^\"]+)(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topic);
 		if (temp) {
-			topic_name = temp[1].replace(/&quot;/g, '"');
+			topic_name = temp[1].replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 			posts = +temp[2];
 			date = temp[3];
 			last_poster = temp[4];
 
 			diff = posts - topics[topic].posts;
 
-			if (diff < 0 || diff === 0 && topics[topic].date && topics[topic].date !== date) {
+			if (diff <= 0 && topics[topic].date && (new Date(topics[topic].date) < new Date(date))) {
 				diff = 1;
 			}
 
@@ -87,6 +87,9 @@ ui_forum._parse = function(xhr) {
 				} else {
 					delete informers[topic];
 				}
+			}
+			if (diff < 0) {
+				delete informers[topic];
 			}
 		}
 	}
