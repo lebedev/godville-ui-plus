@@ -120,6 +120,13 @@ ui_informer.update = function(flag, value) {
 			if (!this.tref) {
 				ui_informer._tick();
 			}
+			/* [E] desktop notifications */
+			if (ui_storage.get('Option:enableInformerAlerts') && worker.GUIp_browser !== 'Opera' && Notification.permission === "granted") {
+				var title = '[INFO] ' + ui_data.god_name,
+					text = flag,
+					callback = function(){ui_informer.hide(flag);};
+				ui_utils.showNotification(title,text,callback);
+			}
 			/* [E] if flag is 'tamable' then play arena sound (as no other sounds are available). feature requested by... заядлые звероводы из Рядов Фурье ^_^ */
 			if (flag === 'tamable monster') {
 				if (worker.so.play_sound_orig) {

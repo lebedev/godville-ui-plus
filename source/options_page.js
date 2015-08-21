@@ -260,6 +260,33 @@ return '<p>\n' +
 '					</div>\n' +
 '				</div>\n' +
 '				<div class="new_line">\n' +
+'					<div class="l_capt">' + worker.GUIp_i18n.enable_desktop_alerts + '</div>\n' +
+'				</div>\n' +
+'				<div class="new_line">\n' +
+'					<div class="g_desc">\n' + 
+'						<input id="enable_informer_alerts" name="enable_informer_alerts" class="option-checkbox ksmall" type="checkbox">\n' +
+'						<label for="enable_informer_alerts">' + worker.GUIp_i18n.enable_informer_alerts + '</label>\n' +
+'					</div>\n' +
+'					<div class="g_desc">\n' + 
+'						<input id="enable_pm_alerts" name="enable_pm_alerts" class="option-checkbox ksmall" type="checkbox">\n' +
+'						<label for="enable_pm_alerts">' + worker.GUIp_i18n.enable_pm_alerts + '</label>\n' +
+'					</div>\n' +
+'				</div>\n' +
+'				<div class="new_line" id="informer_alerts_timeout_h"><label class="l_capt" for="informer_alerts_timeout">' + worker.GUIp_i18n.informer_alerts_timeout + '</label>\n' +
+'					<div class="field_content">\n' +
+'						<input id="informer_alerts_timeout" name="informer_alerts_timeout" class="menu-checkbox" type="checkbox">\n' +
+'					</div>\n' +
+'				</div>\n' +
+'				<div class="new_line" id="informer_alerts_timeout_desc">\n' +
+'					<div class="g_desc">' + worker.GUIp_i18n.informer_alerts_timeout_desc + '</div>\n' +
+'				</div>\n' +
+'				<div class="new_line" id="informer_alerts_timeout_choice">\n' +
+'					<div class="g_desc">\n' +
+'						<label for="informer_alerts_timeout_value">' + worker.GUIp_i18n.informer_alerts_timeout_hint + '</label>\n' +
+'						<input type="number" id="informer_alerts_timeout_value" min="0" max="600" style="width: 136px;"/>\n' +
+'					</div>\n' +
+'				</div>\n' +
+'				<div class="new_line">\n' +
 '					<label class="l_capt" for="disable_pm_sound">' + worker.GUIp_i18n.disable_pm_sound + '</label>\n' +
 '					<div class="field_content">\n' +
 '						<input id="disable_pm_sound" name="disable_pm_sound" class="option-checkbox" type="checkbox">\n' +

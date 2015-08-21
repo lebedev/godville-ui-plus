@@ -1,6 +1,7 @@
 // ui_utils
 var ui_utils = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "utils"}) : worker.GUIp.utils = {};
 
+ui_utils.notiLaunch = 0;
 ui_utils.hasShownErrorMessage = false;
 ui_utils.hasShownInfoMessage = false;
 // base phrase say algorythm
@@ -208,15 +209,15 @@ ui_utils.openChatWith = function(friend, e) {
 		e.preventDefault();
 		e.stopPropagation();
 	}
-	worker.so.nm.bindings.show_friend[0].update(friend);
-	/*var current, friends = document.querySelectorAll('.msgDockPopupW .frline');
+	/*worker.so.nm.bindings.show_friend[0].update(friend); -- fixme: this doesn't mark incoming messages as read */
+	var current, friends = document.querySelectorAll('.msgDockPopupW .frline');
 	for (var i = 0, len = friends.length; i < len; i++) {
 		current = friends[i].querySelector('.frname');
 		if (current.textContent === friend) {
 			current.click();
 			break;
 		}
-	}*/
+	}
 };
 ui_utils.dateToMoscowTimeZone = function(date) {
 	var temp = new Date(date);
@@ -325,4 +326,43 @@ ui_utils.informAboutOldVersion = function() {
 			}
 		}
 	});
+};
+
+ui_utils.showNotification = function(title,text,callback) {
+	worker.setTimeout(function() {
+		var notification = new Notification(title, {
+			icon: worker.GUIp_getResource('icon64.png'),
+			body: text,
+		});
+		notification.onclick = callback;
+		var notificationTimeout = 5, customTimeout = ui_storage.get('Option:informerAlertsTimeout');
+		if (parseInt(customTimeout) >= 0) {
+			notificationTimeout = parseInt(customTimeout);
+		}
+		if (notificationTimeout > 0) {
+			worker.setTimeout(function() { notification.close(); }, notificationTimeout * 1000);
+		}
+		worker.setTimeout(function() { if (ui_utils.notiLaunch) ui_utils.notiLaunch--; }, 500);
+	}, 500 * this.notiLaunch++);
+};
+
+ui_utils.getCurrentChat = function() {
+	// not that nice but working way to get current contact name without searching for matches in HTML
+	for (var obj in worker.so.messages.nm.bindings.messages[0]) {
+		if (obj.indexOf('fc_') === 0) {
+			var msgBinding = worker.so.messages.nm.bindings.messages[0][obj];
+			if (msgBinding && msgBinding[0].classList.contains('frbutton_pressed')) {
+				return obj.substring(3);
+			}
+		}
+	}
+	return null;
+	// there should definitely be a better way to detect this, probably via worker.so.<whatever>
+	/*var docktitle = worker.$('.frbutton_pressed .dockfrname_w .dockfrname').text().replace(/\.+/g,''),
+		headtitle = worker.$('.frbutton_pressed .frMsgBlock .fr_chat_header').text().match('^(.*?)(\ и\ е|\ and\ h)');
+	if (docktitle && headtitle && headtitle[1].indexOf(docktitle) === 0) {
+		return headtitle[1];
+	} else {
+		return null;
+	}*/
 };

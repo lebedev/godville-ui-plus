@@ -13,6 +13,11 @@ ui_data.init = function() {
 		worker.document.cookie = 'm_pp=1';
 		worker.document.cookie = 'm_fl=1';
 	}
+	
+	/* [E] desktop notifications - asking user for a permission */
+	if ((ui_storage.get('Option:enableInformerAlerts') || ui_storage.get('Option:enablePmAlerts')) && worker.GUIp_browser !== 'Opera' && Notification.permission !== "granted") {
+		Notification.requestPermission();
+	}
 
 	ui_data._getLEMRestrictions();
 	worker.setInterval(ui_data._getLEMRestrictions, 60*60*1000);

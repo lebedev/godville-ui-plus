@@ -16,7 +16,7 @@ ui_starter._init = function() {
 	ui_improver.improve();
 	ui_timers.init();
 	ui_observers.init();
-	ui_improver.initSoundsOverride();
+	ui_improver.initOverrides();
 };
 ui_starter.start = function() {
 	if (worker.$ && (worker.$('#m_info').length || worker.$('#stats').length) && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && worker.so.state) {

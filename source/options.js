@@ -139,6 +139,10 @@ function loadOptions() {
 		//jQuery('#freeze_voice_button_desc').slideToggle("slow");
 		$id('freeze_voice_button_desc').style.display = $id('freeze_voice_button_desc').style.display === 'none' ? 'block' : 'none';
 	};
+	$id('informer_alerts_timeout').onclick = function() {
+		$id('informer_alerts_timeout_choice').style.display = $id('informer_alerts_timeout_choice').style.display === 'none' ? 'block' : 'none';
+		$id('informer_alerts_timeout_desc').style.display = $id('informer_alerts_timeout_desc').style.display === 'none' ? 'block' : 'none';
+	};
 	$id('check_all').onclick = function() {
 		setAllCheckboxesToState('item-informer', true);
 		return false;
@@ -313,6 +317,19 @@ function saveOptions() {
 		storage.set('Option:freezeVoiceButton', '');
 	}
 
+	if ($id('informer_alerts_timeout').checked) {
+		var informer_alerts_timeout = $id('informer_alerts_timeout_value').value;
+		if (parseInt(informer_alerts_timeout) >= 0) {
+			storage.set('Option:informerAlertsTimeout', parseInt(informer_alerts_timeout));
+		} else {
+			$id('informer_alerts_timeout_value').value = '5';
+			$id('informer_alerts_timeout').click();
+			storage.set('Option:informerAlertsTimeout', '');
+		}
+	} else {
+		storage.set('Option:informerAlertsTimeout', '');
+	}
+
 	if (!$id('forbidden_informers').checked) {
 		setAllCheckboxesToState('informer-checkbox', true);
 	}
@@ -461,6 +478,13 @@ function restore_options() {
 	} else {
 		//jQuery('#freeze_voice_button_choice').hide();
 		$id('freeze_voice_button_choice').style.display = 'none';
+	}
+	if ($id('informer_alerts_timeout').checked) {
+		$id('informer_alerts_timeout_desc').style.display = 'none';
+		$id('informer_alerts_timeout_value').value = storage.get('Option:informerAlertsTimeout');
+	} else {
+		$id('informer_alerts_timeout_choice').style.display = 'none';
+		$id('informer_alerts_timeout_value').value = '5';
 	}
 	var forbiddenInformers = storage.get('Option:forbiddenInformers');
 	if (forbiddenInformers) {

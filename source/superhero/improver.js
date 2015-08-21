@@ -3,6 +3,8 @@ var ui_improver = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs
 
 ui_improver.improveTmt = 0;
 ui_improver.isFirstTime = true;
+ui_improver.pmParsed = false;
+ui_improver.pmNoted = {};
 ui_improver.voiceSubmitted = false;
 ui_improver.wantedMonsters = null;
 ui_improver.friendsRegExp = null;
@@ -1220,7 +1222,7 @@ ui_improver.chatsFix = function() {
 		worker.scrollTo(0, document.documentElement.scrollHeight - document.documentElement.clientHeight);
 	}
 };
-ui_improver.initSoundsOverride = function() {
+ui_improver.initOverrides = function() {
 	if (worker.so && worker.so.a_notify) {
 		worker.so.a_notify_orig = worker.so.a_notify;
 		worker.so.a_notify = function() {
@@ -1249,6 +1251,40 @@ ui_improver.initSoundsOverride = function() {
 			}
 		};
 	}
+	if (ui_storage.get('Option:enablePmAlerts') && worker.GUIp_browser !== 'Opera' && Notification.permission === "granted")
+	setTimeout(function() {
+		// assume that all messages are loaded at this point, make a list of existing unread ones
+		for (var contact in worker.so.messages.h_friends) {
+			var hfriend = worker.so.messages.h_friends[contact];
+			if (hfriend.ms == "upd" && hfriend.msg) {
+				ui_improver.pmNoted[contact] = hfriend.msg.id;
+			}
+		}
+		// replace original messages update with modified one
+		if (worker.so && worker.so.messages.nm.notify) {
+			worker.so.messages.nm.notify_orig = worker.so.messages.nm.notify;
+			worker.so.messages.nm.notify = function() {
+				// check for a new messages in the updated list and inform about them
+				if (arguments[0] == "messages")
+				for (var contact in worker.so.messages.h_friends) {
+					var hfriend = worker.so.messages.h_friends[contact];
+					if (hfriend.ms == "upd" && hfriend.msg.from == contact && (!ui_improver.pmNoted[contact] || (ui_improver.pmNoted[contact] < hfriend.msg.id))) {
+						ui_improver.pmNoted[contact] = hfriend.msg.id;
+						// show a notification if chat with contact is closed OR godville tab is unfocused
+						// (we're NOT using document.hidden because it returns false when tab is active but the whole browser window unfocused)
+						if (ui_utils.getCurrentChat() != contact || !document.hasFocus()) {
+							var title = '[PM] ' + contact,
+								text = hfriend.msg.msg.substring(0,200) + (hfriend.msg.msg.length > 200 ? '...' : ''),
+								callback = function(cname) { return function() { if (ui_utils.getCurrentChat() != cname) ui_utils.openChatWith(cname); }; }(contact);
+							ui_utils.showNotification(title,text,callback);
+						}
+					}
+				}
+				// return original result in case it will appear some time
+				return worker.so.messages.nm.notify_orig.apply(this, arguments);
+			}
+		}
+	}, 2000);
 };
 ui_improver.activity = function() {
 	if (!ui_logger.updating) {
