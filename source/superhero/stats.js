@@ -83,6 +83,13 @@ ui_stats.Hero_Alls_HP = function() {
 	}
 	return allies_hp;
 };
+ui_stats.Hero_Alls_Count = function() {
+	var allies_cnt = 0;
+	for (var ally in worker.so.state.alls) {
+		allies_cnt++;
+	}
+	return allies_cnt;
+};
 ui_stats.Max_Godpower = function() {
 	return worker.so.state.stats.max_gp.value;
 };

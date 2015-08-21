@@ -4,15 +4,19 @@ var ui_timers = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: 
 ui_timers.init = function() {
 	if (ui_data.hasTemple) {
 		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"imp_timer\" class=\"fr_new_badge hidden\" />');
-		if (!ui_data.isFight && !ui_data.isDungeon) {
+		if (ui_data.isDungeon || (ui_data.isFight && ui_stats.Hero_Alls_Count() > 2)) {
+			this.logTimer = document.querySelector('#imp_timer');
+			this.logTimerIsDisabled = ui_storage.get('Option:disableLogTimer');
+			ui_utils.hideElem(this.logTimer, this.logTimerIsDisabled);
+		} else {
 			this.layingTimer = document.querySelector('#imp_timer');
 			this.layingTimerIsDisabled = ui_storage.get('Option:disableLayingTimer');
 			ui_utils.hideElem(this.layingTimer, this.layingTimerIsDisabled);
 		}
-		if (ui_data.isDungeon) {
-			this.logTimer = document.querySelector('#imp_timer');
-			this.logTimerIsDisabled = ui_storage.get('Option:disableLogTimer');
-			ui_utils.hideElem(this.logTimer, this.logTimerIsDisabled);
+		if (!ui_storage.get('Option:disableLayingTimer') && !ui_storage.get('Option:disableLogTimer')) {
+			var curTimer = this.layingTimer ? this.layingTimer : this.logTimer;
+			curTimer.style.cursor = 'pointer';
+			curTimer.onclick = ui_timers.toggleTimers.bind(ui_timers);
 		}
 		ui_timers.tick();
 		worker.setInterval(ui_timers.tick.bind(ui_timers), 60000);
@@ -27,11 +31,11 @@ ui_timers.tick = function() {
 	this._penultLogDate = ui_timers.getDate('PenultLog');
 	for (var msg in worker.so.state.diary_i) {
 		var curEntryDate = new Date(worker.so.state.diary_i[msg].time);
-		if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/) && curEntryDate > this._lastLayingDate) {
+		if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/i) && curEntryDate > this._lastLayingDate) {
 			this._lastLayingDate = curEntryDate;
 		}
 		var logs;
-		if (msg.match(/^Выдержка из хроники подземелья:|Notes from the dungeon:/) && (logs = (msg.match(/бревно для ковчега|ещё одно бревно|log for the ark/g) || []).length)) {
+		if (msg.match(/^Выдержка из хроники подземелья:|Notes from the dungeon:/i) && (logs = (msg.match(/бревно для ковчега|ещё одно бревно|log for the ark/gi) || []).length)) {
 			if (curEntryDate > this._lastLogDate) {
 				while (logs--) {
 					this._penultLogDate = this._lastLogDate;
@@ -109,7 +113,26 @@ ui_timers._setTimer = function(isLaying, totalMinutes, color) {
 		timer.textContent = '?';
 		timer.title = (isLaying ? worker.GUIp_i18n.gte_unknown_penalty : worker.GUIp_i18n.log_unknown_time) + ui_timers._formatTime(isLaying ? 36 : 24, totalMinutes);
 	} else {
-		timer.textContent = color === 'green' ? isLaying ? '✓' : '木' : ui_timers._formatTime(isLaying ? 36 : 24, totalMinutes);
+		timer.textContent = color === 'green' ? isLaying ? '✓' : '木' : (isLaying ? ui_timers._formatTime(36, totalMinutes) : '¦' + ui_timers._formatTime(24, totalMinutes) + '¦');
 		timer.title = isLaying ? ui_timers._calculateExp(totalMinutes) : totalMinutes > 24*60 ? worker.GUIp_i18n.log_is_guaranteed : worker.GUIp_i18n.log_isnt_guaranteed;
 	}
+};
+ui_timers.toggleTimers = function(e) {
+	e && e.stopPropagation();
+	if (!this.layingTimer && !this.logTimer) {
+		return;
+	}
+	if (this.layingTimer) {
+		this.logTimer = this.layingTimer;
+		delete this.layingTimer;
+	} else {
+		this.layingTimer = this.logTimer;
+		delete this.logTimer;
+	}
+	
+	var timerElem = worker.$('#imp_timer');
+	timerElem.fadeOut(500, function() {
+		ui_timers.tick();
+		timerElem.fadeIn(500);
+	});
 };
