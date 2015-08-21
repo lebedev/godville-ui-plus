@@ -27,9 +27,9 @@ ui_informer._save = function() {
 ui_informer._createLabel = function(flag) {
 	var id = flag.replace(/ /g, '_');
 	this.container.insertAdjacentHTML('beforeend', '<div id="' + id + '">' + flag + '</div>');
-	document.getElementById(id).onclick = function() {
+	document.getElementById(id).onclick = function(e) {
 		ui_informer.hide(flag);
-		return false;
+		e.stopPropagation();
 	};
 };
 ui_informer._deleteLabel = function(flag) {

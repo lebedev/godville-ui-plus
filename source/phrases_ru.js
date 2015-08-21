@@ -455,7 +455,7 @@ worker.GUIp_i18n = {
 	press_here_to_reload: 'нажмите сюда, чтоб обновить страницу.',
 	if_repeats: 'Если ошибка повторяется — ',
 	press_here_to_show_details: 'нажмите сюда, чтоб показать детали ошибки.',
-	error_message_subtitle: 'Вам с этим никто не поможет:',
+	error_message_subtitle: 'Ошибка:',
 	error_message_text: 'Текст ошибки:',
 	error_message_stack_trace: 'Трассировка стека',
 	error_message_in_old_version: 'Произошла ошибка. Однако, ваша версия Godville&nbsp;UI+ устарела. Обновитесь по инструкции из окошка помощи (оно сейчас открыто).',

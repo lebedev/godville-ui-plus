@@ -88,6 +88,10 @@ ui_improver.improve = function() {
 	ui_storage.set('optionsChanged', false);
 };
 ui_improver.improveVoiceDialog = function() {
+	// If playing in pure ZPG mode there won't be present voice input block at all;
+	if (!document.getElementById('voice_edit_wrap')) {
+		return;
+	}
 	if (this.isFirstTime || this.optionsChanged) {
 		this.freezeVoiceButton = ui_storage.get('Option:freezeVoiceButton') || '';
 	}
@@ -224,7 +228,7 @@ ui_improver.improveMap = function() {
 			$boxMC = worker.$('#map .dmc'),
 			kRow = $boxML.length,
 			kColumn = $boxML[0].textContent.length,
-			isJumping = document.getElementById('map').textContent.match(/Прыгучести|Jumping/),
+			isJumping = document.getElementById('map').textContent.match(/Прыгучести|Jumping|Загадки|Mystery/), /* [E] allow moving almost everywhere in Mystery as it could be Jumping or Disobedience */
 			MaxMap = 0,      	// count of any pointers
 			MaxMapThermo = 0, // count of thermo pointers
 			MapArray = [];
@@ -1088,7 +1092,7 @@ ui_improver.improveInterface = function() {
 			worker.clearInterval(ui_improver.windowResizeInt);
 			ui_improver.windowResizeInt = worker.setTimeout(ui_improver.whenWindowResize.bind(ui_improver), 250);
 		};
-		if (ui_data.isFight) {
+		if (ui_data.isFight && document.querySelector('#map .block_title, #control .block_title, #m_control .block_title')) {
 			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + ui_stats.logId() + '" target="_blank">' + worker.GUIp_i18n.broadcast + '</a>');
 		}
 		/* [E] clock is to be initialized somewhere here */
@@ -1257,7 +1261,7 @@ ui_improver.calculateButtonsVisibility = function() {
 		specialConds, specialClasses;
 	if (!ui_data.isFight) {
 		var isGoingBack = worker.so.state.stats.dir.value !== 'ft',
-			isTown = worker.so.state.stats.town_name && worker.so.state.stats.town_name.value,
+			isTown = ui_stats.townName(),
 			isSearching = worker.so.state.last_news && worker.so.state.last_news.value.match('дорогу'),
 			dieIsDisabled = ui_storage.get('Option:disableDieButton'),
 			isFullGP = ui_stats.Godpower() === ui_stats.Max_Godpower(),

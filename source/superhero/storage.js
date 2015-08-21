@@ -25,6 +25,10 @@ ui_storage.get = function(id) {
 	if (val === 'false') { return false; }
 	return val;
 };
+// deletes single item from storage
+ui_storage.remove = function(id) {
+	return localStorage.removeItem(ui_storage._get_key(id));
+};
 // stores value and gets diff with old
 ui_storage.set_with_diff = function(id, value) {
 	var diff = ui_storage._diff(id, value);

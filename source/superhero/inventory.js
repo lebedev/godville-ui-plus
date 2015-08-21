@@ -88,9 +88,9 @@ ui_inventory._update = function() {
 				trophy_boldness[item_name] = true;
 			}
 		} else if (item.type === 'heal_potion') { // healing item
-			if (!item.isImproved) {
-				item.li[0].classList.add('heal_item');
-			}
+			// if item quantity has increased, it seems that class needs to be re-added again
+			item.li[0].classList.add('heal_item');
+
 			if (!(forbidden_craft.match('heal') || (forbidden_craft.match('b_r') && forbidden_craft.match('r_r')))) {
 				trophy_boldness[item_name] = false;
 			}

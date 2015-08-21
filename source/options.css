@@ -37,7 +37,7 @@ th {
 	position: relative;
 	top: 0.25em;
 }
-#general_settings input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox] {
+#general_settings input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox],
 #general_settings input.ksmall {
 	transform: scale(0.7);
 	-webkit-transform: scale(0.69);

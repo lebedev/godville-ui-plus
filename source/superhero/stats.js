@@ -173,6 +173,9 @@ ui_stats.charName = function() {
 ui_stats.godName = function() {
 	return worker.so.state.stats.godname.value;
 };
+ui_stats.guildName = function() {
+	return worker.so.state.stats.clan && worker.so.state.stats.clan.value;
+}
 ui_stats.goldTextLength = function() {
 	return worker.so.state.stats.gold_we.value.length;
 };
@@ -200,3 +203,6 @@ ui_stats.monsterName = function() {
 ui_stats.logId = function() {
 	return worker.so.state.stats.perm_link.value;
 };
+ui_stats.townName = function() {
+	return worker.so.state.stats.town_name && worker.so.state.stats.town_name.value;
+}

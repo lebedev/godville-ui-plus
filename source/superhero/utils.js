@@ -49,6 +49,10 @@ ui_utils.addVoicegen = function(elem, voicegen_name, section, title) {
 ui_utils.getRandomIndex = function(arr) {
 	return Math.floor(Math.random()*arr.length);
 };
+// Форматирование времени
+ui_utils.formatClock = function(godvilleTime) {
+	return ('0' + godvilleTime.getUTCHours()).slice(-2) + ':' + ('0' + godvilleTime.getUTCMinutes()).slice(-2) + ':' + ('0' + godvilleTime.getUTCSeconds()).slice(-2)
+}
 // Случайный элемент массива
 ui_utils.getRandomItem = function(arr) {
 	return arr[ui_utils.getRandomIndex(arr)];
@@ -221,7 +225,7 @@ ui_utils.openChatWith = function(friend, e) {
 };
 ui_utils.dateToMoscowTimeZone = function(date) {
 	var temp = new Date(date);
-	temp.setTime(temp.getTime() + (temp.getTimezoneOffset() + 180)*60*1000);
+	temp.setTime(temp.getTime() + (temp.getTimezoneOffset() + (worker.GUIp_locale === 'en' ? 115 : 175))*60*1000);
 	return temp.getFullYear() + '/' +
 		  (temp.getMonth() + 1 < 10 ? '0' : '') + (temp.getMonth() + 1) + '/' +
 		  (temp.getDate() < 10 ? '0' : '') + temp.getDate();

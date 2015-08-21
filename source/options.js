@@ -23,7 +23,6 @@ var setTextareaResize = function(id, inner_func) {
 	ta.oncut =
 	ta.onfocus =
 	ta.oninput =
-	ta.onkeypress =
 	ta.onpaste = function() {
 		var rows = this.value.match(/\n/g);
 		if (rows) {

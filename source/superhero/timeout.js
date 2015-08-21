@@ -33,7 +33,7 @@ ui_timeout.start = function() {
 };
 ui_timeout._delayedStart = function() {
 	var customTimeout = ui_storage.get('Option:voiceTimeout');
-	if (!isNaN(customTimeout)) {
+	if (parseInt(customTimeout) > 0) {
 		ui_timeout.timeout = customTimeout;
 		ui_timeout.bar.style.transitionDuration = customTimeout + 's';
 	} else {

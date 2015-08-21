@@ -33,8 +33,8 @@ ui_data._initVariables = function() {
 	this.god_name = ui_stats.godName();
 	this.char_name = ui_stats.charName();
 	this.char_sex = ui_stats.isMale() ? worker.GUIp_i18n.hero : worker.GUIp_i18n.heroine;
-	ui_storage.set('charIsMale', ui_stats.isMale());
 	ui_storage.set('ui_s', '');
+	ui_storage.set('charIsMale', ui_stats.isMale());
 	localStorage.setItem('GUIp_CurrentUser', this.god_name);
 	if (ui_stats.Bricks() === 1000) {
 		document.body.classList.add('has_temple');
@@ -70,7 +70,9 @@ ui_data._clearOldDungeonData = function() {
 };
 ui_data._getLEMRestrictions = function() {
 	if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
-		ui_utils.getXHR('http://www.godalert.info/Dungeons/guip.cgi', ui_data._parseLEMRestrictions);
+		if (document.location.protocol != 'https:') {
+			ui_utils.getXHR('http://www.godalert.info/Dungeons/guip.cgi', ui_data._parseLEMRestrictions); // via https this won't work anyway and just produce an error in the console
+		}
 	}
 };
 ui_data._parseLEMRestrictions = function(xhr) {
