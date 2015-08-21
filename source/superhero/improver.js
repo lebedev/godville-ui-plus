@@ -647,7 +647,8 @@ ui_improver.parseDungeonPhrases = function(xhr) {
 ui_improver.getDungeonPhrases = function() {
 	if (!ui_storage.get('Dungeon:pointerMarkerPhrases')) {
 		this.dungeonXHRCount++;
-		ui_utils.getXHR('/gods/' + (worker.GUIp_locale === 'ru' ? 'Спандарамет' : 'God Of Dungeons'), ui_improver.parseDungeonPhrases.bind(ui_improver));
+		var customChronicler = ui_storage.get('Option:customDungeonChronicler') || '';
+		ui_utils.getXHR('/gods/' + (customChronicler.length >= 3 ? customChronicler : 'Dungeoneer'), ui_improver.parseDungeonPhrases.bind(ui_improver));
 	} else {
 		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
 			this[this.dungeonPhrases[i] + 'RegExp'] = new worker.RegExp(ui_storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));

@@ -152,6 +152,10 @@ function loadOptions() {
 		$id('informer_alerts_timeout_choice').style.display = $id('informer_alerts_timeout_choice').style.display === 'none' ? 'block' : 'none';
 		$id('informer_alerts_timeout_desc').style.display = $id('informer_alerts_timeout_desc').style.display === 'none' ? 'block' : 'none';
 	};
+	$id('custom_dungeon_chronicler').onclick = function() {
+		$id('custom_dungeon_chronicler_choice').style.display = $id('custom_dungeon_chronicler_choice').style.display === 'none' ? 'block' : 'none';
+		$id('custom_dungeon_chronicler_desc').style.display = $id('custom_dungeon_chronicler_desc').style.display === 'none' ? 'block' : 'none';
+	};
 	$id('disable_godville_clock').onclick = function() {
 		$id('localtime_godville_clock_h').style.display = $id('disable_godville_clock').checked ? 'none' : 'block';
 		$id('localtime_godville_clock_desc').style.display = $id('disable_godville_clock').checked ? 'none' : 'block';
@@ -347,6 +351,19 @@ function saveOptions() {
 		storage.set('Option:informerAlertsTimeout', '');
 	}
 
+	if ($id('custom_dungeon_chronicler').checked) {
+		var custom_dungeon_chronicler = $id('custom_dungeon_chronicler_value').value;
+		if (custom_dungeon_chronicler.length >= 3) {
+			storage.set('Option:customDungeonChronicler', custom_dungeon_chronicler);
+		} else {
+			$id('custom_dungeon_chronicler_value').value = '';
+			$id('custom_dungeon_chronicler').click();
+			storage.set('Option:customDungeonChronicler', '');
+		}
+	} else {
+		storage.set('Option:customDungeonChronicler', '');
+	}
+
 	if (!$id('forbidden_informers').checked) {
 		setAllCheckboxesToState('informer-checkbox', true);
 	}
@@ -504,6 +521,13 @@ function restore_options() {
 	} else {
 		$id('informer_alerts_timeout_choice').style.display = 'none';
 		$id('informer_alerts_timeout_value').value = '5';
+	}
+	if ($id('custom_dungeon_chronicler').checked) {
+		$id('custom_dungeon_chronicler_desc').style.display = 'none';
+		$id('custom_dungeon_chronicler_value').value = storage.get('Option:customDungeonChronicler');
+	} else {
+		$id('custom_dungeon_chronicler_choice').style.display = 'none';
+		$id('custom_dungeon_chronicler_value').value = '';
 	}
 	if ($id('disable_godville_clock').checked) {
 		$id('localtime_godville_clock_h').style.display = 'none';

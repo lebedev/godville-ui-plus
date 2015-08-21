@@ -313,6 +313,20 @@ return '<p>\n' +
 '				<div class="new_line">\n' +
 '					<div class="g_desc">' + worker.GUIp_i18n.disable_links_autoreplace_desc + '</div>\n' +
 '				</div>\n' +
+'				<div class="new_line"><label class="l_capt" for="custom_dungeon_chronicler">' + worker.GUIp_i18n.custom_dungeon_chronicler + '</label>\n' +
+'					<div class="field_content">\n' +
+'						<input id="custom_dungeon_chronicler" name="custom_dungeon_chronicler" class="menu-checkbox" type="checkbox">\n' +
+'					</div>\n' +
+'				</div>\n' +
+'				<div class="new_line" id="custom_dungeon_chronicler_desc">\n' +
+'					<div class="g_desc">' + worker.GUIp_i18n.custom_dungeon_chronicler_desc + '</div>\n' +
+'				</div>\n' +
+'				<div class="new_line" id="custom_dungeon_chronicler_choice">\n' +
+'					<div class="g_desc">\n' +
+'						<label for="custom_dungeon_chronicler_value">' + worker.GUIp_i18n.custom_dungeon_chronicler_hint + '</label>\n' +
+'						<input type="text" id="custom_dungeon_chronicler_value" style="width: 136px;"/>\n' +
+'					</div>\n' +
+'				</div>\n' +
 '				<div class="new_line">\n' +
 '					<label class="l_capt" for="disable_godville_clock">' + worker.GUIp_i18n.disable_godville_clock + '</label>\n' +
 '					<div class="field_content">\n' +
