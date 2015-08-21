@@ -436,6 +436,22 @@ ui_improver.improveMap = function() {
 		}
 	}
 };
+ui_improver.improveOppsHP = function(isAlly) {
+	var color, opp, opp_type = isAlly ? 'alls' : 'opps';
+	for (var number in worker.so.state[opp_type]) {
+		opp = worker.so.state[opp_type][number];
+		if (opp.hp < 1 || (isAlly && opp.hp == 1)) {
+			color = 'darkgray';
+		} else if (opp.hp < opp.hpm * 0.30) {
+			color = 'rgb(235,0,0)';
+		} else {
+			color = '';
+		}
+		if (opp.li.opp_hp && opp.li.opp_hp[0]) {
+			opp.li.opp_hp[0].style.color = color;
+		}
+	}
+};
 ui_improver.improveStats = function() {
 	//	Парсер строки с золотом
 	var gold_parser = function(val) {
@@ -457,6 +473,7 @@ ui_improver.improveStats = function() {
 		}
 		/* [E] informer to notify about low health when in dungeon mode */
 		ui_informer.update('low health', ui_stats.Map_HP() < 130 && ui_stats.Map_HP() > 1);
+		ui_improver.improveOppsHP(true);
 		return;
 	}
 	if (ui_data.isFight) {
@@ -493,6 +510,8 @@ ui_improver.improveStats = function() {
 			}
 		}
 		ui_informer.update('low health', ui_stats.HP() < health_lim && ui_stats.HP() > 1);
+		ui_improver.improveOppsHP(true);
+		ui_improver.improveOppsHP(false);
 		return;
 	}
 	if (ui_storage.get('Logger:Location') !== 'Field') {
@@ -1092,14 +1111,22 @@ ui_improver.improveChat = function() {
 	}
 };
 ui_improver.improveAllies = function() {
-	var ally, opp_n, star;
+	var ally, opp_n, star, anspan;
 	for (var number in worker.so.state.alls) {
 		ally = worker.so.state.alls[number];
 		opp_n = ally.li[0].getElementsByClassName('opp_n')[0];
 		star = opp_n.getElementsByClassName('open_chat')[0] || document.createElement('a');
 		if (!opp_n.classList.contains('improved')) {
 			opp_n.classList.add('improved');
-			opp_n.title = ally.god;
+			anspan = document.createElement('span');
+			anspan.textContent = ally.hero;
+			anspan.title = ally.god;
+			if (ally.clan == ui_stats.guildName()) {
+				anspan.className = "guildsmanAlly";
+			}
+			opp_n.textContent = '';
+			opp_n.insertBefore(anspan, null);
+			opp_n.insertBefore(document.createTextNode(' '), null);
 			opp_n.insertBefore(star, null);
 			star.className = 'open_chat';
 			star.title = worker.GUIp_i18n.open_chat_with + ally.god;

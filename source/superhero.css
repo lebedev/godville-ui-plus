@@ -712,3 +712,7 @@ a.broadcast {
 #alls .pm_link {
 	display: none !important;
 }
+
+span.guildsmanAlly {
+	font-style: italic;
+}
