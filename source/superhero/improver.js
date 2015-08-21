@@ -149,13 +149,18 @@ ui_improver.improveNews = function() {
 	}
 	var isWantedMonster = false,
 		isSpecialMonster = false,
-		isTamableMonster = false;
+		isTamableMonster = false,
+		isFavoriteMonster = false;
 	// Если герой дерется с монстром
 	var currentMonster = ui_stats.monsterName();
 	if (currentMonster) {
 		isWantedMonster = this.wantedMonsters && currentMonster.match(this.wantedMonsters);
-		isSpecialMonster = currentMonster.match(/Врачующий|Дарующий|Зажиточный|Запасливый|Кирпичный|Латающий|Лучезарный|Сияющий|Сюжетный|Линяющий|Bricked|Enlightened|Glowing|Healing|Holiday|Loaded|Questing|Shedding|Smith|Wealthy/);
-
+		if (ui_words.base.special_monsters.length) {
+			isSpecialMonster = currentMonster.match(new RegExp(ui_words.base.special_monsters.join('|'),'i'));
+		}
+		if (ui_words.base.chosen_monsters.length) {
+			isFavoriteMonster = currentMonster.match(new RegExp(ui_words.base.chosen_monsters.join('|'),'i'));
+		}
 		if (!ui_stats.heroHasPet()) {
 			var hasArk = ui_stats.Logs() >= 1000;
 			var pet, hero_level = ui_stats.Level();
@@ -172,6 +177,7 @@ ui_improver.improveNews = function() {
 	ui_informer.update('wanted monster', isWantedMonster);
 	ui_informer.update('special monster', isSpecialMonster);
 	ui_informer.update('tamable monster', isTamableMonster);
+	ui_informer.update('chosen monster', isFavoriteMonster);
 
 	if (ui_data.hasTemple && this.optionsChanged) {
 		ui_timers.layingTimerIsDisabled = ui_storage.get('Option:disableLayingTimer');

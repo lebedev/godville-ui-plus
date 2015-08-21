@@ -193,6 +193,9 @@ function loadOptions() {
 	$id('settings_export').onclick = function() {
 		$id('guip_settings').value = storage.exportSettings();
 	};
+	$id('span_tamable').onclick = createLightbox.bind(null,'pets');
+	$id('span_chosen').onclick = createLightbox.bind(null,'chosen_monsters');
+	$id('span_special').onclick = createLightbox.bind(null,'special_monsters');
 }
 
 function setForm() {
@@ -600,6 +603,132 @@ function set_theme_and_background() {
 	} else {
 		document.body.style.backgroundImage =  background ? 'url(' + background + ')' : '';
 	}
+}
+
+var createLightbox = function(lbType) {
+	var inheight, saveLightbox, resetLightbox,
+		lightbox = document.createElement("div"),
+		dimmer = document.createElement("div");
+	
+	lightbox.id = 'optlightbox';
+	dimmer.id = 'optdimmer';
+
+	var lbtitle = 'test lightbox title';
+
+	lightbox.innerHTML = '<div class="bl_cell block">' +
+'			<div id="lightbox_title" class="bl_capt"></div>' +
+'			<div class="bl_content" style="text-align: center; padding-top: 0.9em;">' +
+'				<div id="lightbox_desc" style="text-align: left;" class="new_line"></div>' +
+'				<div class="new_line">' +
+'					<textarea id="lightbox_input" class="rounded_field" rows="10" wrap="virtual;" style="width: 98%; resize: none;"></textarea>' +
+'				</div>' +
+'				<input id="lightbox_save" class="input_btn" type="submit" value="' + worker.GUIp_i18n.lb_save + '" disabled>' +
+'				<input id="lightbox_reset" class="input_btn" type="button" value="' + worker.GUIp_i18n.lb_reset + '" disabled>' +
+'				<input id="lightbox_close" class="input_btn" type="button" value="' + worker.GUIp_i18n.lb_close + '">' +
+'			</div>' +
+'		</div>';
+
+	document.body.appendChild(lightbox);
+	document.body.appendChild(dimmer);
+
+	var setLightboxTA = function(lbType, lbData) {
+		var lbInput = $id('lightbox_input');
+		lbInput.value = '';
+		if (lbType !== 'pets') {
+			for (var i = 0, len = lbData.length; i < len; i++) {
+				lbInput.value += lbData[i] + '\n';
+			}
+		} else {
+			for (var i = 0, len = lbData.length; i < len; i++) {
+				lbInput.value += lbData[i].name + '|' + lbData[i].min_level + '\n';
+			}
+		}
+	}
+
+	var loadLightbox = function(lbType) {
+		var lbData = storage.get('CustomWords:' + lbType);
+		if (lbData && lbData !== "") {
+			try {
+				lbData = JSON.parse(lbData);
+			} catch (error) {
+				lbData = [];
+			}
+			setLightboxTA(lbType,lbData);
+			$id('lightbox_reset').disabled = false;
+		} else {
+			setLightboxTA(lbType,def[lbType]);
+		}
+	}
+
+	var saveLightbox = function(lbType) {
+		var item, parsed = [],
+			values = $id('lightbox_input').value.split('\n');
+		storage.remove('CustomWords:' + lbType);
+		for (var i = 0, len = values.length; i < len; i++) {
+			if (lbType === 'pets') {
+				item = values[i].toLowerCase().split('|');
+				if (item.length > 1 && item[0].trim().length && !isNaN(parseInt(item[1]))) {
+					parsed.push({name: item[0].trim(), min_level: parseInt(item[1])});
+				}
+			} else {
+				item = values[i].replace('|','').toLowerCase().trim();
+				if (item.length > 1) {
+					parsed.push(item);
+				}
+			}
+		}
+		if (parsed.length) {
+			storage.set('CustomWords:' + lbType, JSON.stringify(parsed));
+			setLightboxTA(lbType,parsed);
+			$id('lightbox_save').disabled = true;
+		} else {
+			resetLightbox(lbType); // fixme: show error of some kind instead of silently resetting
+		}
+	}
+
+	var resetLightbox = function(lbType) {
+		setLightboxTA(lbType,def[lbType]);
+		storage.remove('CustomWords:' + lbType);
+		$id('lightbox_save').disabled = true;
+		$id('lightbox_reset').disabled = true;
+	}
+	
+	var changedLightbox = function(lbType) {
+		$id('lightbox_save').disabled = false;
+		$id('lightbox_reset').disabled = false;
+	}
+
+	$id('lightbox_title').textContent = worker.GUIp_i18n['lb_' + lbType + '_title'];
+	$id('lightbox_desc').innerHTML = worker.GUIp_i18n['lb_' + lbType + '_desc'];
+	
+	loadLightbox(lbType);
+
+	inheight = lightbox.getElementsByClassName('bl_cell')[0].scrollHeight;
+
+	lightbox.style.width = '400px';
+	lightbox.style.height = inheight + 'px';
+	
+	lightbox.style.visibility = 'visible';
+	lightbox.style.left = worker.innerWidth/2 - 200 + 'px';
+	lightbox.style.top = worker.innerHeight/2 - (inheight / 2) + window.scrollY + 'px';
+
+	var scrollLightbox = function() {
+		lightbox.style.left = worker.innerWidth/2 - 200 + 'px';
+		lightbox.style.top = worker.innerHeight/2 - (inheight / 2) + window.scrollY + 'px';
+	}
+	var destroyLightbox = function() {
+		document.body.removeChild(dimmer);
+		document.body.removeChild(lightbox);
+		document.removeEventListener('scroll', scrollLightbox);
+	}
+	
+	document.addEventListener('scroll', scrollLightbox);
+	$id('lightbox_input').oninput = changedLightbox.bind(null);
+	$id('lightbox_save').onclick = saveLightbox.bind(null,lbType);
+	$id('lightbox_reset').onclick = resetLightbox.bind(null,lbType);
+	$id('lightbox_close').onclick = dimmer.onclick = destroyLightbox.bind(null);
+
+	return false;
 }
 
 var def, curr_sect, god_name;

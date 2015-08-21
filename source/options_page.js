@@ -234,6 +234,7 @@ return '<p>\n' +
 '						<input class="informer-checkbox" id="wanted_monster" name="wanted_monster" type="checkbox"><label for="wanted_monster">' + worker.GUIp_i18n.forbidden_informers_wanted_monster + '</label><br>\n' +
 '						<input class="informer-checkbox" id="special_monster" name="special_monster" type="checkbox"><label for="special_monster">' + worker.GUIp_i18n.forbidden_informers_special_monster + '</label><br>\n' +
 '						<input class="informer-checkbox" id="tamable_monster" name="tamable_monster" type="checkbox"><label for="tamable_monster">' + worker.GUIp_i18n.forbidden_informers_tamable_monster + '</label><br>\n' +
+'						<input class="informer-checkbox" id="chosen_monster" name="chosen_monster" type="checkbox"><label for="chosen_monster">' + worker.GUIp_i18n.forbidden_informers_chosen_monster + '</label><br>\n' +
 '						<input class="informer-checkbox" id="pet_knocked_out" name="pet_knocked_out" type="checkbox"><label for="pet_knocked_out">' + worker.GUIp_i18n.forbidden_informers_pet_knocked_out + '</label><br>\n' +
 '						<input class="informer-checkbox" id="close_to_boss" name="close_to_boss" type="checkbox"><label for="close_to_boss">' + worker.GUIp_i18n.forbidden_informers_close_to_boss + '</label><br>\n' +
 '						<input class="informer-checkbox" id="guild_quest" name="guild_quest" type="checkbox"><label for="guild_quest">' + worker.GUIp_i18n.forbidden_informers_guild_quest + '</label><br>\n' +

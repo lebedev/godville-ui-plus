@@ -11,7 +11,7 @@ worker.GUIp_words = function() {
 	// Меняется только при _структурных_ изменениях.
 	// Например: добавление, удаление, переименование секций.
 	// Добавление фраз — НЕ структурное изменение
-	version: 14,
+	version: 15,
 
 	// Фразы
 	phrases: {
@@ -328,6 +328,15 @@ worker.GUIp_words = function() {
 		{name: 'хрюкотательный зелюк', min_level: 18},
 		{name: 'хтонический шушпанчик', min_level: 60},
 		{name: 'ядрёнорог', min_level: 34}
+	],
+	
+	special_monsters: [
+		'Врачующий','Дарующий','Зажиточный','Запасливый','Кирпичный',
+		'Латающий','Лучезарный','Сияющий','Сюжетный','Линяющий'
+	],
+
+	chosen_monsters: [
+		'пророк бога монстров'
 	]
 	};
 };
@@ -573,8 +582,9 @@ worker.GUIp_i18n = {
 	forbidden_informers_arena_available: 'открытие арены',
 	forbidden_informers_dungeon_available: 'открытие подземелья',
 	forbidden_informers_wanted_monster: 'монстр дня',
-	forbidden_informers_special_monster: 'монстр со способностями',
-	forbidden_informers_tamable_monster: 'приручаемый монстр',
+	forbidden_informers_special_monster: 'монстр со <span id="span_special">способностями</span>',
+	forbidden_informers_tamable_monster: '<span id="span_tamable">приручаемый</span> монстр',
+	forbidden_informers_chosen_monster: '<span id="span_chosen">избранный</span> монстр',
 	forbidden_informers_pet_knocked_out: 'контузия питомца',
 	forbidden_informers_close_to_boss: 'близость к боссу в подземелье',
 	forbidden_informers_guild_quest: 'взятие квеста на смену гильдии',
@@ -713,6 +723,15 @@ worker.GUIp_i18n = {
 	high_contrast: 'Высококонтрастный режим (для слабовидящих)',
 	save_log_to: 'Сохранить в',
 	map_pointer: 'Указатель',
+	lb_save: 'Сохранить',
+	lb_reset: 'Сбросить',
+	lb_close: 'Закрыть',
+	lb_pets_title: 'Настройка приручаемых монстров',
+	lb_pets_desc: 'Список монстров по одному на строке:<br><i>название</i>|<i>мин. уровень приручения</i>',
+	lb_chosen_monsters_title: 'Настройка избранных монстров',
+	lb_chosen_monsters_desc: 'Список монстров по одному на строке:',
+	lb_special_monsters_title: 'Настройка особых монстров',
+	lb_special_monsters_desc: 'Список префиксов по одному на строке:',
 	coords_error_title: 'Ошибка обработки хроники!',
 	coords_error_desc: 'Разница координат',
 	step_n: 'Шаг #',

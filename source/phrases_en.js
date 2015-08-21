@@ -11,7 +11,7 @@ worker.GUIp_words = function() {
 	// Меняется только при _структурных_ изменениях.
 	// Например: добавление, удаление, переименование секций.
 	// Добавление фраз — НЕ структурное изменение
-	version: 14,
+	version: 15,
 
 	// Фразы
 	phrases: {
@@ -172,6 +172,50 @@ worker.GUIp_words = function() {
 	},
 
 	pets: [
+		{name: 'Ninja Tortoise', min_level: 18},
+		{name: 'Ballpoint Penguin', min_level: 18},
+		{name: 'Dust Bunny', min_level: 18},
+		{name: 'Firefox', min_level: 18},
+		{name: 'Rocky Raccoon', min_level: 18},
+		{name: 'Santa Claws', min_level: 18},
+		{name: 'Satan Claus', min_level: 18},
+		{name: 'Significant Otter', min_level: 18},
+		{name: 'Sun Dog', min_level: 18},
+		{name: 'Talking Donkey', min_level: 18},
+		{name: 'Prancing Pony', min_level: 24},
+		{name: 'Vogon Poet', min_level: 24},
+		{name: 'Stripeless Zebra', min_level: 24},
+		{name: 'Biowolf', min_level: 30},
+		{name: 'Bipolar Bear', min_level: 30},
+		{name: 'Dandy Lion', min_level: 30},
+		{name: 'Trojan Horse', min_level: 30},
+		{name: 'Lightsaber-Toothed Tiger', min_level: 35},
+		{name: 'Solar Bear', min_level: 40},
+		{name: 'Heffalump', min_level: 40},
+		{name: 'Were-panther', min_level: 40},
+		{name: 'Double Dragon', min_level: 50},
+		{name: 'Multi-legged Luggage', min_level: 50},
+		{name: 'Alpha Centaur', min_level: 60},
+		{name: 'Grounded Hog', min_level: 60},
+		{name: 'Hyper Lynx', min_level: 65},
+		{name: 'Philosoraptor', min_level: 70},
+		{name: 'Dreaded Gazebo', min_level: 70},
+		{name: 'Gummy Wyrm', min_level: 70},
+		{name: 'Battlesheep', min_level: 76},
+		{name: 'Vengeful Mole', min_level: 80},
+		{name: 'Terror Bull', min_level: 82},
+		{name: 'Godvilla', min_level: 90},
+		{name: 'Inner Demon', min_level: 90},
+		{name: 'Thesaurus Rex', min_level: 101}
+	],
+	
+	special_monsters: [
+		'Bricked','Enlightened','Glowing','Healing','Holiday',
+		'Loaded','Questing','Shedding','Smith','Wealthy'
+	],
+
+	chosen_monsters: [
+		'Holykeeper'
 	]
 	};
 };
@@ -417,8 +461,9 @@ worker.GUIp_i18n = {
 	forbidden_informers_arena_available: 'arena available',
 	forbidden_informers_dungeon_available: 'dungeon available',
 	forbidden_informers_wanted_monster: 'wanted monster',
-	forbidden_informers_special_monster: 'special monster',
-	forbidden_informers_tamable_monster: 'tamable monster',
+	forbidden_informers_special_monster: '<span id="span_special">special</span> monster',
+	forbidden_informers_tamable_monster: '<span id="span_tamable">tamable</span> monster',
+	forbidden_informers_chosen_monster: '<span id="span_chosen">favourite</span> monster',
 	forbidden_informers_pet_knocked_out: 'pet knocked out',
 	forbidden_informers_close_to_boss: 'boss warning (dungeon)',
 	forbidden_informers_guild_quest: 'attempt to defect from the guild',
@@ -557,6 +602,15 @@ worker.GUIp_i18n = {
 	high_contrast: 'High contrast mode (for vision impared)',
 	save_log_to: 'Save to',
 	map_pointer: 'Pointer',
+	lb_save: 'Save',
+	lb_reset: 'Reset',
+	lb_close: 'Close',
+	lb_pets_title: 'Customize tamable monsters',
+	lb_pets_desc: 'List monsters one by line:<br><i>name</i>|<i>minimum level for tame</i>',
+	lb_chosen_monsters_title: 'Customize favourite monters',
+	lb_chosen_monsters_desc: 'List monsters one by line:',
+	lb_special_monsters_title: 'Customize special monters',
+	lb_special_monsters_desc: 'List prefixes one by line:',
 	coords_error_title: 'Chronicle parsing failed!',
 	coords_error_desc: 'Coordinates mismatch',
 	step_n: 'Step #',
