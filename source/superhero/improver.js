@@ -181,7 +181,7 @@ ui_improver.improveNews = function() {
 
 	if (ui_data.hasTemple && this.optionsChanged) {
 		ui_timers.layingTimerIsDisabled = ui_storage.get('Option:disableLayingTimer');
-		ui_utils.hideElem(ui_timers.layingTimer, ui_timers.layingTimerIsDisabled);
+		ui_utils.hideElem(ui_timers.layingTimer ? ui_timers.layingTimer : ui_timers.logTimer, ui_timers.layingTimerIsDisabled); // todo: if it's got enabled, it should also be made clickable and switchable.
 		ui_timers.tick();
 	}
 };
