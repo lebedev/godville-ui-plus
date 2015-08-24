@@ -333,9 +333,8 @@ module.exports = function(grunt) {
       'jshint',
       'concat',
       'copy',
-      'compress:firefox',
-      'clean:firefox',
-      'process_opera',
+      'build_firefox',
+      'build_opera',
       'notify:end'
     ]);
   });
