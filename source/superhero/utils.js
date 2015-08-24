@@ -51,8 +51,8 @@ ui_utils.getRandomIndex = function(arr) {
 };
 // Форматирование времени
 ui_utils.formatClock = function(godvilleTime) {
-	return ('0' + godvilleTime.getUTCHours()).slice(-2) + ':' + ('0' + godvilleTime.getUTCMinutes()).slice(-2) + ':' + ('0' + godvilleTime.getUTCSeconds()).slice(-2)
-}
+	return ('0' + godvilleTime.getUTCHours()).slice(-2) + ':' + ('0' + godvilleTime.getUTCMinutes()).slice(-2) + ':' + ('0' + godvilleTime.getUTCSeconds()).slice(-2);
+};
 // Случайный элемент массива
 ui_utils.getRandomItem = function(arr) {
 	return arr[ui_utils.getRandomIndex(arr)];
@@ -334,7 +334,7 @@ ui_utils.informAboutOldVersion = function() {
 
 ui_utils.showNotification = function(title,text,callback) {
 	worker.setTimeout(function() {
-		var notification = new Notification(title, {
+		var notification = new worker.Notification(title, {
 			icon: worker.GUIp_getResource('icon64.png'),
 			body: text,
 		});
@@ -346,7 +346,7 @@ ui_utils.showNotification = function(title,text,callback) {
 		if (notificationTimeout > 0) {
 			worker.setTimeout(function() { notification.close(); }, notificationTimeout * 1000);
 		}
-		worker.setTimeout(function() { if (ui_utils.notiLaunch) ui_utils.notiLaunch--; }, 500);
+		worker.setTimeout(function() { if (ui_utils.notiLaunch) { ui_utils.notiLaunch--; } }, 500);
 	}, 500 * this.notiLaunch++);
 };
 

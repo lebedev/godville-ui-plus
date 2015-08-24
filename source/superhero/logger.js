@@ -67,49 +67,51 @@ ui_logger._appendStr = function(id, klass, str, descr) {
 };
 ui_logger._watchStatsValue = function(id, name, descr, klass) {
 	klass = (klass || id).toLowerCase();
+	var i, len, diff;
 	if (name === 'a:hp' && !ui_storage.get('Option:sumAlliesHp')) {
-		var diff, damageData = [];
-		for (var i = 1; i <= ui_stats.Hero_Alls_Count(); i++)
+		var damageData = [];
+		for (i = 1, len = ui_stats.Hero_Alls_Count(); i <= len; i++)
 		{
 			diff = ui_storage.set_with_diff('Logger:'+(id === 'Hero_Alls_HP' ? 'Hero' : 'Map')+'_Ally'+i+'_HP', ui_stats.Hero_Ally_HP(i));
 			if (diff) {
-				damageData.push({num:i, diff:diff, cnt:0, fuzz:0, cntf:0});
+				damageData.push({ num: i, diff: diff, cnt: 0, fuzz: 0, cntf: 0 });
 			}
 		}
 		if (!damageData.length) {
 			return;
 		}
-		for (var i = 0; i < damageData.length; i++) {
+		for (i = 0, len = damageData.length; i < len; i++) {
 			for (var j = (i + 1); j < damageData.length; j++) {
 				if (damageData[j].processed) {
 					continue;
 				}
-				if (damageData[i].diff == damageData[j].diff) {
+				if (damageData[i].diff === damageData[j].diff) {
 					damageData[i].cnt++;
 					damageData[j].processed = true;
 				} else if (Math.abs(damageData[i].diff - damageData[j].diff) < 3) {
 					damageData[i].cntf++;
-					damageData[i].fuzz && (damageData[i].fuzz += damageData[j].diff) || (damageData[i].fuzz = damageData[i].diff + damageData[j].diff);
+					damageData[i].fuzz = (damageData[i].fuzz ? damageData[i].fuzz : damageData[i].diff) + damageData[j].diff;
 					damageData[j].processed = true;
 				}
 			}
 		}
-		damageData.sort(function(a,b) {return a.cnt == b.cnt ? a.num - b.num : b.cnt - a.cnt});
-		for (var i = 0; i < damageData.length; i++) {
-		  if (damageData[i].processed) continue;
-		  if (damageData[i].fuzz) {
-		  	ui_logger._appendStr(id, klass, 'a:hp' + (damageData[i].fuzz > 0 ? '⨦' : '≂') + Math.abs(Math.round((damageData[i].fuzz + damageData[i].diff * damageData[i].cnt)/(damageData[i].cnt + damageData[i].cntf + 1))) + 'x' + (damageData[i].cnt + damageData[i].cntf + 1), descr);
-		  } else if (damageData[i].cnt > 0) {
-		    ui_logger._appendStr(id, klass, 'a:hp' + (damageData[i].diff > 0 ? '+' : '') + damageData[i].diff + 'x' + (damageData[i].cnt + 1), descr);
-		  } else {
-		  	ui_logger._appendStr(id, klass, 'a' + damageData[i].num + ':hp' + (damageData[i].diff > 0 ? '+' : '') + damageData[i].diff, descr);
-		  }
+		damageData.sort(function(a,b) {return a.cnt === b.cnt ? a.num - b.num : b.cnt - a.cnt;});
+		for (i = 0, len = damageData.length; i < len; i++) {
+			if (damageData[i].processed) {
+				continue;
+			}
+			if (damageData[i].fuzz) {
+				ui_logger._appendStr(id, klass, 'a:hp' + (damageData[i].fuzz > 0 ? '⨦' : '≂') + Math.abs(Math.round((damageData[i].fuzz + damageData[i].diff * damageData[i].cnt)/(damageData[i].cnt + damageData[i].cntf + 1))) + 'x' + (damageData[i].cnt + damageData[i].cntf + 1), descr);
+			} else if (damageData[i].cnt > 0) {
+				ui_logger._appendStr(id, klass, 'a:hp' + (damageData[i].diff > 0 ? '+' : '') + damageData[i].diff + 'x' + (damageData[i].cnt + 1), descr);
+			} else {
+				ui_logger._appendStr(id, klass, 'a' + damageData[i].num + ':hp' + (damageData[i].diff > 0 ? '+' : '') + damageData[i].diff, descr);
+			}
 		}
 		return;
 	}
 	if (name === 'e:hp' && !ui_storage.get('Option:sumAlliesHp')) {
-		var diff;
-		for (var i = 1, len = ui_stats.Enemy_Count(); i <= len; i++)
+		for (i = 1, len = ui_stats.Enemy_Count(); i <= len; i++)
 		{
 			diff = ui_storage.set_with_diff('Logger:Enemy'+i+'_HP', ui_stats.EnemySingle_HP(i));
 			if (diff) {
@@ -118,7 +120,8 @@ ui_logger._watchStatsValue = function(id, name, descr, klass) {
 		}
 		return;
 	}
-	var s, diff = ui_storage.set_with_diff('Logger:' + id, ui_stats[id]());
+	var s;
+	diff = ui_storage.set_with_diff('Logger:' + id, ui_stats[id]());
 	if (diff) {
 		// Если нужно, то преобразовываем в число с одним знаком после запятой
 		if (parseInt(diff) !== diff) { diff = diff.toFixed(1); }

@@ -606,10 +606,9 @@ function set_theme_and_background() {
 }
 
 var createLightbox = function(lbType) {
-	var inheight, saveLightbox, resetLightbox,
-		lightbox = document.createElement("div"),
-		dimmer = document.createElement("div");
-	
+	var inheight, lightbox = document.createElement("div"),
+	    dimmer = document.createElement("div");
+
 	lightbox.id = 'optlightbox';
 	dimmer.id = 'optdimmer';
 
@@ -632,18 +631,18 @@ var createLightbox = function(lbType) {
 	document.body.appendChild(dimmer);
 
 	var setLightboxTA = function(lbType, lbData) {
-		var lbInput = $id('lightbox_input');
+		var i, len, lbInput = $id('lightbox_input');
 		lbInput.value = '';
 		if (lbType !== 'pets') {
-			for (var i = 0, len = lbData.length; i < len; i++) {
+			for (i = 0, len = lbData.length; i < len; i++) {
 				lbInput.value += lbData[i] + '\n';
 			}
 		} else {
-			for (var i = 0, len = lbData.length; i < len; i++) {
+			for (i = 0, len = lbData.length; i < len; i++) {
 				lbInput.value += lbData[i].name + '|' + lbData[i].min_level + '\n';
 			}
 		}
-	}
+	};
 
 	var loadLightbox = function(lbType) {
 		var lbData = storage.get('CustomWords:' + lbType);
@@ -658,7 +657,7 @@ var createLightbox = function(lbType) {
 		} else {
 			setLightboxTA(lbType,def[lbType]);
 		}
-	}
+	};
 
 	var saveLightbox = function(lbType) {
 		var item, parsed = [],
@@ -684,30 +683,30 @@ var createLightbox = function(lbType) {
 		} else {
 			resetLightbox(lbType); // fixme: show error of some kind instead of silently resetting
 		}
-	}
+	};
 
 	var resetLightbox = function(lbType) {
 		setLightboxTA(lbType,def[lbType]);
 		storage.remove('CustomWords:' + lbType);
 		$id('lightbox_save').disabled = true;
 		$id('lightbox_reset').disabled = true;
-	}
-	
+	};
+
 	var changedLightbox = function(lbType) {
 		$id('lightbox_save').disabled = false;
 		$id('lightbox_reset').disabled = false;
-	}
+	};
 
 	$id('lightbox_title').textContent = worker.GUIp_i18n['lb_' + lbType + '_title'];
 	$id('lightbox_desc').innerHTML = worker.GUIp_i18n['lb_' + lbType + '_desc'];
-	
+
 	loadLightbox(lbType);
 
 	inheight = lightbox.getElementsByClassName('bl_cell')[0].scrollHeight;
 
 	lightbox.style.width = '400px';
 	lightbox.style.height = inheight + 'px';
-	
+
 	lightbox.style.visibility = 'visible';
 	lightbox.style.left = worker.innerWidth/2 - 200 + 'px';
 	lightbox.style.top = worker.innerHeight/2 - (inheight / 2) + window.scrollY + 'px';
@@ -715,13 +714,13 @@ var createLightbox = function(lbType) {
 	var scrollLightbox = function() {
 		lightbox.style.left = worker.innerWidth/2 - 200 + 'px';
 		lightbox.style.top = worker.innerHeight/2 - (inheight / 2) + window.scrollY + 'px';
-	}
+	};
 	var destroyLightbox = function() {
 		document.body.removeChild(dimmer);
 		document.body.removeChild(lightbox);
 		document.removeEventListener('scroll', scrollLightbox);
-	}
-	
+	};
+
 	document.addEventListener('scroll', scrollLightbox);
 	$id('lightbox_input').oninput = changedLightbox.bind(null);
 	$id('lightbox_save').onclick = saveLightbox.bind(null,lbType);
@@ -729,7 +728,7 @@ var createLightbox = function(lbType) {
 	$id('lightbox_close').onclick = dimmer.onclick = destroyLightbox.bind(null);
 
 	return false;
-}
+};
 
 var def, curr_sect, god_name;
 

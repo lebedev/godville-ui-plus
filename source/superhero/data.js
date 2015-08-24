@@ -13,10 +13,10 @@ ui_data.init = function() {
 		worker.document.cookie = 'm_pp=1';
 		worker.document.cookie = 'm_fl=1';
 	}
-	
+
 	/* [E] desktop notifications - asking user for a permission */
-	if ((ui_storage.get('Option:enableInformerAlerts') || ui_storage.get('Option:enablePmAlerts')) && worker.GUIp_browser !== 'Opera' && Notification.permission !== "granted") {
-		Notification.requestPermission();
+	if ((ui_storage.get('Option:enableInformerAlerts') || ui_storage.get('Option:enablePmAlerts')) && worker.GUIp_browser !== 'Opera' && worker.Notification.permission !== "granted") {
+		worker.Notification.requestPermission();
 	}
 
 	ui_data._getLEMRestrictions();
@@ -70,7 +70,7 @@ ui_data._clearOldDungeonData = function() {
 };
 ui_data._getLEMRestrictions = function() {
 	if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
-		if (document.location.protocol != 'https:') {
+		if (document.location.protocol !== 'https:') {
 			ui_utils.getXHR('http://www.godalert.info/Dungeons/guip.cgi', ui_data._parseLEMRestrictions); // via https this won't work anyway and just produce an error in the console
 		}
 	}

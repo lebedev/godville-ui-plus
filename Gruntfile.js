@@ -234,6 +234,8 @@ module.exports = function(grunt) {
             'require': false,
             'opera': false,
             'FileReader': false,
+            'createObjectIn': false,
+            'XMLHttpRequest': false,
           }
         },
         src: [

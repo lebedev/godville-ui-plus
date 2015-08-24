@@ -58,7 +58,9 @@ ui_log.storageGet = function(id) {
 };
 
 ui_log.getXHR = function(path, success_callback, fail_callback, extra_arg) {
-	if (ui_log.xhrCount++ > 3) return;
+	if (ui_log.xhrCount++ > 3) {
+		return;
+	}
 	var xhr = new XMLHttpRequest();
 	if (extra_arg) {
 		xhr.extra_arg = extra_arg;
@@ -230,15 +232,20 @@ ui_log.parseChronicles = function() {
 	step_max = +step_max[0];
 
 	for (var i = 0; step <= step_max; i++) {
-		if (!matches[i]) { step != step_max && worker.console.log('not enough steps detected! required: '+step_max+', got: '+step); break; }
+		if (!matches[i]) {
+			if (step !== step_max) {
+				worker.console.log('not enough steps detected! required: '+step_max+', got: '+step);
+			}
+			break;
+		}
 		lastNotParsed = true;
 		if (!matches[i].match(/<div class="text_content infl">/)) {
 			texts.push(matches[i].match(/<div class="text_content ">([\s\S]+?)<\/div>/)[1].trim().replace(/&#39;/g, "'"));
 		} else {
 			infls.push(matches[i].match(/<div class="text_content infl">([\s\S]+?)(<span|<\/div>)/)[1].trim().replace(/&#39;/g, "'"));
 		}
-		if (!reversed && matches[i].match(/<div class="new_line" style="[^"]+">/)
-			|| reversed && (!matches[i+1] || matches[i+1].match(/<div class="new_line" style="[^"]+">/))) {
+		if (!reversed && matches[i].match(/<div class="new_line" style="[^"]+">/) ||
+			 reversed && (!matches[i+1] || matches[i+1].match(/<div class="new_line" style="[^"]+">/))) {
 			ui_log.parseSingleChronicle(texts, infls, step);
 			lastNotParsed = false;
 			texts = [];
@@ -252,17 +259,17 @@ ui_log.parseChronicles = function() {
 };
 
 ui_log.enumerateSteps = function() {
-	var stepholder, steplines = [], dcapt = false,
+	var i, len, step, stepholder, steplines = [], dcapt = false,
 		matches = document.querySelector('#last_items_arena').getElementsByClassName('new_line'),
 		reversed = !!location.href.match('sort=desc'),
 		duel = !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/) || location.href.match('boss=');
-	for (var i = 0, len = matches.length; i < len; i++) {
+	for (i = 0, len = matches.length; i < len; i++) {
 		steplines.push(matches[i]);
 	}
 	if (reversed) {
 		steplines.reverse();
 	}
-	for (var i = 0, step = duel ? 0 : 1, len = steplines.length; i < len; i++) {
+	for (i = 0, step = duel ? 0 : 1, len = steplines.length; i < len; i++) {
 		stepholder = steplines[i].getElementsByClassName('d_capt')[0];
 		stepholder.title = worker.GUIp_i18n.step_n+step;
 		dcapt |= stepholder.textContent.length > 0;
@@ -271,7 +278,7 @@ ui_log.enumerateSteps = function() {
 			dcapt = false;
 		}
 	}
-}
+};
 
 ui_log.describeMap = function() {
 	var step, mark_no, marks_length, steptext, lasttext, titlemod, titletext, currentCell,
@@ -292,39 +299,42 @@ ui_log.describeMap = function() {
 		}
 		ui_log.moveCoords(coords, this.chronicles[step]);
 		currentCell = document.querySelectorAll('#dmap .dml')[coords.y].children[coords.x];
-		if (currentCell.textContent.trim() === '#') break;
+		if (currentCell.textContent.trim() === '#') {
+			break;
+		}
 		for (mark_no = 0, marks_length = this.chronicles[step].marks.length; mark_no < marks_length; mark_no++) {
 			currentCell.classList.add(this.chronicles[step].marks[mark_no]);
 		}
 		if (!currentCell.title.length && this.chronicles[step].pointers.length) {
 			currentCell.title = '[' + worker.GUIp_i18n.map_pointer + ': ' + worker.GUIp_i18n[this.chronicles[step].pointers[0]] + (this.chronicles[step].pointers[1] ? worker.GUIp_i18n.or + worker.GUIp_i18n[this.chronicles[step].pointers[1]] : '') + ']';
 		}
-		steptext = this.chronicles[step].text.replace('.»','».').replace(/(\!»|\?»)/g,'$1.'); // we're not going to do natural language processing, so just simplify nested sentence (yeah, result will be a bit incorrect)
+		steptext = this.chronicles[step].text.replace('.»', '».').replace(/(\!»|\?»)/g, '$1.'); // we're not going to do natural language processing, so just simplify nested sentence (yeah, result will be a bit incorrect)
 		steptext = steptext.match(/[^\.]+[\.]+/g);
-		if (step == 1) {
-			steptext = steptext.slice(0,-1);
-		} else if (step == steps_max) {
+		if (step === 1) {
+			steptext = steptext.slice(0, -1);
+		} else if (step === steps_max) {
 			steptext = steptext.slice(1);
 		} else if (this.chronicles[step].marks.indexOf('boss') !== -1) {
-			steptext = steptext.slice(1,-2);
+			steptext = steptext.slice(1, -2);
 		} else if (this.chronicles[step].marks.indexOf('trapMoveLoss') !== -1 || trapMoveLossCount) {
 			if (!trapMoveLossCount) {
 				steptext = steptext.slice(1);
 				trapMoveLossCount++;
 			} else {
-				steptext = steptext.slice(0,-1);
+				steptext = steptext.slice(0, -1);
 				trapMoveLossCount = 0;
 			}
 		} else {
-			steptext = steptext.length > 2 ? steptext.slice(1,-1) : steptext.slice(0,-1);
+			steptext = steptext.length > 2 ? steptext.slice(1, -1) : steptext.slice(0, -1);
 		}
 		//steptext = (this.chronicles[step].infls ? this.chronicles[step].infls + '\n' : '') + steptext.join('').trim();
 		steptext = steptext.join('').trim();
 		if (currentCell.title.length) {
-			titlemod = false, titletext = currentCell.title.split('\n');
+			titlemod = false;
+			titletext = currentCell.title.split('\n');
 			for (var i = 0, len = titletext.length; i < len; i++) {
 				lasttext = titletext[i].match(/^(.*?) : (.*?)$/);
-				if (lasttext && lasttext[2] == steptext) {
+				if (lasttext && lasttext[2] === steptext) {
 					titletext[i] = lasttext[1] + ', #' + step + ' : ' + steptext;
 					titlemod = true;
 					break;
@@ -346,7 +356,7 @@ ui_log.describeMap = function() {
 
 ui_log.highlightTreasuryZone = function() {
 	if (document.querySelectorAll('#dmap .dml').length) {
-		var i, j, len, chronolen = +worker.Object.keys(this.chronicles).reverse()[0],
+		var i, j, ik, jk, len, chronolen = +worker.Object.keys(this.chronicles).reverse()[0],
 			$boxML = document.querySelectorAll('#dmap .dml'),
 			$boxMC = document.querySelectorAll('#dmap .dmc'),
 			kRow = $boxML.length,
@@ -365,11 +375,11 @@ ui_log.highlightTreasuryZone = function() {
 			j = $boxML[si].textContent.indexOf('@');
 			//	Ищем указатели
 			for (var sj = 0; sj < kColumn; sj++) {
-				var ik, jk, ij, ttl = '',
+				var ij, ttl = '',
 					pointer = $boxML[si].textContent[sj],
 					chronopointers = chronolen > 1 ? this.chronicles[chronolen].pointers : [];
 				/* [E] check if current position has some directions in chronicle */
-				if (pointer == '@' && chronopointers.length) {
+				if (pointer === '@' && chronopointers.length) {
 					for (i = 0, len = chronopointers.length; i < len; i++) {
 						switch (chronopointers[i]) {
 							case 'north_east': ttl += '↗'; break;
@@ -388,7 +398,7 @@ ui_log.highlightTreasuryZone = function() {
 							case 'burning':  ttl += '✺'; break;
 						}
 					}
-					worker.console.log("current position has pointers: "+ttl);
+					worker.console.log("current position has pointers: " + ttl);
 				}
 				if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1 || ttl.length && ttl.match('←|→|↓|↑|↙|↘|↖|↗')) {
 					MaxMap++;
@@ -435,7 +445,7 @@ ui_log.highlightTreasuryZone = function() {
 				}
 				if ('✺☀♨☁❄✵'.indexOf(pointer) !== -1 || ttl.length && '✺☀♨☁❄✵'.indexOf(ttl) !== -1) {
 					MaxMapThermo++;
-					$boxMC[si * kColumn + sj].style.color = 'green';
+					$boxMC[si*kColumn + sj].style.color = 'green';
 					/* [E] if we're standing on the pointer - use parsed value from chronicle */
 					if (ttl.length) {
 						pointer = ttl;
@@ -460,55 +470,59 @@ ui_log.highlightTreasuryZone = function() {
 					};
 					for (ik = -1; ik <= kRow; ik++) {
 						for (jk = -1; jk <= kColumn; jk++) {
-							if (ik < 0 || jk < 0 || ik == kRow || jk == kColumn) {
+							if (ik < 0 || jk < 0 || ik === kRow || jk === kColumn) {
 								MapData[ik+':'+jk] = { explored: false, specway: false, scanned: false, wall: false, unknown: true };
 								continue;
 							}
-							MapData[ik+':'+jk] = {
+							MapData[ik + ':' + jk] = {
 								explored: '#?!'.indexOf($boxML[ik].textContent[jk]) === -1,
 								specway: false,
 								scanned: false,
 								wall: $boxML[ik].textContent[jk] === '#',
 								unknown: $boxML[ik].textContent[jk] === '?'
-							}
+							};
 						}
 					}
 					// remove unknown marks from cells located near explored ones
 					for (ik = 0; ik < kRow; ik++) {
 						for (jk = 0; jk < kColumn; jk++) {
-							if (MapData[ik+':'+jk].explored) {
+							if (MapData[ik + ':' + jk].explored) {
 								for (i = -1; i <= 1; i++) {
 									for (j = -1; j <= 1; j++) {
-										if (MapData[(ik+i)+':'+(jk+j)]) { MapData[(ik+i)+':'+(jk+j)].unknown = false; }
+										if (MapData[(ik + i) + ':' + (jk + j)]) { MapData[(ik + i) + ':' + (jk + j)].unknown = false; }
 									}
 								}
 							}
 						}
 					}
-					// 
+					//
 					worker.GUIp_mapIteration(MapData, si, sj, 0, false);
 					//
 					for (ik = 0; ik < kRow; ik++) {
 						for (jk = 0; jk < kColumn; jk++) {
-							if (MapData[ik+':'+jk].step < ThermoMinStep && MapData[ik+':'+jk].explored && !MapData[ik+':'+jk].specway) {
-								MapData[ik+':'+jk].scanned = true;
-								MapData['scanList'].push({i:ik, j:jk, lim:(ThermoMinStep - MapData[ik+':'+jk].step)});
+							if (MapData[ik + ':' + jk].step < ThermoMinStep && MapData[ik + ':' + jk].explored && !MapData[ik + ':' + jk].specway) {
+								MapData[ik + ':' + jk].scanned = true;
+								MapData.scanList.push({i:ik, j:jk, lim:(ThermoMinStep - MapData[ik + ':' + jk].step)});
 							}
 						}
 					}
-					while (MapData['scanList'].length) {
-						var scanCell = MapData['scanList'].shift();
-						for (var cell in MapData) { if (MapData[cell].substep) MapData[cell].substep = 0; }
+					while (MapData.scanList.length) {
+						var scanCell = MapData.scanList.shift();
+						for (var cell in MapData) {
+							if (MapData[cell].substep) {
+								MapData[cell].substep = 0;
+							}
+						}
 						worker.GUIp_mapSubIteration(MapData, scanCell.i, scanCell.j, 0, scanCell.lim, false);
 					}
 					//
 					for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++) {
 						for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++) {
-							if (MapData[ik+':'+jk].step >= ThermoMinStep & MapData[ik+':'+jk].step <= ThermoMaxStep) {
+							if (MapData[ik + ':' + jk].step >= ThermoMinStep & MapData[ik + ':' + jk].step <= ThermoMaxStep) {
 								if (MapArray[ik][jk] >= 0) {
 									MapArray[ik][jk]+=128;
 								}
-							} else if (MapData[ik+':'+jk].step < ThermoMinStep && MapData[ik+':'+jk].specway) {
+							} else if (MapData[ik + ':' + jk].step < ThermoMinStep && MapData[ik + ':' + jk].specway) {
 								if (MapArray[ik][jk] >= 0) {
 									MapArray[ik][jk]++;
 								}
@@ -522,12 +536,12 @@ ui_log.highlightTreasuryZone = function() {
 		if (MaxMap !== 0 || MaxMapThermo !== 0) {
 			for (i = 0; i < kRow; i++) {
 				for (j = 0; j < kColumn; j++) {
-					if (MapArray[i][j] == 1024*MaxMap + 128*MaxMapThermo) {
+					if (MapArray[i][j] === 1024*MaxMap + 128*MaxMapThermo) {
 						$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'red';
 					} else {
 						for (ik = 0; ik < MaxMapThermo; ik++) {
-							if (MapArray[i][j] == 1024*MaxMap + 128*ik + (MaxMapThermo - ik)) {
-								$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'darkorange';
+							if (MapArray[i][j] === 1024*MaxMap + 128*ik + (MaxMapThermo - ik)) {
+								$boxMC[i*kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'darkorange';
 							}
 						}
 					}
@@ -579,17 +593,17 @@ ui_log.getRPerms = function(array, size, initialStuff, output) {
 	if (initialStuff.length >= size) {
 		output.push(initialStuff);
 	} else {
-		for (var i = 0; i < array.length; ++i) {	
+		for (var i = 0; i < array.length; ++i) {
 			this.getRPerms(array, size, initialStuff.concat(array[i]), output);
 		}
 	}
-}
+};
 
 ui_log.getAllRPerms = function(array, size) {
-	var output = []
+	var output = [];
 	this.getRPerms(array, size, [], output);
 	return output;
-}
+};
 
 ui_log.calculateDirectionlessMove = function(initCoords, initStep) {
 	var i, len, j, len2, coords = { x: initCoords.x, y: initCoords.y },
@@ -605,9 +619,9 @@ ui_log.calculateDirectionlessMove = function(initCoords, initStep) {
 		}
 		ui_log.moveCoords(coords, this.chronicles[i]);
 	}
-	
+
 	var variations = this.getAllRPerms('nesw'.split(''),directionless);
-	
+
 	for (i = 0, len = variations.length; i < len; i++) {
 		//worker.console.log('trying combo '+variations[i].join());
 		coords = { x: initCoords.x, y: initCoords.y };
@@ -850,7 +864,7 @@ ui_log.starter = function() {
 																											  .replace(/\n{2,}/g, '\n') +
 													  '</html>';
 		this.button = document.getElementById('send_to_LEM');
-		this.timeFrameSeconds = (ui_log.storageGet('LEMRestrictions:TimeFrame') || 20)*60,
+		this.timeFrameSeconds = (ui_log.storageGet('LEMRestrictions:TimeFrame') || 20)*60;
 		this.requestLimit = ui_log.storageGet('LEMRestrictions:RequestLimit') || 5;
 
 		var match = document.getElementById('match'),
@@ -887,7 +901,6 @@ ui_log.starter = function() {
 	}
 };
 
-var worker = window.wrappedJSObject || window,
-	starterInt = worker.setInterval(ui_log.starter.bind(ui_log), 50);
+var starterInt = worker.setInterval(ui_log.starter.bind(ui_log), 50);
 
 })();

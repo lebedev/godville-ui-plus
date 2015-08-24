@@ -118,7 +118,7 @@ ui_timers._setTimer = function(isLaying, totalMinutes, color) {
 	}
 };
 ui_timers.toggleTimers = function(e) {
-	e && e.stopPropagation();
+	e.stopPropagation();
 	if (!this.layingTimer && !this.logTimer) {
 		return;
 	}
@@ -129,7 +129,7 @@ ui_timers.toggleTimers = function(e) {
 		this.layingTimer = this.logTimer;
 		delete this.logTimer;
 	}
-	
+
 	var timerElem = worker.$('#imp_timer');
 	timerElem.fadeOut(500, function() {
 		ui_timers.tick();

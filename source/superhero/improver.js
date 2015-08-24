@@ -10,10 +10,6 @@ ui_improver.wantedMonsters = null;
 ui_improver.friendsRegExp = null;
 ui_improver.windowResizeInt = 0;
 ui_improver.mapColorizationTmt = 0;
-// trophy craft combinations
-ui_improver.b_b = [];
-ui_improver.b_r = [];
-ui_improver.r_r = [];
 // dungeon
 ui_improver.chronicles = {};
 ui_improver.directionlessMoveIndex = 0;
@@ -166,7 +162,7 @@ ui_improver.improveNews = function() {
 			var pet, hero_level = ui_stats.Level();
 			for (var i = 0; i < ui_words.base.pets.length; i++) {
 				pet = ui_words.base.pets[i];
-				if (currentMonster.toLowerCase() == pet.name.toLowerCase() && hero_level >= pet.min_level && hero_level <= (pet.min_level + (hasArk ? 29 : 14))) {
+				if (currentMonster.toLowerCase() === pet.name.toLowerCase() && hero_level >= pet.min_level && hero_level <= (pet.min_level + (hasArk ? 29 : 14))) {
 					isTamableMonster = true;
 					break;
 				}
@@ -228,7 +224,7 @@ ui_improver.improveMap = function() {
 		}
 	}
 	if (document.querySelectorAll('#map .dml').length) {
-		var i, j, len, chronolen = +worker.Object.keys(this.chronicles).reverse()[0],
+		var i, j, ik, jk, len, chronolen = +worker.Object.keys(this.chronicles).reverse()[0],
 			$box = worker.$('#cntrl .voice_generator'),
 			$boxML = worker.$('#map .dml'),
 			$boxMC = worker.$('#map .dmc'),
@@ -275,11 +271,11 @@ ui_improver.improveMap = function() {
 			}
 			//	Ищем указатели
 			for (var sj = 0; sj < kColumn; sj++) {
-				var ik, jk, ij, ttl = '',
+				var ij, ttl = '',
 					pointer = $boxML[si].textContent[sj],
 					chronopointers = chronolen > 1 ? this.chronicles[chronolen].pointers : [];
 				/* [E] check if current position has some directions in chronicle */
-				if (pointer == '@' && chronopointers.length) {
+				if (pointer === '@' && chronopointers.length) {
 					for (i = 0, len = chronopointers.length; i < len; i++) {
 						switch (chronopointers[i]) {
 							case 'north_east': ttl += '↗'; break;
@@ -370,7 +366,7 @@ ui_improver.improveMap = function() {
 					};
 					for (ik = -1; ik <= kRow; ik++) {
 						for (jk = -1; jk <= kColumn; jk++) {
-							if (ik < 0 || jk < 0 || ik == kRow || jk == kColumn) {
+							if (ik < 0 || jk < 0 || ik === kRow || jk === kColumn) {
 								MapData[ik+':'+jk] = { explored: false, specway: false, scanned: false, wall: false, unknown: true };
 								continue;
 							}
@@ -380,7 +376,7 @@ ui_improver.improveMap = function() {
 								scanned: false,
 								wall: $boxML[ik].textContent[jk] === '#',
 								unknown: $boxML[ik].textContent[jk] === '?'
-							}
+							};
 						}
 					}
 					// remove unknown marks from cells located near explored ones
@@ -395,20 +391,24 @@ ui_improver.improveMap = function() {
 							}
 						}
 					}
-					// 
+					//
 					worker.GUIp_mapIteration(MapData, si, sj, 0, false);
 					//
 					for (ik = 0; ik < kRow; ik++) {
 						for (jk = 0; jk < kColumn; jk++) {
 							if (MapData[ik+':'+jk].step < ThermoMinStep && MapData[ik+':'+jk].explored && !MapData[ik+':'+jk].specway) {
 								MapData[ik+':'+jk].scanned = true;
-								MapData['scanList'].push({i:ik, j:jk, lim:(ThermoMinStep - MapData[ik+':'+jk].step)});
+								MapData.scanList.push({i:ik, j:jk, lim:(ThermoMinStep - MapData[ik+':'+jk].step)});
 							}
 						}
 					}
-					while (MapData['scanList'].length) {
-						var scanCell = MapData['scanList'].shift();
-						for (var cell in MapData) { if (MapData[cell].substep) MapData[cell].substep = 0; }
+					while (MapData.scanList.length) {
+						var scanCell = MapData.scanList.shift();
+						for (var cell in MapData) {
+							if (MapData[cell].substep) {
+								MapData[cell].substep = 0;
+							}
+						}
 						worker.GUIp_mapSubIteration(MapData, scanCell.i, scanCell.j, 0, scanCell.lim, false);
 					}
 					//
@@ -432,11 +432,11 @@ ui_improver.improveMap = function() {
 		if (MaxMap !== 0 || MaxMapThermo !== 0) {
 			for (i = 0; i < kRow; i++) {
 				for (j = 0; j < kColumn; j++) {
-					if (MapArray[i][j] == 1024*MaxMap + 128*MaxMapThermo) {
+					if (MapArray[i][j] === 1024*MaxMap + 128*MaxMapThermo) {
 						$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'red';
 					} else {
 						for (ik = 0; ik < MaxMapThermo; ik++) {
-							if (MapArray[i][j] == 1024*MaxMap + 128*ik + (MaxMapThermo - ik)) {
+							if (MapArray[i][j] === 1024*MaxMap + 128*ik + (MaxMapThermo - ik)) {
 								$boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'darkorange';
 							}
 						}
@@ -450,7 +450,7 @@ ui_improver.improveOppsHP = function(isAlly) {
 	var color, opp, opp_type = isAlly ? 'alls' : 'opps';
 	for (var number in worker.so.state[opp_type]) {
 		opp = worker.so.state[opp_type][number];
-		if (opp.hp < 1 || (isAlly && opp.hp == 1)) {
+		if (opp.hp < 1 || (isAlly && opp.hp === 1)) {
 			color = 'darkgray';
 		} else if (opp.hp < opp.hpm * 0.30) {
 			color = 'rgb(235,0,0)';
@@ -464,6 +464,7 @@ ui_improver.improveOppsHP = function(isAlly) {
 };
 ui_improver.improveStats = function() {
 	//	Парсер строки с золотом
+	var i;
 	var gold_parser = function(val) {
 		return parseInt(val.replace(/[^0-9]/g, '')) || 0;
 	};
@@ -477,7 +478,7 @@ ui_improver.improveStats = function() {
 			ui_storage.set('Logger:Map_Inv', ui_stats.Inv());
 			ui_storage.set('Logger:Map_Charges',ui_stats.Charges());
 			ui_storage.set('Logger:Map_Alls_HP', ui_stats.Map_Alls_HP());
-			for (var i = 1; i <= 4; i++) {
+			for (i = 1; i <= 4; i++) {
 				ui_storage.set('Logger:Map_Ally'+i+'_HP', ui_stats.Map_Ally_HP(i));
 			}
 		}
@@ -496,19 +497,19 @@ ui_improver.improveStats = function() {
 			ui_storage.set('Logger:Enemy_Gold', ui_stats.Enemy_Gold());
 			ui_storage.set('Logger:Enemy_Inv', ui_stats.Enemy_Inv());
 			ui_storage.set('Logger:Hero_Alls_HP', ui_stats.Hero_Alls_HP());
-			for (var i = 1; i <= 4; i++) {
+			for (i = 1; i <= 4; i++) {
 				ui_storage.set('Logger:Hero_Ally'+i+'_HP', ui_stats.Hero_Ally_HP(i));
 			}
-			for (var i = 1; i <= 5; i++) {
+			for (i = 1; i <= 5; i++) {
 				ui_storage.set('Logger:Enemy'+i+'_HP', ui_stats.EnemySingle_HP(i));
 			}
 			ui_storage.set('Logger:Enemy_AliveCount', ui_stats.Enemy_AliveCount());
 		}
 		/* [E] informer to notify about low health when in fight mode */
 		var health_lim;
-		if (ui_stats.Hero_Alls_Count() == 0 && ui_stats.Enemy_Count() > 2) { // corovan
+		if (ui_stats.Hero_Alls_Count() === 0 && ui_stats.Enemy_Count() > 2) { // corovan
 			health_lim = ui_stats.Max_HP() * 0.05 * ui_stats.Enemy_AliveCount();
-		} else if (ui_stats.Hero_Alls_Count() == 0) { // single enemy
+		} else if (ui_stats.Hero_Alls_Count() === 0) { // single enemy
 			health_lim = ui_stats.Max_HP() * 0.15;
 		} else { // raid boss or dungeon boss
 			health_lim = (ui_stats.Hero_Alls_MaxHP() + ui_stats.Max_HP()) * (ui_stats.Enemy_HasAbility("second_strike") ? 0.094 : 0.068);
@@ -883,17 +884,17 @@ ui_improver.getRPerms = function(array, size, initialStuff, output) {
 	if (initialStuff.length >= size) {
 		output.push(initialStuff);
 	} else {
-		for (var i = 0; i < array.length; ++i) {	
+		for (var i = 0; i < array.length; ++i) {
 			this.getRPerms(array, size, initialStuff.concat(array[i]), output);
 		}
 	}
-}
+};
 
 ui_improver.getAllRPerms = function(array, size) {
-	var output = []
+	var output = [];
 	this.getRPerms(array, size, [], output);
 	return output;
-}
+};
 
 ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 	var i, len, j, len2, coords = { x: initCoords.x, y: initCoords.y },
@@ -909,9 +910,9 @@ ui_improver.calculateDirectionlessMove = function(initCoords, initStep) {
 		}
 		ui_improver.moveCoords(coords, this.chronicles[i]);
 	}
-	
+
 	var variations = this.getAllRPerms('nesw'.split(''),directionless);
-	
+
 	for (i = 0, len = variations.length; i < len; i++) {
 		//worker.console.log('trying combo '+variations[i].join());
 		coords = { x: initCoords.x, y: initCoords.y };
@@ -943,7 +944,9 @@ ui_improver.colorDungeonMap = function() {
 };
 ui_improver.colorDungeonMapTimer = null;
 ui_improver.colorDungeonMapInternal = function() {
-	if (!ui_data.isDungeon) return;
+	if (!ui_data.isDungeon) {
+		return;
+	}
 	ui_improver.improveMap();
 	var step, mark_no, marks_length, steptext, lasttext, titlemod, titletext, currentCell,
 		trapMoveLossCount = 0,
@@ -971,9 +974,9 @@ ui_improver.colorDungeonMapInternal = function() {
 		//currentCell.title += (currentCell.title.length ? '\n\n' : '') + '#' + step + ' : ' + this.chronicles[step].text;
 		steptext = this.chronicles[step].text.replace('.»','».').replace(/(\!»|\?»)/g,'$1.'); // we're not going to do natural language processing, so just simplify nested sentence (yeah, result will be a bit incorrect)
 		steptext = steptext.match(/[^\.]+[\.]+/g);
-		if (step == 1) {
+		if (step === 1) {
 			steptext = steptext.slice(0,-1);
-		} else if (step == steps_max) {
+		} else if (step === steps_max) {
 			steptext = steptext.slice(1);
 		} else if (this.chronicles[step].marks.indexOf('boss') !== -1) {
 			steptext = steptext.slice(1,-2);
@@ -990,10 +993,11 @@ ui_improver.colorDungeonMapInternal = function() {
 		}
 		steptext = steptext.join('').trim();
 		if (currentCell.title.length) {
-			titlemod = false, titletext = currentCell.title.split('\n');
+			titlemod = false;
+			titletext = currentCell.title.split('\n');
 			for (var i = 0, len = titletext.length; i < len; i++) {
 				lasttext = titletext[i].match(/^(.*?) : (.*?)$/);
-				if (lasttext && lasttext[2] == steptext) {
+				if (lasttext && lasttext[2] === steptext) {
 					titletext[i] = lasttext[1] + ', #' + step + ' : ' + steptext;
 					titlemod = true;
 					break;
@@ -1029,8 +1033,14 @@ ui_improver.whenWindowResize = function() {
 	worker.$('body').width(worker.$(worker).width() < worker.$('#main_wrapper').width() ? worker.$('#main_wrapper').width() : '');
 };
 ui_improver._clockToggle = function(e) {
-	e && e.stopPropagation();
-	if (!ui_improver.clockToggling) ui_improver.clockToggling = true; else return;
+	if (e) {
+		e.stopPropagation();
+	}
+	if (!ui_improver.clockToggling) {
+		ui_improver.clockToggling = true;
+	} else {
+		return;
+	}
 	var restoreText, clockElem = worker.$('#control .block_title');
 	if (ui_improver.clock) {
 		worker.clearInterval(ui_improver.clock.updateTimer);
@@ -1050,7 +1060,7 @@ ui_improver._clockToggle = function(e) {
 			clockElem.text('--:--:--').fadeIn(500);
 			clockElem.prop('title', worker.GUIp_i18n.hide_godville_clock);
 			ui_improver.clock.timeBegin = new Date();
-			ui_improver.clock.useGVT = (document.location.protocol == 'https:');
+			ui_improver.clock.useGVT = (document.location.protocol === 'https:');
 			if (ui_improver.clock.useGVT) {
 				ui_utils.getXHR('/forums', ui_improver._clockSync, function(xhr) {ui_improver.clockToggling = false; ui_improver._clockToggle(e);}); /* syncing this way is too inaccurate unfortunately */
 			} else {
@@ -1089,7 +1099,7 @@ ui_improver._clockUpdate = function() {
 		clockElem.text(ui_utils.formatClock(godvilleTime) + ' (via GVT)');
 		clockElem.prop('title', worker.GUIp_i18n.warning_godville_clock);
 	}
-}
+};
 
 ui_improver.improveInterface = function() {
 	if (this.isFirstTime) {
@@ -1202,7 +1212,7 @@ ui_improver.improveAllies = function() {
 			anspan = document.createElement('span');
 			anspan.textContent = ally.hero;
 			anspan.title = ally.god;
-			if (ally.clan == ui_stats.guildName()) {
+			if (ally.clan === ui_stats.guildName()) {
 				anspan.className = "guildsmanAlly";
 			}
 			opp_n.textContent = '';
@@ -1359,40 +1369,49 @@ ui_improver.initOverrides = function() {
 			}
 		};
 	}
-	if (ui_storage.get('Option:enablePmAlerts') && worker.GUIp_browser !== 'Opera' && Notification.permission === "granted")
-	setTimeout(function() {
-		// assume that all messages are loaded at this point, make a list of existing unread ones
-		for (var contact in worker.so.messages.h_friends) {
-			var hfriend = worker.so.messages.h_friends[contact];
-			if (hfriend.ms == "upd" && hfriend.msg) {
-				ui_improver.pmNoted[contact] = hfriend.msg.id;
+	if (ui_storage.get('Option:enablePmAlerts') && worker.GUIp_browser !== 'Opera' && worker.Notification.permission === "granted") {
+		worker.setTimeout(function() {
+			// assume that all messages are loaded at this point, make a list of existing unread ones
+			for (var contact in worker.so.messages.h_friends) {
+				var hfriend = worker.so.messages.h_friends[contact];
+				if (hfriend.ms === "upd" && hfriend.msg) {
+					ui_improver.pmNoted[contact] = hfriend.msg.id;
+				}
 			}
-		}
-		// replace original messages update with modified one
-		if (worker.so && worker.so.messages.nm.notify) {
-			worker.so.messages.nm.notify_orig = worker.so.messages.nm.notify;
-			worker.so.messages.nm.notify = function() {
-				// check for a new messages in the updated list and inform about them
-				if (arguments[0] == "messages")
-				for (var contact in worker.so.messages.h_friends) {
-					var hfriend = worker.so.messages.h_friends[contact];
-					if (hfriend.ms == "upd" && hfriend.msg.from == contact && (!ui_improver.pmNoted[contact] || (ui_improver.pmNoted[contact] < hfriend.msg.id))) {
-						ui_improver.pmNoted[contact] = hfriend.msg.id;
-						// show a notification if chat with contact is closed OR godville tab is unfocused
-						// (we're NOT using document.hidden because it returns false when tab is active but the whole browser window unfocused)
-						if (ui_utils.getCurrentChat() != contact || !document.hasFocus()) {
-							var title = '[PM] ' + contact,
-								text = hfriend.msg.msg.substring(0,200) + (hfriend.msg.msg.length > 200 ? '...' : ''),
-								callback = function(cname) { return function() { if (ui_utils.getCurrentChat() != cname) ui_utils.openChatWith(cname); }; }(contact);
-							ui_utils.showNotification(title,text,callback);
+			// replace original messages update with modified one
+			if (worker.so && worker.so.messages.nm.notify) {
+				worker.so.messages.nm.notify_orig = worker.so.messages.nm.notify;
+				worker.so.messages.nm.notify = function() {
+					// check for a new messages in the updated list and inform about them
+					if (arguments[0] === "messages") {
+						var callback_fn = function(cname) {
+							return function() {
+								if (ui_utils.getCurrentChat() !== cname) {
+									ui_utils.openChatWith(cname);
+								}
+							};
+						};
+						for (var contact in worker.so.messages.h_friends) {
+							var hfriend = worker.so.messages.h_friends[contact];
+							if (hfriend.ms === "upd" && hfriend.msg.from === contact && (!ui_improver.pmNoted[contact] || (ui_improver.pmNoted[contact] < hfriend.msg.id))) {
+								ui_improver.pmNoted[contact] = hfriend.msg.id;
+								// show a notification if chat with contact is closed OR godville tab is unfocused
+								// (we're NOT using document.hidden because it returns false when tab is active but the whole browser window unfocused)
+								if (ui_utils.getCurrentChat() !== contact || !document.hasFocus()) {
+									var title = '[PM] ' + contact,
+									    text = hfriend.msg.msg.substring(0,200) + (hfriend.msg.msg.length > 200 ? '...' : ''),
+									    callback = callback_fn(contact);
+									ui_utils.showNotification(title,text,callback);
+								}
+							}
 						}
 					}
-				}
-				// return original result in case it will appear some time
-				return worker.so.messages.nm.notify_orig.apply(this, arguments);
+					// return original result in case it will appear some time
+					return worker.so.messages.nm.notify_orig.apply(this, arguments);
+				};
 			}
-		}
-	}, 2000);
+		}, 2000);
+	}
 };
 ui_improver.activity = function() {
 	if (!ui_logger.updating) {

@@ -44,7 +44,7 @@ ui_stats.Enemy_Count = function() {
 		enemies_cnt++;
 	}
 	return enemies_cnt;
-}
+};
 ui_stats.Enemy_AliveCount = function() {
 	var enemies_cnt = 0;
 	for (var opp in worker.so.state.opps) {
@@ -53,7 +53,7 @@ ui_stats.Enemy_AliveCount = function() {
 		}
 	}
 	return enemies_cnt;
-}
+};
 ui_stats.Equip1 = function() {
 	return +worker.so.state.equipment.weapon.level;
 };
@@ -159,7 +159,7 @@ ui_stats.Savings = function() {
 		if (savingsValue) {
 			return 1000 * savingsValue[2] + 1 * savingsValue[3];
 		} else {
-			return parseInt(worker.so.state.stats.retirement.value)
+			return parseInt(worker.so.state.stats.retirement.value);
 		}
 	}
 	return null;
@@ -175,7 +175,7 @@ ui_stats.godName = function() {
 };
 ui_stats.guildName = function() {
 	return worker.so.state.stats.clan && worker.so.state.stats.clan.value;
-}
+};
 ui_stats.goldTextLength = function() {
 	return worker.so.state.stats.gold_we.value.length;
 };
@@ -205,4 +205,4 @@ ui_stats.logId = function() {
 };
 ui_stats.townName = function() {
 	return worker.so.state.stats.town_name && worker.so.state.stats.town_name.value;
-}
+};

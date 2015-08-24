@@ -121,7 +121,7 @@ ui_informer.update = function(flag, value) {
 				ui_informer._tick();
 			}
 			/* [E] desktop notifications */
-			if (ui_storage.get('Option:enableInformerAlerts') && worker.GUIp_browser !== 'Opera' && Notification.permission === "granted") {
+			if (ui_storage.get('Option:enableInformerAlerts') && worker.GUIp_browser !== 'Opera' && worker.Notification.permission === "granted") {
 				var title = '[INFO] ' + ui_data.god_name,
 					text = flag,
 					callback = function(){ui_informer.hide(flag);};

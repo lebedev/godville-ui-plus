@@ -4,15 +4,15 @@ var ui_words = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "
 ui_words.currentPhrase = '';
 // gets words from phrases.js file and splits them into sections
 ui_words.init = function() {
-	var text, customSects = ['pets','chosen_monsters','special_monsters'];
+	var sect, text, customSects = ['pets','chosen_monsters','special_monsters'];
 	this.base = worker.GUIp_words();
-	for (var sect in this.base.phrases) {
+	for (sect in this.base.phrases) {
 		text = ui_storage.get('CustomPhrases:' + sect);
 		if (text && text !== "") {
 			this.base.phrases[sect] = text.split("||");
 		}
 	}
-	for (var sect in customSects) {
+	for (sect in customSects) {
 		text = ui_storage.get('CustomWords:' + customSects[sect]);
 		if (text && text !== "") {
 			try {
