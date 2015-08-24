@@ -264,11 +264,11 @@ return '<p>\n' +
 '					<div class="l_capt">' + worker.GUIp_i18n.enable_desktop_alerts + '</div>\n' +
 '				</div>\n' +
 '				<div class="new_line">\n' +
-'					<div class="g_desc">\n' + 
+'					<div class="g_desc">\n' +
 '						<input id="enable_informer_alerts" name="enable_informer_alerts" class="option-checkbox ksmall" type="checkbox">\n' +
 '						<label for="enable_informer_alerts">' + worker.GUIp_i18n.enable_informer_alerts + '</label>\n' +
 '					</div>\n' +
-'					<div class="g_desc">\n' + 
+'					<div class="g_desc">\n' +
 '						<input id="enable_pm_alerts" name="enable_pm_alerts" class="option-checkbox ksmall" type="checkbox">\n' +
 '						<label for="enable_pm_alerts">' + worker.GUIp_i18n.enable_pm_alerts + '</label>\n' +
 '					</div>\n' +

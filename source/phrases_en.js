@@ -208,7 +208,7 @@ worker.GUIp_words = function() {
 		{name: 'Inner Demon', min_level: 90},
 		{name: 'Thesaurus Rex', min_level: 101}
 	],
-	
+
 	special_monsters: [
 		'Bricked','Enlightened','Glowing','Healing','Holiday',
 		'Loaded','Questing','Shedding','Smith','Wealthy'

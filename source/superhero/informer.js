@@ -107,7 +107,7 @@ ui_informer._updateTitle = function(activeFlags) {
 	document.title = ui_informer._getTitleNotices() + sep + ' ' + activeFlags.join('! ') + ' ' + sep;
 	if (worker.GUIp_browser !== 'Opera') {
 		this.favicon.href = this.odd_tick ? 'images/favicon.ico'
-										  : 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
+		                                  : 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
 	}
 };
 ui_informer.update = function(flag, value) {
