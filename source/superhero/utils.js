@@ -155,13 +155,13 @@ ui_utils.messages = {
 		}
 	},
 	{
-		msg_no: 8, // 0..7 are used
-		title: 'Godville UI+: Разработка прекращена',
-		content: '<div style="text-align: justify;">&emsp;Вы ничего не можете с этим поделать.</div>' +
+		msg_no: 9, // 0..8 are used
+		title: 'Godville UI+: Разработка возобновлена',
+		content: '<div style="text-align: justify;">&emsp;~Ура!</div>' +
 				 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
 	}
 	/*{
-		msg_no: 9, // 0..8 are used
+		msg_no: 10, // 0..9 are used
 		title: 'Godville UI+: Заголовок',
 		content: '<div style="text-align: justify;">&emsp;Текст.</div>' +
 				 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
@@ -189,13 +189,13 @@ ui_utils.messages = {
 		}
 	},
 	{
-		msg_no: 3, // 0..2 are used
-		title: 'Godville UI+: The Development is Discontinued',
-		content: '<div style="text-align: justify;">&emsp;And you can\'t do anything with it.</div>' +
+		msg_no: 4,
+		title: 'Godville UI+: The Development is Сontinued',
+		content: '<div style="text-align: justify;">&emsp;~Yay.</div>' +
 				 '<div style="text-align: right;">Signature.<br>~~Bad Luck</div>'
 	}
 	/*{
-		msg_no: 4, // 0..3 are used
+		msg_no: 5, // 0..4 are used
 		title: 'Godville UI+: Title',
 		content: '<div style="text-align: justify;">&emsp;Text.</div>' +
 				 '<div style="text-align: right;">Signature.<br>~~Bad Luck</div>'
