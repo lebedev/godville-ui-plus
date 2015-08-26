@@ -13,7 +13,7 @@ ui_stats.Death = function() {
 	return worker.so.state.stats.death_count.value;
 };
 ui_stats.Enemy_Gold = function() {
-	return worker.so.state.o_stats.gold.value;
+	return worker.so.state.o_stats.gold && worker.so.state.o_stats.gold.value || 0;
 };
 ui_stats.Enemy_HP = function() {
 	var opps_hp = 0;
@@ -26,7 +26,7 @@ ui_stats.EnemySingle_HP = function(enemy) {
 	return worker.so.state.opps[enemy-1] && worker.so.state.opps[enemy-1].hp || 0;
 };
 ui_stats.Enemy_Inv = function() {
-	return worker.so.state.o_stats.inventory_num.value;
+	return worker.so.state.o_stats.inventory_num && worker.so.state.o_stats.inventory_num.value || 0;
 };
 ui_stats.Enemy_HasAbility = function(ability) {
 	for (var opp in worker.so.state.opps) {

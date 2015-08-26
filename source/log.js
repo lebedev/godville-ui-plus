@@ -223,7 +223,7 @@ ui_log.parseChronicles = function() {
 		return;
 	}
 	var lastNotParsed, texts = [], infls = [],
-		matches = document.querySelector('#last_items_arena').innerHTML.match(/<div class="new_line"( style="[^"]*")?>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g),
+		matches = document.querySelector('#last_items_arena').innerHTML.match(/<div class="new_line ?"( style="[^"]*")?>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g),
 		reversed = !!location.href.match('sort=desc');
 	if (reversed) {
 		matches.reverse();
@@ -244,8 +244,8 @@ ui_log.parseChronicles = function() {
 		} else {
 			infls.push(matches[i].match(/<div class="text_content infl">([\s\S]+?)(<span|<\/div>)/)[1].trim().replace(/&#39;/g, "'"));
 		}
-		if (!reversed && matches[i].match(/<div class="new_line" style="[^"]+">/) ||
-			 reversed && (!matches[i+1] || matches[i+1].match(/<div class="new_line" style="[^"]+">/))) {
+		if (!reversed && matches[i].match(/<div class="new_line ?" style="[^"]+">/) ||
+			 reversed && (!matches[i+1] || matches[i+1].match(/<div class="new_line ?" style="[^"]+">/))) {
 			ui_log.parseSingleChronicle(texts, infls, step);
 			lastNotParsed = false;
 			texts = [];

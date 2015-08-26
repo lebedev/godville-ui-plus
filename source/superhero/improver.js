@@ -738,7 +738,7 @@ ui_improver.parseChronicles = function(xhr) {
 	var lastNotParsed, texts = [],
 		step = 1,
 		step_max = +worker.Object.keys(this.chronicles)[0],
-		matches = xhr.responseText.match(/<div class="new_line" style='[^']*'>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g);
+		matches = xhr.responseText.match(/<div class="new_line ?" style='[^']*'>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g);
 	worker.chronicles = matches;
 	worker.response = xhr.responseText;
 	for (var i = 0; step <= step_max; i++) {
@@ -746,7 +746,7 @@ ui_improver.parseChronicles = function(xhr) {
 		if (!matches[i].match(/<div class="text_content infl">/)) {
 			texts.push(matches[i].match(/<div class="text_content ">([\s\S]+?)<\/div>/)[1].trim().replace(/&#39;/g, "'"));
 		}
-		if (matches[i].match(/<div class="new_line" style='[^']+'>/)) {
+		if (matches[i].match(/<div class="new_line ?" style='[^']+'>/)) {
 			ui_improver.parseSingleChronicle(texts, step);
 			lastNotParsed = false;
 			texts = [];
