@@ -29,6 +29,8 @@
     <em:contributor>https://godville.net/gods/Neniu</em:contributor>
     <em:contributor>Шоп</em:contributor>
     <em:contributor>https://godville.net/gods/Шоп</em:contributor>
+    <em:contributor>Kreon</em:contributor>
+    <em:contributor>https://godville.net/gods/Kreon</em:contributor>
     <em:targetApplication RDF:resource="rdf:#firefox"/>
     <em:targetApplication RDF:resource="rdf:#fennec"/>
   </RDF:Description>
