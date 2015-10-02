@@ -636,7 +636,6 @@ worker.GUIp_i18n = {
 	localtime_godville_clock_desc: 'в часах вместо GMT+3',
 	show_godville_clock: 'Показать синхронизированное время',
 	hide_godville_clock: 'Скрыть синхронизированное время',
-	warning_godville_clock: 'Используется внутреннее время Годвилля, поскольку сервер синхронизации недоступен по протоколу HTTPS.',
 	enable_debug_mode: 'Включить режим отладки',
 	enable_debug_mode_desc: 'чисто девелоперская штучка',
 	apply: 'Применить',

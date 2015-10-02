@@ -514,7 +514,6 @@ worker.GUIp_i18n = {
 	localtime_godville_clock_desc: 'instead of GMT+3 offset',
 	show_godville_clock: 'Show Godville Clock',
 	hide_godville_clock: 'Hide Godville Clock',
-	warning_godville_clock: 'Using internal Godville time as external synchronization service is unavailable via HTTPS.',
 	enable_debug_mode: 'Enable debugging mode',
 	enable_debug_mode_desc: 'just for developers',
 	apply: 'Apply',

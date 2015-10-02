@@ -1060,12 +1060,7 @@ ui_improver._clockToggle = function(e) {
 			clockElem.text('--:--:--').fadeIn(500);
 			clockElem.prop('title', worker.GUIp_i18n.hide_godville_clock);
 			ui_improver.clock.timeBegin = new Date();
-			ui_improver.clock.useGVT = (document.location.protocol === 'https:');
-			if (ui_improver.clock.useGVT) {
-				ui_utils.getXHR('/forums', ui_improver._clockSync, function(xhr) {ui_improver.clockToggling = false; ui_improver._clockToggle(e);}); /* syncing this way is too inaccurate unfortunately */
-			} else {
-				ui_utils.getXHR('http://time.akamai.com/?iso', ui_improver._clockSync, function(xhr) {ui_improver.clockToggling = false; ui_improver._clockToggle();});
-			}
+			ui_utils.getXHR('//time.akamai.com/?iso', ui_improver._clockSync, function(xhr) {ui_improver.clockToggling = false; ui_improver._clockToggle();});
 		});
 	}
 };
@@ -1093,12 +1088,7 @@ ui_improver._clockUpdate = function() {
 	}
 	var clockElem = worker.$('#control .block_title'),
 		godvilleTime = new Date(currentTime.getTime() + ui_improver.clock.timeDiff);
-	if (!ui_improver.clock.useGVT) {
-		clockElem.text(ui_utils.formatClock(godvilleTime));
-	} else {
-		clockElem.text(ui_utils.formatClock(godvilleTime) + ' (via GVT)');
-		clockElem.prop('title', worker.GUIp_i18n.warning_godville_clock);
-	}
+	clockElem.text(ui_utils.formatClock(godvilleTime));
 };
 
 ui_improver.improveInterface = function() {

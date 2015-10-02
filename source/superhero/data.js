@@ -70,9 +70,7 @@ ui_data._clearOldDungeonData = function() {
 };
 ui_data._getLEMRestrictions = function() {
 	if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
-		if (document.location.protocol !== 'https:') {
-			ui_utils.getXHR('http://www.godalert.info/Dungeons/guip.cgi', ui_data._parseLEMRestrictions); // via https this won't work anyway and just produce an error in the console
-		}
+		ui_utils.getXHR('//www.godalert.info/Dungeons/guip.cgi', ui_data._parseLEMRestrictions);
 	}
 };
 ui_data._parseLEMRestrictions = function(xhr) {

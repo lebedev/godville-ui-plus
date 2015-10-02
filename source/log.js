@@ -741,7 +741,7 @@ ui_log.saverRemoveLoader = function() {
 ui_log.saverPrepareLog = function(svc) {
 	ui_log.saverURL = '//gdvl.tk/upload.php';
 	ui_log.saverBanner = 'до тепловой смерти Вселенной (или пока не умрет сервер) благодаря <a href="//godville.net/gods/Mave">Mave</a> и <a href="//godville.net/gods/Бэдлак">Бэдлаку</a>';
-	ui_log.saverLoaderGIF = 'http://gdvl.tk/images/loader.gif';
+	ui_log.saverLoaderGIF = '//gdvl.tk/images/loader.gif';
 	try {
 		ui_log.saverLogId = (location.href.match(/^https?:\/\/godville.net\/duels\/log\/(.{5})/) || [])[1];
 		ui_log.saverPages = [];
@@ -828,7 +828,7 @@ ui_log.starter = function() {
 			return;
 		}
 		$box.insertAdjacentHTML('beforeend',
-			'<form target="_blank" method="post" enctype="multipart/form-data" action="http://www.godalert.info/Dungeons/index' + (worker.GUIp_locale === 'en' ? '-eng' : '') + '.cgi" id="send_to_LEM_form" style="padding-top: calc(2em + 3px);">' +
+			'<form target="_blank" method="post" enctype="multipart/form-data" action="//www.godalert.info/Dungeons/index' + (worker.GUIp_locale === 'en' ? '-eng' : '') + '.cgi" id="send_to_LEM_form" style="padding-top: calc(2em + 3px);">' +
 				'<input type="hidden" id="fight_text" name="fight_text">' +
 				'<input type="hidden" name="map_type" value="map_graphic">' +
 				'<input type="hidden" name="min" value="X">' +
