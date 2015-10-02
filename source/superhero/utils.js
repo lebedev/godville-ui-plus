@@ -67,34 +67,54 @@ ui_utils.popRandomItem = function(arr) {
 // Escapes HTML symbols
 ui_utils.escapeHTML = function(str) {
 	return String(str).replace(/&/g, "&amp;")
-					  .replace(/"/g, "&quot;")
-					  .replace(/</g, "&lt;")
-					  .replace(/>/g, "&gt;");
+	                  .replace(/"/g, "&quot;")
+	                  .replace(/</g, "&lt;")
+	                  .replace(/>/g, "&gt;");
 };
 ui_utils.addCSS = function () {
 	if (worker.GUIp_browser !== 'Opera' && !document.getElementById('ui_css')) {
 		worker.GUIp_addCSSFromURL(worker.GUIp_getResource('superhero.css'), 'guip_css');
 	}
 };
-ui_utils.getXHR = function(path, success_callback, fail_callback, extra_arg) {
+/* aParams: {
+	url:       string,
+	type:      'GET'|'POST',
+	postData:  string        [optional],
+	onSuccess: function      [optional],
+	onFail:    function      [optional]
+}*/
+ui_utils.sendXHR = function(aParams) {
 	var xhr = new XMLHttpRequest();
-	if (extra_arg) {
-		xhr.extra_arg = extra_arg;
-	}
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState < 4) {
 			return;
 		} else if (xhr.status === 200) {
-			if (success_callback) {
-				success_callback(xhr);
+			if (aParams.onSuccess) {
+				aParams.onSuccess(xhr);
 			}
-		} else if (fail_callback) {
-			fail_callback(xhr);
+		} else if (aParams.onFail) {
+			aParams.onFail(xhr);
 		}
 	};
 
-	xhr.open('GET', path, true);
-	xhr.send();
+	xhr.open(aParams.type, aParams.url, true);
+	if (aParams.type === 'GET') {
+		xhr.send();
+	} else {
+		//Send the proper header information along with the request
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.setRequestHeader("Content-length", aParams.postData.length);
+		xhr.setRequestHeader("Connection", "close");
+		xhr.send(aParams.postData);
+	}
+};
+ui_utils.getXHR = function(aParams) {
+	aParams.type = 'GET';
+	ui_utils.sendXHR(aParams);
+};
+ui_utils.postXHR = function(aParams) {
+	aParams.type = 'POST';
+	ui_utils.sendXHR(aParams);
 };
 ui_utils.showMessage = function(msg_no, msg) {
 	var id = 'msg' + msg_no;
