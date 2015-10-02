@@ -20,6 +20,8 @@ ui_trycatcher.process = function(object) {
 		method = object[method_name];
 		if (typeof method === "function") {
 			object[method_name] = ui_trycatcher.replaceWithImproved(method);
+			object[method_name].toSource = worker.Function.prototype.toSource.bind(method);
+			object[method_name].toString = worker.Function.prototype.toString.bind(method);
 		}
 	}
 };
