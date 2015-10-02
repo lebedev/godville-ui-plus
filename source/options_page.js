@@ -244,6 +244,7 @@ return '<p>\n' +
 '						<input class="item-informer informer-checkbox" id="aura_box" name="aura_box" type="checkbox"><label for="aura_box">' + worker.GUIp_i18n.forbidden_informers_aura_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="black_box" name="black_box" type="checkbox"><label for="black_box">' + worker.GUIp_i18n.forbidden_informers_black_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="boss_box" name="boss_box" type="checkbox"><label for="boss_box">' + worker.GUIp_i18n.forbidden_informers_boss_box + '</label><br>\n' +
+'						<input class="item-informer informer-checkbox" id="catch_box" name="catch_box" type="checkbox"><label for="catch_box">' + worker.GUIp_i18n.forbidden_informers_catch_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="charge_box" name="charge_box" type="checkbox"><label for="charge_box">' + worker.GUIp_i18n.forbidden_informers_charge_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="coolstory_box" name="coolstory_box" type="checkbox"><label for="coolstory_box">' + worker.GUIp_i18n.forbidden_informers_coolstory_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="friend_box" name="friend_box" type="checkbox"><label for="friend_box">' + worker.GUIp_i18n.forbidden_informers_friend_box + '</label><br>\n' +
