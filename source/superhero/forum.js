@@ -4,7 +4,7 @@ var ui_forum = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "
 ui_forum.init = function() {
 	document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
 	ui_forum._check();
-	worker.setInterval(ui_forum._check.bind(ui_forum), 5*60*1000);
+	worker.setInterval(ui_forum._check.bind(ui_forum), 2.5*60*1000);
 };
 ui_forum._check = function() {
 	var requests = 0;
