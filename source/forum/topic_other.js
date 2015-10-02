@@ -8,6 +8,18 @@ var checkHash = function() {
 		location.hash = post ? post.id : '';
 	}
 };
+var highlightCurrentPost = function() {
+	var highlighted = $C('highlighted');
+	if (highlighted.length) {
+		highlighted[0].classList.remove('highlighted');
+	}
+
+	var post_hash = location.hash.match(/#(post_\d+)/),
+	    post = post_hash ? $id(post_hash[1] + '-row') : null;
+	if (post) {
+		post.classList.add('highlighted');
+	}
+};
 var setPageWrapperPaddingBottom = function(el) {
 	var form = document.getElementById(el) || el,
 		old_height = parseFloat(getComputedStyle(form).height) || 0,
@@ -105,6 +117,8 @@ var updatePostsNumber = function() {
 };
 var improveTopic = function() {
 	checkHash();
+	highlightCurrentPost();
+	worker.onhashchange = highlightCurrentPost;
 	fixPageWrapperPadding();
 	picturesAutoreplace();
 	updatePostsNumber();

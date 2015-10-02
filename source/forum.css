@@ -91,3 +91,11 @@
 .post ol .img_container {
 	margin-left: -40px;
 }
+
+.post.highlighted {
+	background: #fbfbdb;
+	box-shadow: 0 0 5px gold;
+}
+.post.highlighted .author.vcard {
+	background: #f6f6ba;
+}
