@@ -13,7 +13,7 @@ ui_stats.Death = function() {
 	return worker.so.state.stats.death_count.value;
 };
 ui_stats.Enemy_Gold = function() {
-	return worker.so.state.o_stats.gold_we && worker.so.state.o_stats.gold_we.value && +worker.so.state.o_stats.gold_we.value.match(/\d+/)[0] || 0;
+	return worker.so.state.o_stats.gold_we && worker.so.state.o_stats.gold_we.value && +(worker.so.state.o_stats.gold_we.value.match(/\d+/) || [0])[0] || 0;
 };
 ui_stats.Enemy_HP = function() {
 	var opps_hp = 0;
