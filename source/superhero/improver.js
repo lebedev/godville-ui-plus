@@ -655,7 +655,10 @@ ui_improver.getDungeonPhrases = function() {
 	if (!ui_storage.get('Dungeon:pointerMarkerPhrases')) {
 		this.dungeonXHRCount++;
 		var customChronicler = ui_storage.get('Option:customDungeonChronicler') || '';
-		ui_utils.getXHR('/gods/' + (customChronicler.length >= 3 ? customChronicler : 'Dungeoneer'), ui_improver.parseDungeonPhrases.bind(ui_improver));
+		ui_utils.getXHR({
+			url: '/gods/' + (customChronicler.length >= 3 ? customChronicler : 'Dungeoneer'),
+			onSuccess: ui_improver.parseDungeonPhrases.bind(ui_improver)
+		});
 	} else {
 		for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
 			this[this.dungeonPhrases[i] + 'RegExp'] = new worker.RegExp(ui_storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
@@ -849,7 +852,10 @@ ui_improver.improveChronicles = function() {
 				this.needLog = false;
 				ui_improver.colorDungeonMap();
 			} else if (this.dungeonXHRCount < 5) {
-				ui_utils.getXHR('/duels/log/' + ui_stats.logId(), ui_improver.parseChronicles.bind(ui_improver));
+				ui_utils.getXHR({
+					url: '/duels/log/' + ui_stats.logId(),
+					onSuccess: ui_improver.parseChronicles.bind(ui_improver)
+				});
 			}
 		}
 		// informer
@@ -1060,7 +1066,14 @@ ui_improver._clockToggle = function(e) {
 			clockElem.text('--:--:--').fadeIn(500);
 			clockElem.prop('title', worker.GUIp_i18n.hide_godville_clock);
 			ui_improver.clock.timeBegin = new Date();
-			ui_utils.getXHR('//time.akamai.com/?iso', ui_improver._clockSync, function(xhr) {ui_improver.clockToggling = false; ui_improver._clockToggle();});
+			ui_utils.getXHR({
+				url: '//time.akamai.com/?iso',
+				onSuccess: ui_improver._clockSync,
+				onFail: function() {
+					ui_improver.clockToggling = false;
+					ui_improver._clockToggle();
+				}
+			});
 		});
 	}
 };

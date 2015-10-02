@@ -70,7 +70,10 @@ ui_data._clearOldDungeonData = function() {
 };
 ui_data._getLEMRestrictions = function() {
 	if (isNaN(ui_storage.get('LEMRestrictions:Date')) || Date.now() - ui_storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
-		ui_utils.getXHR('//www.godalert.info/Dungeons/guip.cgi', ui_data._parseLEMRestrictions);
+		ui_utils.getXHR({
+			url: '//www.godalert.info/Dungeons/guip.cgi',
+			onSuccess: ui_data._parseLEMRestrictions
+		});
 	}
 };
 ui_data._parseLEMRestrictions = function(xhr) {
@@ -83,7 +86,10 @@ ui_data._parseLEMRestrictions = function(xhr) {
 ui_data._getWantedMonster = function() {
 	if (isNaN(ui_storage.get('WantedMonster:Date')) ||
 		ui_utils.dateToMoscowTimeZone(+ui_storage.get('WantedMonster:Date')) < ui_utils.dateToMoscowTimeZone(Date.now())) {
-		ui_utils.getXHR('/news', ui_data._parseWantedMonster);
+		ui_utils.getXHR({
+			url: '/news',
+			onSuccess: ui_data._parseWantedMonster
+		});
 	} else {
 		ui_improver.wantedMonsters = new worker.RegExp(ui_storage.get('WantedMonster:Value'));
 	}
