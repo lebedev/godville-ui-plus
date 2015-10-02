@@ -281,7 +281,12 @@ ui_utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCal
 	}
 };
 ui_utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCallback) {
-	ui_utils.getXHR('/forums/show/' + (worker.GUIp_locale === 'ru' ? '2' : '1'), ui_utils._parseVersion.bind(null, isNewestCallback, isNotNewestCallback, failCallback), failCallback);
+	ui_utils.postXHR({
+		url: '/forums/last_in_topics',
+		postData: 'topic_ids[]=' + (worker.GUIp_locale === 'ru' ? '2812' : '2800'),
+		onSuccess: ui_utils._parseVersion.bind(null, isNewestCallback, isNotNewestCallback, failCallback),
+		onFail: failCallback
+	});
 };
 
 ui_utils.processError = function(error, isDebugMode) {

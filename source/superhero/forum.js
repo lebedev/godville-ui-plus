@@ -7,13 +7,20 @@ ui_forum.init = function() {
 	worker.setInterval(ui_forum._check.bind(ui_forum), 5*60*1000);
 };
 ui_forum._check = function() {
+	var requests = 0;
 	for (var forum_no = 1; forum_no <= (worker.GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
 		var current_forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
 			topics = [];
 		for (var topic in current_forum) {
-			// to prevent simultaneous ForumInformers access
-			worker.setTimeout(ui_utils.getXHR.bind(ui_forum, '/forums/show/' + forum_no, ui_forum._parse.bind(ui_forum), undefined, forum_no), 500*forum_no);
-			break;
+			topics.push('topic_ids[]=' + topic);
+		}
+		for (var i = 0, len = topics.length; i < len; i += 10) {
+			var postData = topics.slice(i, i + 10).join('&');
+			worker.setTimeout(ui_utils.postXHR.bind(null, {
+				url: '/forums/last_in_topics',
+				postData: postData,
+				onSuccess: ui_forum._parse.bind(forum_no)
+			}), 500*requests++);
 		}
 	}
 };
