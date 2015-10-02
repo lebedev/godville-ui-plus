@@ -34,6 +34,9 @@ ui_help._createButtons = function() {
 		ui_help._addDumpButton('<span>, </span>', 'logger', 'Logger');
 		ui_help._addDumpButton('<span>, </span>', 'forum', 'Forum');
 		ui_help._addDumpButton('<span>, </span>', 'log', 'Log:');
+
+		document.getElementsByClassName('hint_bar_content')[0].insertAdjacentHTML('beforeend', '<div><a class="devel_link" id="force_forum_check">force forum check</a></div>');
+		document.getElementById('force_forum_check').onclick = ui_forum._check;
 	}
 	ui_help._addToggleButton(document.getElementsByClassName('hint_bar_close')[0], worker.GUIp_i18n.close);
 };
