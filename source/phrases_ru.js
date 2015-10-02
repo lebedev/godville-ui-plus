@@ -636,6 +636,8 @@ worker.GUIp_i18n = {
 	localtime_godville_clock_desc: 'в часах вместо GMT+3',
 	show_godville_clock: 'Показать синхронизированное время',
 	hide_godville_clock: 'Скрыть синхронизированное время',
+	disable_favicon_flashing: 'Выключить моргание фавиконки',
+	disable_favicon_flashing_desc: 'для тех, кого это раздражает',
 	enable_debug_mode: 'Включить режим отладки',
 	enable_debug_mode_desc: 'чисто девелоперская штучка',
 	apply: 'Применить',

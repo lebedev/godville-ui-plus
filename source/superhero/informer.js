@@ -105,9 +105,11 @@ ui_informer._updateTitle = function(activeFlags) {
 	this.odd_tick = !this.odd_tick;
 	var sep = this.odd_tick ? '!!!' : '...';
 	document.title = ui_informer._getTitleNotices() + sep + ' ' + activeFlags.join('! ') + ' ' + sep;
-	if (worker.GUIp_browser !== 'Opera') {
+	if (worker.GUIp_browser !== 'Opera' && !ui_storage.get('Option:disableFaviconFlashing')) {
 		this.favicon.href = this.odd_tick ? 'images/favicon.ico'
 		                                  : 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
+	} else if (this.favicon.href !== 'images/favicon.ico') {
+		this.favicon.href = 'images/favicon.ico';
 	}
 };
 ui_informer.update = function(flag, value) {

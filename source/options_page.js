@@ -3,7 +3,8 @@
 
 var worker = window.wrappedJSObject || window;
 worker.getOptionsPage = function() {
-var isEN = worker.GUIp_locale === 'en';
+var isEN = worker.GUIp_locale === 'en',
+	isOpera = worker.GUIp_browser === 'Opera';
 return '<p>\n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=settings\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + worker.GUIp_i18n.profile_menu_settings + '</a> | \n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=informers\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + worker.GUIp_i18n.profile_menu_informers + '</a> | \n' +
@@ -348,6 +349,17 @@ return '<p>\n' +
 '				<div class="new_line" id="localtime_godville_clock_desc">\n' +
 '					<div class="g_desc">' + worker.GUIp_i18n.localtime_godville_clock_desc + '</div>\n' +
 '				</div>\n' +
+(isOpera ? '' :
+	'			<div class="new_line">\n' +
+	'				<label class="l_capt" for="disable_favicon_flashing">' + worker.GUIp_i18n.disable_favicon_flashing + '</label>\n' +
+	'				<div class="field_content">\n' +
+	'					<input id="disable_favicon_flashing" name="disable_favicon_flashing" class="option-checkbox" type="checkbox">\n' +
+	'				</div>\n' +
+	'			</div>\n' +
+	'			<div class="new_line">\n' +
+	'				<div class="g_desc">' + worker.GUIp_i18n.disable_favicon_flashing_desc + '</div>\n' +
+	'			</div>\n'
+) +
 '				<div class="new_line">\n' +
 '					<label class="l_capt" for="enable_debug_mode">' + worker.GUIp_i18n.enable_debug_mode + '</label>\n' +
 '					<div class="field_content">\n' +
