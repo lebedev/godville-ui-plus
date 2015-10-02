@@ -3,6 +3,7 @@
 
 var worker = window.wrappedJSObject || window;
 worker.getOptionsPage = function() {
+var isEN = worker.GUIp_locale === 'en';
 return '<p>\n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=settings\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + worker.GUIp_i18n.profile_menu_settings + '</a> | \n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=informers\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + worker.GUIp_i18n.profile_menu_informers + '</a> | \n' +
@@ -240,13 +241,13 @@ return '<p>\n' +
 '						<input class="informer-checkbox" id="guild_quest" name="guild_quest" type="checkbox"><label for="guild_quest">' + worker.GUIp_i18n.forbidden_informers_guild_quest + '</label><br>\n' +
 '						<input class="informer-checkbox" id="mini_quest" name="mini_quest" type="checkbox"><label for="mini_quest">' + worker.GUIp_i18n.forbidden_informers_mini_quest + '</label><br>\n' +
 '						<b>' + worker.GUIp_i18n.forbidden_informers_usable_items + '</b> (' + worker.GUIp_i18n.forbidden_informers_check + ' <a id="check_all" style="cursor: pointer;">' + worker.GUIp_i18n.forbidden_informers_check_all + '</a> ' + worker.GUIp_i18n.forbidden_informers_or + ' <a id="uncheck_all" style="cursor: pointer;">' + worker.GUIp_i18n.forbidden_informers_check_none + '</a>):<br>\n' +
-'						<input class="item-informer informer-checkbox" id="arena_box" name="arena_box" type="checkbox"><label for="arena_box">' + worker.GUIp_i18n.forbidden_informers_arena_box + '</label><br>\n' +
+(isEN ? '' : '			<input class="item-informer informer-checkbox" id="arena_box" name="arena_box" type="checkbox"><label for="arena_box">' + worker.GUIp_i18n.forbidden_informers_arena_box + '</label><br>\n') +
 '						<input class="item-informer informer-checkbox" id="aura_box" name="aura_box" type="checkbox"><label for="aura_box">' + worker.GUIp_i18n.forbidden_informers_aura_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="black_box" name="black_box" type="checkbox"><label for="black_box">' + worker.GUIp_i18n.forbidden_informers_black_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="boss_box" name="boss_box" type="checkbox"><label for="boss_box">' + worker.GUIp_i18n.forbidden_informers_boss_box + '</label><br>\n' +
-'						<input class="item-informer informer-checkbox" id="catch_box" name="catch_box" type="checkbox"><label for="catch_box">' + worker.GUIp_i18n.forbidden_informers_catch_box + '</label><br>\n' +
+(isEN ? '' : '			<input class="item-informer informer-checkbox" id="catch_box" name="catch_box" type="checkbox"><label for="catch_box">' + worker.GUIp_i18n.forbidden_informers_catch_box + '</label><br>\n') +
 '						<input class="item-informer informer-checkbox" id="charge_box" name="charge_box" type="checkbox"><label for="charge_box">' + worker.GUIp_i18n.forbidden_informers_charge_box + '</label><br>\n' +
-'						<input class="item-informer informer-checkbox" id="coolstory_box" name="coolstory_box" type="checkbox"><label for="coolstory_box">' + worker.GUIp_i18n.forbidden_informers_coolstory_box + '</label><br>\n' +
+(isEN ? '' : '			<input class="item-informer informer-checkbox" id="coolstory_box" name="coolstory_box" type="checkbox"><label for="coolstory_box">' + worker.GUIp_i18n.forbidden_informers_coolstory_box + '</label><br>\n') +
 '						<input class="item-informer informer-checkbox" id="friend_box" name="friend_box" type="checkbox"><label for="friend_box">' + worker.GUIp_i18n.forbidden_informers_friend_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="gift_box" name="gift_box" type="checkbox"><label for="gift_box">' + worker.GUIp_i18n.forbidden_informers_gift_box + '</label><br>\n' +
 '						<input class="item-informer informer-checkbox" id="good_box" name="good_box" type="checkbox"><label for="good_box">' + worker.GUIp_i18n.forbidden_informers_good_box + '</label><br>\n' +
