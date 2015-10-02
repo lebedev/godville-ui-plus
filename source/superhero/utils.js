@@ -79,9 +79,9 @@ ui_utils.addCSS = function () {
 /* aParams: {
 	url:       string,
 	type:      'GET'|'POST',
-	postData:  string        [optional],
-	onSuccess: function      [optional],
-	onFail:    function      [optional]
+	postData:  string   [optional],
+	onSuccess: function [optional],
+	onFail:    function [optional]
 }*/
 ui_utils.sendXHR = function(aParams) {
 	var xhr = new XMLHttpRequest();

@@ -67,40 +67,39 @@ ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
 	informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
 };
 ui_forum._parse = function(xhr) {
-	var diff, temp, old_diff, topic_name, posts, date, last_poster,
-		topics = JSON.parse(ui_storage.get('Forum' + xhr.extra_arg)),
-		informers = JSON.parse(ui_storage.get('ForumInformers'));
-	for (var topic in topics) {
-		temp = xhr.responseText.match("show_topic\\/" + topic + "[^\\d>]+>([^<]+)(?:.*?\\n*?)*?<td class=\"ca inv stat\">(\\d+)<\\/td>(?:.*?\\n*?)*?<abbr class=\"updated\" title=\"([^\"]+)(?:.*?\\n*?)*?<strong class=\"fn\">([^<]+)<\\/strong>(?:.*?\\n*?)*?show_topic\\/" + topic);
-		if (temp) {
-			topic_name = temp[1].replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-			posts = +temp[2];
-			date = temp[3];
-			last_poster = temp[4];
+	var responseJSON = JSON.parse(xhr.responseText);
+	if (responseJSON.status !== 'success' || !responseJSON.topics) {
+		return;
+	}
 
-			diff = posts - topics[topic].posts;
+	var forum_no = this,
+	    forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
+	    informers = JSON.parse(ui_storage.get('ForumInformers')),
+	    topics = responseJSON.topics,
+	    diff, topic;
+	for (var topic_no in topics) {
+		topic = topics[topic_no];
+		diff = topic.cnt - forum[topic_no].posts;
 
-			if (diff <= 0 && topics[topic].date && (new Date(topics[topic].date) < new Date(date))) {
-				diff = 1;
-			}
+		if (diff <= 0 && forum[topic_no].date && (worker.Date(forum[topic_no].date) < worker.Date(topic.last_post_at))) {
+			diff = 1;
+		}
 
-			topics[topic].posts = posts;
-			topics[topic].date = date;
+		forum[topic_no].posts = topic.cnt;
+		forum[topic_no].date = topic.last_post_at;
 
-			if (diff > 0) {
-				if (last_poster !== ui_data.god_name) {
-					old_diff = informers[topic] ? informers[topic].diff : 0;
-					informers[topic] = { diff: old_diff + diff, name: topic_name };
-				} else {
-					delete informers[topic];
-				}
-			}
-			if (diff < 0) {
-				delete informers[topic];
+		if (diff > 0) {
+			if (topic.last_post_by !== ui_data.god_name) {
+				informers[topic_no] = {
+					diff: diff + (informers[topic_no] ? informers[topic_no].diff : 0),
+					name: topic.title
+				};
+			} else {
+				delete informers[topic_no];
 			}
 		}
 	}
 	ui_storage.set('ForumInformers', JSON.stringify(informers));
-	ui_storage.set('Forum' + xhr.extra_arg, JSON.stringify(topics));
-	ui_forum._process(xhr.extra_arg);
+	ui_storage.set('Forum' + forum_no, JSON.stringify(forum));
+	ui_forum._process(forum_no);
 };
