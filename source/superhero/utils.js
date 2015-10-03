@@ -103,8 +103,6 @@ ui_utils.sendXHR = function(aParams) {
 	} else {
 		//Send the proper header information along with the request
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhr.setRequestHeader("Content-length", aParams.postData.length);
-		xhr.setRequestHeader("Connection", "close");
 		xhr.send(aParams.postData);
 	}
 };
