@@ -547,8 +547,8 @@ worker.GUIp_i18n = {
 	import: 'Import',
 	export: 'Export',
 	// forum
-	Subscribe: 'Subscribe',
-	Unsubscribe: 'Unsubscribe',
+	Subscribe: 'subscribe',
+	Unsubscribe: 'unsubscribe',
 	subscribe: 'subscribe',
 	unsubscribe: 'unsubscribe',
 	bold_hint: 'Bold',
