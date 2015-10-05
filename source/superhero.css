@@ -188,6 +188,7 @@ body.th_nightly .ui_msg {
 #logger .hp { color: green; }
 #logger .gold { color: #ffd700; }
 #logger .monster { color: darkmagenta; }
+#logger .godmonster { color: darkmagenta; font-weight: bold; }
 #logger .death { color: red; }
 #logger .bricks { color: goldenrod; font-weight: bold; }
 #logger .logs { color: saddlebrown; font-weight: bold; }

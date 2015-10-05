@@ -414,6 +414,8 @@ worker.GUIp_i18n = {
 	talisman: 'Талисман',
 	death_count: 'Смерти',
 	pet_level: 'Уровень питомца',
+	females: 'Самки',
+	males: 'Самцы',
 	unknown_item_type_title: 'Неизвестный тип предмета в Godville UI+!',
 	unknown_item_type_content: 'Дополнение обнаружило в вашем инвентаре неизвестную доселе категорию предмета. Пожалуйста, сообщите разработчику следующее описание: ',
 	godpower_label: 'Прана',

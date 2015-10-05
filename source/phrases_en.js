@@ -293,6 +293,8 @@ worker.GUIp_i18n = {
 	talisman: 'Talisman',
 	death_count: 'Deaths',
 	pet_level: 'Pet level',
+	females: 'Females',
+	males: 'Males',
 	unknown_item_type_title: 'Unknow trophy type in Godville UI+!',
 	unknown_item_type_content: 'We have detected an unrecognized trophy type. Please report the following to the developer: ',
 	godpower_label: 'Godpower',

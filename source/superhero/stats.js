@@ -12,6 +12,9 @@ ui_stats.Hero_Charges = function() {
 ui_stats.Death = function() {
 	return worker.so.state.stats.death_count.value;
 };
+ui_stats.Females = function() {
+	return worker.so.state.stats.ark_f && worker.so.state.stats.ark_f.value || 0;
+};
 ui_stats.Enemy_Gold = function() {
 	return worker.so.state.o_stats.gold_we && worker.so.state.o_stats.gold_we.value && +(worker.so.state.o_stats.gold_we.value.match(/\d+/) || [0])[0] || 0;
 };
@@ -103,6 +106,9 @@ ui_stats.Level = function() {
 };
 ui_stats.Logs = function() {
 	return parseFloat(worker.so.state.stats.wood.value)*10;
+};
+ui_stats.Males = function() {
+	return worker.so.state.stats.ark_m && worker.so.state.stats.ark_m.value || 0;
 };
 ui_stats.Map_Alls_HP =
 ui_stats.Hero_Alls_HP = function() {

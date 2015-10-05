@@ -47,7 +47,9 @@ ui_logger.create = function() {
 		['Pet_Level', 'pet_level', worker.GUIp_i18n.pet_level, 'monster']
 	];
 	this.commonWatchers = [
-		['Godpower', 'gp', worker.GUIp_i18n.godpower]
+		['Females', 'females', worker.GUIp_i18n.females, 'godmonster'],
+		['Godpower', 'gp', worker.GUIp_i18n.godpower],
+		['Males', 'males', worker.GUIp_i18n.males, 'godmonster']
 	];
 };
 ui_logger._appendStr = function(id, klass, str, descr) {
