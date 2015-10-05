@@ -2,8 +2,7 @@
 var ui_utils = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "utils"}) : worker.GUIp.utils = {};
 
 ui_utils.notiLaunch = 0;
-ui_utils.hasShownErrorMessage = false;
-ui_utils.hasShownInfoMessage = false;
+ui_utils.messagesShown = [];
 // base phrase say algorythm
 ui_utils.setVoice = function(voice) {
 	this.voiceInput.value = voice;
@@ -116,6 +115,9 @@ ui_utils.postXHR = function(aParams) {
 };
 ui_utils.showMessage = function(msg_no, msg) {
 	var id = 'msg' + msg_no;
+	if (isNaN(msg_no)) {
+		ui_utils.messagesShown.push(msg_no);
+	}
 	document.getElementById('menu_bar').insertAdjacentHTML('afterend',
 		'<div id="' + id + '" class="hint_bar ui_msg">'+
 			'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
@@ -296,8 +298,7 @@ ui_utils.processError = function(error, isDebugMode) {
 	worker.console.error('Godville UI+ error log:\n' +
 						  name_message + '\n' +
 						  worker.GUIp_i18n.error_message_stack_trace + ': ' + stack);
-	if (!ui_utils.hasShownErrorMessage) {
-		ui_utils.hasShownErrorMessage = true;
+	if (!~ui_utils.messagesShown.indexOf('error')) {
 		ui_utils.showMessage('error', {
 			title: worker.GUIp_i18n.error_message_title,
 			content: (isDebugMode ? '<div><b class="debug_mode_warning">' + worker.GUIp_i18n.debug_mode_warning + '</b></div>' : '') +
@@ -331,15 +332,17 @@ ui_utils.processError = function(error, isDebugMode) {
 };
 
 ui_utils.informAboutOldVersion = function() {
-	ui_utils.showMessage('update_required', {
-		title: worker.GUIp_i18n.error_message_title,
-		content: '<div>' + worker.GUIp_i18n.error_message_in_old_version + '</div>',
-		callback: function() {
-			if (!ui_storage.get('helpDialogVisible')) {
-				ui_help.toggleDialog();
+	if (!~ui_utils.messagesShown.indexOf('update_required')) {
+		ui_utils.showMessage('update_required', {
+			title: worker.GUIp_i18n.error_message_title,
+			content: '<div>' + worker.GUIp_i18n.error_message_in_old_version + '</div>',
+			callback: function() {
+				if (!ui_storage.get('helpDialogVisible')) {
+					ui_help.toggleDialog();
+				}
 			}
-		}
-	});
+		});
+	}
 };
 
 ui_utils.showNotification = function(title,text,callback) {

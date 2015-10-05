@@ -77,8 +77,7 @@ ui_inventory._update = function() {
 			bold_items++;
 			if (sect !== -1) {
 				flags[sect] = true;
-			} else if (!ui_utils.hasShownInfoMessage) {
-				ui_utils.hasShownInfoMessage = true;
+			} else if (!~ui_utils.messagesShown.indexOf('info')) {
 				ui_utils.showMessage('info', {
 					title: worker.GUIp_i18n.unknown_item_type_title,
 					content: '<div>' + worker.GUIp_i18n.unknown_item_type_content + '<b>"' + item.description + '</b>"</div>'
