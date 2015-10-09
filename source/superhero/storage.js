@@ -95,3 +95,12 @@ ui_storage._delete = function(regexp) {
 };
 ui_storage.migrate = function() {
 };
+ui_storage._migratedAt = function(date) {
+	var lastMigrationDate = localStorage.getItem('GUIp:migrated');
+	if (lastMigrationDate && lastMigrationDate < date) {
+		localStorage.setItem('GUIp:migrated', date);
+		return true;
+	} else {
+		return false;
+	}
+};
