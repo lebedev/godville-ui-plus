@@ -56,7 +56,7 @@ ui_storage.clear = function(what) {
 							   'storage.clear("Godville") для удаления настроек Годвилля, сохранив настройки Godville UI+\n' +
 							   'storage.clear("All") для удаления всех настроек');
 		} else {
-			worker.console.log('Godville UI+: storage.clean usage:\n' +
+			worker.console.log('Godville UI+: storage.clear usage:\n' +
 							   'storage.clear("GUIp") to remove Godville UI+ setting only\n' +
 							   'storage.clear("Godville") to remove Godville setting and keep Godville UI+ settings\n' +
 							   'storage.clear("All") to remove all setting');
