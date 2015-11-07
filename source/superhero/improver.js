@@ -670,6 +670,10 @@ ui_improver.parseSingleChronicle = function(texts, step) {
 	if (!this.chronicles[step]) {
 		this.chronicles[step] = { direction: null, marks: [], pointers: [], jumping: false, directionless: false, text: texts.join(' ') };
 	}
+	// First step isn't an actual "step".
+	if (step === 1) {
+		return;
+	}
 	var i, len, j, len2, chronicle = this.chronicles[step];
 	for (j = 0, len2 = texts.length; j < len2; j++) {
 		texts[j] = texts[j].replace(/offered to trust h.. gut feeling\./, '');
