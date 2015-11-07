@@ -294,7 +294,7 @@ ui_utils.processError = function(error, isDebugMode) {
 		worker.console.warn(worker.GUIp_i18n.debug_mode_warning);
 	}
 	var name_message = error.name + ': ' + error.message,
-		stack = error.stack.replace(name_message, '').replace(/^\n|    at /g, '').replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1');
+		stack = 'no stacktrace' || error.stack && error.stack.replace(name_message, '').replace(/^\n|    at /g, '').replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1');
 	worker.console.error('Godville UI+ error log:\n' +
 						  name_message + '\n' +
 						  worker.GUIp_i18n.error_message_stack_trace + ': ' + stack);
