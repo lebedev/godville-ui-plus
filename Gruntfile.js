@@ -13,10 +13,10 @@ module.exports = function(grunt) {
       firefox: {
         files: [
           {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
-          {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/', filter: 'isFile'},
+          {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile'},
           {expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile'},
           {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/'},
-          {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'}
+          {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/data/'}
         ]
       },
       opera: {
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/chrome/'},
 
           {expand: true, cwd: 'source/firefox/', src: ['install.rdf', 'harness-options.json'], dest: '<%= compile_path %>/firefox/'},
-          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/resources/godville-ui-plus/data/'},
+          {expand: true, cwd: 'source/', src: 'superhero.js', dest: '<%= compile_path %>/firefox/data/'},
 
           {expand: true, cwd: 'source/opera/', src: 'config.xml', dest: '<%= compile_path %>/opera/'}
         ]
