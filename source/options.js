@@ -1,8 +1,6 @@
 (function() {
 'use strict';
 
-var worker = window.wrappedJSObject || window;
-
 var doc = document;
 
 var $id = function(id) {
@@ -55,10 +53,10 @@ var storage = {
 			for (var key in options) {
 				this.set(key, options[key]);
 			}
-			worker.alert(worker.GUIp_i18n.import_success);
+			alert(GUIp.i18n.import_success);
 			location.reload();
 		} catch(e) {
-			worker.alert(worker.GUIp_i18n.import_fail);
+			alert(GUIp.i18n.import_fail);
 		}
 	},
 	exportSettings: function() {
@@ -74,16 +72,16 @@ var storage = {
 
 function addMenu() {
 	if (!god_name) { return; }
-	if (!$id('ui_settings')) {
+	if (!$id('guip_settings')) {
 		var newNode;
 		newNode = doc.createTextNode(' | ');
 		$q('#profile_main p').appendChild(newNode);
 		newNode = doc.createElement('a');
-		newNode.id = 'ui_settings';
-		newNode.href = '#ui_settings';
-		newNode.textContent = worker.GUIp_i18n.ui_settings;
+		newNode.id = 'guip_settings';
+		newNode.href = '#guip_settings';
+		newNode.textContent = GUIp.i18n.guip_settings;
 		$q('#profile_main p').appendChild(newNode);
-		$id('ui_settings').onclick = loadOptions;
+		$id('guip_settings').onclick = loadOptions;
 	}
 }
 
@@ -96,10 +94,10 @@ var setAllCheckboxesToState = function(classname, state) {
 
 function loadOptions() {
 	if (!$id('profile_main')) {
-		worker.setTimeout(loadOptions, 100);
+		setTimeout(loadOptions, 100);
 		return;
 	}
-	$id('profile_main').innerHTML = worker.getOptionsPage();
+	$id('profile_main').innerHTML = GUIp.getOptionsPage();
 	setForm();
 	restore_options();
 	$id('forbidden_informers').onclick = function() {
@@ -112,7 +110,7 @@ function loadOptions() {
 	};
 	$id('relocate_duel_buttons').onclick = function() {
 		//jQuery('#relocate_duel_buttons_desc').slideToggle("slow");
-		worker.console.log($id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none');
+		console.log($id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none');
 		$id('relocate_duel_buttons_desc').style.display = $id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none';
 		//jQuery('#relocate_duel_buttons_choice').slideToggle("slow");
 		$id('relocate_duel_buttons_choice').style.display = $id('relocate_duel_buttons_choice').style.display === 'none' ? 'block' : 'none';
@@ -288,26 +286,26 @@ function saveOptions() {
 					storage.set('Option:useBackground', e.target.result);
 				};
 				reader.readAsDataURL(custom_file);
-				cb_status.textContent = worker.GUIp_i18n.bg_status_file;
+				cb_status.textContent = GUIp.i18n.bg_status_file;
 				cb_status.style.color = 'green';
 			} else if (custom_link) {
-				cb_status.textContent = worker.GUIp_i18n.bg_status_link;
+				cb_status.textContent = GUIp.i18n.bg_status_link;
 				cb_status.style.color = 'green';
 				storage.set('Option:useBackground', custom_link);
 			} else if (storage.get('Option:useBackground') && storage.get('Option:useBackground') !== 'cloud') {
-				cb_status.textContent = worker.GUIp_i18n.bg_status_same;
+				cb_status.textContent = GUIp.i18n.bg_status_same;
 				cb_status.style.color = 'blue';
 			} else {
-				cb_status.textContent = worker.GUIp_i18n.bg_status_error;
+				cb_status.textContent = GUIp.i18n.bg_status_error;
 				cb_status.style.color = 'red';
-				worker.setTimeout(function() {
+				setTimeout(function() {
 					$id('cloud_background').click();
 				}, 150);
 				storage.set('Option:useBackground', 'cloud');
 			}
 			//jQuery('#cb_status').fadeIn();
 			$id('cb_status').style.display = 'block';
-			worker.setTimeout(function() {
+			setTimeout(function() {
 				//jQuery('#cb_status').fadeOut();
 				$id('cb_status').style.display = 'none';
 			}, 1000);
@@ -393,7 +391,7 @@ function saveOptions() {
 	storage.set('Option:forbiddenCraft', forbiddenCraft.join());
 
 	//jQuery('#general_settings_spinner').fadeOut('slow');
-	worker.setTimeout(function() {
+	setTimeout(function() {
 		$id('general_settings_spinner').style.display = 'none';
 	}, 300);
 
@@ -451,7 +449,7 @@ function setUserCSSSaveButtonState() {
 
 // Restores select box state to saved value from localStorage
 function restore_options() {
-	var i, len, r = new worker.RegExp('^' + storage._get_key('Option:'));
+	var i, len, r = new RegExp('^' + storage._get_key('Option:'));
 	for (i = 0, len = localStorage.length; i < len; i++) {
 		if (localStorage.key(i).match(r)) {
 			var option = localStorage.key(i).replace(r, '');
@@ -592,14 +590,14 @@ function improve_blocks() {
 }
 
 function set_theme_and_background() {
-	var ui_s_css = document.getElementById('ui_s_css');
-	if (ui_s_css) {
-		ui_s_css.parentNode.removeChild(ui_s_css);
+	var guip_s_css = document.getElementById('guip_s_css');
+	if (guip_s_css) {
+		guip_s_css.parentNode.removeChild(guip_s_css);
 	}
-	worker.GUIp_addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'ui_s_css');
+	GUIp.addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'guip_s_css');
 	var background = storage.get('Option:useBackground');
 	if (background === 'cloud') {
-		document.body.style.backgroundImage = 'url(' + worker.GUIp_getResource('images/background.jpg') + ')';
+		document.body.style.backgroundImage = 'url(' + GUIp.getResource('images/background.jpg') + ')';
 	} else {
 		document.body.style.backgroundImage =  background ? 'url(' + background + ')' : '';
 	}
@@ -621,9 +619,9 @@ var createLightbox = function(lbType) {
 '				<div class="new_line">' +
 '					<textarea id="lightbox_input" class="rounded_field" rows="10" wrap="virtual;" style="width: 98%; resize: none;"></textarea>' +
 '				</div>' +
-'				<input id="lightbox_save" class="input_btn" type="submit" value="' + worker.GUIp_i18n.lb_save + '" disabled>' +
-'				<input id="lightbox_reset" class="input_btn" type="button" value="' + worker.GUIp_i18n.lb_reset + '" disabled>' +
-'				<input id="lightbox_close" class="input_btn" type="button" value="' + worker.GUIp_i18n.lb_close + '">' +
+'				<input id="lightbox_save" class="input_btn" type="submit" value="' + GUIp.i18n.lb_save + '" disabled>' +
+'				<input id="lightbox_reset" class="input_btn" type="button" value="' + GUIp.i18n.lb_reset + '" disabled>' +
+'				<input id="lightbox_close" class="input_btn" type="button" value="' + GUIp.i18n.lb_close + '">' +
 '			</div>' +
 '		</div>';
 
@@ -697,8 +695,8 @@ var createLightbox = function(lbType) {
 		$id('lightbox_reset').disabled = false;
 	};
 
-	$id('lightbox_title').textContent = worker.GUIp_i18n['lb_' + lbType + '_title'];
-	$id('lightbox_desc').innerHTML = worker.GUIp_i18n['lb_' + lbType + '_desc'];
+	$id('lightbox_title').textContent = GUIp.i18n['lb_' + lbType + '_title'];
+	$id('lightbox_desc').innerHTML = GUIp.i18n['lb_' + lbType + '_desc'];
 
 	loadLightbox(lbType);
 
@@ -708,12 +706,12 @@ var createLightbox = function(lbType) {
 	lightbox.style.height = inheight + 'px';
 
 	lightbox.style.visibility = 'visible';
-	lightbox.style.left = worker.innerWidth/2 - 200 + 'px';
-	lightbox.style.top = worker.innerHeight/2 - (inheight / 2) + window.scrollY + 'px';
+	lightbox.style.left = window.innerWidth/2 - 200 + 'px';
+	lightbox.style.top = window.innerHeight/2 - (inheight / 2) + window.scrollY + 'px';
 
 	var scrollLightbox = function() {
-		lightbox.style.left = worker.innerWidth/2 - 200 + 'px';
-		lightbox.style.top = worker.innerHeight/2 - (inheight / 2) + window.scrollY + 'px';
+		lightbox.style.left = window.innerWidth/2 - 200 + 'px';
+		lightbox.style.top = window.innerHeight/2 - (inheight / 2) + window.scrollY + 'px';
 	};
 	var destroyLightbox = function() {
 		document.body.removeChild(dimmer);
@@ -732,28 +730,28 @@ var createLightbox = function(lbType) {
 
 var def, curr_sect, god_name;
 
-var starterInt = worker.setInterval(function() {
-	if (worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL) {
-		def = worker.GUIp_words();
-		worker.clearInterval(starterInt);
+var starterInt = setInterval(function() {
+	if (GUIp.browser && GUIp.i18n && GUIp.addCSSFromURL) {
+		def = GUIp.getPhrases();
+		clearInterval(starterInt);
 
 		var greetings = $id('menu_top').textContent;
 		god_name = greetings.match(localStorage.getItem('GUIp:lastGodname'))[0] ||
 		           greetings.match(localStorage.getItem('GUIp:godnames'))[0];
 
 		addMenu();
-		if (location.hash === "#ui_settings") {
+		if (location.hash === "#guip_settings") {
 			loadOptions();
 		}
-		if (worker.GUIp_browser !== 'Opera') {
-			worker.GUIp_addCSSFromURL(worker.GUIp_getResource('options.css'), 'guip_options_css');
+		if (GUIp.browser !== 'Opera') {
+			GUIp.addCSSFromURL(GUIp.getResource('options.css'), 'guip_options_css');
 		}
 		set_theme_and_background();
 		improve_blocks();
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
-			if (!$q('#profile_main p').textContent.match(worker.GUIp_i18n.ui_settings.replace('+', '\\+'))) {
-				worker.setTimeout(addMenu, 0);
+			if (!$q('#profile_main p').textContent.match(GUIp.i18n.guip_settings.replace('+', '\\+'))) {
+				setTimeout(addMenu, 0);
 			}
 			improve_blocks();
 		});

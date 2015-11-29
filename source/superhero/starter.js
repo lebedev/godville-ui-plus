@@ -1,32 +1,34 @@
-// ui_starter
-var ui_starter = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "starter"}) : worker.GUIp.starter = {};
+// starter
+window.GUIp = window.GUIp || {};
 
-ui_starter._init = function() {
-	ui_data.init();
-	ui_storage.migrate();
-	ui_utils.addCSS();
-	ui_utils.inform();
-	ui_words.init();
-	ui_logger.create();
-	ui_timeout.create();
-	ui_help.init();
-	ui_informer.init();
-	ui_forum.init();
-	ui_inventory.init();
-	ui_improver.improve();
-	ui_timers.init();
-	ui_observers.init();
-	ui_improver.initOverrides();
+GUIp.starter = {};
+
+GUIp.starter._init = function() {
+	GUIp.data.init();
+	GUIp.storage.migrate();
+	GUIp.utils.addCSS();
+	GUIp.utils.inform();
+	GUIp.words.init();
+	GUIp.logger.create();
+	GUIp.timeout.create();
+	GUIp.help.init();
+	GUIp.informer.init();
+	GUIp.forum.init();
+	GUIp.inventory.init();
+	GUIp.improver.improve();
+	GUIp.timers.init();
+	GUIp.observers.init();
+	GUIp.improver.initOverrides();
 };
-ui_starter.start = function() {
-	if (worker.$ && (worker.$('#m_info').length || worker.$('#stats').length) && worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL && worker.so.state) {
-		worker.clearInterval(starterInt);
-		worker.console.time('Godville UI+ initialized in');
+GUIp.starter.start = function() {
+	if ($ && ($('#m_info').length || $('#stats').length) && GUIp.browser && GUIp.i18n && GUIp.addCSSFromURL && so.state) {
+		clearInterval(starterInt);
+		console.time('Godville UI+ initialized in');
 
-		ui_starter._init();
+		GUIp.starter._init();
 
-		if (!ui_data.isFight) {
-			worker.onmousemove = worker.onscroll = worker.ontouchmove = ui_improver.activity;
+		if (!GUIp.data.isFight) {
+			window.onmousemove = window.onscroll = window.ontouchmove = GUIp.improver.activity;
 		}
 
 		// svg for #logger fade-out in FF
@@ -45,6 +47,6 @@ ui_starter.start = function() {
 			'</svg>'
 		);
 
-		worker.console.timeEnd('Godville UI+ initialized in');
+		console.timeEnd('Godville UI+ initialized in');
 	}
 };

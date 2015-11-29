@@ -1,62 +1,64 @@
-// ui_storage
-var ui_storage = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "storage"}) : worker.GUIp.storage = {};
+// storage
+window.GUIp = window.GUIp || {};
 
-ui_storage._get_key = function(key) {
-	return 'GUIp_' + ui_data.god_name + ':' + key;
+GUIp.storage = {};
+
+GUIp.storage._get_key = function(key) {
+	return 'GUIp_' + GUIp.data.god_name + ':' + key;
 };
 // gets diff with a value
-ui_storage._diff = function(id, value) {
+GUIp.storage._diff = function(id, value) {
 	var diff = null;
-	var old = ui_storage.get(id);
+	var old = GUIp.storage.get(id);
 	if (old !== null) {
 		diff = value - old;
 	}
 	return diff;
 };
 // stores a value
-ui_storage.set = function(id, value) {
-	localStorage.setItem(ui_storage._get_key(id), value);
+GUIp.storage.set = function(id, value) {
+	localStorage.setItem(GUIp.storage._get_key(id), value);
 	return value;
 };
 // reads a value
-ui_storage.get = function(id) {
-	var val = localStorage.getItem(ui_storage._get_key(id));
+GUIp.storage.get = function(id) {
+	var val = localStorage.getItem(GUIp.storage._get_key(id));
 	if (val === 'true') { return true; }
 	if (val === 'false') { return false; }
 	return val;
 };
 // deletes single item from storage
-ui_storage.remove = function(id) {
-	return localStorage.removeItem(ui_storage._get_key(id));
+GUIp.storage.remove = function(id) {
+	return localStorage.removeItem(GUIp.storage._get_key(id));
 };
 // stores value and gets diff with old
-ui_storage.set_with_diff = function(id, value) {
-	var diff = ui_storage._diff(id, value);
-	ui_storage.set(id, value);
+GUIp.storage.set_with_diff = function(id, value) {
+	var diff = GUIp.storage._diff(id, value);
+	GUIp.storage.set(id, value);
 	return diff;
 };
 // dumps all values related to current god_name
-ui_storage.dump = function(selector) {
+GUIp.storage.dump = function(selector) {
 	var lines = [],
-		regexp = '^GUIp[_:]' + (selector ? (ui_data.god_name + ':' + selector) : '');
+		regexp = '^GUIp[_:]' + (selector ? (GUIp.data.god_name + ':' + selector) : '');
 	for (var key in localStorage) {
 		if (key.match(regexp)) {
 			lines.push(key + ' = ' + localStorage.getItem(key));
 		}
 	}
 	lines.sort();
-	worker.console.info('Godville UI+ log: Storage:\n' + lines.join('\n'));
+	console.info('Godville UI+ log: Storage:\n' + lines.join('\n'));
 };
 // resets saved options
-ui_storage.clear = function(what) {
+GUIp.storage.clear = function(what) {
 	if (!what || !what.match(/^(?:GUIp|Godville|All)$/)) {
-		if (worker.GUIp_locale === 'ru') {
-			worker.console.log('Godville UI+: использование storage.clear:\n' +
+		if (GUIp.locale === 'ru') {
+			console.log('Godville UI+: использование storage.clear:\n' +
 							   'storage.clear("GUIp") для удаление только настроек Godville UI+\n' +
 							   'storage.clear("Godville") для удаления настроек Годвилля, сохранив настройки Godville UI+\n' +
 							   'storage.clear("All") для удаления всех настроек');
 		} else {
-			worker.console.log('Godville UI+: storage.clear usage:\n' +
+			console.log('Godville UI+: storage.clear usage:\n' +
 							   'storage.clear("GUIp") to remove Godville UI+ setting only\n' +
 							   'storage.clear("Godville") to remove Godville setting and keep Godville UI+ settings\n' +
 							   'storage.clear("All") to remove all setting');
@@ -72,7 +74,7 @@ ui_storage.clear = function(what) {
 	}
 	location.reload();
 };
-ui_storage._rename = function(from, to) {
+GUIp.storage._rename = function(from, to) {
 	for (var key in localStorage) {
 		if (key.match(from)) {
 			localStorage.setItem(key.replace(from, to), localStorage.getItem(key));
@@ -80,15 +82,15 @@ ui_storage._rename = function(from, to) {
 		}
 	}
 };
-ui_storage._delete = function(regexp) {
+GUIp.storage._delete = function(regexp) {
 	for (var key in localStorage) {
 		if (key.match(/^GUIp/) && key.match(regexp)) {
 			localStorage.removeItem(key);
 		}
 	}
 };
-ui_storage.migrate = function() {
-	if (!ui_storage._migratedAt('151009')) {
+GUIp.storage.migrate = function() {
+	if (!GUIp.storage._migratedAt('151009')) {
 		localStorage.removeItem('GUIp_migrated');
 		localStorage.removeItem('GUIp_CurrentUser');
 
@@ -105,7 +107,7 @@ ui_storage.migrate = function() {
 		localStorage.setItem('GUIp:godnames', godnames.join('|'));
 	}
 };
-ui_storage._migratedAt = function(date) {
+GUIp.storage._migratedAt = function(date) {
 	var lastMigratedAt = localStorage.getItem('GUIp:lastMigratedAt');
 	if (lastMigratedAt && lastMigratedAt < date) {
 		localStorage.setItem('GUIp:lastMigratedAt', date);
@@ -114,10 +116,10 @@ ui_storage._migratedAt = function(date) {
 		return false;
 	}
 };
-ui_storage.isNewProfile = function(godname) {
+GUIp.storage.isNewProfile = function(godname) {
 	return !~(localStorage.getItem('GUIp:godnames') || '').split('|').indexOf(godname);
 };
-ui_storage.addToNames = function(godname) {
+GUIp.storage.addToNames = function(godname) {
 	var godnames = localStorage.getItem('GUIp:godnames');
 	localStorage.setItem('GUIp:godnames', (godnames ? godnames + '|' : '') + godname);
 };

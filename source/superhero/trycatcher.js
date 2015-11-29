@@ -1,26 +1,35 @@
-// ui_trycatcher
-var ui_trycatcher = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "trycatcher"}) : worker.GUIp.trycatcher = {};
+// trycatcher
+window.GUIp = window.GUIp || {};
 
-ui_trycatcher.replaceWithImproved = function(method) {
+GUIp.trycatcher = {};
+
+GUIp.trycatcher.wrap = function(method) {
 	return function() {
 		try {
 			return method.apply(this, arguments);
 		} catch (error) {
-			if (ui_storage.get('Option:enableDebugMode')) {
-				ui_utils.processError(error, true);
+			if (GUIp.storage.get('Option:enableDebugMode')) {
+				GUIp.utils.processError(error, true);
 			} else {
-				ui_utils.checkVersion(ui_utils.processError.bind(null, error, false), ui_utils.informAboutOldVersion);
+				GUIp.utils.checkVersion(GUIp.utils.processError.bind(null, error, false), GUIp.utils.informAboutOldVersion);
 			}
 		}
 	};
 };
-ui_trycatcher.process = function(object) {
-	var method_name, method;
-	for (method_name in object) {
-		method = object[method_name];
-		if (typeof method === "function") {
-			object[method_name] = ui_trycatcher.replaceWithImproved(method);
-			object[method_name].toString = worker.Function.prototype.toString.bind(method);
+
+GUIp.trycatcher.process = function(object) {
+	var type, method;
+	for (var key in object) {
+		type = Object.prototype.toString.call(object[key]).slice(8, -1);
+		switch(type) {
+		case 'Function':
+			method = object[key];
+			object[key] = GUIp.trycatcher.wrap(method);
+			object[key].toString = Function.prototype.toString.bind(method);
+			break;
+		case 'Object':
+			GUIp.trycatcher.process(object[key]);
+			break;
 		}
 	}
 };

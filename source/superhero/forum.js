@@ -1,40 +1,42 @@
-// ui_forum
-var ui_forum = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "forum"}) : worker.GUIp.forum = {};
+// forum
+window.GUIp = window.GUIp || {};
 
-ui_forum.init = function() {
+GUIp.forum = {};
+
+GUIp.forum.init = function() {
 	document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
-	ui_forum._check();
-	worker.setInterval(ui_forum._check.bind(ui_forum), 2.5*60*1000);
+	GUIp.forum._check();
+	setInterval(GUIp.forum._check.bind(GUIp.forum), 2.5*60*1000);
 };
-ui_forum._check = function() {
+GUIp.forum._check = function() {
 	var requests = 0;
-	for (var forum_no = 1; forum_no <= (worker.GUIp_locale === 'ru' ? 6 : 4); forum_no++) {
-		var current_forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
+	for (var forum_no = 1; forum_no <= (GUIp.locale === 'ru' ? 6 : 4); forum_no++) {
+		var current_forum = JSON.parse(GUIp.storage.get('Forum' + forum_no)),
 			topics = [];
 		for (var topic in current_forum) {
 			topics.push('topic_ids[]=' + topic);
 		}
 		for (var i = 0, len = topics.length; i < len; i += 10) {
 			var postData = topics.slice(i, i + 10).join('&');
-			worker.setTimeout(ui_utils.postXHR.bind(null, {
+			setTimeout(GUIp.utils.postXHR.bind(null, {
 				url: '/forums/last_in_topics',
 				postData: postData,
-				onSuccess: ui_forum._parse.bind(forum_no)
+				onSuccess: GUIp.forum._parse.bind(forum_no)
 			}), 500*requests++);
 		}
 	}
 };
-ui_forum._process = function(forum_no) {
-	var informers = JSON.parse(ui_storage.get('ForumInformers')),
-		topics = JSON.parse(ui_storage.get('Forum' + forum_no));
+GUIp.forum._process = function(forum_no) {
+	var informers = JSON.parse(GUIp.storage.get('ForumInformers')),
+		topics = JSON.parse(GUIp.storage.get('Forum' + forum_no));
 	for (var topic in topics) {
 		if (informers[topic]) {
-			ui_forum._setInformer(topic, informers[topic], topics[topic].posts);
+			GUIp.forum._setInformer(topic, informers[topic], topics[topic].posts);
 		}
 	}
-	ui_informer.clearTitle();
+	GUIp.informer.clearTitle();
 };
-ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
+GUIp.forum._setInformer = function(topic_no, topic_data, posts_count) {
 	var informer = document.getElementById('topic' + topic_no);
 	if (!informer) {
 		document.getElementById('forum_informer_bar').insertAdjacentHTML('beforeend',
@@ -48,13 +50,13 @@ ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
 		};
 		informer.onmouseup = function(e) {
 			if (e.which === 1 || e.which === 2) {
-				var informers = JSON.parse(ui_storage.get('ForumInformers'));
+				var informers = JSON.parse(GUIp.storage.get('ForumInformers'));
 				delete informers[this.id.match(/\d+/)[0]];
-				ui_storage.set('ForumInformers', JSON.stringify(informers));
-				worker.$(this).slideToggle("fast", function() {
+				GUIp.storage.set('ForumInformers', JSON.stringify(informers));
+				$(this).slideToggle("fast", function() {
 					if (this.parentElement) {
 						this.parentElement.removeChild(this);
-						ui_informer.clearTitle();
+						GUIp.informer.clearTitle();
 					}
 				});
 			}
@@ -66,22 +68,22 @@ ui_forum._setInformer = function(topic_no, topic_data, posts_count) {
 	informer.getElementsByTagName('span')[0].textContent = topic_data.name;
 	informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
 };
-ui_forum._parse = function(xhr) {
+GUIp.forum._parse = function(xhr) {
 	var responseJSON = JSON.parse(xhr.responseText);
 	if (responseJSON.status !== 'success' || !responseJSON.topics) {
 		return;
 	}
 
 	var forum_no = this,
-	    forum = JSON.parse(ui_storage.get('Forum' + forum_no)),
-	    informers = JSON.parse(ui_storage.get('ForumInformers')),
+	    forum = JSON.parse(GUIp.storage.get('Forum' + forum_no)),
+	    informers = JSON.parse(GUIp.storage.get('ForumInformers')),
 	    topics = responseJSON.topics,
 	    diff, topic;
 	for (var topic_no in topics) {
 		topic = topics[topic_no];
 		diff = topic.cnt - forum[topic_no].posts;
 
-		if (diff <= 0 && forum[topic_no].date && (worker.Date(forum[topic_no].date) < worker.Date(topic.last_post_at))) {
+		if (diff <= 0 && forum[topic_no].date && (Date(forum[topic_no].date) < Date(topic.last_post_at))) {
 			diff = 1;
 		}
 
@@ -89,7 +91,7 @@ ui_forum._parse = function(xhr) {
 		forum[topic_no].date = topic.last_post_at;
 
 		if (diff > 0) {
-			if (topic.last_post_by !== ui_data.god_name) {
+			if (topic.last_post_by !== GUIp.data.god_name) {
 				informers[topic_no] = {
 					diff: diff + (informers[topic_no] ? informers[topic_no].diff : 0),
 					name: topic.title
@@ -99,7 +101,7 @@ ui_forum._parse = function(xhr) {
 			}
 		}
 	}
-	ui_storage.set('ForumInformers', JSON.stringify(informers));
-	ui_storage.set('Forum' + forum_no, JSON.stringify(forum));
-	ui_forum._process(forum_no);
+	GUIp.storage.set('ForumInformers', JSON.stringify(informers));
+	GUIp.storage.set('Forum' + forum_no, JSON.stringify(forum));
+	GUIp.forum._process(forum_no);
 };

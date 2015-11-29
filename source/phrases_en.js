@@ -1,11 +1,8 @@
 (function() {
-var worker = window.wrappedJSObject || window;
-var starter = worker.setInterval(initPhrases, 100);
-function initPhrases() {
-if (!worker.GUIp_browser || !worker.GUIp_github_link) { return; }
-worker.clearInterval(starter);
 
-worker.GUIp_words = function() {
+window.GUIp = window.GUIp || {};
+
+GUIp.getPhrases = function() {
 	return {
 	// Этот параметр показывает текущую версию файла
 	// Меняется только при _структурных_ изменениях.
@@ -222,9 +219,14 @@ worker.GUIp_words = function() {
 	};
 };
 
-worker.GUIp_locale = 'en';
+GUIp.locale = 'en';
 
-worker.GUIp_i18n = {
+var getGithubLink = function(link, hint) {
+	return '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/' + link +
+		'" title="Opens in a new tab">' + hint + '</a>';
+};
+
+GUIp.i18n = {
 	// superhero
 	hero: ['hero', 'hero'],
 	heroine: ['heroine', 'heroine'],
@@ -246,23 +248,23 @@ worker.GUIp_i18n = {
 	help_dialog_capt: 'help dialog',
 	how_to_update: 'How to update <b>Godville UI+</b> manually:',
 	help_update_Firefox: '<li>Open Firefox add-ons page (2 or <b>Ctrl+Shift+A</b>). ' +
-		worker.GUIp_github_link + 'help_guide/firefox_manual_update_1.png" title="Opens in a new tab">Picture</a>.</li>' +
+		getGithubLink('help_guide/firefox_manual_update_1.png', 'Picture') + '.</li>' +
 		'<li>Click the "gear" (3), then "Check for updates" (4) and wait for a few seconds. ' +
-		worker.GUIp_github_link + 'help_guide/firefox_manual_update_2.png" title="Opens in a new tab">Picture</a>.</li>',
+		getGithubLink('help_guide/firefox_manual_update_2.png', 'Picture') + '.</li>',
 	help_update_Chrome: '<li>Open Chrome settings (2). ' +
-		worker.GUIp_github_link + 'help_guide/chrome_manual_update_1.png" title="Opens in a new tab">Picture</a>.</li>' +
+		getGithubLink('help_guide/chrome_manual_update_1.png', 'Picture') + '.</li>' +
 		'<li>Choose "Extensions" (3), check "Developer mode" (4), click "Update extensions" button (5), ' +
 		'which will appear, wait until the browser will refresh the extension,  uncheck the box (6). ' +
-		worker.GUIp_github_link + 'help_guide/chrome_manual_update_2.png" title="Opens in a new tab">Picture</a>.</li>',
+		getGithubLink('help_guide/chrome_manual_update_2.png', 'Picture') + '.</li>',
 	help_update_Opera: '<li>Open the extensions page (<b>Ctrl+Shift+E</b>) and uninstall old version of the extension. ' +
-		worker.GUIp_github_link + 'help_guide/opera_manual_update_1.png" title="Opens in a new tab">Picture</a>.</li>' +
+		getGithubLink('help_guide/opera_manual_update_1.png', 'Picture') + '.</li>' +
 		'<li>Download new version of the extension from the following link and install it. ' +
-		worker.GUIp_github_link + 'release/godville-ui-plus@badluck.dicey.oex"  title="Opens in a new tab">Link to the new version.</a></li>',
+		getGithubLink('release/godville-ui-plus@badluck.dicey.oex', 'Link to the new version.') + '</li>',
 	help_useful_links: 'Useful links: ' +
 		'<a href="/forums/show_topic/2800" title="Opens in a new tab" target="_blank">forum thread</a>, ' +
 		//'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
 		'<a href="/gods/God%20Of%20Dungeons" title="Opens in a new tab" target="about:blank">dungeon phrases</a>.',
-	ui_settings_top_menu: '<strong>ui+</strong>&nbsp;settings',
+	window_settings_top_menu: '<strong>ui+</strong>&nbsp;settings',
 	getting_version_no: 'Getting the latest addon version number...',
 	is_last_version: 'You have the latest version.',
 	is_not_last_version_1: 'Latest version — <b>',
@@ -385,11 +387,11 @@ worker.GUIp_i18n = {
 	error_message_in_old_version: 'An error has occurred. However, your Godville&nbsp;UI+ version is outdated. Update as per the instrucions from the help dialog (it\'s opened now).',
 	and: ' and ',
 	or: ' or ',
-	ui_help: 'ui+&nbsp;help',
+	window_help: 'ui+&nbsp;help',
 	// options
 	import_success: 'You setting\'ve been imported successfully',
 	import_fail: 'Incorrect settings string',
-	ui_settings: 'UI+ Settings',
+	window_settings: 'UI+ Settings',
 	import_prompt: 'Settings import\nPaste here your settings string',
 	export_prompt: 'Settings export\nCopy your settings string from here',
 	bg_status_file: 'file',
@@ -402,7 +404,7 @@ worker.GUIp_i18n = {
 	profile_menu_gadgets: 'Mobile Apps',
 	profile_menu_invites: 'Invites',
 	profile_menu_plogs: 'Recharges',
-	ui_settings_capt: 'Godville UI+ settings',
+	window_settings_capt: 'Godville UI+ settings',
 	disable_voice_generators: 'Disable godvoice generators',
 	use_hero_name: 'Hero name in voice',
 	use_hero_name_desc: 'adds hero name to the beginning of a voice',
@@ -621,7 +623,4 @@ worker.GUIp_i18n = {
 	step_n: 'Step #',
 };
 
-delete worker.GUIp_github_link;
-
-}
 })();

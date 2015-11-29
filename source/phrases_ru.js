@@ -1,11 +1,8 @@
 (function() {
-var worker = window.wrappedJSObject || window;
-var starter = worker.setInterval(initPhrases, 100);
-function initPhrases() {
-if (!worker.GUIp_browser || !worker.GUIp_github_link) { return; }
-worker.clearInterval(starter);
 
-worker.GUIp_words = function() {
+window.GUIp = window.GUIp || {};
+
+GUIp.getPhrases = function() {
 	return {
 	// Этот параметр показывает текущую версию файла
 	// Меняется только при _структурных_ изменениях.
@@ -343,9 +340,14 @@ worker.GUIp_words = function() {
 	};
 };
 
-worker.GUIp_locale = 'ru';
+GUIp.locale = 'ru';
 
-worker.GUIp_i18n = {
+var getGithubLink = function(link, hint) {
+	return '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/' + link +
+		'" title="Откроется в новой вкладке">' + hint + '</a>';
+};
+
+GUIp.i18n = {
 	// superhero
 	hero: ['героя', 'герою'],
 	heroine: ['героиню', 'героине'],
@@ -367,23 +369,23 @@ worker.GUIp_i18n = {
 	help_dialog_capt: 'окошко помощи',
 	how_to_update: 'Как вручную обновить <b>Godville UI+</b>:',
 	help_update_Firefox: '<li>Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). ' +
-		worker.GUIp_github_link + 'help_guide/firefox_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+		getGithubLink('help_guide/firefox_manual_update_1.png', 'Картинка') + '.</li>' +
 		'<li>Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4) и подождите несколько секунд. ' +
-		worker.GUIp_github_link + 'help_guide/firefox_manual_update_2.png" target="_blank" title="Откроется в новой вкладке">Картинка</a>.</li>',
+		getGithubLink('help_guide/firefox_manual_update_2.png', 'Картинка') + '.</li>',
 	help_update_Chrome: '<li>Откройте страницу настроек Хрома (2). ' +
-		worker.GUIp_github_link + 'help_guide/chrome_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+		getGithubLink('help_guide/chrome_manual_update_1.png', 'Картинка') + '.</li>' +
 		'<li>Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку ' +
 		'"Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
-		worker.GUIp_github_link + 'help_guide/chrome_manual_update_2.png" title="Откроется в новой вкладке">Картинка</a>.</li>',
+		getGithubLink('help_guide/chrome_manual_update_2.png', 'Картинка') + '.</li>',
 	help_update_Opera: '<li>Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию расширения. ' +
-		worker.GUIp_github_link + 'help_guide/opera_manual_update_1.png" title="Откроется в новой вкладке">Картинка</a>.</li>' +
+		getGithubLink('help_guide/opera_manual_update_1.png', 'Картинка') + '.</li>' +
 		'<li>Скачайте новую версию расширения по ссылке и установите ее. ' +
-		worker.GUIp_github_link + 'release/godville-ui-plus@badluck.dicey.oex"  title="Откроется в новой вкладке">Ссылка на новую версию.</a></li>',
+		getGithubLink('release/godville-ui-plus@badluck.dicey.oex', 'Ссылка на новую версию.') + '</li>',
 	help_useful_links: 'Полезные ссылки: ' +
 		'<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
 		'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
 		'<a href="/gods/Dungeoneer" title="Откроется в новой вкладке" target="about:blank">фразы из подземелья</a>.',
-	ui_settings_top_menu: 'настройки&nbsp;<strong>ui+</strong>',
+	window_settings_top_menu: 'настройки&nbsp;<strong>ui+</strong>',
 	getting_version_no: 'Получения номера последней версии дополнения...',
 	is_last_version: 'У вас последняя версия.',
 	is_not_last_version_1: 'Обнаружена новая версия — <b>',
@@ -506,11 +508,11 @@ worker.GUIp_i18n = {
 	error_message_in_old_version: 'Произошла ошибка. Однако, ваша версия Godville&nbsp;UI+ устарела. Обновитесь по инструкции из окошка помощи (оно сейчас открыто).',
 	and: ' и ',
 	or: ' или ',
-	ui_help: 'ui+&nbsp;help',
+	window_help: 'ui+&nbsp;help',
 	// options
 	import_success: 'Настройки успешно импортированы',
 	import_fail: 'Некорректная строка настроек',
-	ui_settings: 'Настройки UI+',
+	window_settings: 'Настройки UI+',
 	import_prompt: 'Импорт настроек\nВставьте сюда строку настроек',
 	export_prompt: 'Экспорт настроек\nСкопируйте отсюда строку настроек',
 	bg_status_file: 'файл',
@@ -523,7 +525,7 @@ worker.GUIp_i18n = {
 	profile_menu_gadgets: 'Клиенты и плагины',
 	profile_menu_invites: 'Приглашения',
 	profile_menu_plogs: 'Подзарядки',
-	ui_settings_capt: 'Настройки Godville UI+',
+	window_settings_capt: 'Настройки Godville UI+',
 	disable_voice_generators: 'Выключить генераторы гласов',
 	use_hero_name: 'Имя героя в гласе',
 	use_hero_name_desc: 'добавляет в начало гласа обращение к герою',
@@ -743,7 +745,4 @@ worker.GUIp_i18n = {
 	step_n: 'Шаг #',
 };
 
-delete worker.GUIp_github_link;
-
-}
 })();

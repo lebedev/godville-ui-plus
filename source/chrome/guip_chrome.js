@@ -1,4 +1,6 @@
-window.GUIp_browser = 'Chrome';
-window.GUIp_getResource = function(res) {
+window.GUIp = window.GUIp || {};
+
+GUIp.browser = 'Chrome';
+GUIp.getResource = function(res) {
 	return localStorage.getItem('GUIp_prefix') + res;
 };

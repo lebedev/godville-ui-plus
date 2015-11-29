@@ -1,5 +1,5 @@
 // base functions and variables initialization
-var worker = window.wrappedJSObject || window;
+window.GUIp = window.GUIp || {};
 
 var doc = document;
 var $id = function(id) {
@@ -58,7 +58,7 @@ var followOnclick = function(e) {
 		this.style.display = 'none';
 		this.parentElement.querySelector('.unfollow').style.display = 'inline';
 	} catch(error) {
-		worker.console.error(error);
+		console.error(error);
 	}
 };
 var addOnclickToFollow = function() {
@@ -81,7 +81,7 @@ var unfollowOnclick = function(e) {
 		this.style.display = 'none';
 		this.parentElement.querySelector('.follow').style.display = 'inline';
 	} catch(error) {
-		worker.console.error(error);
+		console.error(error);
 	}
 };
 var addOnclickToUnfollow = function() {
@@ -102,8 +102,8 @@ var addLinks = function() {
 						: links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
 		var isFollowed = topics[topic] !== undefined;
 		links_containers[i].insertAdjacentHTML('beforeend',
-			(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? worker.GUIp_i18n.Subscribe : worker.GUIp_i18n.subscribe) + '</a>' +
-									 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? worker.GUIp_i18n.Unsubscribe : worker.GUIp_i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
+			(isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (isTopic ? GUIp.i18n.Subscribe : GUIp.i18n.subscribe) + '</a>' +
+									 '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (isTopic ? GUIp.i18n.Unsubscribe : GUIp.i18n.unsubscribe) + '</a>' + (isTopic ? ')' : '')
 		);
 	}
 	addOnclickToFollow();

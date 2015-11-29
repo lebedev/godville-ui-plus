@@ -1,14 +1,15 @@
-var worker = window.wrappedJSObject || window;
-worker.GUIp_addCSSFromURL = function(href, id) {
+window.GUIp = window.GUIp || {};
+
+GUIp.addCSSFromURL = function(href, id) {
 	document.head.insertAdjacentHTML('beforeend', '<link id="' + id + '" type="text/css" href="' + href + '" rel="stylesheet" media="screen">');
 };
-worker.GUIp_addCSSFromString = function(text) {
+GUIp.addCSSFromString = function(text) {
 	if (!document.getElementById('guip_user_css')) {
 		document.head.insertAdjacentHTML('beforeend', '<style id="guip_user_css" />');
 	}
 	document.getElementById('guip_user_css').textContent = text;
 };
-worker.GUIp_mapIteration = function(MapData, iPointer, jPointer, step, specway) {
+GUIp.mapIteration = function(MapData, iPointer, jPointer, step, specway) {
 	if (++step > MapData.maxStep) {
 		return;
 	}
@@ -26,7 +27,7 @@ worker.GUIp_mapIteration = function(MapData, iPointer, jPointer, step, specway) 
 							}
 							MapData[iNext + ':' + jNext].specway = tspecway;
 							MapData[iNext + ':' + jNext].step = step;
-							worker.GUIp_mapIteration(MapData, iNext, jNext, step, tspecway);
+							GUIp.mapIteration(MapData, iNext, jNext, step, tspecway);
 						}
 					}
 				}
@@ -34,7 +35,7 @@ worker.GUIp_mapIteration = function(MapData, iPointer, jPointer, step, specway) 
 		}
 	}
 };
-worker.GUIp_mapSubIteration = function(MapData, iPointer, jPointer, step, limit, specway) {
+GUIp.mapSubIteration = function(MapData, iPointer, jPointer, step, limit, specway) {
 	step++;
 	if (step >= limit || step > 3) {
 		return;
@@ -59,7 +60,7 @@ worker.GUIp_mapSubIteration = function(MapData, iPointer, jPointer, step, limit,
 								MapData[iNext + ':' + jNext].specway = false;
 							}
 							MapData[iNext + ':' + jNext].substep = step;
-							worker.GUIp_mapSubIteration(MapData, iNext, jNext, step, limit, tspecway);
+							GUIp.mapSubIteration(MapData, iNext, jNext, step, limit, tspecway);
 						}
 					}
 				}
@@ -67,4 +68,3 @@ worker.GUIp_mapSubIteration = function(MapData, iPointer, jPointer, step, limit,
 		}
 	}
 };
-worker.GUIp_github_link = '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/';

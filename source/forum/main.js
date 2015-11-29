@@ -11,8 +11,8 @@ var setInitVariables = function() {
 };
 var GUIp_forum = function() {
 	try {
-		if (!worker.GUIp_i18n || !worker.GUIp_browser || !worker.GUIp_addCSSFromURL) { return; }
-		worker.clearInterval(starter);
+		if (!GUIp.i18n || !GUIp.browser || !GUIp.addCSSFromURL) { return; }
+		clearInterval(starter);
 
 		setInitVariables();
 
@@ -23,13 +23,13 @@ var GUIp_forum = function() {
 		addLinks();
 
 		if (isTopic) {
-			worker.GUIp_addCSSFromURL(worker.GUIp_getResource('forum.css'), 'forum_css');
+			GUIp.addCSSFromURL(GUIp.getResource('forum.css'), 'forum_css');
 			addFormattingButtonsAndCtrlEnter();
 			fixGodnamePaste();
 			improveTopic();
 		}
 	} catch(e) {
-		worker.console.error(e);
+		console.error(e);
 	}
 };
-var starter = worker.setInterval(GUIp_forum, 100);
+var starter = setInterval(GUIp_forum, 100);

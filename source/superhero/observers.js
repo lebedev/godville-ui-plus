@@ -1,14 +1,16 @@
-// ui_observers
-var ui_observers = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "observers"}) : worker.GUIp.observers = {};
+// observers
+window.GUIp = window.GUIp || {};
 
-ui_observers.init = function() {
+GUIp.observers = {};
+
+GUIp.observers.init = function() {
 	for (var key in this) {
 		if (this[key].condition) {
-			ui_observers.start(this[key]);
+			GUIp.observers.start(this[key]);
 		}
 	}
 };
-ui_observers.start = function(obj) {
+GUIp.observers.start = function(obj) {
 	for (var i = 0, len = obj.target.length; i < len; i++) {
 		var target = document.querySelector(obj.target[i]);
 		if (target) {
@@ -17,7 +19,7 @@ ui_observers.start = function(obj) {
 		}
 	}
 };
-ui_observers.mutationChecker = function(mutations, check, callback) {
+GUIp.observers.mutationChecker = function(mutations, check, callback) {
 	var callbackRunRequired = false;
 	for (var i = 0, len = mutations.length; i < len; i++) {
 		if (check(mutations[i])) {
@@ -29,7 +31,7 @@ ui_observers.mutationChecker = function(mutations, check, callback) {
 		callback();
 	}
 };
-ui_observers.chats = {
+GUIp.observers.chats = {
 	condition: true,
 	config: { childList: true },
 	func: function(mutations) {
@@ -42,13 +44,13 @@ ui_observers.chats = {
 				msgArea.scrollTop = msgArea.scrollTopMax || msgArea.scrollHeight;
 			}
 		}
-		ui_observers.mutationChecker(mutations, function(mutation) {
+		GUIp.observers.mutationChecker(mutations, function(mutation) {
 			return mutation.addedNodes.length || mutation.removedNodes.length;
-		}, function() { ui_improver.chatsFix(); ui_informer.clearTitle(); });
+		}, function() { GUIp.improver.chatsFix(); GUIp.informer.clearTitle(); });
 	},
 	target: ['.chat_ph']
 };
-ui_observers.clearTitle = {
+GUIp.observers.clearTitle = {
 	condition: true,
 	config: {
 		childList: true,
@@ -57,14 +59,14 @@ ui_observers.clearTitle = {
 		attributeFilter: ['style']
 	},
 	func: function(mutations) {
-		ui_observers.mutationChecker(mutations, function(mutation) {
+		GUIp.observers.mutationChecker(mutations, function(mutation) {
 			return mutation.target.className.match(/fr_new_(?:msg|badge)/) ||
 				  (mutation.target.className.match(/dockfrname_w/) && mutation.removedNodes.length && mutation.removedNodes[0].className.match(/fr_new_msg/));
-		}, ui_informer.clearTitle.bind(ui_informer));
+		}, GUIp.informer.clearTitle.bind(GUIp.informer));
 	},
 	target: ['.msgDockWrapper']
 };
-ui_observers.refresher = {
+GUIp.observers.refresher = {
 	condition: true,
 	config: {
 		attributes: true,
@@ -85,68 +87,68 @@ ui_observers.refresher = {
 			}
 		}
 		if (toReset) {
-			worker.clearInterval(ui_improver.softRefreshInt);
-			worker.clearInterval(ui_improver.hardRefreshInt);
-			if (!ui_storage.get('Option:disablePageRefresh')) {
-				ui_improver.softRefreshInt = worker.setInterval(ui_improver.softRefresh, (ui_data.isFight || ui_data.isDungeon) ? 5e3 : 9e4);
-				ui_improver.hardRefreshInt = worker.setInterval(ui_improver.hardRefresh, (ui_data.isFight || ui_data.isDungeon) ? 15e3 : 27e4);
+			clearInterval(GUIp.improver.softRefreshInt);
+			clearInterval(GUIp.improver.hardRefreshInt);
+			if (!GUIp.storage.get('Option:disablePageRefresh')) {
+				GUIp.improver.softRefreshInt = setInterval(GUIp.improver.softRefresh, (GUIp.data.isFight || GUIp.data.isDungeon) ? 5e3 : 9e4);
+				GUIp.improver.hardRefreshInt = setInterval(GUIp.improver.hardRefresh, (GUIp.data.isFight || GUIp.data.isDungeon) ? 15e3 : 27e4);
 			}
 		}
 	},
 	target: ['#main_wrapper']
 };
-ui_observers.diary = {
+GUIp.observers.diary = {
 	get condition() {
-		return !ui_data.isFight && !ui_data.isDungeon;
+		return !GUIp.data.isFight && !GUIp.data.isDungeon;
 	},
 	config: { childList: true },
 	func: function(mutations) {
-		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.improveDiary);
+		GUIp.observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, GUIp.improver.improveDiary);
 	},
 	target: ['#diary .d_content']
 };
-ui_observers.news = {
+GUIp.observers.news = {
 	get condition() {
-		return !ui_data.isFight && !ui_data.isDungeon;
+		return !GUIp.data.isFight && !GUIp.data.isDungeon;
 	},
 	config: { childList: true, characterData: true, subtree: true },
-	func: ui_improver.improvementDebounce,
+	func: GUIp.improver.improvementDebounce,
 	target: ['.f_news']
 };
-ui_observers.chronicles = {
+GUIp.observers.chronicles = {
 	get condition() {
-		return ui_data.isDungeon;
+		return GUIp.data.isDungeon;
 	},
 	config: { childList: true },
 	func: function(mutations) {
-		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.improveChronicles.bind(ui_improver));
+		GUIp.observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, GUIp.improver.improveChronicles.bind(GUIp.improver));
 	},
 	target: ['#m_fight_log .d_content']
 };
-ui_observers.map_colorization = {
+GUIp.observers.map_colorization = {
 	get condition() {
-		return ui_data.isDungeon;
+		return GUIp.data.isDungeon;
 	},
 	config: {
 		childList: true,
 		subtree: true
 	},
 	func: function(mutations) {
-		ui_observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, ui_improver.colorDungeonMap.bind(ui_improver));
+		GUIp.observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;	}, GUIp.improver.colorDungeonMap.bind(GUIp.improver));
 	},
 	target: ['#map .block_content']
 };
-ui_observers.node_insertion = {
+GUIp.observers.node_insertion = {
 	condition: true,
 	config: {
 		childList: true,
 		subtree: true
 	},
 	func: function(mutations) {
-		ui_observers.mutationChecker(mutations, function(mutation) {
+		GUIp.observers.mutationChecker(mutations, function(mutation) {
 			// to prevent improving WHEN ENTERING FUCKING TEXT IN FUCKING TEXTAREA
 			return mutation.addedNodes.length && mutation.addedNodes[0].nodeType !== 3;
-		}, ui_improver.improvementDebounce);
+		}, GUIp.improver.improvementDebounce);
 	},
 	target: ['body']
 };

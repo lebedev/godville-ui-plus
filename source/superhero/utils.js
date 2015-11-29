@@ -1,24 +1,26 @@
-// ui_utils
-var ui_utils = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "utils"}) : worker.GUIp.utils = {};
+// utils
+window.GUIp = window.GUIp || {};
 
-ui_utils.notiLaunch = 0;
-ui_utils.messagesShown = [];
+GUIp.utils = {};
+
+GUIp.utils.notiLaunch = 0;
+GUIp.utils.messagesShown = [];
 // base phrase say algorythm
-ui_utils.setVoice = function(voice) {
+GUIp.utils.setVoice = function(voice) {
 	this.voiceInput.value = voice;
-	ui_utils.triggerChangeOnVoiceInput();
+	GUIp.utils.triggerChangeOnVoiceInput();
 };
-ui_utils.triggerChangeOnVoiceInput = function() {
-	worker.$(this.voiceInput).change();
+GUIp.utils.triggerChangeOnVoiceInput = function() {
+	$(this.voiceInput).change();
 };
 // finds a label with given name
-ui_utils.findLabel = function($base_elem, label_name) {
-	return worker.$('.l_capt', $base_elem).filter(function(index) {
+GUIp.utils.findLabel = function($base_elem, label_name) {
+	return $('.l_capt', $base_elem).filter(function(index) {
 		return this.textContent === label_name;
 	});
 };
 // checks if $elem already improved
-ui_utils.isAlreadyImproved = function(elem) {
+GUIp.utils.isAlreadyImproved = function(elem) {
 	if (elem.classList.contains('improved')) {
 		return true;
 	} else {
@@ -27,52 +29,52 @@ ui_utils.isAlreadyImproved = function(elem) {
 	}
 };
 // generic voice generator
-ui_utils.getGenericVoicegenButton = function(text, section, title) {
+GUIp.utils.getGenericVoicegenButton = function(text, section, title) {
 	var voicegen = document.createElement('a');
 	voicegen.title = title;
 	voicegen.textContent = text;
-	voicegen.className = 'voice_generator ' + (ui_data.isDungeon ? 'dungeon' : ui_data.isFight ? 'battle' : 'field') + ' ' + section;
+	voicegen.className = 'voice_generator ' + (GUIp.data.isDungeon ? 'dungeon' : GUIp.data.isFight ? 'battle' : 'field') + ' ' + section;
 	voicegen.onclick = function() {
 		if (document.getElementById('god_phrase').getAttribute('disabled') !== 'disabled') {
-			ui_utils.setVoice(ui_words.longPhrase(section));
-			ui_words.currentPhrase = "";
+			GUIp.utils.setVoice(GUIp.words.longPhrase(section));
+			GUIp.words.currentPhrase = "";
 		}
 		return false;
 	};
 	return voicegen;
 };
-ui_utils.addVoicegen = function(elem, voicegen_name, section, title) {
-	elem.parentNode.insertBefore(ui_utils.getGenericVoicegenButton(voicegen_name, section, title), elem.nextSibling);
+GUIp.utils.addVoicegen = function(elem, voicegen_name, section, title) {
+	elem.parentNode.insertBefore(GUIp.utils.getGenericVoicegenButton(voicegen_name, section, title), elem.nextSibling);
 };
 // Случайный индекс в массиве
-ui_utils.getRandomIndex = function(arr) {
+GUIp.utils.getRandomIndex = function(arr) {
 	return Math.floor(Math.random()*arr.length);
 };
 // Форматирование времени
-ui_utils.formatClock = function(godvilleTime) {
+GUIp.utils.formatClock = function(godvilleTime) {
 	return ('0' + godvilleTime.getUTCHours()).slice(-2) + ':' + ('0' + godvilleTime.getUTCMinutes()).slice(-2) + ':' + ('0' + godvilleTime.getUTCSeconds()).slice(-2);
 };
 // Случайный элемент массива
-ui_utils.getRandomItem = function(arr) {
-	return arr[ui_utils.getRandomIndex(arr)];
+GUIp.utils.getRandomItem = function(arr) {
+	return arr[GUIp.utils.getRandomIndex(arr)];
 };
 // Вытаскивает случайный элемент из массива
-ui_utils.popRandomItem = function(arr) {
-	var ind = ui_utils.getRandomIndex(arr);
+GUIp.utils.popRandomItem = function(arr) {
+	var ind = GUIp.utils.getRandomIndex(arr);
 	var res = arr[ind];
 	arr.splice(ind, 1);
 	return res;
 };
 // Escapes HTML symbols
-ui_utils.escapeHTML = function(str) {
+GUIp.utils.escapeHTML = function(str) {
 	return String(str).replace(/&/g, "&amp;")
 	                  .replace(/"/g, "&quot;")
 	                  .replace(/</g, "&lt;")
 	                  .replace(/>/g, "&gt;");
 };
-ui_utils.addCSS = function () {
-	if (worker.GUIp_browser !== 'Opera' && !document.getElementById('ui_css')) {
-		worker.GUIp_addCSSFromURL(worker.GUIp_getResource('superhero.css'), 'guip_css');
+GUIp.utils.addCSS = function () {
+	if (GUIp.browser !== 'Opera' && !document.getElementById('ui_css')) {
+		GUIp.addCSSFromURL(GUIp.getResource('superhero.css'), 'guip_css');
 	}
 };
 /* aParams: {
@@ -82,7 +84,7 @@ ui_utils.addCSS = function () {
 	onSuccess: function [optional],
 	onFail:    function [optional]
 }*/
-ui_utils.sendXHR = function(aParams) {
+GUIp.utils.sendXHR = function(aParams) {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (this.readyState < 4) {
@@ -105,50 +107,50 @@ ui_utils.sendXHR = function(aParams) {
 		xhr.send(aParams.postData);
 	}
 };
-ui_utils.getXHR = function(aParams) {
+GUIp.utils.getXHR = function(aParams) {
 	aParams.type = 'GET';
-	ui_utils.sendXHR(aParams);
+	GUIp.utils.sendXHR(aParams);
 };
-ui_utils.postXHR = function(aParams) {
+GUIp.utils.postXHR = function(aParams) {
 	aParams.type = 'POST';
-	ui_utils.sendXHR(aParams);
+	GUIp.utils.sendXHR(aParams);
 };
-ui_utils.showMessage = function(msg_no, msg) {
+GUIp.utils.showMessage = function(msg_no, msg) {
 	var id = 'msg' + msg_no;
 	if (isNaN(msg_no)) {
-		ui_utils.messagesShown.push(msg_no);
+		GUIp.utils.messagesShown.push(msg_no);
 	}
 	document.getElementById('menu_bar').insertAdjacentHTML('afterend',
 		'<div id="' + id + '" class="hint_bar ui_msg">'+
 			'<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
 			'<div class="hint_bar_content">' + msg.content + '</div>'+
-			'<div class="hint_bar_close"><a id="' + id + '_close">' + worker.GUIp_i18n.close + '</a></div>' +
+			'<div class="hint_bar_close"><a id="' + id + '_close">' + GUIp.i18n.close + '</a></div>' +
 		'</div>'
 	);
 	var msg_elem = document.getElementById(id);
 	document.getElementById(id + '_close').onclick = function() {
-		worker.$(msg_elem).fadeToggle(function() {
+		$(msg_elem).fadeToggle(function() {
 			msg_elem.parentNode.removeChild(msg_elem);
 			if (!isNaN(msg_no)) {
-				ui_storage.set('lastShownMessage', msg_no);
+				GUIp.storage.set('lastShownMessage', msg_no);
 			}
 		});
 		return false;
 	};
 
-	worker.setTimeout(function() {
-		worker.$(msg_elem).fadeToggle(1500, msg.callback);
+	setTimeout(function() {
+		$(msg_elem).fadeToggle(1500, msg.callback);
 	}, 1000);
 };
-ui_utils.inform = function() {
-	var last_shown = !isNaN(ui_storage.get('lastShownMessage')) ? +ui_storage.get('lastShownMessage') : -1;
-	for (var i = 0, len = this.messages[worker.GUIp_locale].length; i < len; i++) {
-		if (this.messages[worker.GUIp_locale][i].msg_no > last_shown) {
-			ui_utils.showMessage(this.messages[worker.GUIp_locale][i].msg_no, this.messages[worker.GUIp_locale][i]);
+GUIp.utils.inform = function() {
+	var last_shown = !isNaN(GUIp.storage.get('lastShownMessage')) ? +GUIp.storage.get('lastShownMessage') : -1;
+	for (var i = 0, len = this.messages[GUIp.locale].length; i < len; i++) {
+		if (this.messages[GUIp.locale][i].msg_no > last_shown) {
+			GUIp.utils.showMessage(this.messages[GUIp.locale][i].msg_no, this.messages[GUIp.locale][i]);
 		}
 	}
 };
-ui_utils.messages = {
+GUIp.utils.messages = {
 	ru: [{
 		msg_no: 0,
 		title: 'Приветственное сообщение Godville UI+',
@@ -169,8 +171,8 @@ ui_utils.messages = {
 			'<div style="text-align: right;">Приятной игры!<br>~~Бэдлак</div>';
 		},
 		callback: function() {
-			if (!ui_storage.get('helpDialogVisible')) {
-				ui_help.toggleDialog();
+			if (!GUIp.storage.get('helpDialogVisible')) {
+				GUIp.help.toggleDialog();
 			}
 		}
 	},
@@ -183,13 +185,13 @@ ui_utils.messages = {
 	en: [{
 		msg_no: 0,
 		title: 'Godville UI+ greeting message',
-		get content() { return '<div>Greetings to a god' + (document.title.match('his') ? '' : 'dess') + ', using <b>Godville UI+</b> ' + (worker.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + '.</div>' +
+		get content() { return '<div>Greetings to a god' + (document.title.match('his') ? '' : 'dess') + ', using <b>Godville UI+</b> ' + (GUIp.browser === 'Firefox' ? 'add-on' : 'extension') + '.</div>' +
 			'<div style="text-align: justify; margin: 0.2em 0 0.3em;">&emsp;Please click <b>ui+ settings</b> button at the top of a page, or ' +
-			'open <b>UI+ settings</b> tab in the hero <b>profile</b> and familiarize yourself with the settings available in this ' + (worker.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ', if you haven\'t done so yet.<br>' +
+			'open <b>UI+ settings</b> tab in the hero <b>profile</b> and familiarize yourself with the settings available in this ' + (GUIp.browser === 'Firefox' ? 'add-on' : 'extension') + ', if you haven\'t done so yet.<br>' +
 
 			'&emsp;In respect to forum informers, by default you are only subscribed to the topic for this addon, and most likely you can see it <i>in the upper left corner</i> right now.<br>' +
 
-			'&emsp;If you can\'t figure out some functions of the ' + (worker.GUIp_browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask in the forums.<br>' +
+			'&emsp;If you can\'t figure out some functions of the ' + (GUIp.browser === 'Firefox' ? 'add-on' : 'extension') + ' - feel free to ask in the forums.<br>' +
 
 			'&emsp;Guides for handling errors can be found in the <i>help dialog</i> (which is open now), that can be shown or hidden by clicking <b style="text-decoration: underline;">ui+ help</b> in the top menu. ' +
 			'Links to everything mentioned above can also be found there.<br>' +
@@ -197,8 +199,8 @@ ui_utils.messages = {
 			'<div style="text-align: right;">Enjoy the game!<br>~~Bad Luck</div>';
 		},
 		callback: function() {
-			if (!ui_storage.get('helpDialogVisible')) {
-				ui_help.toggleDialog();
+			if (!GUIp.storage.get('helpDialogVisible')) {
+				GUIp.help.toggleDialog();
 			}
 		}
 	},
@@ -209,19 +211,19 @@ ui_utils.messages = {
 				 '<div style="text-align: right;">Signature.<br>~~Bad Luck</div>'
 	}*/]
 };
-ui_utils.getNodeIndex = function(node) {
+GUIp.utils.getNodeIndex = function(node) {
 	var i = 0;
 	while ((node = node.previousElementSibling)) {
 		i++;
 	}
 	return i;
 };
-ui_utils.openChatWith = function(friend, e) {
+GUIp.utils.openChatWith = function(friend, e) {
 	if (e) {
 		e.preventDefault();
 		e.stopPropagation();
 	}
-	/*worker.so.nm.bindings.show_friend[0].update(friend); -- fixme: this doesn't mark incoming messages as read */
+	/*so.nm.bindings.show_friend[0].update(friend); -- fixme: this doesn't mark incoming messages as read */
 	var current, friends = document.querySelectorAll('.msgDockPopupW .frline');
 	for (var i = 0, len = friends.length; i < len; i++) {
 		current = friends[i].querySelector('.frname');
@@ -231,15 +233,15 @@ ui_utils.openChatWith = function(friend, e) {
 		}
 	}
 };
-ui_utils.dateToMoscowTimeZone = function(date) {
+GUIp.utils.dateToMoscowTimeZone = function(date) {
 	var temp = new Date(date);
-	temp.setTime(temp.getTime() + (temp.getTimezoneOffset() + (worker.GUIp_locale === 'en' ? 115 : 175))*60*1000);
+	temp.setTime(temp.getTime() + (temp.getTimezoneOffset() + (GUIp.locale === 'en' ? 115 : 175))*60*1000);
 	return temp.getFullYear() + '/' +
 		  (temp.getMonth() + 1 < 10 ? '0' : '') + (temp.getMonth() + 1) + '/' +
 		  (temp.getDate() < 10 ? '0' : '') + temp.getDate();
 };
-ui_utils.setVoiceSubmitState = function(condition, disable) {
-	if (!ui_data.isFight && condition) {
+GUIp.utils.setVoiceSubmitState = function(condition, disable) {
+	if (!GUIp.data.isFight && condition) {
 		var voice_submit = document.getElementById('voice_submit');
 		if (disable) {
 			voice_submit.setAttribute('disabled', 'disabled');
@@ -250,17 +252,17 @@ ui_utils.setVoiceSubmitState = function(condition, disable) {
 	}
 	return false;
 };
-ui_utils.hideElem = function(elem, hide) {
+GUIp.utils.hideElem = function(elem, hide) {
 	if (hide) {
 		elem.classList.add('hidden');
 	} else {
 		elem.classList.remove('hidden');
 	}
 };
-ui_utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCallback, xhr) {
+GUIp.utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCallback, xhr) {
 	var match = xhr.responseText.match(/Godville UI\+ (\d+)\.(\d+)\.(\d+)\.(\d+)/);
 	if (match) {
-		var currentVersion = ui_data.currentVersion.split('.'),
+		var currentVersion = GUIp.data.currentVersion.split('.'),
 		    lastVersion = [+match[1], +match[2], +match[3], +match[4]],
 		    isNewest = +currentVersion[0] < lastVersion[0] ? false :
 		               +currentVersion[0] > lastVersion[0] ? true  :
@@ -280,50 +282,50 @@ ui_utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCal
 		failCallback();
 	}
 };
-ui_utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCallback) {
-	ui_utils.postXHR({
+GUIp.utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCallback) {
+	GUIp.utils.postXHR({
 		url: '/forums/last_in_topics',
-		postData: 'topic_ids[]=' + (worker.GUIp_locale === 'ru' ? '2812' : '2800'),
-		onSuccess: ui_utils._parseVersion.bind(null, isNewestCallback, isNotNewestCallback, failCallback),
+		postData: 'topic_ids[]=' + (GUIp.locale === 'ru' ? '2812' : '2800'),
+		onSuccess: GUIp.utils._parseVersion.bind(null, isNewestCallback, isNotNewestCallback, failCallback),
 		onFail: failCallback
 	});
 };
 
-ui_utils.processError = function(error, isDebugMode) {
+GUIp.utils.processError = function(error, isDebugMode) {
 	if (isDebugMode) {
-		worker.console.warn(worker.GUIp_i18n.debug_mode_warning);
+		console.warn(GUIp.i18n.debug_mode_warning);
 	}
 	var name_message = error.name + ': ' + error.message,
 		stack = 'no stacktrace' || error.stack && error.stack.replace(name_message, '').replace(/^\n|    at /g, '').replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1');
-	worker.console.error('Godville UI+ error log:\n' +
+	console.error('Godville UI+ error log:\n' +
 						  name_message + '\n' +
-						  worker.GUIp_i18n.error_message_stack_trace + ': ' + stack);
-	if (!~ui_utils.messagesShown.indexOf('error')) {
-		ui_utils.showMessage('error', {
-			title: worker.GUIp_i18n.error_message_title,
-			content: (isDebugMode ? '<div><b class="debug_mode_warning">' + worker.GUIp_i18n.debug_mode_warning + '</b></div>' : '') +
+						  GUIp.i18n.error_message_stack_trace + ': ' + stack);
+	if (!~GUIp.utils.messagesShown.indexOf('error')) {
+		GUIp.utils.showMessage('error', {
+			title: GUIp.i18n.error_message_title,
+			content: (isDebugMode ? '<div><b class="debug_mode_warning">' + GUIp.i18n.debug_mode_warning + '</b></div>' : '') +
 					 '<div id="possible_actions">' +
-						'<div>' + worker.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
-						'<div>' + worker.GUIp_i18n.possible_actions + '</div>' +
+						'<div>' + GUIp.i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
+						'<div>' + GUIp.i18n.possible_actions + '</div>' +
 						'<ol>' +
-							'<li>' + worker.GUIp_i18n.if_first_time + '<a id="press_here_to_reload">' + worker.GUIp_i18n.press_here_to_reload + '</a></li>' +
-							'<li>' + worker.GUIp_i18n.if_repeats + '<a id="press_here_to_show_details">' + worker.GUIp_i18n.press_here_to_show_details + '</a></li>' +
+							'<li>' + GUIp.i18n.if_first_time + '<a id="press_here_to_reload">' + GUIp.i18n.press_here_to_reload + '</a></li>' +
+							'<li>' + GUIp.i18n.if_repeats + '<a id="press_here_to_show_details">' + GUIp.i18n.press_here_to_show_details + '</a></li>' +
 						'</ol>' +
 					 '</div>' +
 					 '<div id="error_details" class="hidden">' +
-						'<div>' + worker.GUIp_i18n.error_message_subtitle + '</div>' +
-						'<div>' + worker.GUIp_i18n.browser + ' <b>' + worker.GUIp_browser + ' ' + navigator.userAgent.match(worker.GUIp_browser + '\/([\\d.]+)')[1] +'</b>.</div>' +
-						'<div>' + worker.GUIp_i18n.version + ' <b>' + ui_data.currentVersion + '</b>.</div>' +
-						'<div>' + worker.GUIp_i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
-						'<div>' + worker.GUIp_i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>' +
+						'<div>' + GUIp.i18n.error_message_subtitle + '</div>' +
+						'<div>' + GUIp.i18n.browser + ' <b>' + GUIp.browser + ' ' + navigator.userAgent.match(GUIp.browser + '\/([\\d.]+)')[1] +'</b>.</div>' +
+						'<div>' + GUIp.i18n.version + ' <b>' + GUIp.data.currentVersion + '</b>.</div>' +
+						'<div>' + GUIp.i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
+						'<div>' + GUIp.i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>' +
 					 '</div>',
 			callback: function() {
 				document.getElementById('press_here_to_reload').onclick = location.reload.bind(location);
 				document.getElementById('press_here_to_show_details').onclick = function() {
-					ui_utils.hideElem(document.getElementById('possible_actions'), true);
-					ui_utils.hideElem(document.getElementById('error_details'), false);
-					if (!ui_storage.get('helpDialogVisible')) {
-						ui_help.toggleDialog();
+					GUIp.utils.hideElem(document.getElementById('possible_actions'), true);
+					GUIp.utils.hideElem(document.getElementById('error_details'), false);
+					if (!GUIp.storage.get('helpDialogVisible')) {
+						GUIp.help.toggleDialog();
 					}
 				};
 			}
@@ -331,52 +333,52 @@ ui_utils.processError = function(error, isDebugMode) {
 	}
 };
 
-ui_utils.informAboutOldVersion = function() {
-	if (!~ui_utils.messagesShown.indexOf('update_required')) {
-		ui_utils.showMessage('update_required', {
-			title: worker.GUIp_i18n.error_message_title,
-			content: '<div>' + worker.GUIp_i18n.error_message_in_old_version + '</div>',
+GUIp.utils.informAboutOldVersion = function() {
+	if (!~GUIp.utils.messagesShown.indexOf('update_required')) {
+		GUIp.utils.showMessage('update_required', {
+			title: GUIp.i18n.error_message_title,
+			content: '<div>' + GUIp.i18n.error_message_in_old_version + '</div>',
 			callback: function() {
-				if (!ui_storage.get('helpDialogVisible')) {
-					ui_help.toggleDialog();
+				if (!GUIp.storage.get('helpDialogVisible')) {
+					GUIp.help.toggleDialog();
 				}
 			}
 		});
 	}
 };
 
-ui_utils.showNotification = function(title,text,callback) {
-	worker.setTimeout(function() {
-		var notification = new worker.Notification(title, {
-			icon: worker.GUIp_getResource('icon64.png'),
+GUIp.utils.showNotification = function(title,text,callback) {
+	setTimeout(function() {
+		var notification = new Notification(title, {
+			icon: GUIp.getResource('icon64.png'),
 			body: text,
 		});
 		notification.onclick = callback;
-		var notificationTimeout = 5, customTimeout = ui_storage.get('Option:informerAlertsTimeout');
+		var notificationTimeout = 5, customTimeout = GUIp.storage.get('Option:informerAlertsTimeout');
 		if (parseInt(customTimeout) >= 0) {
 			notificationTimeout = parseInt(customTimeout);
 		}
 		if (notificationTimeout > 0) {
-			worker.setTimeout(function() { notification.close(); }, notificationTimeout * 1000);
+			setTimeout(function() { notification.close(); }, notificationTimeout * 1000);
 		}
-		worker.setTimeout(function() { if (ui_utils.notiLaunch) { ui_utils.notiLaunch--; } }, 500);
+		setTimeout(function() { if (GUIp.utils.notiLaunch) { GUIp.utils.notiLaunch--; } }, 500);
 	}, 500 * this.notiLaunch++);
 };
 
-ui_utils.getCurrentChat = function() {
+GUIp.utils.getCurrentChat = function() {
 	// not that nice but working way to get current contact name without searching for matches in HTML
-	for (var obj in worker.so.messages.nm.bindings.messages[0]) {
+	for (var obj in so.messages.nm.bindings.messages[0]) {
 		if (obj.indexOf('fc_') === 0) {
-			var msgBinding = worker.so.messages.nm.bindings.messages[0][obj];
+			var msgBinding = so.messages.nm.bindings.messages[0][obj];
 			if (msgBinding && msgBinding[0].classList.contains('frbutton_pressed')) {
 				return obj.substring(3);
 			}
 		}
 	}
 	return null;
-	// there should definitely be a better way to detect this, probably via worker.so.<whatever>
-	/*var docktitle = worker.$('.frbutton_pressed .dockfrname_w .dockfrname').text().replace(/\.+/g,''),
-		headtitle = worker.$('.frbutton_pressed .frMsgBlock .fr_chat_header').text().match('^(.*?)(\ и\ е|\ and\ h)');
+	// there should definitely be a better way to detect this, probably via so.<whatever>
+	/*var docktitle = $('.frbutton_pressed .dockfrname_w .dockfrname').text().replace(/\.+/g,''),
+		headtitle = $('.frbutton_pressed .frMsgBlock .fr_chat_header').text().match('^(.*?)(\ и\ е|\ and\ h)');
 	if (docktitle && headtitle && headtitle[1].indexOf(docktitle) === 0) {
 		return headtitle[1];
 	} else {

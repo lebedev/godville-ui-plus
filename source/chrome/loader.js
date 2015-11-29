@@ -1,5 +1,5 @@
 (function() {
-	var prefix = window.chrome.extension.getURL('');
+	var prefix = chrome.extension.getURL('');
 	localStorage.setItem('GUIp_prefix', prefix);
 	var scripts = {
 		common: prefix + 'common.js',

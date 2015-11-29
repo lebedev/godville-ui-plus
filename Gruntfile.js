@@ -66,8 +66,7 @@ module.exports = function(grunt) {
             return content.replace(/\$VERSION/g, grunt.config('new_version'));
           }
         },
-        src: ['source/superhero/init.js',
-              'source/superhero/data.js',
+        src: ['source/superhero/data.js',
               'source/superhero/utils.js',
               'source/superhero/timeout.js',
               'source/superhero/help.js',
@@ -164,32 +163,26 @@ module.exports = function(grunt) {
       superhero: {
         options: {
           'globals': {
-            'worker': true,
-            'window': false,
-            'createObjectIn': false,
+            'clearInterval': false,
+            'clearTimeout': false,
+            'confirm': false,
+            'console': false,
             'document': false,
+            'localStorage': false,
             'location': false,
             'navigator': false,
-            'localStorage': false,
-            'XMLHttpRequest': false,
             'MutationObserver': false,
-            'ui_data': true,
-            'ui_utils': true,
-            'ui_timeout': true,
-            'ui_help': true,
-            'ui_storage': true,
-            'ui_words': true,
-            'ui_stats': true,
-            'ui_logger': true,
-            'ui_informer': true,
-            'ui_forum': true,
-            'ui_improver': true,
-            'ui_inventory': true,
-            'ui_timers': true,
-            'ui_observers': true,
-            'ui_starter': true,
-            'ui_trycatcher': true,
+            'Notification': false,
+            'setInterval': false,
+            'setTimeout': false,
+            'XMLHttpRequest': false,
+            'window': false,
+            'GUIp': true,
             'starterInt': true,
+            // vendor
+            '$': true,
+            'so': true,
+            'Loc': true,
           }
         },
         src: 'source/superhero/*.js'
@@ -197,13 +190,19 @@ module.exports = function(grunt) {
       forum: {
         options: {
           'globals': {
-            'worker': true,
             'window': false,
+            'console': false,
             'document': false,
             'location': false,
             'localStorage': false,
             'MutationObserver': false,
             'getComputedStyle': false,
+            'getSelection': false,
+            'setInterval': false,
+            'clearInterval': false,
+            'setTimeout': false,
+            'clearTimeout': false,
+            'GUIp': true,
             '$id': true,
             '$C': true,
             '$Q': true,
@@ -219,7 +218,11 @@ module.exports = function(grunt) {
             'isTopic': true,
             'forum_no': true,
             'topics': true,
-            'topic': true
+            'topic': true,
+            // vendor
+            'EditForm': true,
+            'ReplyForm': true,
+            'Effect': true,
           }
         },
         src: 'source/forum/*.js'
@@ -227,17 +230,23 @@ module.exports = function(grunt) {
       other: {
         options: {
           'globals': {
-            'worker': true,
+            'chrome': false,
             'window': false,
+            'console': true,
+            'alert': true,
             'document': false,
             'location': false,
             'localStorage': false,
-            'unsafeWindow': false,
             'require': false,
             'opera': false,
             'FileReader': false,
             'createObjectIn': false,
             'XMLHttpRequest': false,
+            'setInterval': false,
+            'clearInterval': false,
+            'setTimeout': false,
+            'clearTimeout': false,
+            'GUIp': true,
           }
         },
         src: [
