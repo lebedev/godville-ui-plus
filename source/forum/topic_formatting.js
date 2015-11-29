@@ -104,7 +104,7 @@ var setCtrlEnterAction = function(textarea, button) {
 	};
 };
 var initSmartQuotation = function() {
-	document.body.insertAdjacentHTML('beforeend', '<div id="quote_button"><div id="copy" title="Скопировать цитату"></div><div id="quote" title="Процитировать"></div><div id="quote_with_godname" title="Процитировать и добавить имя написавшего бога">+</div></div>');
+	document.body.insertAdjacentHTML('beforeend', '<div id="quote_button"><div id="copy" title="Скопировать цитату"></div><div id="quote" title="' + GUIp.i18n.quote_hint + '"></div><div id="quote_with_author" title="' + GUIp.i18n.quote_with_author_hint + '">+</div></div>');
 
 	var quoteButton = document.getElementById('quote_button');
 
@@ -144,9 +144,10 @@ var initSmartQuotation = function() {
 					}
 				}
 				quoteFormatting('bq. ', editor);
+				getSelection().collapseToStart();
 				return false;
 			};
-			document.getElementById('quote_with_godname').onclick = function() {
+			document.getElementById('quote_with_author').onclick = function() {
 				var editor;
 				if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
 					editor = document.getElementById('edit_body');
@@ -168,6 +169,7 @@ var initSmartQuotation = function() {
 				var post = findPost(container),
 					author = post.querySelector('.post_info a').textContent;
 				setTimeout(ReplyForm.add_name.bind(null, author), 100);
+				getSelection().collapseToStart();
 				return false;
 			};
 		}

@@ -695,6 +695,7 @@ GUIp.i18n = {
 	sub_hint: 'Сделать текст подстрочным',
 	monospace_hint: 'Сделать текст моноширинным',
 	monospace: 'мш',
+	quote_with_author_hint: 'Процитировать и добавить имя автора цитаты',
 	broadcast: 'трансляция',
 	user_css: 'Пользовательский CSS',
 	open_chat_with: 'Открыть чат c богом/богиней ',

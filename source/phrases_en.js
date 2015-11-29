@@ -573,6 +573,7 @@ GUIp.i18n = {
 	sub_hint: 'Subscript',
 	monospace_hint: 'Monospace',
 	monospace: 'ms',
+	quote_with_author_hint: 'Quote and add author\'s name',
 	broadcast: 'broadcast',
 	user_css: 'User CSS',
 	open_chat_with: 'Open chat with god/goddess ',
