@@ -15,7 +15,8 @@
     "grunt-exec": "*",
     "grunt-notify": "*",
     "grunt-prompt": "*",
-    "es6-symbol": "*"
+    "es6-symbol": "*",
+    "request": "*"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/zeird/godville-ui-plus/issues"
   },
-  "homepage": "https://github.com/zeird/godville-ui-plus"
+  "homepage": "https://github.com/zeird/godville-ui-plus",
+  "devDependencies": {
+    "grunt-notify": "^0.4.1"
+  }
 }

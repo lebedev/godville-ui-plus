@@ -155,7 +155,8 @@ module.exports = function(grunt) {
       gruntfile: {
         options: {
           'globals': {
-            'module': false
+            'module': false,
+            'require': false
           }
         },
         src: 'Gruntfile.js'
@@ -283,7 +284,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['source/**/*', 'Gruntfile.js'],
-        tasks: ['notify_hooks', 'debug'],
+        tasks: ['notify_hooks', 'debug:firefox'],
         options: {
           spawn: true,
           atBegin: true
@@ -325,21 +326,31 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-prompt');
 
-  grunt.registerTask('debug', 'Compiles in debug mode.', function() {
+  grunt.registerTask('debug', 'Compiles in debug mode.', function(browser) {
     grunt.log.ok("Compiling in debug mode.");
     grunt.config.set('compile_path', 'debug');
     var new_version = grunt.file.read('current_version').split('.');
     new_version[3]++;
     grunt.config.set('new_version', new_version.join('.'));
-    grunt.task.run([
+    var tasks = [
       'notify:start',
       'jshint',
       'concat',
       'copy',
-      'build_firefox',
       'build_opera',
+      'build_firefox',
+      'update_installed_addon',
       'notify:end'
-    ]);
+    ];
+    switch(browser) {
+    case 'firefox': tasks.splice(4, 1); break;
+    case 'opera': tasks.splice(5, 2); break;
+    }
+    grunt.task.run(tasks);
+  });
+
+  grunt.registerTask('update_installed_addon', 'Sends debug .xpi to FF.', function() {
+    require("request").post({url: "http://localhost:8888", body: require("fs").readFileSync("debug/godville-ui-plus@badluck.dicey.xpi")});
   });
 
   function isCorrectVersion(value) {
