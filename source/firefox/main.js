@@ -1,6 +1,9 @@
 var selfUrl = require('sdk/self').data.url,
     pageMod = require('sdk/page-mod').PageMod;
 
+var ruUrlRegExp = 'https?:\/\/(godville\\.net|gdvl\\.tk|gv\\.erinome\\.net)\/',
+    enUrlRegExp = 'https?:\/\/godvillegame\\.com\/';
+
 var specificScripts = {
 	'superhero.*':                     'superhero.js',
 	'user\/(?:profile|rk_success).*': ['options_page.js', 'options.js'],
@@ -23,12 +26,19 @@ function attachScripts(pathname, locale) {
 function process(hostname, locale) {
 	for (var pathname in specificScripts) {
 		pageMod({
-			include: RegExp(hostname + pathname),
+			include: RegExp(hostname + pathname, 'i'),
 			contentScript: attachScripts(pathname, locale),
 			contentScriptWhen: 'ready'
 		});
 	}
 }
 
-process('https?:\/\/(godville\\.net|gdvl\\.tk|gv\\.erinome\\.net)\/', 'ru');
-process('https?:\/\/godvillegame\\.com\/', 'en');
+process(ruUrlRegExp, 'ru');
+process(enUrlRegExp, 'en');
+
+var tabs = require('sdk/tabs');
+for (let tab of tabs) {
+	if (tab.url.match(RegExp(ruUrlRegExp + '|' + enUrlRegExp, 'i'))) {
+		tab.reload();
+	}
+}
