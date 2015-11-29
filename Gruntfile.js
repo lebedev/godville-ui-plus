@@ -295,20 +295,22 @@ module.exports = function(grunt) {
         options: {
           title: 'Godville UI+',
           message: 'Rebuild initiated',
+          image: '../../images/guip.png'
         }
       },
       end: {
         options: {
           title: 'Godville UI+',
           message: 'Rebuild successful',
-          callbackurl: 'D:\\Stuff\\Codein\\godville\\godville-ui-plus\\debug\\godville-ui-plus@badluck.dicey.xpi'
+          image: '../../images/guip.png'
         }
       }
     },
     notify_hooks: {
       options: {
         enabled: true,
-        title: 'Godville UI+'
+        title: 'Godville UI+',
+        image: '../../images/guip.png',
       }
     }
   });
