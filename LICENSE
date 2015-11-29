@@ -1,16 +1,20 @@
-The MIT License (MIT)
+Custom Non-free License.
 
 Copyright (c) 2014-2015 zeird
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+in the Software with some restrictions, including the rights to use, copy and
+distribute the Software with some limitations:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+* You may not sell the Software.
+* Without my written permission you may not publish and/or distribute a
+diverged/modified version of the Software or use any part of it or it's source
+code to create a product that will work with Godville browser game (on
+godville.net and/or godvillegame.com sites).
+* You may not use my name or any information related to me to advertise your
+code/product or to do anything that may look like I endorse your code/product
+or any part of it.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
