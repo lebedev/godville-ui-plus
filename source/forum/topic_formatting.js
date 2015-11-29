@@ -103,6 +103,78 @@ var setCtrlEnterAction = function(textarea, button) {
 		}
 	};
 };
+var initSmartQuotation = function() {
+	document.body.insertAdjacentHTML('beforeend', '<div id="quote_button"><div id="copy" title="Скопировать цитату"></div><div id="quote" title="Процитировать"></div><div id="quote_with_godname" title="Процитировать и добавить имя написавшего бога">+</div></div>');
+
+	var quoteButton = document.getElementById('quote_button');
+
+	document.onmouseup = function() {
+		quoteButton.classList.remove('shown');
+		setTimeout(_createQuoteDialog, 50);
+	};
+
+	var _createQuoteDialog = function() {
+		console.log('selection!');
+		var selection = window.getSelection(),
+			range = selection.getRangeAt(0),
+			container = range.commonAncestorContainer;
+		if (container.nodeType === 3) {
+			container = container.parentElement;
+		}
+		container.classList.add('current_selection_container');
+		if ((document.querySelector('.body.entry-content.current_selection_container') || document.querySelector('.body.entry-content .current_selection_container')) && selection.toString().length > 2) {
+			var rect = range.getBoundingClientRect(),
+				qbRect = window.qbRect = quoteButton.getBoundingClientRect(),
+			    leftOffset = (rect.left + rect.right)/2 - (qbRect.right - qbRect.left)/2,
+			    topOffset = window.pageYOffset + rect.top - (qbRect.bottom - qbRect.top) - 5;
+			quoteButton.style.left = leftOffset + 'px';
+			quoteButton.style.top = topOffset + 'px';
+			quoteButton.classList.add('shown');
+
+			document.getElementById('copy').onclick = function() {
+				// TODO: copy to clipboard.
+			};
+			document.getElementById('quote').onclick = function() {
+				var editor, init;
+				if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
+					editor = document.getElementById('edit_body');
+				} else {
+					editor = document.getElementById('post_body');
+					if (document.getElementById('reply').style.display === 'none') {
+						ReplyForm.init();
+					}
+				}
+				quoteFormatting('bq. ', editor);
+				return false;
+			};
+			document.getElementById('quote_with_godname').onclick = function() {
+				var editor;
+				if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
+					editor = document.getElementById('edit_body');
+				} else {
+					editor = document.getElementById('post_body');
+					if (document.getElementById('reply').style.display === 'none') {
+						ReplyForm.init();
+					}
+				}
+				quoteFormatting('bq. ', editor);
+
+				var findPost = function(el) {
+					do {
+						el = el.parentNode;
+					} while (!el.classList.contains('post'));
+					return el;
+				};
+
+				var post = findPost(container),
+					author = post.querySelector('.post_info a').textContent;
+				setTimeout(ReplyForm.add_name.bind(null, author), 100);
+				return false;
+			};
+		}
+		container.classList.remove('current_selection_container');
+	};
+};
 var addFormattingButtonsAndCtrlEnter = function() {
 	var formatting_buttons =
 		'<div>' +
@@ -134,6 +206,7 @@ var addFormattingButtonsAndCtrlEnter = function() {
 		}
 	});
 	editFormObserver.observe($id('content'), { childList: true, subtree: true });
+	initSmartQuotation();
 };
 var fixGodnamePaste = function() {
 	ReplyForm.add_name = function(name) {

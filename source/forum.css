@@ -99,3 +99,103 @@
 .post.highlighted .author.vcard {
 	background: #f6f6ba;
 }
+
+#quote_button {
+	position: absolute;
+	width: 75px;
+	height: 20px;
+    display: block;
+    font: 12px Tahoma,Helvetica,Arial,sans-serif;
+    color: #FFF;
+    background-color: #494944;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+    padding: 7px 0;
+    border-radius: 3px;
+    visibility: hidden;
+}
+#quote_button::after {
+	top: 100%;
+	left: 50%;
+	border-style: solid;
+	content: " ";
+	height: 0px;
+	width: 0px;
+	position: absolute;
+	pointer-events: none;
+	border-color: #494944 transparent transparent;
+	border-width: 4px;
+	margin-left: -4px;
+}
+#quote_button.shown {
+    visibility: visible;
+    animation: 160ms linear 0s normal forwards 1 running pop-upwards;
+}
+
+@keyframes pop-upwards {
+	0% {
+		-webkit-transform: matrix(0.97, 0, 0, 1, 0, 12);
+		transform: matrix(0.97, 0, 0, 1, 0, 12);
+		opacity: 0;
+	}
+	20% {
+		-webkit-transform: matrix(0.99, 0, 0, 1, 0, 2);
+		transform: matrix(0.99, 0, 0, 1, 0, 2);
+		opacity: 0.7;
+	}
+	40% {
+		-webkit-transform: matrix(1, 0, 0, 1, 0,-1);
+		transform: matrix(1, 0, 0, 1, 0,-1);
+		opacity: 1;
+	}
+	70%, 100% {
+		-webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+		transform: matrix(1, 0, 0, 1, 0, 0);
+		opacity:1
+	}
+}
+
+#quote_button > div {
+	display: inline-block;
+    cursor: pointer;
+	width: 13px;
+	height: 20px;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding: 0 6px;
+	vertical-align: middle;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+#quote_button #copy {
+	background-image: url("chrome://godville-ui-plus/content/images/copy.png");
+	border-right: 1px solid white;
+	display: none; /* Unless copy functionality is implemented. */
+}
+#quote_button #quote {
+	background-image: url("chrome://godville-ui-plus/content/images/quote.png");
+	border-right: 1px solid white;
+}
+#quote_button #quote_with_godname {
+	position: relative;
+	width: 34px;
+	text-align: center;
+}
+#quote_button #quote_with_godname::before,
+#quote_button #quote_with_godname::after {
+	position: absolute;
+	top: 0;
+	content: "";
+	height: 20px;
+	width: 20px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+#quote_button #quote_with_godname::before {
+	background-image: url("chrome://godville-ui-plus/content/images/quote.png");
+	left: 0;
+}
+#quote_button #quote_with_godname::after {
+	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");
+	right: 0;
+}
