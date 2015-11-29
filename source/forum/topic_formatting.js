@@ -7,8 +7,10 @@ var initEditor = function(editor) {
 	selection = getSelection().isCollapsed ? '' : getSelection().toString().trim().replace(/\n[\n\s]*/g, '<br>');
 };
 var putSelectionTo = function(editor, pos, quoting) {
-	editor.focus();
-	editor.selectionStart = editor.selectionEnd = pos + (quoting ? selection.length : 0);
+	setTimeout(function() {
+		editor.focus();
+		editor.selectionStart = editor.selectionEnd = pos + (quoting ? selection.length : 0);
+	}, 50);
 };
 var basicFormatting = function(left_and_right, editor) {
 	try {
@@ -148,9 +150,7 @@ var fixGodnamePaste = function() {
 			initEditor(editor);
 			var pos = editor.selectionDirection === 'backward' ? ss : se;
 			editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
-			setTimeout(function() {
-				putSelectionTo(editor, pos + name.length + 4, false);
-			}, 50);
+			putSelectionTo(editor, pos + name.length + 4, false);
 		} catch(error) {
 			console.error(error);
 		}
