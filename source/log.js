@@ -783,14 +783,14 @@ ui_log.starter = function() {
 	}
 
 	// add save links
-	if (!ui_log.customDomain && worker.GUIp_locale === 'ru' && !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/)) {
-		var savelnk, savediv = document.createElement('div');
-		savelnk = document.createElement('a');
-		savelnk.onclick = ui_log.saverPrepareLog.bind(null,'gdvl.tk');
-		savelnk.textContent = 'gdvl.tk';
-		savediv.insertBefore(document.createTextNode(worker.GUIp_i18n.save_log_to + ' '), null);
-		savediv.insertBefore(savelnk, null);
-		document.getElementsByClassName('lastduelpl_f')[1].insertBefore(savediv,null);
+	if (!ui_log.customDomain && worker.GUIp_locale === 'ru' && (!document.getElementsByClassName('lastduelpl')[1] || !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/))) {
+		document.getElementsByClassName('lastduelpl_f')[1].insertAdjacentHTML('beforeend', '<div>Сохранить в <a id="gdvltk_saver" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;">gdvl.tk</a></div>');
+		document.getElementById('gdvltk_saver').onclick = function(e) {
+			e.preventDefault();
+			var s = document.createElement('script');
+			s.src = '//gdvl.tk/send.js';
+			document.body.appendChild(s);
+		};
 	}
 
 	if (location.href.match('boss=') || !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/)) {
