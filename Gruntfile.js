@@ -149,7 +149,8 @@ module.exports = function(grunt) {
         'curly': true,
         'eqnull': true,
         'eqeqeq': true,
-        'undef': true
+        'undef': true,
+        'moz': true
       },
       gruntfile: {
         options: {
