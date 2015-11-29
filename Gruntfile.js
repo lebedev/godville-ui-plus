@@ -325,7 +325,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-prompt');
 
-  grunt.task.registerTask('debug', 'Compiles in debug mode.', function() {
+  grunt.registerTask('debug', 'Compiles in debug mode.', function() {
     grunt.log.ok("Compiling in debug mode.");
     grunt.config.set('compile_path', 'debug');
     var new_version = grunt.file.read('current_version').split('.');
@@ -362,7 +362,9 @@ module.exports = function(grunt) {
     }
   }
 
-  grunt.task.registerTask('release', 'Compiles in release mode and publishes.', function(new_version) {
+  grunt.task.run('notify_hooks');
+
+  grunt.registerTask('release', 'Compiles in release mode and publishes.', function(new_version) {
     grunt.log.ok("Compiling in release mode.");
     if (grunt.file.exists('publish')) {
       grunt.config.set('compile_path', 'release');
@@ -392,7 +394,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.task.registerTask('publish', 'Publishes all versions.', function(new_version) {
+  grunt.registerTask('publish', 'Publishes all versions.', function(new_version) {
     grunt.log.ok("Publishing.");
     if (grunt.file.exists('publish')) {
       grunt.task.run([
@@ -405,19 +407,19 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.task.registerTask('exec_with_token', 'Sets token to a command and runs it.', function(arg) {
+  grunt.registerTask('exec_with_token', 'Sets token to a command and runs it.', function(arg) {
     grunt.config.set(arg, grunt.file.read('publish/' + arg).replace('$TOKEN', grunt.file.readJSON('publish/token').access_token));
     grunt.task.run('exec:' + arg);
   });
 
-  grunt.task.registerTask('build_chrome', 'Compiles Chrome extension.', function() {
+  grunt.registerTask('build_chrome', 'Compiles Chrome extension.', function() {
     grunt.task.run([
       'compress:chrome',
       'clean:chrome',
     ]);
   });
 
-  grunt.task.registerTask('publish_chrome', 'Publishes Chrome extension to Chrome Web Store.', function() {
+  grunt.registerTask('publish_chrome', 'Publishes Chrome extension to Chrome Web Store.', function() {
     grunt.config.set('token_request', grunt.file.read('publish/token_request'));
     grunt.task.run([
       'exec:token_request',
@@ -427,14 +429,14 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.task.registerTask('build_firefox', 'Compiles Firefox add-on.', function() {
+  grunt.registerTask('build_firefox', 'Compiles Firefox add-on.', function() {
     grunt.task.run([
       'compress:firefox',
       'clean:firefox',
     ]);
   });
 
-  grunt.task.registerTask('publish_firefox', 'Publishes Firefox add-on to Github repo.', function() {
+  grunt.registerTask('publish_firefox', 'Publishes Firefox add-on to Github repo.', function() {
     if (!grunt.config('new_version')) {
       grunt.config.set('new_version', grunt.file.read('new_version'));
     }
@@ -447,19 +449,19 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.task.registerTask('build_opera', 'Compiles Opera extension.', function() {
+  grunt.registerTask('build_opera', 'Compiles Opera extension.', function() {
     grunt.task.run([
       'compress:opera',
       'clean:opera'
     ]);
   });
 
-  grunt.task.registerTask('update_version', 'Updates version in "current_version" file and deletes "new_version" file.', function() {
+  grunt.registerTask('update_version', 'Updates version in "current_version" file and deletes "new_version" file.', function() {
     grunt.file.write('current_version', grunt.file.read('new_version'));
     grunt.file.delete('new_version');
   });
 
-  grunt.task.registerTask('add_publish_task_to_queue_if_needed', 'Adds "publish" task to queue if needed.', function() {
+  grunt.registerTask('add_publish_task_to_queue_if_needed', 'Adds "publish" task to queue if needed.', function() {
     if (grunt.config('run_publish')) {
       grunt.task.run('publish');
     } else {
