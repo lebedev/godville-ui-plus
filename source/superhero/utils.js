@@ -85,14 +85,14 @@ ui_utils.addCSS = function () {
 ui_utils.sendXHR = function(aParams) {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
-		if (xhr.readyState < 4) {
+		if (this.readyState < 4) {
 			return;
-		} else if (xhr.status === 200) {
+		} else if (this.status === 200) {
 			if (aParams.onSuccess) {
-				aParams.onSuccess(xhr);
+				aParams.onSuccess(this);
 			}
 		} else if (aParams.onFail) {
-			aParams.onFail(xhr);
+			aParams.onFail(this);
 		}
 	};
 
