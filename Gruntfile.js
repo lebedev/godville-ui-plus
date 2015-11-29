@@ -261,7 +261,7 @@ module.exports = function(grunt) {
                 version[3]++;
                 return version.join('.');
               },
-              validate: isCorrentVersion
+              validate: isCorrectVersion
             }
           ]
         }
@@ -274,7 +274,7 @@ module.exports = function(grunt) {
               type: 'confirm',
               message: 'Did you signed .xpi-file and want to run "publish" task?',
               default: true,
-              validate: isCorrentVersion
+              validate: isCorrectVersion
             }
           ]
         }
@@ -340,7 +340,7 @@ module.exports = function(grunt) {
     ]);
   });
 
-  function isCorrentVersion(value) {
+  function isCorrectVersion(value) {
     if (!value.match(/\d+\.\d+\.\d+\.\d+/)) {
       return false;
     } else {
@@ -368,7 +368,7 @@ module.exports = function(grunt) {
       grunt.task.run([
         'jshint'
       ]);
-      if (new_version && isCorrentVersion(new_version)) {
+      if (new_version && isCorrectVersion(new_version)) {
         grunt.config.set('new_version', new_version);
         grunt.log.ok('Got new version number: ' + new_version);
       } else {
