@@ -95,7 +95,7 @@ var setAllCheckboxesToState = function(classname, state) {
 };
 
 function loadOptions() {
-	if (!(localStorage.getItem('GUIp_CurrentUser') || $id('profile_main'))) {
+	if (!$id('profile_main')) {
 		worker.setTimeout(loadOptions, 100);
 		return;
 	}
@@ -736,12 +736,11 @@ var starterInt = worker.setInterval(function() {
 	if (worker.GUIp_browser && worker.GUIp_i18n && worker.GUIp_addCSSFromURL) {
 		def = worker.GUIp_words();
 		worker.clearInterval(starterInt);
-		god_name = $q('#opt_change_profile div div').textContent;
-		if (god_name) {
-			localStorage.setItem('GUIp_CurrentUser', god_name);
-		} else {
-			god_name = localStorage.getItem('GUIp_CurrentUser');
-		}
+
+		var greetings = $id('menu_top').textContent;
+		god_name = greetings.match(localStorage.getItem('GUIp:lastGodname'))[0] ||
+		           greetings.match(localStorage.getItem('GUIp:godnames'))[0];
+
 		addMenu();
 		if (location.hash === "#ui_settings") {
 			loadOptions();

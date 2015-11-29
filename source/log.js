@@ -11,7 +11,7 @@ if (window.wrappedJSObject) {
 
 var ui_log = window.wrappedJSObject ? createObjectIn(worker.GUIp, {defineAs: "log"}) : worker.GUIp.log = {};
 
-ui_log.godname = localStorage.getItem('GUIp_CurrentUser');
+ui_log.godname = localStorage.getItem('GUIp:lastGodname');
 ui_log.customDomain = !location.href.match(/^https?:\/\/(godville\.net|godvillegame\.com)\/duels\/log/);
 ui_log.xhrCount = 0;
 ui_log.chronicles = {};

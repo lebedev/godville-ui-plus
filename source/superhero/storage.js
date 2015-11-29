@@ -38,7 +38,7 @@ ui_storage.set_with_diff = function(id, value) {
 // dumps all values related to current god_name
 ui_storage.dump = function(selector) {
 	var lines = [],
-		regexp = '^GUIp_' + (selector ? (ui_data.god_name + ':' + selector) : '');
+		regexp = '^GUIp[_:]' + (selector ? (ui_data.god_name + ':' + selector) : '');
 	for (var key in localStorage) {
 		if (key.match(regexp)) {
 			lines.push(key + ' = ' + localStorage.getItem(key));
@@ -82,19 +82,42 @@ ui_storage._rename = function(from, to) {
 };
 ui_storage._delete = function(regexp) {
 	for (var key in localStorage) {
-		if (key.match(/^GUIp_/) && key.match(regexp)) {
+		if (key.match(/^GUIp/) && key.match(regexp)) {
 			localStorage.removeItem(key);
 		}
 	}
 };
 ui_storage.migrate = function() {
+	if (!ui_storage._migratedAt('151009')) {
+		localStorage.removeItem('GUIp_migrated');
+		localStorage.removeItem('GUIp_CurrentUser');
+
+		var godnames = [],
+		    godname;
+		for(var key in localStorage) {
+			if (key.match(/^GUIp_([^:]+)/)) {
+				godname = key.match(/^GUIp_([^:]+)/)[1];
+				if (godname && !~godnames.indexOf(godname)) {
+					godnames.push(godname);
+				}
+			}
+		}
+		localStorage.setItem('GUIp:godnames', godnames.join('|'));
+	}
 };
 ui_storage._migratedAt = function(date) {
-	var lastMigrationDate = localStorage.getItem('GUIp:migrated');
-	if (lastMigrationDate && lastMigrationDate < date) {
-		localStorage.setItem('GUIp:migrated', date);
+	var lastMigratedAt = localStorage.getItem('GUIp:lastMigratedAt');
+	if (lastMigratedAt && lastMigratedAt < date) {
+		localStorage.setItem('GUIp:lastMigratedAt', date);
 		return true;
 	} else {
 		return false;
 	}
+};
+ui_storage.isNewProfile = function(godname) {
+	return !~(localStorage.getItem('GUIp:godnames') || '').split('|').indexOf(godname);
+};
+ui_storage.addToNames = function(godname) {
+	var godnames = localStorage.getItem('GUIp:godnames');
+	localStorage.setItem('GUIp:godnames', (godnames ? godnames + '|' : '') + godname);
 };
