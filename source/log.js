@@ -755,7 +755,8 @@ ui_log.saverPrepareLog = function(svc) {
 		if (document.getElementById('search_status') && document.getElementById('search_status').textContent.match(/Извините, но по этой ссылке найти хронику не удалось./)) {
 			throw 'лог отсутствует';
 		}
-		if (document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/)) {
+		var translation = document.getElementsByClassName('lastduelpl')[1];
+		if (translation && translation.textContent.match(/прямая трансляция/)) {
 			throw 'нельзя загрузить трансляцию';
 		}
 		if (document.getElementById('godvillepehu_loader')) {
