@@ -101,15 +101,17 @@
 }
 
 #quote_button {
+	top: 0;
+	left: 0;
 	position: absolute;
-	width: 75px;
+	width: auto;
 	height: 20px;
     display: block;
     font: 12px Tahoma,Helvetica,Arial,sans-serif;
     color: #FFF;
     background-color: #494944;
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
-    padding: 7px 0;
+    padding: 7px 2px;
     border-radius: 3px;
     visibility: hidden;
 }
@@ -178,7 +180,7 @@
 }
 #quote_button #quote_with_godname {
 	position: relative;
-	width: 34px;
+	width: 40px;
 	text-align: center;
 }
 #quote_button #quote_with_godname::before,
@@ -187,15 +189,15 @@
 	top: 0;
 	content: "";
 	height: 20px;
-	width: 20px;
+	width: 13px;
 	background-position: center;
 	background-repeat: no-repeat;
 }
 #quote_button #quote_with_godname::before {
 	background-image: url("chrome://godville-ui-plus/content/images/quote.png");
-	left: 0;
+	left: 6px;
 }
 #quote_button #quote_with_godname::after {
 	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");
-	right: 0;
+	right: 6px;
 }
