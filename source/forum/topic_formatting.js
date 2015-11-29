@@ -110,11 +110,10 @@ var initSmartQuotation = function() {
 
 	document.onmouseup = function() {
 		quoteButton.classList.remove('shown');
-		setTimeout(_createQuoteDialog, 50);
+		setTimeout(setupQuoteDialog, 50);
 	};
 
-	var _createQuoteDialog = function() {
-		console.log('selection!');
+	var setupQuoteDialog = function() {
 		var selection = window.getSelection(),
 			range = selection.getRangeAt(0),
 			container = range.commonAncestorContainer;
