@@ -80,12 +80,6 @@ ui_storage._rename = function(from, to) {
 		}
 	}
 };
-ui_storage._rename_nesw = function(from, to) {
-	if (ui_storage.get('phrases_walk_' + from)) {
-		ui_storage.set('CustomPhrases:go_' + to, ui_storage.get('phrases_walk_' + from));
-		localStorage.removeItem(ui_storage._get_key('phrases_walk_' + from));
-	}
-};
 ui_storage._delete = function(regexp) {
 	for (var key in localStorage) {
 		if (key.match(/^GUIp_/) && key.match(regexp)) {
