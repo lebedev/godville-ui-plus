@@ -32,4 +32,4 @@ var GUIp_forum = function() {
 		console.error(e);
 	}
 };
-var starter = setInterval(GUIp_forum, 100);
+var starter = setInterval(function() { GUIp_forum(); }, 100);

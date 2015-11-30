@@ -53,7 +53,7 @@ GUIp.informer._tick = function() {
 	// если есть чё, показать или вернуть стандартный заголовок
 	if (activeFlags.length) {
 		GUIp.informer._updateTitle(activeFlags);
-		this.tref = setTimeout(GUIp.informer._tick.bind(GUIp.informer), 700);
+		this.tref = setTimeout(function() { GUIp.informer._tick(); }, 700);
 	} else {
 		GUIp.informer.clearTitle();
 		this.tref = 0;

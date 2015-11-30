@@ -21,7 +21,7 @@ GUIp.timers.init = function() {
 			curTimer.onclick = GUIp.timers.toggleTimers.bind(GUIp.timers);
 		}
 		GUIp.timers.tick();
-		setInterval(GUIp.timers.tick.bind(GUIp.timers), 60000);
+		setInterval(function() { GUIp.timers.tick(); }, 60000);
 	}
 };
 GUIp.timers.getDate = function(entry) {

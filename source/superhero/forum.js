@@ -6,7 +6,7 @@ GUIp.forum = {};
 GUIp.forum.init = function() {
 	document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
 	GUIp.forum._check();
-	setInterval(GUIp.forum._check.bind(GUIp.forum), 2.5*60*1000);
+	setInterval(function() { GUIp.forum._check(); }, 2.5*60*1000);
 };
 GUIp.forum._check = function() {
 	var requests = 0;
@@ -18,13 +18,18 @@ GUIp.forum._check = function() {
 		}
 		for (var i = 0, len = topics.length; i < len; i += 10) {
 			var postData = topics.slice(i, i + 10).join('&');
-			setTimeout(GUIp.utils.postXHR.bind(null, {
-				url: '/forums/last_in_topics',
-				postData: postData,
-				onSuccess: GUIp.forum._parse.bind(forum_no)
-			}), 500*requests++);
+			GUIp.forum._sendPostXHR(postData, forum_no, requests++);
 		}
 	}
+};
+GUIp.forum._sendPostXHR = function(postData, forumNo, requestNo) {
+	setTimeout(function() {
+		GUIp.utils.postXHR({
+			url: '/forums/last_in_topics',
+			postData: postData,
+			onSuccess: GUIp.forum._parse.bind(forumNo)
+		});
+	}, 500*requestNo);
 };
 GUIp.forum._process = function(forum_no) {
 	var informers = JSON.parse(GUIp.storage.get('ForumInformers')),

@@ -901,6 +901,6 @@ GUIp.log.starter = function() {
 	}
 };
 
-var starterInt = setInterval(GUIp.log.starter.bind(GUIp.log), 50);
+var starterInt = setInterval(function() { GUIp.log.starter(); }, 50);
 
 })();

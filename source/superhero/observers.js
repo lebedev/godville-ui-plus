@@ -90,8 +90,8 @@ GUIp.observers.refresher = {
 			clearInterval(GUIp.improver.softRefreshInt);
 			clearInterval(GUIp.improver.hardRefreshInt);
 			if (!GUIp.storage.get('Option:disablePageRefresh')) {
-				GUIp.improver.softRefreshInt = setInterval(GUIp.improver.softRefresh, (GUIp.data.isFight || GUIp.data.isDungeon) ? 5e3 : 9e4);
-				GUIp.improver.hardRefreshInt = setInterval(GUIp.improver.hardRefresh, (GUIp.data.isFight || GUIp.data.isDungeon) ? 15e3 : 27e4);
+				GUIp.improver.softRefreshInt = setInterval(function() { GUIp.improver.softRefresh(); }, (GUIp.data.isFight || GUIp.data.isDungeon) ? 5e3 : 9e4);
+				GUIp.improver.hardRefreshInt = setInterval(function() { GUIp.improver.hardRefresh(); }, (GUIp.data.isFight || GUIp.data.isDungeon) ? 15e3 : 27e4);
 			}
 		}
 	},

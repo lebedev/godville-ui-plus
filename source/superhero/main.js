@@ -1,4 +1,4 @@
 // Main code
 GUIp.trycatcher.process(GUIp);
 
-var starterInt = setInterval(GUIp.starter.start, 200);
+var starterInt = setInterval(function() { GUIp.starter.start(); }, 200);

@@ -94,7 +94,7 @@ var setAllCheckboxesToState = function(classname, state) {
 
 function loadOptions() {
 	if (!$id('profile_main')) {
-		setTimeout(loadOptions, 100);
+		setTimeout(function() { loadOptions(); }, 100);
 		return;
 	}
 	$id('profile_main').innerHTML = GUIp.getOptionsPage();
@@ -751,7 +751,7 @@ var starterInt = setInterval(function() {
 		// Event and Listeners
 		document.addEventListener("DOMNodeInserted", function() {
 			if (!$q('#profile_main p').textContent.match(GUIp.i18n.guip_settings.replace('+', '\\+'))) {
-				setTimeout(addMenu, 0);
+				setTimeout(function() { addMenu(); }, 0);
 			}
 			improve_blocks();
 		});

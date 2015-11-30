@@ -22,10 +22,10 @@ GUIp.data.init = function() {
 	}
 
 	GUIp.data._getLEMRestrictions();
-	setInterval(GUIp.data._getLEMRestrictions, 60*60*1000);
+	setInterval(function() { GUIp.data._getLEMRestrictions(); }, 60*60*1000);
 
 	GUIp.data._getWantedMonster();
-	setInterval(GUIp.data._getWantedMonster, 5*60*1000);
+	setInterval(function() { GUIp.data._getWantedMonster(); }, 5*60*1000);
 };
 GUIp.data._initVariables = function() {
 	this.currentVersion = '$VERSION';

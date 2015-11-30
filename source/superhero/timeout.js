@@ -28,9 +28,9 @@ GUIp.timeout.start = function() {
 	clearInterval(this._tickInt);
 	this.bar.style.transitionDuration = '';
 	this.bar.classList.remove('running');
-	setTimeout(GUIp.timeout._delayedStart, 10);
+	setTimeout(function() { GUIp.timeout._delayedStart(); }, 10);
 	this._finishtDate = Date.now() + this.timeout*1000;
-	this._tickInt = setInterval(GUIp.timeout._tick.bind(this), 100);
+	this._tickInt = setInterval(function() { GUIp.timeout._tick(); }, 100);
 	GUIp.utils.setVoiceSubmitState(GUIp.improver.freezeVoiceButton.match('after_voice'), true);
 };
 GUIp.timeout._delayedStart = function() {

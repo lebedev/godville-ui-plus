@@ -950,7 +950,7 @@ GUIp.improver.colorDungeonMap = function() {
 	if (GUIp.improver.colorDungeonMapTimer) {
 		clearTimeout(GUIp.improver.colorDungeonMapTimer);
 	}
-	GUIp.improver.colorDungeonMapTimer = setTimeout(GUIp.improver.colorDungeonMapInternal.bind(GUIp.improver), 150);
+	GUIp.improver.colorDungeonMapTimer = setTimeout(function() { GUIp.improver.colorDungeonMapInternal(); }, 150);
 };
 GUIp.improver.colorDungeonMapTimer = null;
 GUIp.improver.colorDungeonMapInternal = function() {
@@ -1094,7 +1094,7 @@ GUIp.improver._clockSync = function(xhr) {
 	} else {
 		GUIp.improver.clock.timeDiff = new Date(xhr.getResponseHeader("Date")) - currentTime + (GUIp.storage.get('Option:localtimeGodvilleClock') ? (currentTime.getTimezoneOffset() * -60000) : (offsetHours * 3600000));
 	}
-	GUIp.improver.clock.updateTimer = setInterval(GUIp.improver._clockUpdate, 250);
+	GUIp.improver.clock.updateTimer = setInterval(function() { GUIp.improver._clockUpdate(); }, 250);
 	GUIp.improver._clockUpdate();
 };
 GUIp.improver._clockUpdate = function() {
@@ -1114,7 +1114,7 @@ GUIp.improver.improveInterface = function() {
 		GUIp.improver.whenWindowResize();
 		window.onresize = function() {
 			clearInterval(GUIp.improver.windowResizeInt);
-			GUIp.improver.windowResizeInt = setTimeout(GUIp.improver.whenWindowResize.bind(GUIp.improver), 250);
+			GUIp.improver.windowResizeInt = setTimeout(function() { GUIp.improver.whenWindowResize(); }, 250);
 		};
 		if (GUIp.data.isFight && document.querySelector('#map .block_title, #control .block_title, #m_control .block_title')) {
 			document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + GUIp.stats.logId() + '" target="_blank">' + GUIp.i18n.broadcast + '</a>');

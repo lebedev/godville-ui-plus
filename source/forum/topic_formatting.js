@@ -114,7 +114,7 @@ var initSmartQuotation = function() {
 
 	document.onmouseup = function() {
 		quoteButton.classList.remove('shown');
-		setTimeout(setupQuoteDialog, 50);
+		setTimeout(function() { setupQuoteDialog(); }, 50);
 	};
 
 	var setupQuoteDialog = function() {
@@ -172,7 +172,9 @@ var initSmartQuotation = function() {
 
 				var post = findPost(container),
 					author = post.querySelector('.post_info a').textContent;
-				setTimeout(ReplyForm.add_name.bind(null, author), 100);
+				setTimeout(function() {
+					ReplyForm.add_name(author);
+				}, 100);
 				getSelection().collapseToStart();
 				return false;
 			};
