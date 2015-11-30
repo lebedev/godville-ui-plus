@@ -170,20 +170,18 @@
 	user-select: none;
 }
 #quote_button #copy {
-	background-image: url("chrome://godville-ui-plus/content/images/copy.png");
 	border-right: 1px solid white;
 	display: none; /* Unless copy functionality is implemented. */
 }
 #quote_button #quote {
-	background-image: url("chrome://godville-ui-plus/content/images/quote.png");
 	border-right: 1px solid white;
 }
 #quote_button #quote_with_author {
 	position: relative;
 	width: 40px;
 	text-align: center;
+	background-position: 6px center;
 }
-#quote_button #quote_with_author::before,
 #quote_button #quote_with_author::after {
 	position: absolute;
 	top: 0;
@@ -192,10 +190,6 @@
 	width: 13px;
 	background-position: center;
 	background-repeat: no-repeat;
-}
-#quote_button #quote_with_author::before {
-	background-image: url("chrome://godville-ui-plus/content/images/quote.png");
-	left: 6px;
 }
 #quote_button #quote_with_author::after {
 	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");

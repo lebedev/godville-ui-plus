@@ -11,11 +11,11 @@ var $C = function(classname) {
 var $c = function(classname) {
 	return doc.getElementsByClassName(classname)[0];
 };
-var $Q = function(sel) {
-	return doc.querySelectorAll(sel);
+var $Q = function(sel, el) {
+	return (el || doc).querySelectorAll(sel);
 };
-var $q = function(sel) {
-	return doc.querySelector(sel);
+var $q = function(sel, el) {
+	return (el || doc).querySelector(sel);
 };
 var storage = {
 	_getKey: function(key) {

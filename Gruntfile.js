@@ -343,6 +343,7 @@ module.exports = function(grunt) {
     grunt.config.set('new_version', new_version.join('.'));
     var tasks = [
       'notify:start',
+      'clean:chrome',
       'jshint',
       'concat',
       'copy',
@@ -352,8 +353,8 @@ module.exports = function(grunt) {
       'notify:end'
     ];
     switch(browser) {
-    case 'firefox': tasks.splice(4, 1); break;
-    case 'opera': tasks.splice(5, 2); break;
+    case 'firefox': tasks.splice(5, 1); break;
+    case 'opera': tasks.splice(6, 2); break;
     }
     grunt.task.run(tasks);
   });

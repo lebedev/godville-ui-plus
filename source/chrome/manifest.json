@@ -68,7 +68,9 @@
 		"log.js",
 		"images/background.jpg",
 		"images/shovel.png",
-		"images/crop.png"
+		"images/crop.png",
+		"images/copy.png",
+		"images/quote.png"
 	]
 
 }

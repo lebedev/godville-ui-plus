@@ -108,6 +108,10 @@ var initSmartQuotation = function() {
 
 	var quoteButton = document.getElementById('quote_button');
 
+	$q('#copy', quoteButton).style.backgroundImage = 'url(' + GUIp.getResource('images/copy.png') + ')';
+	$q('#quote', quoteButton).style.backgroundImage =
+	$q('#quote_with_author', quoteButton).style.backgroundImage = 'url(' + GUIp.getResource('images/quote.png') + ')';
+
 	document.onmouseup = function() {
 		quoteButton.classList.remove('shown');
 		setTimeout(setupQuoteDialog, 50);
