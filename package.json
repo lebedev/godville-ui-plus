@@ -1,7 +1,7 @@
 {
   "name": "godville-ui-plus",
   "version": "1.3.0",
-  "description": "Godville.net UI improvements",
+  "description": "Godville.net and godvillegame.com UI improvements",
   "main": "Gruntfile.js",
   "private": true,
   "dependencies": {
@@ -22,8 +22,8 @@
     "type": "git",
     "url": "https://github.com/zeird/godville-ui-plus.git"
   },
-  "author": "Badluck Dice",
-  "license": "MIT",
+  "author": "Badluck Dicey",
+  "license": "Custom Non-free",
   "bugs": {
     "url": "https://github.com/zeird/godville-ui-plus/issues"
   },
