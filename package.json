@@ -16,6 +16,7 @@
     "grunt-notify": "*",
     "grunt-prompt": "*",
     "es6-symbol": "*",
+    "load-grunt-tasks": "*",
     "request": "*"
   },
   "repository": {
