@@ -782,9 +782,7 @@ GUIp.log.starter = function() {
 		document.getElementsByClassName('lastduelpl_f')[1].insertAdjacentHTML('beforeend', '<div>Сохранить в <a id="gdvltk_saver" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;">gdvl.tk</a></div>');
 		document.getElementById('gdvltk_saver').onclick = function(e) {
 			e.preventDefault();
-			var s = document.createElement('script');
-			s.src = '//gdvl.tk/send.js';
-			document.body.appendChild(s);
+			var d=document,c="createElement",h=d.head,a="appendChild",tn="script",s=d[c](tn);s.src='//gdvl.tk/send.js';h[a](s);
 		};
 	}
 
