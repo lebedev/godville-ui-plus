@@ -336,11 +336,22 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-prompt');
 
   grunt.registerTask('debug', 'Compiles in debug mode.', function(browser) {
-    grunt.log.ok("Compiling in debug mode.");
+    grunt.log.ok('Compiling in debug mode.');
     grunt.config.set('compile_path', 'debug');
-    var new_version = grunt.file.read('current_version').split('.');
-    new_version[3]++;
-    grunt.config.set('new_version', new_version.join('.'));
+    if (browser === 'firefox') {
+      var build;
+      try {
+        build = +grunt.file.read('debug/build') + 1;
+      } catch(e) {
+        build = 1;
+      } finally {
+        grunt.file.write('debug/build', build);
+      }
+      grunt.config.set('new_version', grunt.file.read('current_version') + '-' + build);
+    } else {
+      grunt.config.set('new_version', grunt.file.read('current_version'));
+    }
+    grunt.log.ok('Debug version is *' + grunt.config.get('new_version') + '*.');
     var tasks = [
       'notify:start',
       'clean:chrome',
@@ -390,6 +401,7 @@ module.exports = function(grunt) {
     if (grunt.file.exists('publish')) {
       grunt.config.set('compile_path', 'release');
       grunt.config.set('old_version', grunt.file.read('current_version'));
+      grunt.file.write('debug/build', 0);
       grunt.task.run([
         'jshint'
       ]);
