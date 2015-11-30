@@ -19,13 +19,17 @@ GUIp.trycatcher.wrap = function(method) {
 
 GUIp.trycatcher.process = function(object) {
 	var type, method;
+	var showOriginalSource = function() {
+		return this.original.toString();
+	};
 	for (var key in object) {
 		type = Object.prototype.toString.call(object[key]).slice(8, -1);
 		switch(type) {
 		case 'Function':
 			method = object[key];
 			object[key] = GUIp.trycatcher.wrap(method);
-			object[key].toString = Function.prototype.toString.bind(method);
+			object[key].original = method;
+			object[key].toString = showOriginalSource;
 			break;
 		case 'Object':
 			GUIp.trycatcher.process(object[key]);
