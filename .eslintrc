@@ -251,3 +251,9 @@ env:
   jquery: true
   amd: true
   commonjs: true
+globals:
+  chrome: false
+  module: false
+  opera: false
+  require: false
+  GUIp: true
