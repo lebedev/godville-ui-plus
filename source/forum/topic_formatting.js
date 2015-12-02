@@ -87,7 +87,7 @@ var setClickActions = function(id, container) {
             { class: 'bc', func: quoteFormatting, params: 'bc. ' },
             { class: 'ul', func: listFormatting, params: '*' },
             { class: 'ol', func: listFormatting, params: '#' },
-            { class: 'br', func: pasteBr, params: null },
+            { class: 'br', func: pasteBr, params: null }
         ];
     for (var i = 0, len = buttons.length; i < len; i++) {
         if ((elem = GUIp.$q(temp + buttons[i].class))) {

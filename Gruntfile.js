@@ -118,7 +118,7 @@ module.exports = function(grunt) {
             'opera': false,
             'require': false,
             // GUIp
-            'GUIp': true,
+            'GUIp': true
           }
         },
         src: [
@@ -159,7 +159,7 @@ module.exports = function(grunt) {
       options: {
         enabled: true,
         title: 'Godville UI+',
-        image: '../../images/guip.png',
+        image: '../../images/guip.png'
       }
     }
   });

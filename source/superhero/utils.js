@@ -175,7 +175,7 @@ GUIp.utils.messages = {
                 GUIp.help.toggleDialog();
             }
         }
-    },
+    }
     /*{
         msg_no: 10, // 0..9 are used
         title: 'Godville UI+: Заголовок',
@@ -203,7 +203,7 @@ GUIp.utils.messages = {
                 GUIp.help.toggleDialog();
             }
         }
-    },
+    }
     /*{
         msg_no: 5, // 0..4 are used
         title: 'Godville UI+: Title',
@@ -351,7 +351,7 @@ GUIp.utils.showNotification = function(title,text,callback) {
     setTimeout(function() {
         var notification = new Notification(title, {
             icon: GUIp.getResource('icon64.png'),
-            body: text,
+            body: text
         });
         notification.onclick = callback;
         var notificationTimeout = 5, customTimeout = GUIp.storage.get('Option:informerAlertsTimeout');

@@ -3,8 +3,8 @@ html {
 }
 
 body {
-	overflow: auto;
 	min-height: 100%;
+	overflow: auto;
 }
 
 .hidden {
@@ -97,7 +97,7 @@ body {
 	margin: 0;
 	padding: 0 0 0 20px;
 }
-body.th_nightly .ui_msg {
+.th_nightly .ui_msg {
 	color: #999;
 }
 
@@ -124,20 +124,20 @@ body.th_nightly .ui_msg {
 }
 
 .c_col .pbar .p_bar {
-	width: 99% !important; /* for 5 columns */
-	position: relative;
 	left: 0;
 	margin-left: 2px;
+	position: relative;
+	width: 99% !important; /* for 5 columns */
 }
 
 .gp_label {
-	width: auto;
 	line-height: 145%;
+	width: auto;
 }
 
 .gp_val {
-	width: auto;
 	line-height: 145%;
+	width: auto;
 }
 
 .voice_generator{
@@ -164,11 +164,11 @@ body.th_nightly .ui_msg {
 }
 
 #logger {
-	width: 90%;
+	-webkit-mask-image: linear-gradient(to left, black 94%, transparent 100%);
+	margin: auto;
 	overflow-x: hidden;
 	white-space: nowrap;
-	margin: auto;
-	-webkit-mask-image: linear-gradient(to left, black 94%, transparent 100%);
+	width: 90%;
 }
 .page_wrapper_5c #logger {
 	-webkit-mask-image: linear-gradient(to left, black 96%, transparent 100%);
@@ -201,18 +201,19 @@ body.th_nightly .ui_msg {
 }
 
 #timeout_bar {
-	height: 3px;
-	width: 100%;
-	display: block;
-	position: fixed;
-	z-index: 302;
-	opacity: 0.75;
-	top: -3px;
-	left: 0px;
 	-moz-user-select: none;
 	-webkit-user-select: none;
+	display: block;
+	height: 3px;
+	left: 0;
+	opacity: 0.75;
+	position: fixed;
+	top: -3px;
+	user-select: none;
+	width: 100%;
+	z-index: 302;
 }
-body.th_nightly #timeout_bar {
+.th_nightly #timeout_bar {
 	background: chartreuse;
 }
 body:not(.th_nightly) #timeout_bar {
@@ -220,56 +221,56 @@ body:not(.th_nightly) #timeout_bar {
 }
 #timeout_bar.running {
 	top: 0;
-	width: 0;
 	transition: width 20s linear;
+	width: 0;
 }
 
 #informer_bar {
 	display: block;
-	position: fixed;
-	top: 0px;
-	right: 0px;
-	z-index: 301;
 	pointer-events: none;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 301;
 }
 #informer_bar div {
+	background: beige;
+	border-radius: 2px;
+	border: 1px solid orange;
+	cursor: pointer;
 	float: right;
 	margin: 0.4em 0.4em 0 0;
 	padding: 0.1em 0.5em;
-	background: beige;
-	border: 1px solid orange;
-	border-radius: 2px;
-	cursor: pointer;
 	pointer-events: auto;
 }
 
 #forum_informer_bar {
+	direction: rtl;
 	display: block;
-	top: 0px;
-	left: 0px;
-	z-index: 301;
+	height: 100%;
+	left: 0;
+	overflow: auto;
 	pointer-events: none;
 	position: fixed;
-	overflow: auto;
-	height: 100%;
-	direction: rtl;
+	top: 0;
+	z-index: 301;
 }
 #forum_informer_bar a {
-	float: left;
-	margin: 0.4em 0 0 0.4em;
-	padding: 0.1em 0.5em;
-	border: 1px solid;
 	border-radius: 6px 10.5px 10.5px 6px;
-	pointer-events: auto;
-	clear: both;
-	position: relative;
-	height: 23px;
-	width: 132px;
-	min-width: 132px;
-	max-width: 500px;
+	border: 1px solid;
 	box-sizing: border-box;
+	clear: both;
 	direction: ltr;
+	float: left;
+	height: 23px;
 	margin-right: 20px;
+	margin: 0.4em 0 0 0.4em;
+	max-width: 500px;
+	min-width: 132px;
+	padding: 0.1em 0.5em;
+	pointer-events: auto;
+	position: relative;
+	width: 132px;
 }
 #forum_informer_bar a,
 #forum_informer_bar a:hover,
@@ -280,43 +281,43 @@ body:not(.th_nightly) #timeout_bar {
 #forum_informer_bar a:hover {
 	width: auto;
 }
-body.th_divine #forum_informer_bar a {
+.th_divine #forum_informer_bar a {
 	background: #99D9EA;
 	border-color: #00A2E8;
 	color: #3F48CC;
 }
-body.th_nightly #forum_informer_bar a {
+.th_nightly #forum_informer_bar a {
 	background: #252525;
 	border-color: #555;
 	color: #999;
 }
-body.th_violet #forum_informer_bar a {
+.th_violet #forum_informer_bar a {
 	background: #D29BD2;
 	border-color: #A349A3;
 	color: #808;
 }
-body.th_pink #forum_informer_bar a {
+.th_pink #forum_informer_bar a {
 	background: #f9f;
 	border-color: #a0a;
 	color: #a0a;
 }
-body.th_emerald #forum_informer_bar a {
+.th_emerald #forum_informer_bar a {
 	background: #9BD29B;
 	border-color: #49A349;
 	color: #080;
 }
-body.th_yellow #forum_informer_bar a {
+.th_yellow #forum_informer_bar a {
 	background: #F4E9AF;
 	border-color: #A3A349;
 	color: #880;
 }
-body.th_classic #forum_informer_bar a,
-body.th_retro #forum_informer_bar a {
+.th_classic #forum_informer_bar a,
+.th_retro #forum_informer_bar a {
 	background: #D2D2D2;
 	border-color: #A3A3A3;
 	color: #555;
 }
-body.th_retro #forum_informer_bar a {
+.th_retro #forum_informer_bar a {
 	border-radius: 0;
 }
 #forum_informer_bar .fr_new_badge {
@@ -363,50 +364,50 @@ a.inspect_button {
 
 /* laying timer themes */
 #imp_timer {
-	top: 2px;
 	left: 60px;
+	top: 2px;
 }
-body.th_nightly #imp_timer.green {
+.th_nightly #imp_timer.green {
+	background-color: green;
 	border-color: #040;
 	color: #040;
-	background-color: green;
 }
 body:not(.th_nightly) #imp_timer.green {
+	background-color: lightgreen;
 	border-color: darkgreen;
 	color: darkgreen;
-	background-color: lightgreen;
 }
-body.th_nightly #imp_timer.grey {
+.th_nightly #imp_timer.grey {
+	background-color: darkgrey;
 	border-color: #444;
 	color: #444;
-	background-color: darkgrey;
 }
 body:not(.th_nightly) #imp_timer.grey {
+	background-color: lavender;
 	border-color: grey;
 	color: grey;
-	background-color: lavender;
 }
-body.th_nightly #imp_timer.red {
+.th_nightly #imp_timer.red {
+	background-color: darkred;
 	border-color: #400;
 	color: #400;
-	background-color: darkred;
 }
 body:not(.th_nightly) #imp_timer.red {
+	background-color: darksalmon;
 	border-color: firebrick;
 	color: firebrick;
-	background-color: darksalmon;
 }
 #imp_timer.yellow {
+	background-color: #fcedae;
 	border-color: #df9900;
 	color: #af5900;
-	background-color: #fcedae;
 }
 
 /* fader svg moving away */
 #fader {
+	left: -9999px;
 	position: fixed;
 	top: 0;
-	left: -9999px;
 }
 
 /* dungeon phrases colorization */
@@ -487,83 +488,83 @@ body:not(.th_nightly) .dmc.boss.trapMoveLoss {
 	background: linear-gradient(135deg, #fa8700 0%, #fa8700 50%, #aaaaaa 50%, #aaaaaa 100%);
 }
 /* th_nightly theme */
-body.th_nightly .dmc.bossHint {
+.th_nightly .dmc.bossHint {
 	background: #d3ae00;
 }
-body.th_nightly .dmc.boss {
+.th_nightly .dmc.boss {
 	background: #ff9f07;
 }
 
-body.th_nightly .dmc.bonusGodpower {
+.th_nightly .dmc.bonusGodpower {
 	background: #2d546f;
 }
 
-body.th_nightly .dmc.bonusHealth {
+.th_nightly .dmc.bonusHealth {
 	background: #2f6c37;
 }
-body.th_nightly .dmc.trapUnknown {
+.th_nightly .dmc.trapUnknown {
 	background: #62317c;
 }
-body.th_nightly .dmc.trapTrophy,
-body.th_nightly .dmc.trapGold {
+.th_nightly .dmc.trapTrophy,
+.th_nightly .dmc.trapGold {
 	background: #6c6d4e;
 }
 
-body.th_nightly .dmc.trapLowDamage {
+.th_nightly .dmc.trapLowDamage {
 	background: #8b5d5d;
 }
 
-body.th_nightly .dmc.trapModerateDamage {
+.th_nightly .dmc.trapModerateDamage {
 	background: #9d1515;
 }
 
-body.th_nightly .dmc.trapMoveLoss {
+.th_nightly .dmc.trapMoveLoss {
 	background: #5c5c5c;
 }
-body.th_nightly .dmc.bossHint.bonusGodpower {
+.th_nightly .dmc.bossHint.bonusGodpower {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2d546f 50%, #2d546f 100%);
 }
-body.th_nightly .dmc.bossHint.bonusHealth {
+.th_nightly .dmc.bossHint.bonusHealth {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #2f6c37 50%, #2f6c37 100%);
 }
-body.th_nightly .dmc.bossHint.trapUnknown {
+.th_nightly .dmc.bossHint.trapUnknown {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #62317c 50%, #62317c 100%);
 }
-body.th_nightly .dmc.bossHint.trapTrophy,
-body.th_nightly .dmc.bossHint.trapGold {
+.th_nightly .dmc.bossHint.trapTrophy,
+.th_nightly .dmc.bossHint.trapGold {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #6c6d4e 50%, #6c6d4e 100%);
 }
-body.th_nightly .dmc.bossHint.trapLowDamage {
+.th_nightly .dmc.bossHint.trapLowDamage {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #8b5d5d 50%, #8b5d5d 100%);
 }
-body.th_nightly .dmc.bossHint.trapModerateDamage {
+.th_nightly .dmc.bossHint.trapModerateDamage {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #9d1515 50%, #9d1515 100%);
 }
-body.th_nightly .dmc.bossHint.trapMoveLoss {
+.th_nightly .dmc.bossHint.trapMoveLoss {
 	background: linear-gradient(135deg, #d3ae00 0%, #d3ae00 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
-body.th_nightly .dmc.boss.bonusGodpower {
+.th_nightly .dmc.boss.bonusGodpower {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #2d546f 50%, #2d546f 100%);
 }
-body.th_nightly .dmc.boss.bonusHealth {
+.th_nightly .dmc.boss.bonusHealth {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #2f6c37 50%, #2f6c37 100%);
 }
-body.th_nightly .dmc.boss.trapTrophy,
-body.th_nightly .dmc.boss.trapGold {
+.th_nightly .dmc.boss.trapTrophy,
+.th_nightly .dmc.boss.trapGold {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #6c6d4e 50%, #6c6d4e 100%);
 }
-body.th_nightly .dmc.boss.trapLowDamage {
+.th_nightly .dmc.boss.trapLowDamage {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #8b5d5d 50%, #8b5d5d 100%);
 }
-body.th_nightly .dmc.boss.trapModerateDamage {
+.th_nightly .dmc.boss.trapModerateDamage {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #9d1515 50%, #9d1515 100%);
 }
-body.th_nightly .dmc.boss.trapMoveLoss {
+.th_nightly .dmc.boss.trapMoveLoss {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
 
 /* dialog box-shadows */
-body.th_nightly .ui_msg {
+.th_nightly .ui_msg {
 	box-shadow: 2px 2px 15px #fff;
 }
 body:not(.th_nightly) .ui_msg {
@@ -576,24 +577,24 @@ body:not(.th_nightly) .ui_msg {
 }
 #hk_gold_we .voice_generator.shovel {
 	font-size: 0;
-	line-height: 0;
 	height: 13px;
-	width: 13px;
+	line-height: 0;
 	margin: 4px 0 0 3px;
+	width: 13px;
 }
 #hk_gold_we .voice_generator.shovel.compact {
 	margin: 4px -4px 0 0;
 }
 body:not(.th_nightly) .shovel {
-	background-position: 0px 0px;
+	background-position: 0 0;
 }
 body:not(.th_nightly) .shovel:hover {
-	background-position: 13px 0px;
+	background-position: 13px 0;
 }
-body.th_nightly .shovel {
-	background-position: 0px 13px;
+.th_nightly .shovel {
+	background-position: 0 13px;
 }
-body.th_nightly .shovel:hover {
+.th_nightly .shovel:hover {
 	background-position: 13px 13px;
 }
 
@@ -639,8 +640,8 @@ body.has_temple.field #hk_health .p_bar:before {
 }
 
 a.broadcast {
-	font-weight: bold;
 	font-size: 80%;
+	font-weight: bold;
 	vertical-align: top;
 }
 
@@ -650,25 +651,25 @@ a.broadcast {
 }
 .gc_fr_page {
 	display: none !important;
-	position: relative;
 	left: 0;
 	margin-top: -1px;
+	position: relative;
 }
 
 /* clear voice input button */
 .gvl_popover {
-	right: 0;
 	bottom: 0;
-	width: 23px;
 	height: 29px;
-	padding-left: 4px;
 	line-height: 29px;
 	margin-right: 0;
+	padding-left: 4px;
+	right: 0;
+	width: 23px;
 }
 #clear_voice_input {
-    padding-left: 0;
-    right: 27px;
-    width: 15px;
+	padding-left: 0;
+	right: 27px;
+	width: 15px;
 }
 .c_col #god_phrase {
 	margin-left: 2px;

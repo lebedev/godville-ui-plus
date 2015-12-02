@@ -1,21 +1,21 @@
 .formatting {
 	cursor: pointer;
+	font-size: 13px;
+	height: 22px;
 	line-height: 1;
+	margin: -9px 5px 3px 0;
 	overflow: visible;
+	padding: 0;
 	text-align: center;
 	text-decoration: none;
-	font-size: 13px;
 	vertical-align: middle;
-	height: 22px;
 	width: 22px;
-	margin: -9px 5px 3px 0;
-	padding: 0;
 }
 .formatting.button {
-	color: gray;
 	background-color: lightgray;
-	border: 2px solid gray;
 	border-radius: 3px;
+	border: 2px solid gray;
+	color: gray;
 }
 .formatting:not(.button) {
 	width: 24px;
@@ -47,8 +47,8 @@
 }
 .formatting.bc,
 .formatting.monospace {
-	font-size: 12px;
 	font-family: monospace;
+	font-size: 12px;
 }
 .formatting.godname {
 	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");
@@ -101,36 +101,36 @@
 }
 
 #quote_button {
-	top: 0;
-	left: 0;
-	position: absolute;
-	width: auto;
+	background-color: #494944;
+	border-radius: 3px;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+	color: #FFF;
+	display: block;
+	font: 12px Tahoma,Helvetica,Arial,sans-serif;
 	height: 20px;
-    display: block;
-    font: 12px Tahoma,Helvetica,Arial,sans-serif;
-    color: #FFF;
-    background-color: #494944;
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
-    padding: 7px 2px;
-    border-radius: 3px;
-    visibility: hidden;
+	left: 0;
+	padding: 7px 2px;
+	position: absolute;
+	top: 0;
+	visibility: hidden;
+	width: auto;
 }
 #quote_button::after {
-	top: 100%;
-	left: 50%;
-	border-style: solid;
-	content: " ";
-	height: 0px;
-	width: 0px;
-	position: absolute;
-	pointer-events: none;
 	border-color: #494944 transparent transparent;
+	border-style: solid;
 	border-width: 4px;
+	content: " ";
+	height: 0;
+	left: 50%;
 	margin-left: -4px;
+	pointer-events: none;
+	position: absolute;
+	top: 100%;
+	width: 0;
 }
 #quote_button.shown {
-    visibility: visible;
-    animation: 160ms linear 0s normal forwards 1 running pop-upwards;
+	animation: 160ms linear 0 normal forwards 1 running pop-upwards;
+	visibility: visible;
 }
 
 @keyframes pop-upwards {
@@ -157,17 +157,17 @@
 }
 
 #quote_button > div {
-	display: inline-block;
-    cursor: pointer;
-	width: 13px;
-	height: 20px;
-	background-position: center;
-	background-repeat: no-repeat;
-	padding: 0 6px;
-	vertical-align: middle;
 	-moz-user-select: none;
 	-webkit-user-select: none;
+	background-position: center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	display: inline-block;
+	height: 20px;
+	padding: 0 6px;
 	user-select: none;
+	vertical-align: middle;
+	width: 13px;
 }
 #quote_button #copy {
 	border-right: 1px solid white;
@@ -177,19 +177,19 @@
 	border-right: 1px solid white;
 }
 #quote_button #quote_with_author {
-	position: relative;
-	width: 40px;
-	text-align: center;
 	background-position: 6px center;
+	position: relative;
+	text-align: center;
+	width: 40px;
 }
 #quote_button #quote_with_author::after {
-	position: absolute;
-	top: 0;
-	content: "";
-	height: 20px;
-	width: 13px;
 	background-position: center;
 	background-repeat: no-repeat;
+	content: "";
+	height: 20px;
+	position: absolute;
+	top: 0;
+	width: 13px;
 }
 #quote_button #quote_with_author::after {
 	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");
