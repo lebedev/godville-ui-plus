@@ -1,8 +1,6 @@
-/* global $id, $C, $c, $Q, $q */
-
 // links initialization
 var addSmallElements = function() {
-    var temp = $Q('.c2');
+    var temp = GUIp.$Q('.c2');
     for (var i = 0, len = temp.length; i < len; i++) {
         if (!temp[i].querySelector('small')) {
             temp[i].insertAdjacentHTML('beforeend', '<small />');
@@ -14,7 +12,7 @@ var followOnclick = function(e) {
         e.preventDefault();
         var topicId = GUIp.isTopic ? location.pathname.match(/\d+/)[0]
                                    : this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-            posts = GUIp.isTopic ? +$c('subtitle').textContent.match(/\d+/)[0]
+            posts = GUIp.isTopic ? +GUIp.$c('subtitle').textContent.match(/\d+/)[0]
                                  : +this.parentElement.parentElement.nextElementSibling.textContent,
             dates = GUIp.isTopic ? document.getElementsByTagName('abbr')
                                  : null,
@@ -30,7 +28,7 @@ var followOnclick = function(e) {
     }
 };
 var addOnclickToFollow = function() {
-    var follow_links = $Q('.follow');
+    var follow_links = GUIp.$Q('.follow');
     for (var i = 0, len = follow_links.length; i < len; i++) {
         follow_links[i].onclick = followOnclick;
     }
@@ -53,13 +51,13 @@ var unfollowOnclick = function(e) {
     }
 };
 var addOnclickToUnfollow = function() {
-    var unfollow_links = $Q('.unfollow');
+    var unfollow_links = GUIp.$Q('.unfollow');
     for (var i = 0, len = unfollow_links.length; i < len; i++) {
         unfollow_links[i].onclick = unfollowOnclick;
     }
 };
 var addLinks = function() {
-    var links_containers = $Q(GUIp.isTopic ? '#topic_mod' : '.c2 small'),
+    var links_containers = GUIp.$Q(GUIp.isTopic ? '#topic_mod' : '.c2 small'),
         topics = JSON.parse(GUIp.storage.get(GUIp.subforumId)),
         isFollowed;
     for (var i = 0, len = links_containers.length; i < len; i++) {

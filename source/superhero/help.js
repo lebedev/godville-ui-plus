@@ -58,7 +58,7 @@ GUIp.help._addDumpButton = function(text, label, selector) {
         GUIp.storage.dump(selector);
     };
 };
-GUIp.help.toggleDialog = function(visible) {
+GUIp.help.toggleDialog = function() {
     GUIp.storage.set('helpDialogVisible', !GUIp.storage.get('helpDialogVisible'));
     window.$('#guip_help').slideToggle('slow');
 };

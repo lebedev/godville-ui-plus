@@ -193,7 +193,7 @@ GUIp.log.initColorMap = function() {
         }
         return;
     } else {
-        for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
+        for (var i = 0, len = this.dungeonPhrases.length; i < len; i++) {
             this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(localStorage.getItem('LogDB:' + this.dungeonPhrases[i] + 'Phrases'));
         }
     }
@@ -737,7 +737,7 @@ GUIp.log.saverRemoveLoader = function() {
     }
 };
 
-GUIp.log.saverPrepareLog = function(svc) {
+GUIp.log.saverPrepareLog = function() {
     GUIp.log.saverURL = '//gdvl.tk/upload.php';
     GUIp.log.saverBanner = 'до тепловой смерти Вселенной (или пока не умрет сервер) благодаря <a href="//godville.net/gods/Mave">Mave</a> и <a href="//godville.net/gods/Бэдлак">Бэдлаку</a>';
     GUIp.log.saverLoaderGIF = '//gdvl.tk/images/loader.gif';

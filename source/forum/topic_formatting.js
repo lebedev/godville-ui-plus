@@ -1,5 +1,3 @@
-/* global $id, $C, $c, $Q, $q */
-
 // topic formatting
 var val, ss, se, nls, nle, selection;
 var initEditor = function(editor) {
@@ -92,7 +90,7 @@ var setClickActions = function(id, container) {
             { class: 'br', func: pasteBr, params: null },
         ];
     for (var i = 0, len = buttons.length; i < len; i++) {
-        if ((elem = $q(temp + buttons[i].class))) {
+        if ((elem = GUIp.$q(temp + buttons[i].class))) {
             elem.onclick = buttons[i].func.bind(this, buttons[i].params, container);
         }
     }
@@ -110,9 +108,9 @@ var initSmartQuotation = function() {
 
     var quoteButton = document.getElementById('quote_button');
 
-    $q('#copy', quoteButton).style.backgroundImage = 'url(' + GUIp.getResource('images/copy.png') + ')';
-    $q('#quote', quoteButton).style.backgroundImage =
-    $q('#quote_with_author', quoteButton).style.backgroundImage = 'url(' + GUIp.getResource('images/quote.png') + ')';
+    GUIp.$q('#copy', quoteButton).style.backgroundImage = 'url(' + GUIp.getResource('images/copy.png') + ')';
+    GUIp.$q('#quote', quoteButton).style.backgroundImage =
+    GUIp.$q('#quote_with_author', quoteButton).style.backgroundImage = 'url(' + GUIp.getResource('images/quote.png') + ')';
 
     document.onmouseup = function() {
         quoteButton.classList.remove('shown');
@@ -140,7 +138,7 @@ var initSmartQuotation = function() {
                 // TODO: copy to clipboard.
             };
             document.getElementById('quote').onclick = function() {
-                var editor, init;
+                var editor;
                 if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
                     editor = document.getElementById('edit_body');
                 } else {
@@ -224,19 +222,19 @@ GUIp.initTopicFormattingFeatures = function() {
             '<button class="formatting button sub" title="' + GUIp.i18n.sub_hint + '">X<sub>2</sub></button>' +
             '<button class="formatting button monospace" title="' + GUIp.i18n.monospace_hint + '">' + GUIp.i18n.monospace + '</button>' +
         '</div>';
-    $id('post_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
-    setClickActions('post_body_editor', $id('post_body'));
-    setCtrlEnterAction($id('post_body'), document.querySelector('#reply input[type="submit"]'));
+    GUIp.$id('post_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
+    setClickActions('post_body_editor', GUIp.$id('post_body'));
+    setCtrlEnterAction(GUIp.$id('post_body'), document.querySelector('#reply input[type="submit"]'));
 
-    var editFormObserver = new MutationObserver(function(mutations) {
-        if ($id('edit_body_editor') && !$q('#edit_body_editor.improved')) {
-            $id('edit_body_editor').classList.add('improved');
-            $id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
-            setClickActions('edit_body_editor', $id('edit_body'));
-            setCtrlEnterAction($id('edit_body'), document.querySelector('#edit input[type="submit"]'));
+    var editFormObserver = new MutationObserver(function() {
+        if (GUIp.$id('edit_body_editor') && !GUIp.$q('#edit_body_editor.improved')) {
+            GUIp.$id('edit_body_editor').classList.add('improved');
+            GUIp.$id('edit_body_editor').insertAdjacentHTML('afterbegin', formatting_buttons);
+            setClickActions('edit_body_editor', GUIp.$id('edit_body'));
+            setCtrlEnterAction(GUIp.$id('edit_body'), document.querySelector('#edit input[type="submit"]'));
         }
     });
-    editFormObserver.observe($id('content'), { childList: true, subtree: true });
+    editFormObserver.observe(GUIp.$id('content'), { childList: true, subtree: true });
     initSmartQuotation();
     fixGodnamePaste();
 };

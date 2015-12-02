@@ -15,7 +15,7 @@ GUIp.utils.triggerChangeOnVoiceInput = function() {
 };
 // finds a label with given name
 GUIp.utils.findLabel = function($base_elem, label_name) {
-    return window.$('.l_capt', $base_elem).filter(function(index) {
+    return window.$('.l_capt', $base_elem).filter(function() {
         return this.textContent === label_name;
     });
 };

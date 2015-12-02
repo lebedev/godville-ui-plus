@@ -465,11 +465,7 @@ GUIp.improver.improveOppsHP = function(isAlly) {
     }
 };
 GUIp.improver.improveStats = function() {
-    //    Парсер строки с золотом
     var i;
-    var gold_parser = function(val) {
-        return parseInt(val.replace(/[^0-9]/g, '')) || 0;
-    };
 
     if (GUIp.data.isDungeon) {
         if (GUIp.storage.get('Logger:Location') === 'Field') {
@@ -499,10 +495,10 @@ GUIp.improver.improveStats = function() {
             GUIp.storage.set('Logger:Enemy_Gold', GUIp.stats.Enemy_Gold());
             GUIp.storage.set('Logger:Enemy_Inv', GUIp.stats.Enemy_Inv());
             GUIp.storage.set('Logger:Hero_Allies_HP', GUIp.stats.Allies_HP());
-            for (i = 1; i <= 4; i++) {
+            for (i = 1; i <= GUIp.stats.Allies_Count(); i++) {
                 GUIp.storage.set('Logger:Hero_Ally'+i+'_HP', GUIp.stats.Ally_HP(i));
             }
-            for (i = 1; i <= 5; i++) {
+            for (i = 1; i <= GUIp.stats.Enemies_Count(); i++) {
                 GUIp.storage.set('Logger:Enemy'+i+'_HP', GUIp.stats.Enemy_HP(i));
             }
             GUIp.storage.set('Logger:Enemies_AliveCount', GUIp.stats.Enemies_AliveCount());
@@ -662,7 +658,7 @@ GUIp.improver.getDungeonPhrases = function() {
             onSuccess: GUIp.improver.parseDungeonPhrases.bind(GUIp.improver)
         });
     } else {
-        for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
+        for (var i = 0, len = this.dungeonPhrases.length; i < len; i++) {
             this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(GUIp.storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
         }
         GUIp.improver.improveChronicles();
@@ -1429,7 +1425,7 @@ GUIp.improver.activity = function() {
         GUIp.logger.update();
     }
 };
-GUIp.improver.improvementDebounce = function(mutations) {
+GUIp.improver.improvementDebounce = function() {
     clearTimeout(GUIp.improver.improveTmt);
     GUIp.improver.improveTmt = setTimeout(function() {
         GUIp.improver.improve();

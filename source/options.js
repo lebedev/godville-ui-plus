@@ -610,8 +610,6 @@ var createLightbox = function(lbType) {
     lightbox.id = 'optlightbox';
     dimmer.id = 'optdimmer';
 
-    var lbtitle = 'test lightbox title';
-
     lightbox.innerHTML = '<div class="bl_cell block">' +
 '            <div id="lightbox_title" class="bl_capt"></div>' +
 '            <div class="bl_content" style="text-align: center; padding-top: 0.9em;">' +
@@ -628,7 +626,7 @@ var createLightbox = function(lbType) {
     document.body.appendChild(lightbox);
     document.body.appendChild(dimmer);
 
-    var setLightboxTA = function(lbType, lbData) {
+    var setLightboxTA = function(lbData) {
         var i, len, lbInput = $id('lightbox_input');
         lbInput.value = '';
         if (lbType !== 'pets') {
@@ -642,7 +640,7 @@ var createLightbox = function(lbType) {
         }
     };
 
-    var loadLightbox = function(lbType) {
+    var loadLightbox = function() {
         var lbData = storage.get('CustomWords:' + lbType);
         if (lbData && lbData !== "") {
             try {
@@ -657,7 +655,7 @@ var createLightbox = function(lbType) {
         }
     };
 
-    var saveLightbox = function(lbType) {
+    var saveLightbox = function() {
         var item, parsed = [],
             values = $id('lightbox_input').value.split('\n');
         storage.remove('CustomWords:' + lbType);
@@ -683,14 +681,14 @@ var createLightbox = function(lbType) {
         }
     };
 
-    var resetLightbox = function(lbType) {
+    var resetLightbox = function() {
         setLightboxTA(lbType,def[lbType]);
         storage.remove('CustomWords:' + lbType);
         $id('lightbox_save').disabled = true;
         $id('lightbox_reset').disabled = true;
     };
 
-    var changedLightbox = function(lbType) {
+    var changedLightbox = function() {
         $id('lightbox_save').disabled = false;
         $id('lightbox_reset').disabled = false;
     };

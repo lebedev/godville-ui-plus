@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', function(e) {
+window.addEventListener('DOMContentLoaded', function() {
     // Path to the library:
     if (location.host.match(/godville\.net|godvillegame\.com|gdvl\.tk|gv\.erinome\.net/)) {
         var createElement = function(type) {

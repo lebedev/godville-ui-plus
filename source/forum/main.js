@@ -2,19 +2,19 @@
 window.GUIp = window.GUIp || {};
 
 var doc = document;
-var $id = function(id) {
+GUIp.$id = function(id) {
     return doc.getElementById(id);
 };
-var $C = function(classname) {
+GUIp.$C = function(classname) {
     return doc.getElementsByClassName(classname);
 };
-var $c = function(classname) {
+GUIp.$c = function(classname) {
     return doc.getElementsByClassName(classname)[0];
 };
-var $Q = function(sel, el) {
+GUIp.$Q = function(sel, el) {
     return (el || doc).querySelectorAll(sel);
 };
-var $q = function(sel, el) {
+GUIp.$q = function(sel, el) {
     return (el || doc).querySelector(sel);
 };
 GUIp.storage = {
@@ -36,9 +36,9 @@ GUIp.storage = {
 
 var setInitVariables = function() {
     GUIp.isTopic = location.pathname.match(/topic/) !== null;
-    GUIp.subforumId = 'Forum' + (GUIp.isTopic ? $q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
+    GUIp.subforumId = 'Forum' + (GUIp.isTopic ? GUIp.$q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
                                               : location.pathname.match(/forums\/show\/(\d+)/)[1]);
-    var greetings = $id('menu_top').textContent;
+    var greetings = GUIp.$id('menu_top').textContent;
     GUIp.storage.god_name = greetings.match(localStorage.getItem('GUIp:lastGodname'))[0] ||
                             greetings.match(localStorage.getItem('GUIp:godnames'))[0];
 };

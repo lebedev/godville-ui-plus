@@ -1,23 +1,21 @@
-/* global $id, $C, $c, $Q, $q */
-
 // topic other improvements
 var pw, pw_pb_int;
 var checkHash = function() {
     // scroll to a certain post #
     var guip_hash = location.hash.match(/#guip_(\d+)/);
     if (guip_hash) {
-        var post = $C('spacer')[+guip_hash[1]];
+        var post = GUIp.$C('spacer')[+guip_hash[1]];
         location.hash = post ? post.id : '';
     }
 };
 var highlightCurrentPost = function() {
-    var highlighted = $C('highlighted');
+    var highlighted = GUIp.$C('highlighted');
     if (highlighted.length) {
         highlighted[0].classList.remove('highlighted');
     }
 
     var post_hash = location.hash.match(/#(post_\d+)/),
-        post = post_hash ? $id(post_hash[1] + '-row') : null;
+        post = post_hash ? GUIp.$id(post_hash[1] + '-row') : null;
     if (post) {
         post.classList.add('highlighted');
     }
