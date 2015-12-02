@@ -297,13 +297,9 @@ GUIp.utils.processError = function(error, isDebugMode) {
 	}
 	var name_message = error.name + ': ' + error.message,
 		stack = error.stack && error.stack.replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1').split('\n').filter(function(step) {return !step.match(/GUIp\.trycatcher\.wrap/);}).join('\n') || 'no stacktrace';
-	console.dir(error);
-	console.log(error.stack);
-	console.log(error.stack && error.stack);
-	console.log(error.stack && error.stack.replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1').split('\n').filter(function(step) {return !step.match(/GUIp\.trycatcher\.wrap/);}).join('\n'));
 	console.error('Godville UI+ error log:\n' +
-						  name_message + '\n' +
-						  GUIp.i18n.error_message_stack_trace + ': ' + stack);
+	              name_message + '\n' +
+	              GUIp.i18n.error_message_stack_trace + ': ' + stack);
 	if (!~GUIp.utils.messagesShown.indexOf('error')) {
 		GUIp.utils.showMessage('error', {
 			title: GUIp.i18n.error_message_title,
