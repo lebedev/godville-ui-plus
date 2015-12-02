@@ -7,6 +7,10 @@ engines:
         enabled: false
       net.csslint.Disallowadjoiningclasses:
         enabled: false
+      net.csslint.Requirecompatiblevendorprefixes:
+        enabled: false
+      net.csslint.Disallowuseofbox-sizing:
+        enabled: false
   eslint:
     enabled: true
   fixme:

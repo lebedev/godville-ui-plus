@@ -27,7 +27,7 @@ th {
 	cursor: pointer;
 	text-decoration: underline;
 }
-#words a.selected{
+#words .selected{
 	color: #DA251D;
 	cursor: default;
 	text-decoration: none;
@@ -38,7 +38,7 @@ th {
 	top: 0.25em;
 }
 #general_settings input:not(.menu-checkbox):not(.option-checkbox)[type=checkbox],
-#general_settings input.ksmall {
+#general_settings .ksmall {
 	-webkit-transform: scale(0.69);
 	transform: scale(0.7);
 }

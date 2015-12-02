@@ -176,7 +176,6 @@ body {
 
 #logger li {
 	display: inline;
-	list-item-style: none;
 	margin-left: 0.5em;
 }
 
@@ -715,6 +714,6 @@ a.broadcast {
 	display: none !important;
 }
 
-span.guildsmanAlly {
+.guildsmanAlly {
 	font-style: italic;
 }

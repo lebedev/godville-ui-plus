@@ -10,7 +10,7 @@ tabs.on('ready', function(tab) {
     }
 });
 
-for (var tab of tabs) {
+for (let tab of tabs) {
     if (tab.url.match(domainsUrls)) {
         tab.reload();
     }
