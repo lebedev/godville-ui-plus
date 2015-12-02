@@ -50,6 +50,7 @@
 	font-family: monospace;
 	font-size: 12px;
 }
+#quote_button #quote_with_author::after,
 .formatting.godname {
 	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");
 }
@@ -151,7 +152,7 @@
 	}
 	70%, 100% {
 		-webkit-transform: matrix(1, 0, 0, 1, 0, 0);
-		opacity:1
+		opacity: 1;
 		transform: matrix(1, 0, 0, 1, 0, 0);
 	}
 }
@@ -192,6 +193,5 @@
 	width: 13px;
 }
 #quote_button #quote_with_author::after {
-	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");
 	right: 6px;
 }

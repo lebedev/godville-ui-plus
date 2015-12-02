@@ -63,6 +63,7 @@ body {
 .div_link_nu {
 	-moz-user-select: none;
 	-webkit-user-select: none;
+	user-select: none;
 }
 
 .chat_ph,
@@ -75,13 +76,13 @@ body {
 }
 
 .ui_msg {
-	position: fixed;
-	top: 40px;
-	left: 0;
-	right: 0;
-	z-index: 301;
 	display: none;
+	left: 0;
 	padding-bottom: 0.7em;
+	position: fixed;
+	right: 0;
+	top: 40px;
+	z-index: 301;
 }
 .ui_msg .hint_bar_content {
 	padding: 0.5em 1em 0;
@@ -320,8 +321,8 @@ body:not(.th_nightly) #timeout_bar {
 	border-radius: 0;
 }
 #forum_informer_bar .fr_new_badge {
-	top: 2px;
 	right: 2px;
+	top: 2px;
 }
 
 #forum_informer_bar span {
@@ -638,7 +639,7 @@ body.has_temple.field #hk_health .p_bar:before {
 	left: 67%;
 }
 
-a.broadcast {
+.broadcast {
 	font-size: 80%;
 	font-weight: bold;
 	vertical-align: top;
