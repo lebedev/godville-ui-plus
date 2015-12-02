@@ -2,6 +2,11 @@
 engines:
   csslint:
     enabled: true
+    checks:
+      net.csslint.DisallowIDsinselectors:
+        enabled: false
+      net.csslint.Disallowadjoiningclasses:
+        enabled: false
   eslint:
     enabled: true
   fixme:
