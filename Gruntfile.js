@@ -7,7 +7,8 @@ module.exports = function(grunt) {
         files: [
           {expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome/', filter: 'isFile'},
           {expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/'},
-          {expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/'}
+          {expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/'},
+          {expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/chrome/'}
         ]
       },
       firefox: {
@@ -16,7 +17,7 @@ module.exports = function(grunt) {
           {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile'},
           {expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile'},
           {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/'},
-          {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/data/'}
+          {expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/data/'}
         ]
       },
       opera: {
@@ -24,7 +25,7 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'source/opera', src: '**', dest: '<%= compile_path %>/opera/'},
           {expand: true, cwd: 'source/', src: '*', dest: '<%= compile_path %>/opera/content/', filter: 'isFile'},
           {expand: true, cwd: 'source/vendor/', src: '*', dest: '<%= compile_path %>/opera/content/'},
-          {expand: true, cwd: '<%= compile_path %>/chrome/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/opera/content/'}
+          {expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/opera/content/'}
         ]
       },
       versioned: {
@@ -55,7 +56,7 @@ module.exports = function(grunt) {
           'source/forum/topic_other.js',
           'source/forum/main.js'
         ],
-        dest: '<%= compile_path %>/chrome/forum.js'
+        dest: '<%= compile_path %>/forum.js'
       },
       superhero: {
         options: {
@@ -85,10 +86,11 @@ module.exports = function(grunt) {
           'source/superhero/starter.js',
           'source/superhero/main.js'
         ],
-        dest: '<%= compile_path %>/chrome/superhero.js'
+        dest: '<%= compile_path %>/superhero.js'
       }
     },
     clean: {
+      temp: "<%= compile_path %>/*.js",
       chrome: "<%= compile_path %>/chrome/*",
       firefox: "<%= compile_path %>/firefox/*",
       opera: "<%= compile_path %>/opera/*"
@@ -295,19 +297,16 @@ module.exports = function(grunt) {
     grunt.log.ok('Debug version is *' + grunt.config.get('new_version') + '*.');
     var tasks = [
       'notify:start',
-      'clean:chrome',
       'jshint',
-      'concat',
-      'copy',
-      'build:opera',
-      'build:firefox',
-      'update_installed_addon',
-      'notify:end'
+      'concat'
     ];
     switch(browser) {
-    case 'firefox': tasks.splice(5, 1); break;
-    case 'opera': tasks.splice(6, 2); break;
+    case 'chrome': tasks.push('build:chrome'); break;
+    case 'firefox': tasks.push('build:firefox', 'update_installed_addon'); break;
+    case 'opera': tasks.push('build:opera'); break;
+    default: tasks.push('build:chrome', 'build:firefox', 'update_installed_addon', 'build:opera');
     }
+    tasks.push('clean:temp', 'notify:end');
     grunt.task.run(tasks);
   });
 
@@ -322,7 +321,9 @@ module.exports = function(grunt) {
     } else if (!aBrowser.match(/chrome|firefox|opera/)) {
       grunt.fatal('Wrong parameter. Possible values are: *chrome*, *firefox* and *opera*.');
     } else {
+      grunt.config.set('browser', aBrowser);
       grunt.task.run([
+        'copy:' + aBrowser,
         'compress:' + aBrowser,
         'clean:' + aBrowser
       ]);

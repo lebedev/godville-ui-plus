@@ -16,6 +16,18 @@ GUIp.stats._totalHP = function(aParty, aProperty) {
 
 // Capitalized stats are used in logger.
 
+GUIp.stats.Allies_Count = function() {
+	return GUIp.stats._count('alls');
+};
+GUIp.stats.Allies_HP = function() {
+	return GUIp.stats._totalHP('alls', 'hp');
+};
+GUIp.stats.Allies_MaxHP = function() {
+	return GUIp.stats._totalHP('alls', 'hpm');
+};
+GUIp.stats.Ally_HP = function(aAlly) {
+	return so.state.alls[aAlly - 1] && so.state.alls[aAlly - 1].hp || 0;
+};
 GUIp.stats.Bricks = function() {
 	return so.state.stats.bricks_cnt.value;
 };
@@ -97,30 +109,6 @@ GUIp.stats.Logs = function() {
 };
 GUIp.stats.Males = function() {
 	return so.state.stats.ark_m && so.state.stats.ark_m.value || 0;
-};
-GUIp.stats.Alls_HP = function() {
-	var allies_hp = 0;
-	for (var ally in so.state.alls) {
-		allies_hp += so.state.alls[ally].hp;
-	}
-	return allies_hp;
-};
-GUIp.stats.Ally_HP = function(ally) {
-	return so.state.alls[ally-1] && so.state.alls[ally-1].hp || 0;
-};
-GUIp.stats.Alls_MaxHP = function() {
-	var allies_hp = 0;
-	for (var ally in so.state.alls) {
-		allies_hp += so.state.alls[ally].hpm;
-	}
-	return allies_hp;
-};
-GUIp.stats.Alls_Count = function() {
-	var allies_cnt = 0;
-	for (var ally in so.state.alls) {
-		allies_cnt++;
-	}
-	return allies_cnt;
 };
 GUIp.stats.Max_Godpower = function() {
 	return so.state.stats.max_gp.value;
