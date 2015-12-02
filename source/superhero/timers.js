@@ -6,7 +6,7 @@ GUIp.timers = {};
 GUIp.timers.init = function() {
 	if (GUIp.data.hasTemple) {
 		document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"imp_timer\" class=\"fr_new_badge hidden\" />');
-		if (GUIp.data.isDungeon || (GUIp.data.isFight && GUIp.stats.Hero_Alls_Count() > 2)) {
+		if (GUIp.data.isDungeon || (GUIp.data.isFight && GUIp.stats.Alls_Count() > 2)) {
 			this.logTimer = document.querySelector('#imp_timer');
 			this.logTimerIsDisabled = GUIp.storage.get('Option:disableLogTimer');
 			GUIp.utils.hideElem(this.logTimer, this.logTimerIsDisabled);

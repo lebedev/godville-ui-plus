@@ -70,13 +70,16 @@ GUIp.logger._appendStr = function(id, klass, str, descr) {
 	}
 };
 GUIp.logger._watchStatsValue = function(id, name, descr, klass) {
+	// Remove id prefixes.
+	id = id.replace(/^Hero_|^Map_/, '');
+
 	klass = (klass || id).toLowerCase();
 	var i, len, diff;
 	if (name === 'a:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
 		var damageData = [];
-		for (i = 1, len = GUIp.stats.Hero_Alls_Count(); i <= len; i++)
+		for (i = 1, len = GUIp.stats.Alls_Count(); i <= len; i++)
 		{
-			diff = GUIp.storage.set_with_diff('Logger:'+(id === 'Hero_Alls_HP' ? 'Hero' : 'Map')+'_Ally'+i+'_HP', GUIp.stats.Hero_Ally_HP(i));
+			diff = GUIp.storage.set_with_diff('Logger:'+ (GUIp.data.isDungeon ? 'Map' : 'Hero') + '_Ally' + i + '_HP', GUIp.stats.Ally_HP(i));
 			if (diff) {
 				damageData.push({ num: i, diff: diff, cnt: 0, fuzz: 0, cntf: 0 });
 			}

@@ -6,9 +6,7 @@ GUIp.stats = {};
 GUIp.stats.Bricks = function() {
 	return so.state.stats.bricks_cnt.value;
 };
-GUIp.stats.Charges =
-GUIp.stats.Map_Charges =
-GUIp.stats.Hero_Charges = function() {
+GUIp.stats.Charges = function() {
 	return so.state.stats.accumulator.value;
 };
 GUIp.stats.Death = function() {
@@ -80,27 +78,19 @@ GUIp.stats.Equip6 = function() {
 GUIp.stats.Equip7 = function() {
 	return +so.state.equipment.talisman.level;
 };
-GUIp.stats.Exp =
-GUIp.stats.Map_Exp =
-GUIp.stats.Hero_Exp = function() {
+GUIp.stats.Exp = function() {
 	return so.state.stats.exp_progress.value;
 };
 GUIp.stats.Godpower = function() {
 	return so.state.stats.godpower.value;
 };
-GUIp.stats.Gold =
-GUIp.stats.Map_Gold =
-GUIp.stats.Hero_Gold = function() {
+GUIp.stats.Gold = function() {
 	return so.state.stats.gold.value;
 };
-GUIp.stats.HP =
-GUIp.stats.Map_HP =
-GUIp.stats.Hero_HP = function() {
+GUIp.stats.HP = function() {
 	return so.state.stats.health.value;
 };
-GUIp.stats.Inv =
-GUIp.stats.Map_Inv =
-GUIp.stats.Hero_Inv = function() {
+GUIp.stats.Inv = function() {
 	return so.state.stats.inventory_num.value;
 };
 GUIp.stats.Level = function() {
@@ -112,26 +102,24 @@ GUIp.stats.Logs = function() {
 GUIp.stats.Males = function() {
 	return so.state.stats.ark_m && so.state.stats.ark_m.value || 0;
 };
-GUIp.stats.Map_Alls_HP =
-GUIp.stats.Hero_Alls_HP = function() {
+GUIp.stats.Alls_HP = function() {
 	var allies_hp = 0;
 	for (var ally in so.state.alls) {
 		allies_hp += so.state.alls[ally].hp;
 	}
 	return allies_hp;
 };
-GUIp.stats.Map_Ally_HP =
-GUIp.stats.Hero_Ally_HP = function(ally) {
+GUIp.stats.Ally_HP = function(ally) {
 	return so.state.alls[ally-1] && so.state.alls[ally-1].hp || 0;
 };
-GUIp.stats.Hero_Alls_MaxHP = function() {
+GUIp.stats.Alls_MaxHP = function() {
 	var allies_hp = 0;
 	for (var ally in so.state.alls) {
 		allies_hp += so.state.alls[ally].hpm;
 	}
 	return allies_hp;
 };
-GUIp.stats.Hero_Alls_Count = function() {
+GUIp.stats.Alls_Count = function() {
 	var allies_cnt = 0;
 	for (var ally in so.state.alls) {
 		allies_cnt++;

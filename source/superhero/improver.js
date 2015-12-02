@@ -479,13 +479,13 @@ GUIp.improver.improveStats = function() {
 			GUIp.storage.set('Logger:Map_Gold', GUIp.stats.Gold());
 			GUIp.storage.set('Logger:Map_Inv', GUIp.stats.Inv());
 			GUIp.storage.set('Logger:Map_Charges',GUIp.stats.Charges());
-			GUIp.storage.set('Logger:Map_Alls_HP', GUIp.stats.Map_Alls_HP());
+			GUIp.storage.set('Logger:Map_Allies_HP', GUIp.stats.Alls_HP());
 			for (i = 1; i <= 4; i++) {
-				GUIp.storage.set('Logger:Map_Ally'+i+'_HP', GUIp.stats.Map_Ally_HP(i));
+				GUIp.storage.set('Logger:Map_Ally' + i + '_HP', GUIp.stats.Ally_HP(i));
 			}
 		}
 		/* [E] informer to notify about low health when in dungeon mode */
-		GUIp.informer.update('low health', GUIp.stats.Map_HP() < 130 && GUIp.stats.Map_HP() > 1);
+		GUIp.informer.update('low health', GUIp.stats.HP() < 130 && GUIp.stats.HP() > 1);
 		GUIp.improver.improveOppsHP(true);
 		return;
 	}
@@ -498,9 +498,9 @@ GUIp.improver.improveStats = function() {
 			GUIp.storage.set('Logger:Enemy_HP', GUIp.stats.Enemy_HP());
 			GUIp.storage.set('Logger:Enemy_Gold', GUIp.stats.Enemy_Gold());
 			GUIp.storage.set('Logger:Enemy_Inv', GUIp.stats.Enemy_Inv());
-			GUIp.storage.set('Logger:Hero_Alls_HP', GUIp.stats.Hero_Alls_HP());
+			GUIp.storage.set('Logger:Hero_Allies_HP', GUIp.stats.Alls_HP());
 			for (i = 1; i <= 4; i++) {
-				GUIp.storage.set('Logger:Hero_Ally'+i+'_HP', GUIp.stats.Hero_Ally_HP(i));
+				GUIp.storage.set('Logger:Hero_Ally'+i+'_HP', GUIp.stats.Ally_HP(i));
 			}
 			for (i = 1; i <= 5; i++) {
 				GUIp.storage.set('Logger:Enemy'+i+'_HP', GUIp.stats.EnemySingle_HP(i));
@@ -509,17 +509,17 @@ GUIp.improver.improveStats = function() {
 		}
 		/* [E] informer to notify about low health when in fight mode */
 		var health_lim;
-		if (GUIp.stats.Hero_Alls_Count() === 0 && GUIp.stats.Enemy_Count() > 2) { // corovan
+		if (GUIp.stats.Alls_Count() === 0 && GUIp.stats.Enemies_Count() > 2) { // corovan
 			health_lim = GUIp.stats.Max_HP() * 0.05 * GUIp.stats.Enemy_AliveCount();
-		} else if (GUIp.stats.Hero_Alls_Count() === 0) { // single enemy
+		} else if (GUIp.stats.Alls_Count() === 0) { // single enemy
 			health_lim = GUIp.stats.Max_HP() * 0.15;
 		} else { // raid boss or dungeon boss
-			health_lim = (GUIp.stats.Hero_Alls_MaxHP() + GUIp.stats.Max_HP()) * (GUIp.stats.Enemy_HasAbility("second_strike") ? 0.094 : 0.068);
-			if (GUIp.stats.Enemy_AliveCount() > 1) { // boss has an active minion
+			health_lim = (GUIp.stats.Alls_MaxHP() + GUIp.stats.Max_HP()) * (GUIp.stats.Enemy_HasAbility("second_strike") ? 0.094 : 0.068);
+			if (GUIp.stats.Enemies_AliveCount() > 1) { // boss has an active minion
 				health_lim *= 1.3;
 			}
-			if (GUIp.stats.Hero_Alls_Count() < 4) { // allies count less than 4 -- clearly speculative calculation below!
-				health_lim *= (4 - GUIp.stats.Hero_Alls_Count()) * 0.2 + 1;
+			if (GUIp.stats.Alls_Count() < 4) { // allies count less than 4 -- clearly speculative calculation below!
+				health_lim *= (4 - GUIp.stats.Alls_Count()) * 0.2 + 1;
 			}
 		}
 		GUIp.informer.update('low health', GUIp.stats.HP() < health_lim && GUIp.stats.HP() > 1);
