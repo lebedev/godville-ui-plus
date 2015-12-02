@@ -3,6 +3,19 @@ window.GUIp = window.GUIp || {};
 
 GUIp.stats = {};
 
+GUIp.stats._count = function(aParty) {
+	return Object.keys(so.state[aParty]).length;
+};
+GUIp.stats._totalHP = function(aParty, aProperty) {
+	// Temporal length property to mimic an array-like object.
+	so.state[aParty].length = GUIp.stats._count(aParty);
+	var hp = Array.prototype.slice.call(so.state[aParty]).reduce(function(aSumm, aMember) { return aSumm + aMember[aProperty]; }, 0);
+	delete so.state[aParty].length;
+	return hp;
+};
+
+// Capitalized stats are used in logger.
+
 GUIp.stats.Bricks = function() {
 	return so.state.stats.bricks_cnt.value;
 };
@@ -12,50 +25,30 @@ GUIp.stats.Charges = function() {
 GUIp.stats.Death = function() {
 	return so.state.stats.death_count.value;
 };
-GUIp.stats.Females = function() {
-	return so.state.stats.ark_f && so.state.stats.ark_f.value || 0;
+GUIp.stats.Enemies_AliveCount = function() {
+	// Temporal length property to mimic an array-like object.
+	so.state.opps.length = GUIp.stats.Enemies_Count();
+	var count = Array.prototype.slice.call(so.state.opps).filter(function(opp) { return opp.hp > 0; }).length;
+	delete so.state.opps.length;
+	return count;
+};
+GUIp.stats.Enemies_Count = function() {
+	return GUIp.stats._count('opps');
+};
+GUIp.stats.Enemies_HP = function() {
+	return GUIp.stats._totalHP('opps', 'hp');
 };
 GUIp.stats.Enemy_Gold = function() {
 	return so.state.o_stats.gold_we && so.state.o_stats.gold_we.value && +(so.state.o_stats.gold_we.value.match(/\d+/) || [0])[0] || 0;
 };
-GUIp.stats.Enemy_HP = function() {
-	var opps_hp = 0;
-	for (var opp in so.state.opps) {
-		opps_hp += so.state.opps[opp].hp;
-	}
-	return opps_hp;
+GUIp.stats.Enemy_HasAbility = function(aAbility) {
+	return so.state.opps[0].ab && so.state.opps[0].ab.map(function(aAbility) { return aAbility.id; }).join().match(aAbility);
 };
-GUIp.stats.EnemySingle_HP = function(enemy) {
-	return so.state.opps[enemy-1] && so.state.opps[enemy-1].hp || 0;
+GUIp.stats.Enemy_HP = function(aOpp) {
+	return so.state.opps[aOpp - 1] && so.state.opps[aOpp - 1].hp || 0;
 };
 GUIp.stats.Enemy_Inv = function() {
 	return so.state.o_stats.inventory_num && so.state.o_stats.inventory_num.value || 0;
-};
-GUIp.stats.Enemy_HasAbility = function(ability) {
-	for (var opp in so.state.opps) {
-		for (var ab in so.state.opps[opp].ab) {
-			if (so.state.opps[opp].ab[ab].id === ability) {
-				return true;
-			}
-		}
-	}
-	return false;
-};
-GUIp.stats.Enemy_Count = function() {
-	var enemies_cnt = 0;
-	for (var opp in so.state.opps) {
-		enemies_cnt++;
-	}
-	return enemies_cnt;
-};
-GUIp.stats.Enemy_AliveCount = function() {
-	var enemies_cnt = 0;
-	for (var opp in so.state.opps) {
-		if (so.state.opps[opp].hp > 0) {
-			enemies_cnt++;
-		}
-	}
-	return enemies_cnt;
 };
 GUIp.stats.Equip1 = function() {
 	return +so.state.equipment.weapon.level;
@@ -80,6 +73,9 @@ GUIp.stats.Equip7 = function() {
 };
 GUIp.stats.Exp = function() {
 	return so.state.stats.exp_progress.value;
+};
+GUIp.stats.Females = function() {
+	return so.state.stats.ark_f && so.state.stats.ark_f.value || 0;
 };
 GUIp.stats.Godpower = function() {
 	return so.state.stats.godpower.value;
@@ -143,26 +139,26 @@ GUIp.stats.Pet_NameType = function() {
 		pType = so.state.pet.pet_class && so.state.pet.pet_class.value || '';
 	return pName[1] + ':' + pType;
 };
-GUIp.stats.Task = function() {
-	return so.state.stats.quest_progress.value;
-};
-GUIp.stats.Task_Name = function() {
-	return so.state.stats.quest.value;
-};
 GUIp.stats.Savings = function() {
 	if (so.state.stats.retirement) {
 		var savingsValue = so.state.stats.retirement.value.match(/^((\d+)M, )?(\d+)k$/i);
 		if (savingsValue) {
-			return 1000 * savingsValue[2] + 1 * savingsValue[3];
+			return 1000*savingsValue[2] + 1*savingsValue[3];
 		} else {
 			return parseInt(so.state.stats.retirement.value);
 		}
 	}
 	return null;
 };
-GUIp.stats.petIsKnockedOut = function() {
-	return so.state.pet.pet_is_dead && so.state.pet.pet_is_dead.value;
+GUIp.stats.Task = function() {
+	return so.state.stats.quest_progress.value;
 };
+GUIp.stats.Task_Name = function() {
+	return so.state.stats.quest.value;
+};
+
+// Stats for internal use.
+
 GUIp.stats.charName = function() {
 	return so.state.stats.name.value;
 };
@@ -198,6 +194,9 @@ GUIp.stats.monsterName = function() {
 };
 GUIp.stats.logId = function() {
 	return so.state.stats.perm_link.value;
+};
+GUIp.stats.petIsKnockedOut = function() {
+	return so.state.pet.pet_is_dead && so.state.pet.pet_is_dead.value;
 };
 GUIp.stats.townName = function() {
 	return so.state.stats.town_name && so.state.stats.town_name.value;

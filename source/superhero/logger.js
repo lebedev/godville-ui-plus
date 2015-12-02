@@ -14,12 +14,12 @@ GUIp.logger.create = function() {
 		['Map_Inv', 'inv', GUIp.i18n.inventory, 'inv'],
 		['Map_Gold', 'gld', GUIp.i18n.gold, 'gold'],
 		['Map_Charges', 'ch', GUIp.i18n.charges, 'charges'],
-		['Map_Alls_HP', 'a:hp', GUIp.i18n.allies_health, 'allies']
+		['Map_Allies_HP', 'a:hp', GUIp.i18n.allies_health, 'allies']
 	];
 	this.battleWatchers = [
 		['Hero_HP', 'h:hp', GUIp.i18n.hero_health, 'hp'],
-		['Enemy_HP', 'e:hp', GUIp.i18n.enemy_health, 'death'],
-		['Hero_Alls_HP', 'a:hp', GUIp.i18n.allies_health, 'allies'],
+		['Enemies_HP', 'e:hp', GUIp.i18n.enemy_health, 'death'],
+		['Hero_Allies_HP', 'a:hp', GUIp.i18n.allies_health, 'allies'],
 		['Hero_Inv', 'h:inv', GUIp.i18n.inventory, 'inv'],
 		['Hero_Gold', 'h:gld', GUIp.i18n.gold, 'gold'],
 		['Hero_Charges', 'ch', GUIp.i18n.charges, 'charges'],
@@ -77,7 +77,7 @@ GUIp.logger._watchStatsValue = function(id, name, descr, klass) {
 	var i, len, diff;
 	if (name === 'a:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
 		var damageData = [];
-		for (i = 1, len = GUIp.stats.Alls_Count(); i <= len; i++)
+		for (i = 1, len = GUIp.stats.Allies_Count(); i <= len; i++)
 		{
 			diff = GUIp.storage.set_with_diff('Logger:'+ (GUIp.data.isDungeon ? 'Map' : 'Hero') + '_Ally' + i + '_HP', GUIp.stats.Ally_HP(i));
 			if (diff) {
@@ -118,9 +118,9 @@ GUIp.logger._watchStatsValue = function(id, name, descr, klass) {
 		return;
 	}
 	if (name === 'e:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
-		for (i = 1, len = GUIp.stats.Enemy_Count(); i <= len; i++)
+		for (i = 1, len = GUIp.stats.Enemies_Count(); i <= len; i++)
 		{
-			diff = GUIp.storage.set_with_diff('Logger:Enemy'+i+'_HP', GUIp.stats.EnemySingle_HP(i));
+			diff = GUIp.storage.set_with_diff('Logger:Enemy'+i+'_HP', GUIp.stats.Enemy_HP(i));
 			if (diff) {
 				GUIp.logger._appendStr(id, klass, 'e' + (len > 1 ? i : '') + ':hp' + (diff > 0 ? '+' : '') + diff, descr);
 			}
@@ -154,7 +154,7 @@ GUIp.logger._watchStatsValue = function(id, name, descr, klass) {
 };
 GUIp.logger._updateWatchers = function(watchersList) {
 	for (var i = 0, len = watchersList.length; i < len; i++) {
-		GUIp.logger._watchStatsValue.apply(this, watchersList[i]);
+		GUIp.logger._watchStatsValue.apply(null, watchersList[i]);
 	}
 };
 GUIp.logger.update = function() {
