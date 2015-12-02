@@ -47,18 +47,18 @@ GUIp.storage.dump = function(selector) {
         }
     }
     lines.sort();
-    console.info('Godville UI+ log: Storage:\n' + lines.join('\n'));
+    window.console.info('Godville UI+ log: Storage:\n' + lines.join('\n'));
 };
 // resets saved options
 GUIp.storage.clear = function(what) {
     if (!what || !what.match(/^(?:GUIp|Godville|All)$/)) {
         if (GUIp.locale === 'ru') {
-            console.log('Godville UI+: использование storage.clear:\n' +
+            window.console.log('Godville UI+: использование storage.clear:\n' +
                                'storage.clear("GUIp") для удаление только настроек Godville UI+\n' +
                                'storage.clear("Godville") для удаления настроек Годвилля, сохранив настройки Godville UI+\n' +
                                'storage.clear("All") для удаления всех настроек');
         } else {
-            console.log('Godville UI+: storage.clear usage:\n' +
+            window.console.log('Godville UI+: storage.clear usage:\n' +
                                'storage.clear("GUIp") to remove Godville UI+ setting only\n' +
                                'storage.clear("Godville") to remove Godville setting and keep Godville UI+ settings\n' +
                                'storage.clear("All") to remove all setting');

@@ -5,27 +5,27 @@ module.exports = function(grunt) {
     copy: {
       chrome: {
         files: [
-          {expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome/', filter: 'isFile'},
-          {expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/'},
-          {expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/'},
-          {expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/chrome/'}
+          { expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome/', filter: 'isFile' },
+          { expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/' },
+          { expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/' },
+          { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/chrome/' }
         ]
       },
       firefox: {
         files: [
-          {expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/'},
-          {expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile'},
-          {expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile'},
-          {expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/'},
-          {expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/data/'}
+          { expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/' },
+          { expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile' },
+          { expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile' },
+          { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' },
+          { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/data/' }
         ]
       },
       opera: {
         files: [
-          {expand: true, cwd: 'source/opera', src: '**', dest: '<%= compile_path %>/opera/'},
-          {expand: true, cwd: 'source/', src: '*', dest: '<%= compile_path %>/opera/content/', filter: 'isFile'},
-          {expand: true, cwd: 'source/vendor/', src: '*', dest: '<%= compile_path %>/opera/content/'},
-          {expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/opera/content/'}
+          { expand: true, cwd: 'source/opera', src: '**', dest: '<%= compile_path %>/opera/' },
+          { expand: true, cwd: 'source/', src: '*', dest: '<%= compile_path %>/opera/content/', filter: 'isFile' },
+          { expand: true, cwd: 'source/vendor/', src: '*', dest: '<%= compile_path %>/opera/content/' },
+          { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/opera/content/' }
         ]
       },
       versioned: {
@@ -50,12 +50,7 @@ module.exports = function(grunt) {
                   "'use strict';\n\n",
           footer: "\n\n})();"
         },
-        src: [
-          'source/forum/init.js',
-          'source/forum/topic_formatting.js',
-          'source/forum/topic_other.js',
-          'source/forum/main.js'
-        ],
+        src: 'source/forum/*.js',
         dest: '<%= compile_path %>/forum.js'
       },
       superhero: {
@@ -67,25 +62,7 @@ module.exports = function(grunt) {
             return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
           }
         },
-        src: [
-          'source/superhero/data.js',
-          'source/superhero/utils.js',
-          'source/superhero/timeout.js',
-          'source/superhero/help.js',
-          'source/superhero/storage.js',
-          'source/superhero/words.js',
-          'source/superhero/stats.js',
-          'source/superhero/logger.js',
-          'source/superhero/informer.js',
-          'source/superhero/forum.js',
-          'source/superhero/improver.js',
-          'source/superhero/inventory.js',
-          'source/superhero/timers.js',
-          'source/superhero/observers.js',
-          'source/superhero/trycatcher.js',
-          'source/superhero/starter.js',
-          'source/superhero/main.js'
-        ],
+        src: 'source/superhero/*.js',
         dest: '<%= compile_path %>/superhero.js'
       }
     },
@@ -125,115 +102,29 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
-        'curly': true,
-        'eqnull': true,
-        'eqeqeq': true,
-        'undef': true,
-        'moz': true
+        browser: true,
+        curly: true,
+        eqnull: true,
+        eqeqeq: true,
+        undef: true,
+        moz: true
       },
-      gruntfile: {
+      all: {
         options: {
           'globals': {
-            'module': false,
-            'require': false
-          }
-        },
-        src: 'Gruntfile.js'
-      },
-      superhero: {
-        options: {
-          'globals': {
-            'clearInterval': false,
-            'clearTimeout': false,
-            'confirm': false,
-            'console': false,
-            'document': false,
-            'localStorage': false,
-            'location': false,
-            'navigator': false,
-            'MutationObserver': false,
-            'Notification': false,
-            'setInterval': false,
-            'setTimeout': false,
-            'XMLHttpRequest': false,
-            'window': false,
-            'GUIp': true,
-            'starterInt': true,
-            // vendor
-            '$': true,
-            'so': true,
-            'Loc': true,
-          }
-        },
-        src: 'source/superhero/*.js'
-      },
-      forum: {
-        options: {
-          'globals': {
-            'window': false,
-            'console': false,
-            'document': false,
-            'location': false,
-            'localStorage': false,
-            'MutationObserver': false,
-            'getComputedStyle': false,
-            'getSelection': false,
-            'setInterval': false,
-            'clearInterval': false,
-            'setTimeout': false,
-            'clearTimeout': false,
-            'GUIp': true,
-            '$id': true,
-            '$C': true,
-            '$Q': true,
-            '$q': true,
-            'storage': true,
-            'addSmallElements': true,
-            'addLinks': true,
-            'addFormattingButtonsAndCtrlEnter': true,
-            'fixGodnamePaste': true,
-            'improveTopic': true,
-            'i': true,
-            'len': true,
-            'isTopic': true,
-            'forum_no': true,
-            'topics': true,
-            'topic': true,
-            // vendor
-            'EditForm': true,
-            'ReplyForm': true,
-            'Effect': true,
-          }
-        },
-        src: 'source/forum/*.js'
-      },
-      other: {
-        options: {
-          'globals': {
+            // Native
             'chrome': false,
-            'window': false,
-            'console': true,
-            'alert': true,
-            'document': false,
-            'location': false,
-            'localStorage': false,
-            'require': false,
+            'module': false,
             'opera': false,
-            'FileReader': false,
-            'createObjectIn': false,
-            'XMLHttpRequest': false,
-            'setInterval': false,
-            'clearInterval': false,
-            'setTimeout': false,
-            'clearTimeout': false,
+            'require': false,
+            // GUIp
             'GUIp': true,
           }
         },
         src: [
+          'Gruntfile.js',
           'source/**/*.js',
           '!source/vendor/*.js',
-          '!source/superhero/*.js',
-          '!source/forum/*.js',
           '!source/firefox/bootstrap.js'
         ]
       }

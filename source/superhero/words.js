@@ -20,7 +20,7 @@ GUIp.words.init = function() {
             try {
                 this.base[customSects[sect]] = JSON.parse(text);
             } catch (error) {
-                console.log('Error while parsing custom words section "'+customSects[sect]+'", resetting...');
+                window.console.log('Error while parsing custom words section "'+customSects[sect]+'", resetting...');
                 GUIp.storage.remove('CustomWords:' + customSects[sect]);
             }
         }

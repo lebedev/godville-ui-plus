@@ -58,7 +58,7 @@ GUIp.forum._setInformer = function(topic_no, topic_data, posts_count) {
                 var informers = JSON.parse(GUIp.storage.get('ForumInformers'));
                 delete informers[this.id.match(/\d+/)[0]];
                 GUIp.storage.set('ForumInformers', JSON.stringify(informers));
-                $(this).slideToggle("fast", function() {
+                window.$(this).slideToggle("fast", function() {
                     if (this.parentElement) {
                         this.parentElement.removeChild(this);
                         GUIp.informer.clearTitle();

@@ -233,7 +233,7 @@ GUIp.log.parseChronicles = function() {
     for (var i = 0; step <= step_max; i++) {
         if (!matches[i]) {
             if (step !== step_max) {
-                console.log('not enough steps detected! required: '+step_max+', got: '+step);
+                window.console.log('not enough steps detected! required: '+step_max+', got: '+step);
             }
             break;
         }
@@ -291,7 +291,7 @@ GUIp.log.describeMap = function() {
             if (shortCorrection) {
                 this.chronicles[step].direction = this.corrections[shortCorrection];
             } else {
-                console.log('warning: detected directionless move! the following direction (re-)calculation is currently in beta and might not work at all under some circumstances!');
+                window.console.log('warning: detected directionless move! the following direction (re-)calculation is currently in beta and might not work at all under some circumstances!');
                 this.chronicles[step].direction = GUIp.log.calculateDirectionlessMove(coords, step);
             }
             this.chronicles[step].directionless = false;
@@ -349,7 +349,7 @@ GUIp.log.describeMap = function() {
     }
     var heroesCoords = GUIp.log.calculateXY(document.getElementsByClassName('map_pos')[0]);
     if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
-        console.log('chronicle processing failed, coords diff: x: ' + (heroesCoords.x - coords.x) + ', y: ' + (heroesCoords.y - coords.y) + '.');
+        window.console.log('chronicle processing failed, coords diff: x: ' + (heroesCoords.x - coords.x) + ', y: ' + (heroesCoords.y - coords.y) + '.');
     }
 };
 
@@ -397,7 +397,7 @@ GUIp.log.highlightTreasuryZone = function() {
                             case 'burning':  ttl += '✺'; break;
                         }
                     }
-                    console.log("current position has pointers: " + ttl);
+                    window.console.log("current position has pointers: " + ttl);
                 }
                 if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1 || ttl.length && ttl.match('←|→|↓|↑|↙|↘|↖|↗')) {
                     MaxMap++;
@@ -611,7 +611,7 @@ GUIp.log.calculateDirectionlessMove = function(initCoords, initStep) {
         steps = Object.keys(this.chronicles),
         directionless = 0;
 
-    console.log('going to calculate directionless moves from step #'+initStep);
+    window.console.log('going to calculate directionless moves from step #'+initStep);
     for (i = initStep, len = steps.length; i <= len; i++) {
         if (this.chronicles[i].directionless) {
             directionless++;
@@ -622,7 +622,7 @@ GUIp.log.calculateDirectionlessMove = function(initCoords, initStep) {
     var variations = this.getAllRPerms('nesw'.split(''),directionless);
 
     for (i = 0, len = variations.length; i < len; i++) {
-        //console.log('trying combo '+variations[i].join());
+        //window.console.log('trying combo '+variations[i].join());
         coords = { x: initCoords.x, y: initCoords.y };
         directionless = 0;
         for (j = initStep, len2 = steps.length; j <= len2; j++) {
@@ -638,7 +638,7 @@ GUIp.log.calculateDirectionlessMove = function(initCoords, initStep) {
         }
         if (heroesCoords.x - coords.x === 0 && heroesCoords.y - coords.y === 0) {
             var currentCorrections = this.storageGet(GUIp.log.logID + 'corrections') || '';
-            console.log('found result: '+variations[i].join());
+            window.console.log('found result: '+variations[i].join());
             this.directionlessMoveCombo = currentCorrections + variations[i].join('');
             if (!this.customDomain) {
                 this.storageSet(GUIp.log.logID + 'corrections', currentCorrections + variations[i].join(''));
@@ -718,13 +718,13 @@ GUIp.log.saverProcessPage = function(xhr) {
         }
     } else {
         GUIp.log.saverRemoveLoader();
-        alert('При сохранении произошла ошибка - хроника не существует.');
+        window.alert('При сохранении произошла ошибка - хроника не существует.');
     }
 };
 
 GUIp.log.saverFetchFailed = function() {
     GUIp.log.saverRemoveLoader();
-    alert('При запросе хроники произошла ошибка.\nПопробуйте еще раз.');
+    window.alert('При запросе хроники произошла ошибка.\nПопробуйте еще раз.');
 };
 
 GUIp.log.saverAddLoader = function() {
@@ -755,7 +755,7 @@ GUIp.log.saverPrepareLog = function(svc) {
             throw 'нельзя загрузить трансляцию';
         }
         if (document.getElementById('godvillepehu_loader')) {
-            alert('Лог уже загружается!');
+            window.alert('Лог уже загружается!');
             return;
         } else {
             GUIp.log.saverAddLoader();
@@ -764,7 +764,7 @@ GUIp.log.saverPrepareLog = function(svc) {
         GUIp.log.saverFetchPage(null);
     } catch(e) {
         GUIp.log.saverRemoveLoader();
-        alert('Ошибка: ' + e);
+        window.alert('Ошибка: ' + e);
     }
 };
 
@@ -895,7 +895,7 @@ GUIp.log.starter = function() {
             localStorage.setItem('GUIp_highContrast', document.getElementById('high_contrast').checked);
         };
     } catch(e) {
-        console.log(e);
+        window.console.log(e);
     }
 };
 

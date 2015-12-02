@@ -1,3 +1,5 @@
+/* global $id, $C, $c, $Q, $q */
+
 // topic other improvements
 var pw, pw_pb_int;
 var checkHash = function() {
@@ -22,14 +24,14 @@ var highlightCurrentPost = function() {
 };
 var setPageWrapperPaddingBottom = function(el) {
     var form = document.getElementById(el) || el,
-        old_height = parseFloat(getComputedStyle(form).height) || 0,
+        old_height = parseFloat(window.getComputedStyle(form).height) || 0,
         step = 0;
     clearInterval(pw_pb_int);
     pw_pb_int = setInterval(function() {
         if (step++ >= 100) {
             clearInterval(pw_pb_int);
         } else {
-            var diff = (parseFloat(getComputedStyle(form).height) || 0) - old_height;
+            var diff = (parseFloat(window.getComputedStyle(form).height) || 0) - old_height;
             old_height += diff;
             pw.style.paddingBottom = ((parseFloat(pw.style.paddingBottom) || 0) + diff) + 'px';
             window.scrollTo(0, window.scrollY + diff);
@@ -38,16 +40,16 @@ var setPageWrapperPaddingBottom = function(el) {
 };
 var fixPageWrapperPadding = function() {
     pw = document.getElementById('page_wrapper');
-    Effect.old_toggle = Effect.toggle;
-    Effect.toggle = function(a, b) { setPageWrapperPaddingBottom(a); Effect.old_toggle(a, b); };
-    Effect.old_BlindDown = Effect.BlindDown;
-    Effect.BlindDown = function(a, b) { setPageWrapperPaddingBottom(a); Effect.old_BlindDown(a, b); };
-    EditForm.old_hide = EditForm.hide;
-    EditForm.hide = function() { pw.style.paddingBottom = '0px'; EditForm.old_hide(); };
-    EditForm.old_setReplyId = EditForm.setReplyId;
-    EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } EditForm.old_setReplyId(a); };
-    ReplyForm.old_init = ReplyForm.init;
-    ReplyForm.init = function() { ReplyForm.old_init(); if (getSelection().isCollapsed) { setTimeout(function() { document.getElementById('post_body').focus(); }, 50); } };
+    window.Effect.old_toggle = window.Effect.toggle;
+    window.Effect.toggle = function(a, b) { setPageWrapperPaddingBottom(a); window.Effect.old_toggle(a, b); };
+    window.Effect.old_BlindDown = window.Effect.BlindDown;
+    window.Effect.BlindDown = function(a, b) { setPageWrapperPaddingBottom(a); window.Effect.old_BlindDown(a, b); };
+    window.EditForm.old_hide = window.EditForm.hide;
+    window.EditForm.hide = function() { pw.style.paddingBottom = '0px'; window.EditForm.old_hide(); };
+    window.EditForm.old_setReplyId = window.EditForm.setReplyId;
+    window.EditForm.setReplyId = function(a) { if (document.getElementById('reply').style.display !== 'none') { pw.style.paddingBottom = '0px'; } window.EditForm.old_setReplyId(a); };
+    window.ReplyForm.old_init = window.ReplyForm.init;
+    window.ReplyForm.init = function() { window.ReplyForm.old_init(); if (window.getSelection().isCollapsed) { setTimeout(function() { document.getElementById('post_body').focus(); }, 50); } };
 };
 
 var findPost = function(el) {
@@ -57,7 +59,7 @@ var findPost = function(el) {
     return el;
 };
 var picturesAutoreplace = function() {
-    if (!storage.get('Option:disableLinksAutoreplace')) {
+    if (!GUIp.storage.get('Option:disableLinksAutoreplace')) {
         var links = document.querySelectorAll('.post .body a'),
             imgs = [],
             onerror = function(i) {
@@ -90,7 +92,7 @@ var picturesAutoreplace = function() {
                     window.scrollTo(0, window.scrollY + diff);
                 }
             };
-        for (i = 0, len = links.length; i < len; i++) {
+        for (var i = 0, len = links.length; i < len; i++) {
             if (links[i].href.match(/jpe?g|png|gif/i)) {
                 links[i].insertAdjacentHTML('beforeend', '<img class="img_spinner" src="http://godville.net/images/spinner.gif">');
                 imgs[i] = document.createElement('img');
@@ -102,19 +104,21 @@ var picturesAutoreplace = function() {
     }
 };
 var updatePostsNumber = function() {
-    if (topics[topic]) {
+    var topics = JSON.parse(GUIp.storage.get(GUIp.subforumId));
+    if (topics[GUIp.topicId]) {
         var page = location.search.match(/page=(\d+)/);
         page = page ? +page[1] - 1 : 0;
         var posts = page*25 + document.getElementsByClassName('post').length;
-        if (topics[topic].posts < posts) {
-            topics[topic].posts = posts;
+        if (topics[GUIp.topicId].posts < posts) {
+            topics[GUIp.topicId].posts = posts;
             var dates = document.getElementsByTagName('abbr');
-            topics[topic].date = dates[dates.length - 1].title;
-            storage.set(forum_no, JSON.stringify(topics));
+            topics[GUIp.topicId].date = dates[dates.length - 1].title;
+            GUIp.storage.set(GUIp.subforumId, JSON.stringify(topics));
         }
     }
 };
-var improveTopic = function() {
+
+GUIp.initOtherTopicFeatures = function() {
     checkHash();
     highlightCurrentPost();
     window.onhashchange = highlightCurrentPost;

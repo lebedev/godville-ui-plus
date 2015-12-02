@@ -53,10 +53,10 @@ var storage = {
             for (var key in options) {
                 this.set(key, options[key]);
             }
-            alert(GUIp.i18n.import_success);
+            window.alert(GUIp.i18n.import_success);
             location.reload();
         } catch(e) {
-            alert(GUIp.i18n.import_fail);
+            window.alert(GUIp.i18n.import_fail);
         }
     },
     exportSettings: function() {
@@ -110,7 +110,7 @@ function loadOptions() {
     };
     $id('relocate_duel_buttons').onclick = function() {
         //jQuery('#relocate_duel_buttons_desc').slideToggle("slow");
-        console.log($id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none');
+        window.console.log($id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none');
         $id('relocate_duel_buttons_desc').style.display = $id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none';
         //jQuery('#relocate_duel_buttons_choice').slideToggle("slow");
         $id('relocate_duel_buttons_choice').style.display = $id('relocate_duel_buttons_choice').style.display === 'none' ? 'block' : 'none';

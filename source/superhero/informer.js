@@ -133,8 +133,8 @@ GUIp.informer.update = function(flag, value) {
             }
             /* [E] if flag is 'tamable' then play arena sound (as no other sounds are available). feature requested by... заядлые звероводы из Рядов Фурье ^_^ */
             if (flag === 'tamable monster') {
-                if (so.play_sound_orig) {
-                    so.play_sound_orig('arena.mp3',false);
+                if (window.so.play_sound_orig) {
+                    window.so.play_sound_orig('arena.mp3',false);
                 }
             }
         }

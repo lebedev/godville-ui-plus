@@ -5,8 +5,8 @@ GUIp.logger = {};
 
 GUIp.logger.create = function() {
     this.updating = false;
-    this.bar = $('<ul id="logger" style="mask: url(#fader_masking);"/>');
-    $('#menu_bar').after(this.bar);
+    this.bar = window.$('<ul id="logger" style="mask: url(#fader_masking);"/>');
+    window.$('#menu_bar').after(this.bar);
     this.need_separator = false;
     this.dungeonWatchers = [
         ['Map_HP', 'hp', GUIp.i18n.hero_health, 'hp'],
@@ -65,8 +65,8 @@ GUIp.logger._appendStr = function(id, klass, str, descr) {
     // append string
     this.bar.append('<li class="' + klass + '" title="' + descr + '">' + str + '</li>');
     this.bar.scrollLeft(10000); //Dirty fix
-    while ($('#logger li').position().left + $('#logger li').width() < 0 || $('#logger li')[0].className === "separator") {
-        $('#logger li:first').remove();
+    while (window.$('#logger li').position().left + window.$('#logger li').width() < 0 || window.$('#logger li')[0].className === "separator") {
+        window.$('#logger li:first').remove();
     }
 };
 GUIp.logger._watchStatsValue = function(id, name, descr, klass) {

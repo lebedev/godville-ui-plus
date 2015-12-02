@@ -11,11 +11,11 @@ GUIp.utils.setVoice = function(voice) {
     GUIp.utils.triggerChangeOnVoiceInput();
 };
 GUIp.utils.triggerChangeOnVoiceInput = function() {
-    $(this.voiceInput).change();
+    window.$(this.voiceInput).change();
 };
 // finds a label with given name
 GUIp.utils.findLabel = function($base_elem, label_name) {
-    return $('.l_capt', $base_elem).filter(function(index) {
+    return window.$('.l_capt', $base_elem).filter(function(index) {
         return this.textContent === label_name;
     });
 };
@@ -129,7 +129,7 @@ GUIp.utils.showMessage = function(msg_no, msg) {
     );
     var msg_elem = document.getElementById(id);
     document.getElementById(id + '_close').onclick = function() {
-        $(msg_elem).fadeToggle(function() {
+        window.$(msg_elem).fadeToggle(function() {
             msg_elem.parentNode.removeChild(msg_elem);
             if (!isNaN(msg_no)) {
                 GUIp.storage.set('lastShownMessage', msg_no);
@@ -139,7 +139,7 @@ GUIp.utils.showMessage = function(msg_no, msg) {
     };
 
     setTimeout(function() {
-        $(msg_elem).fadeToggle(1500, msg.callback);
+        window.$(msg_elem).fadeToggle(1500, msg.callback);
     }, 1000);
 };
 GUIp.utils.inform = function() {
@@ -293,11 +293,11 @@ GUIp.utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCa
 
 GUIp.utils.processError = function(error, isDebugMode) {
     if (isDebugMode) {
-        console.warn(GUIp.i18n.debug_mode_warning);
+        window.console.warn(GUIp.i18n.debug_mode_warning);
     }
     var name_message = error.name + ': ' + error.message,
         stack = error.stack && error.stack.replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1').split('\n').filter(function(step) {return !step.match(/GUIp\.trycatcher\.wrap/);}).join('\n') || 'no stacktrace';
-    console.error('Godville UI+ error log:\n' +
+    window.console.error('Godville UI+ error log:\n' +
                   name_message + '\n' +
                   GUIp.i18n.error_message_stack_trace + ': ' + stack);
     if (!~GUIp.utils.messagesShown.indexOf('error')) {
@@ -367,18 +367,18 @@ GUIp.utils.showNotification = function(title,text,callback) {
 
 GUIp.utils.getCurrentChat = function() {
     // not that nice but working way to get current contact name without searching for matches in HTML
-    for (var obj in so.messages.nm.bindings.messages[0]) {
+    for (var obj in window.so.messages.nm.bindings.messages[0]) {
         if (obj.indexOf('fc_') === 0) {
-            var msgBinding = so.messages.nm.bindings.messages[0][obj];
+            var msgBinding = window.so.messages.nm.bindings.messages[0][obj];
             if (msgBinding && msgBinding[0].classList.contains('frbutton_pressed')) {
                 return obj.substring(3);
             }
         }
     }
     return null;
-    // there should definitely be a better way to detect this, probably via so.<whatever>
-    /*var docktitle = $('.frbutton_pressed .dockfrname_w .dockfrname').text().replace(/\.+/g,''),
-        headtitle = $('.frbutton_pressed .frMsgBlock .fr_chat_header').text().match('^(.*?)(\ и\ е|\ and\ h)');
+    // there should definitely be a better way to detect this, probably via window.so.<whatever>
+    /*var docktitle = window.$('.frbutton_pressed .dockfrname_w .dockfrname').text().replace(/\.+/g,''),
+        headtitle = window.$('.frbutton_pressed .frMsgBlock .fr_chat_header').text().match('^(.*?)(\ и\ е|\ and\ h)');
     if (docktitle && headtitle && headtitle[1].indexOf(docktitle) === 0) {
         return headtitle[1];
     } else {

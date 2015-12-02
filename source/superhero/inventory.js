@@ -71,8 +71,8 @@ GUIp.inventory._update = function() {
     }
 
     // Parse items
-    for (var item_name in so.state.inventory) {
-        item = so.state.inventory[item_name];
+    for (var item_name in window.so.state.inventory) {
+        item = window.so.state.inventory[item_name];
         // color items and add buttons
         if (item.description) { // usable item
             var sect = GUIp.words.usableItemType(item.description);

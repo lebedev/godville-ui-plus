@@ -31,8 +31,8 @@ GUIp.timers.tick = function() {
     this._lastLayingDate = GUIp.timers.getDate('LastLaying');
     this._lastLogDate = GUIp.timers.getDate('LastLog');
     this._penultLogDate = GUIp.timers.getDate('PenultLog');
-    for (var msg in so.state.diary_i) {
-        var curEntryDate = new Date(so.state.diary_i[msg].time);
+    for (var msg in window.so.state.diary_i) {
+        var curEntryDate = new Date(window.so.state.diary_i[msg].time);
         if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/i) && curEntryDate > this._lastLayingDate) {
             this._lastLayingDate = curEntryDate;
         }
@@ -132,7 +132,7 @@ GUIp.timers.toggleTimers = function(e) {
         delete this.logTimer;
     }
 
-    var timerElem = $('#imp_timer');
+    var timerElem = window.$('#imp_timer');
     timerElem.fadeOut(500, function() {
         GUIp.timers.tick();
         timerElem.fadeIn(500);

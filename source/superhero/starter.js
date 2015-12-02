@@ -21,9 +21,32 @@ GUIp.starter._init = function() {
     GUIp.improver.initOverrides();
 };
 GUIp.starter.start = function() {
-    if ($ && ($('#m_info').length || $('#stats').length) && GUIp.browser && GUIp.i18n && GUIp.addCSSFromURL && so.state) {
+    if (!window.$ ||
+        !(document.getElementById('m_info') || document.getElementById('stats').length) ||
+        !GUIp.browser ||
+        !GUIp.i18n ||
+        !GUIp.addCSSFromURL ||
+        !GUIp.data ||
+        !GUIp.forum ||
+        !GUIp.help ||
+        !GUIp.improver ||
+        !GUIp.informer ||
+        !GUIp.inventory ||
+        !GUIp.logger ||
+        !GUIp.observers ||
+        !GUIp.stats ||
+        !GUIp.storage ||
+        !GUIp.timeout ||
+        !GUIp.timers ||
+        !GUIp.trycatcher ||
+        !GUIp.utils ||
+        !GUIp.words ||
+        !window.so.state
+    ) {
         clearInterval(starterInt);
-        console.time('Godville UI+ initialized in');
+        window.console.time('Godville UI+ initialized in');
+
+        GUIp.trycatcher.process(GUIp);
 
         GUIp.starter._init();
 
@@ -47,6 +70,9 @@ GUIp.starter.start = function() {
             '</svg>'
         );
 
-        console.timeEnd('Godville UI+ initialized in');
+        window.console.timeEnd('Godville UI+ initialized in');
     }
 };
+
+
+var starterInt = setInterval(function() { GUIp.starter.start(); }, 200);

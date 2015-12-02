@@ -42,11 +42,11 @@ GUIp.improver.needLog = true;
 GUIp.improver.softRefreshInt = 0;
 GUIp.improver.hardRefreshInt = 0;
 GUIp.improver.softRefresh = function() {
-    console.info('Godville UI+ log: Soft reloading...');
+    window.console.info('Godville UI+ log: Soft reloading...');
     document.getElementById('d_refresh').click();
 };
 GUIp.improver.hardRefresh = function() {
-    console.warn('Godville UI+ log: Hard reloading...');
+    window.console.warn('Godville UI+ log: Hard reloading...');
     location.reload();
 };
 GUIp.improver.improve = function() {
@@ -96,7 +96,7 @@ GUIp.improver.improveVoiceDialog = function() {
     // Add voicegens and show timeout bar after saying
     if (this.isFirstTime) {
         GUIp.utils.setVoiceSubmitState(this.freezeVoiceButton.match('when_empty'), true);
-        $(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
+        window.$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
             if (!GUIp.utils.setVoiceSubmitState(this.value && !(GUIp.improver.freezeVoiceButton.match('after_voice') && parseInt(GUIp.timeout.bar.style.width)), false)) {
                 GUIp.utils.setVoiceSubmitState(GUIp.improver.freezeVoiceButton.match('when_empty'), true);
             }
@@ -227,9 +227,9 @@ GUIp.improver.improveMap = function() {
     }
     if (document.querySelectorAll('#map .dml').length) {
         var i, j, ik, jk, len, chronolen = +Object.keys(this.chronicles).reverse()[0],
-            $box = $('#cntrl .voice_generator'),
-            $boxML = $('#map .dml'),
-            $boxMC = $('#map .dmc'),
+            $box = window.$('#cntrl .voice_generator'),
+            $boxML = window.$('#map .dml'),
+            $boxMC = window.$('#map .dmc'),
             kRow = $boxML.length,
             kColumn = $boxML[0].textContent.length,
             isJumping = document.getElementById('map').textContent.match(/Прыгучести|Jumping|Загадки|Mystery/), /* [E] allow moving almost everywhere in Mystery as it could be Jumping or Disobedience */
@@ -296,7 +296,7 @@ GUIp.improver.improveMap = function() {
                             case 'burning':  ttl += '✺'; break;
                         }
                     }
-                    console.log("current position has pointers: "+ttl);
+                    window.console.log("current position has pointers: "+ttl);
                 }
                 if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1 || ttl.length && ttl.match('←|→|↓|↑|↙|↘|↖|↗')) {
                     MaxMap++;
@@ -450,8 +450,8 @@ GUIp.improver.improveMap = function() {
 };
 GUIp.improver.improveOppsHP = function(isAlly) {
     var color, opp, opp_type = isAlly ? 'alls' : 'opps';
-    for (var number in so.state[opp_type]) {
-        opp = so.state[opp_type][number];
+    for (var number in window.so.state[opp_type]) {
+        opp = window.so.state[opp_type][number];
         if (opp.hp < 1 || (isAlly && opp.hp === 1)) {
             color = 'darkgray';
         } else if (opp.hp < opp.hpm * 0.30) {
@@ -576,7 +576,7 @@ GUIp.improver.improvePet = function() {
             document.querySelector('#pet .block_title').insertAdjacentHTML('beforeend', '<div id="pet_badge" class="fr_new_badge equip_badge_pos hidden">0</div>');
         }
         pet_badge = document.getElementById('pet_badge');
-        pet_badge.textContent = GUIp.utils.findLabel($('#pet'), GUIp.i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, '');
+        pet_badge.textContent = GUIp.utils.findLabel(window.$('#pet'), GUIp.i18n.pet_status_label).siblings('.l_val').text().replace(/[^0-9:]/g, '');
         GUIp.utils.hideElem(pet_badge, document.querySelector('#pet .block_content').style.display !== 'none');
     } else {
         pet_badge = document.getElementById('pet_badge');
@@ -632,7 +632,7 @@ GUIp.improver.improveDiary = function() {
             $msgs[i].classList.add('parsed');
         }
     } else {
-        var newMessages = $('#diary .d_msg:not(.parsed)');
+        var newMessages = window.$('#diary .d_msg:not(.parsed)');
         if (newMessages.length) {
             if (GUIp.improver.voiceSubmitted) {
                 if (newMessages.length - document.querySelectorAll('#diary .d_msg:not(.parsed) .vote_links_b').length >= 2) {
@@ -764,9 +764,9 @@ GUIp.improver.parseChronicles = function(xhr) {
         GUIp.improver.parseSingleChronicle(texts, step);
     }
 
-    console.log('after log chronicles');
-    console.log(this.chronicles);
-    console.log(JSON.stringify(this.chronicles));
+    window.console.log('after log chronicles');
+    window.console.log(this.chronicles);
+    window.console.log(JSON.stringify(this.chronicles));
 
     GUIp.improver.colorDungeonMap();
 };
@@ -820,7 +820,7 @@ GUIp.improver.improveChronicles = function() {
             chronicles = document.querySelectorAll('#m_fight_log .d_msg:not(.parsed)'),
             ch_down = document.querySelector('.sort_ch').textContent === '▼',
             step = +numberInBlockTitle[0];
-        console.log('new ', chronicles.length, ' chronicles from step #', step);
+        window.console.log('new ', chronicles.length, ' chronicles from step #', step);
         for (len = chronicles.length, i = ch_down ? 0 : len - 1; (ch_down ? i < len : i >= 0) && step; ch_down ? i++ : i--) {
             lastNotParsed = true;
             if (!chronicles[i].className.match('m_infl')) {
@@ -828,8 +828,8 @@ GUIp.improver.improveChronicles = function() {
             }
             if (chronicles[i].parentNode.className.match('turn_separator')) {
                 GUIp.improver.parseSingleChronicle(texts, step);
-                console.log('chronicle #', step);
-                console.log(chronicles[i].textContent);
+                window.console.log('chronicle #', step);
+                window.console.log(chronicles[i].textContent);
                 lastNotParsed = false;
                 texts = [];
                 step--;
@@ -842,13 +842,13 @@ GUIp.improver.improveChronicles = function() {
         if (lastNotParsed) {
             GUIp.improver.parseSingleChronicle(texts, step);
         }
-        console.log('last step #', step);
+        window.console.log('last step #', step);
 
         if (!this.initial) {
             this.initial = true;
-            console.log('initial chronicles');
-            console.log(this.chronicles);
-            console.log(JSON.stringify(this.chronicles));
+            window.console.log('initial chronicles');
+            window.console.log(this.chronicles);
+            window.console.log(JSON.stringify(this.chronicles));
         }
 
         if (this.needLog) {
@@ -870,7 +870,7 @@ GUIp.improver.improveChronicles = function() {
             GUIp.storage.set('Log:' + GUIp.stats.logId() + ':corrections', '');
         }
         GUIp.storage.set('Log:' + GUIp.stats.logId() + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
-        GUIp.storage.set('Log:' + GUIp.stats.logId() + ':map', JSON.stringify(so.state.d_map));
+        GUIp.storage.set('Log:' + GUIp.stats.logId() + ':map', JSON.stringify(window.so.state.d_map));
     }
     GUIp.improver.improvementDebounce();
 };
@@ -913,7 +913,7 @@ GUIp.improver.calculateDirectionlessMove = function(initCoords, initStep) {
         steps = Object.keys(this.chronicles),
         directionless = 0;
 
-    console.log('going to calculate directionless move from step #'+initStep);
+    window.console.log('going to calculate directionless move from step #'+initStep);
     for (i = initStep, len = steps.length; i <= len; i++) {
         if (this.chronicles[i].directionless) {
             directionless++;
@@ -924,7 +924,7 @@ GUIp.improver.calculateDirectionlessMove = function(initCoords, initStep) {
     var variations = this.getAllRPerms('nesw'.split(''),directionless);
 
     for (i = 0, len = variations.length; i < len; i++) {
-        //console.log('trying combo '+variations[i].join());
+        //window.console.log('trying combo '+variations[i].join());
         coords = { x: initCoords.x, y: initCoords.y };
         directionless = 0;
         for (j = initStep, len2 = steps.length; j <= len2; j++) {
@@ -940,7 +940,7 @@ GUIp.improver.calculateDirectionlessMove = function(initCoords, initStep) {
         }
         if (heroesCoords.x - coords.x === 0 && heroesCoords.y - coords.y === 0) {
             var currentCorrections = GUIp.storage.get('Log:' + GUIp.stats.logId() + ':corrections') || '';
-            console.log('found result: '+variations[i].join());
+            window.console.log('found result: '+variations[i].join());
             GUIp.storage.set('Log:' + GUIp.stats.logId() + ':corrections', currentCorrections + variations[i].join(''));
             return this.corrections[variations[i][0]];
         }
@@ -1023,11 +1023,11 @@ GUIp.improver.colorDungeonMapInternal = function() {
     }
     var heroesCoords = GUIp.improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
     if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
-        console.log('current chronicles');
-        console.log(this.chronicles);
-        console.log(JSON.stringify(this.chronicles));
-        console.log('m_fight_log');
-        console.log(document.getElementById('m_fight_log').innerHTML);
+        window.console.log('current chronicles');
+        window.console.log(this.chronicles);
+        window.console.log(JSON.stringify(this.chronicles));
+        window.console.log('m_fight_log');
+        window.console.log(document.getElementById('m_fight_log').innerHTML);
         if (GUIp.utils.hasShownInfoMessage !== true) {
             GUIp.utils.showMessage('info', {
                 title: GUIp.i18n.coords_error_title,
@@ -1040,7 +1040,7 @@ GUIp.improver.colorDungeonMapInternal = function() {
 GUIp.improver.whenWindowResize = function() {
     GUIp.improver.chatsFix();
     //body widening
-    $('body').width($(window).width() < $('#main_wrapper').width() ? $('#main_wrapper').width() : '');
+    window.$('body').width(window.$(window).width() < window.$('#main_wrapper').width() ? window.$('#main_wrapper').width() : '');
 };
 GUIp.improver._clockToggle = function(e) {
     if (e) {
@@ -1051,7 +1051,7 @@ GUIp.improver._clockToggle = function(e) {
     } else {
         return;
     }
-    var restoreText, clockElem = $('#control .block_title');
+    var restoreText, clockElem = window.$('#control .block_title');
     if (GUIp.improver.clock) {
         clearInterval(GUIp.improver.clock.updateTimer);
         restoreText = GUIp.improver.clock.prevText;
@@ -1085,7 +1085,7 @@ GUIp.improver._clockSync = function(xhr) {
     GUIp.improver.clockToggling = false;
     var currentTime = new Date(),
         offsetHours = GUIp.storage.get("Option:offsetGodvilleClock") || 3,
-        clockTitle = $('#control .block_title');
+        clockTitle = window.$('#control .block_title');
     if (currentTime - GUIp.improver.clock.timeBegin > 500) {
         clockTitle.css('color', '#CC0000');
     }
@@ -1103,14 +1103,14 @@ GUIp.improver._clockUpdate = function() {
         GUIp.improver._clockToggle();
         return;
     }
-    var clockElem = $('#control .block_title'),
+    var clockElem = window.$('#control .block_title'),
         godvilleTime = new Date(currentTime.getTime() + GUIp.improver.clock.timeDiff);
     clockElem.text(GUIp.utils.formatClock(godvilleTime));
 };
 
 GUIp.improver.improveInterface = function() {
     if (this.isFirstTime) {
-        $('a[href=#]').removeAttr('href');
+        window.$('a[href=#]').removeAttr('href');
         GUIp.improver.whenWindowResize();
         window.onresize = function() {
             clearInterval(GUIp.improver.windowResizeInt);
@@ -1175,7 +1175,7 @@ GUIp.improver.improveChat = function() {
     }
 
     // godnames in gc paste fix
-    $('.gc_fr_god:not(.improved)').unbind('click').click(function() {
+    window.$('.gc_fr_god:not(.improved)').unbind('click').click(function() {
         var ta = this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('textarea'),
             pos = ta.selectionDirection === 'backward' ? ta.selectionStart : ta.selectionEnd;
         ta.value = ta.value.slice(0, pos) + '@' + this.textContent + ', ' + ta.value.slice(pos);
@@ -1185,7 +1185,7 @@ GUIp.improver.improveChat = function() {
 
     // "Shift+Enter → new line" improvement
     var keypresses, handlers,
-    $tas = $('.frInputArea textarea:not(.improved)');
+    $tas = window.$('.frInputArea textarea:not(.improved)');
     if ($tas.length) {
         var new_keypress = function(handlers) {
             return function(e) {
@@ -1197,7 +1197,7 @@ GUIp.improver.improveChat = function() {
             };
         };
         for (i = 0, len = $tas.length; i < len; i++) {
-            keypresses = $._data($tas[i], 'events').keypress;
+            keypresses = window.$._data($tas[i], 'events').keypress;
             handlers = [];
             for (var j = 0, klen = keypresses.length; j < klen; j++) {
                 handlers.push(keypresses[j].handler);
@@ -1210,8 +1210,8 @@ GUIp.improver.improveChat = function() {
 };
 GUIp.improver.improveAllies = function() {
     var ally, opp_n, star, anspan;
-    for (var number in so.state.alls) {
-        ally = so.state.alls[number];
+    for (var number in window.so.state.alls) {
+        ally = window.so.state.alls[number];
         opp_n = ally.li[0].getElementsByClassName('opp_n')[0];
         star = opp_n.getElementsByClassName('open_chat')[0] || document.createElement('a');
         if (!opp_n.classList.contains('improved')) {
@@ -1284,9 +1284,9 @@ GUIp.improver.calculateButtonsVisibility = function() {
     var voicegensBefore = [], voicegensAfter = [],
         specialConds, specialClasses;
     if (!GUIp.data.isFight) {
-        var isGoingBack = so.state.stats.dir.value !== 'ft',
+        var isGoingBack = window.so.state.stats.dir.value !== 'ft',
             isTown = GUIp.stats.townName(),
-            isSearching = so.state.last_news && so.state.last_news.value.match('дорогу'),
+            isSearching = window.so.state.last_news && window.so.state.last_news.value.match('дорогу'),
             dieIsDisabled = GUIp.storage.get('Option:disableDieButton'),
             isFullGP = GUIp.stats.Godpower() === GUIp.stats.Max_Godpower(),
             isFullHP = GUIp.stats.HP() === GUIp.stats.Max_HP(),
@@ -1302,7 +1302,7 @@ GUIp.improver.calculateButtonsVisibility = function() {
                         isMonster ||                                         isFullGP                // pray
                        ];
     }
-    baseCond = baseCond && !$('.r_blocked:visible').length;
+    baseCond = baseCond && !window.$('.r_blocked:visible').length;
     for (i = 0, len = this.voicegens.length; i < len; i++) {
         voicegensBefore[i] = !this.voicegens[i].classList.contains('hidden');
         voicegensAfter[i] = baseCond;
@@ -1348,14 +1348,14 @@ GUIp.improver.chatsFix = function() {
     }
 };
 GUIp.improver.initOverrides = function() {
-    if (so && so.a_notify) {
-        so.a_notify_orig = so.a_notify;
-        so.a_notify = function() {
+    if (window.so && window.so.a_notify) {
+        window.so.a_notify_orig = window.so.a_notify;
+        window.so.a_notify = function() {
             if (GUIp.storage.get('Option:disableArenaSound')) {
-                if(($(document.activeElement).is("input") || $(document.activeElement).is("textarea")) &&
-                    $(document.activeElement).attr("id") !== "god_phrase" &&
-                    $(document.activeElement).val().length > 3) {
-                    var readyness = confirm(Loc.duel_switch_confirm);
+                if((window.$(document.activeElement).is("input") || window.$(document.activeElement).is("textarea")) &&
+                    window.$(document.activeElement).attr("id") !== "god_phrase" &&
+                    window.$(document.activeElement).val().length > 3) {
+                    var readyness = window.confirm(window.Loc.duel_switch_confirm);
                     if (!readyness)  {
                         return false;
                     }
@@ -1364,31 +1364,31 @@ GUIp.improver.initOverrides = function() {
                     document.location.href = document.location.pathname;
                 }, 3e3);
             } else {
-                so.a_notify_orig();
+                window.so.a_notify_orig();
             }
         };
     }
-    if (so && so.play_sound) {
-        so.play_sound_orig = so.play_sound;
-        so.play_sound = function(a, b) {
+    if (window.so && window.so.play_sound) {
+        window.so.play_sound_orig = window.so.play_sound;
+        window.so.play_sound = function(a, b) {
             if (!(GUIp.storage.get('Option:disablePmSound') && a === 'msg.mp3')) {
-                so.play_sound_orig(a, b);
+                window.so.play_sound_orig(a, b);
             }
         };
     }
     if (GUIp.storage.get('Option:enablePmAlerts') && GUIp.browser !== 'Opera' && Notification.permission === "granted") {
         setTimeout(function() {
             // assume that all messages are loaded at this point, make a list of existing unread ones
-            for (var contact in so.messages.h_friends) {
-                var hfriend = so.messages.h_friends[contact];
+            for (var contact in window.so.messages.h_friends) {
+                var hfriend = window.so.messages.h_friends[contact];
                 if (hfriend.ms === "upd" && hfriend.msg) {
                     GUIp.improver.pmNoted[contact] = hfriend.msg.id;
                 }
             }
             // replace original messages update with modified one
-            if (so && so.messages.nm.notify) {
-                so.messages.nm.notify_orig = so.messages.nm.notify;
-                so.messages.nm.notify = function() {
+            if (window.so && window.so.messages.nm.notify) {
+                window.so.messages.nm.notify_orig = window.so.messages.nm.notify;
+                window.so.messages.nm.notify = function() {
                     // check for a new messages in the updated list and inform about them
                     if (arguments[0] === "messages") {
                         var callback_fn = function(cname) {
@@ -1398,8 +1398,8 @@ GUIp.improver.initOverrides = function() {
                                 }
                             };
                         };
-                        for (var contact in so.messages.h_friends) {
-                            var hfriend = so.messages.h_friends[contact];
+                        for (var contact in window.so.messages.h_friends) {
+                            var hfriend = window.so.messages.h_friends[contact];
                             if (hfriend.ms === "upd" && hfriend.msg.from === contact && (!GUIp.improver.pmNoted[contact] || (GUIp.improver.pmNoted[contact] < hfriend.msg.id))) {
                                 GUIp.improver.pmNoted[contact] = hfriend.msg.id;
                                 // show a notification if chat with contact is closed OR godville tab is unfocused
@@ -1414,7 +1414,7 @@ GUIp.improver.initOverrides = function() {
                         }
                     }
                     // return original result in case it will appear some time
-                    return so.messages.nm.notify_orig.apply(this, arguments);
+                    return window.so.messages.nm.notify_orig.apply(this, arguments);
                 };
             }
         }, 2000);

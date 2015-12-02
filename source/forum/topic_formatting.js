@@ -1,10 +1,12 @@
+/* global $id, $C, $c, $Q, $q */
+
 // topic formatting
 var val, ss, se, nls, nle, selection;
 var initEditor = function(editor) {
     val = editor.value;
     ss = editor.selectionStart;
     se = editor.selectionEnd;
-    selection = getSelection().isCollapsed ? '' : getSelection().toString().trim().replace(/\n[\n\s]*/g, '<br>');
+    selection = window.getSelection().isCollapsed ? '' : window.getSelection().toString().trim().replace(/\n[\n\s]*/g, '<br>');
 };
 var putSelectionTo = function(editor, pos, quoting) {
     setTimeout(function() {
@@ -25,7 +27,7 @@ var basicFormatting = function(left_and_right, editor) {
         putSelectionTo(editor, se + left_and_right[0].length, true);
         return false;
     } catch(error) {
-        console.error(error);
+        window.console.error(error);
     }
 };
 var quoteFormatting = function(quotation, editor) {
@@ -44,7 +46,7 @@ var quoteFormatting = function(quotation, editor) {
         putSelectionTo(editor, se + quotation.length + nls.length + (se > ss || selection ? nle.length : 0), true);
         return false;
     } catch(error) {
-        console.error(error);
+        window.console.error(error);
     }
 };
 var listFormatting = function(list_marker, editor) {
@@ -57,7 +59,7 @@ var listFormatting = function(list_marker, editor) {
         putSelectionTo(editor, se + nls.length + (list_marker.length + 1)*count, true);
         return false;
     } catch(error) {
-        console.error(error);
+        window.console.error(error);
     }
 };
 var pasteBr = function(dummy, editor) {
@@ -68,7 +70,7 @@ var pasteBr = function(dummy, editor) {
         putSelectionTo(editor, pos + 4, true);
         return false;
     } catch(error) {
-        console.error(error);
+        window.console.error(error);
     }
 };
 var setClickActions = function(id, container) {
@@ -89,7 +91,7 @@ var setClickActions = function(id, container) {
             { class: 'ol', func: listFormatting, params: '#' },
             { class: 'br', func: pasteBr, params: null },
         ];
-    for (i = 0, len = buttons.length; i < len; i++) {
+    for (var i = 0, len = buttons.length; i < len; i++) {
         if ((elem = $q(temp + buttons[i].class))) {
             elem.onclick = buttons[i].func.bind(this, buttons[i].params, container);
         }
@@ -118,7 +120,7 @@ var initSmartQuotation = function() {
     };
 
     var setupQuoteDialog = function() {
-        var selection = window.getSelection(),
+        var selection = window.window.getSelection(),
             range = selection.getRangeAt(0),
             container = range.commonAncestorContainer;
         if (container.nodeType === 3) {
@@ -144,11 +146,11 @@ var initSmartQuotation = function() {
                 } else {
                     editor = document.getElementById('post_body');
                     if (document.getElementById('reply').style.display === 'none') {
-                        ReplyForm.init();
+                        window.ReplyForm.init();
                     }
                 }
                 quoteFormatting('bq. ', editor);
-                getSelection().collapseToStart();
+                window.getSelection().collapseToStart();
                 return false;
             };
             document.getElementById('quote_with_author').onclick = function() {
@@ -158,7 +160,7 @@ var initSmartQuotation = function() {
                 } else {
                     editor = document.getElementById('post_body');
                     if (document.getElementById('reply').style.display === 'none') {
-                        ReplyForm.init();
+                        window.ReplyForm.init();
                     }
                 }
                 quoteFormatting('bq. ', editor);
@@ -173,16 +175,38 @@ var initSmartQuotation = function() {
                 var post = findPost(container),
                     author = post.querySelector('.post_info a').textContent;
                 setTimeout(function() {
-                    ReplyForm.add_name(author);
+                    window.ReplyForm.add_name(author);
                 }, 100);
-                getSelection().collapseToStart();
+                window.getSelection().collapseToStart();
                 return false;
             };
         }
         container.classList.remove('current_selection_container');
     };
 };
-var addFormattingButtonsAndCtrlEnter = function() {
+var fixGodnamePaste = function() {
+    window.ReplyForm.add_name = function(name) {
+        try {
+            var editor;
+            if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
+                editor = document.getElementById('edit_body');
+            } else {
+                editor = document.getElementById('post_body');
+                if (document.getElementById('reply').style.display === 'none') {
+                    window.ReplyForm.init();
+                }
+            }
+            initEditor(editor);
+            var pos = editor.selectionDirection === 'backward' ? ss : se;
+            editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
+            putSelectionTo(editor, pos + name.length + 4, false);
+        } catch(error) {
+            window.console.error(error);
+        }
+    };
+};
+
+GUIp.initTopicFormattingFeatures = function() {
     var formatting_buttons =
         '<div>' +
             '<button class="formatting button bold" title="' + GUIp.i18n.bold_hint + '">' + GUIp.i18n.bold + '</button>' +
@@ -214,25 +238,5 @@ var addFormattingButtonsAndCtrlEnter = function() {
     });
     editFormObserver.observe($id('content'), { childList: true, subtree: true });
     initSmartQuotation();
-};
-var fixGodnamePaste = function() {
-    ReplyForm.add_name = function(name) {
-        try {
-            var editor;
-            if (document.getElementById('edit').style.display !== 'none' && document.getElementById('edit_body')) {
-                editor = document.getElementById('edit_body');
-            } else {
-                editor = document.getElementById('post_body');
-                if (document.getElementById('reply').style.display === 'none') {
-                    ReplyForm.init();
-                }
-            }
-            initEditor(editor);
-            var pos = editor.selectionDirection === 'backward' ? ss : se;
-            editor.value = val.slice(0, pos) + '*' + name + '*, ' + val.slice(pos);
-            putSelectionTo(editor, pos + name.length + 4, false);
-        } catch(error) {
-            console.error(error);
-        }
-    };
+    fixGodnamePaste();
 };
