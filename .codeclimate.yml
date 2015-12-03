@@ -1,5 +1,12 @@
 ---
 engines:
+  eslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
   csslint:
     enabled: true
     checks:
@@ -11,8 +18,6 @@ engines:
         enabled: false
       net.csslint.Disallowuseofbox-sizing:
         enabled: false
-  eslint:
-    enabled: true
   fixme:
     enabled: false
 ratings:
