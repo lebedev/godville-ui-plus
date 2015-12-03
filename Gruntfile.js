@@ -11,6 +11,16 @@ module.exports = function(grunt) {
           { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/chrome/' }
         ]
       },
+      chrome_versioned: {
+        options: {
+          process: function(aContent) {
+            return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
+          }
+        },
+        files: [
+          { expand: true, cwd: 'source/chrome/', src: 'manifest.json', dest: '<%= compile_path %>/chrome/' }
+        ]
+      },
       firefox: {
         files: [
           { expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/' },
@@ -18,6 +28,16 @@ module.exports = function(grunt) {
           { expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile' },
           { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' },
           { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/data/' }
+        ]
+      },
+      firefox_versioned: {
+        options: {
+          process: function(aContent) {
+            return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
+          }
+        },
+        files: [
+          { expand: true, cwd: 'source/firefox/', src: 'install.rdf', dest: '<%= compile_path %>/firefox/' }
         ]
       },
       opera: {
@@ -28,18 +48,14 @@ module.exports = function(grunt) {
           { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/opera/content/' }
         ]
       },
-      versioned: {
+      opera_versioned: {
         options: {
           process: function(aContent) {
             return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
           }
         },
         files: [
-          {expand: true, cwd: 'source/chrome/', src: 'manifest.json', dest: '<%= compile_path %>/chrome/'},
-
-          {expand: true, cwd: 'source/firefox/', src: 'install.rdf', dest: '<%= compile_path %>/firefox/'},
-
-          {expand: true, cwd: 'source/opera/', src: 'config.xml', dest: '<%= compile_path %>/opera/'}
+          { expand: true, cwd: 'source/opera/', src: 'config.xml', dest: '<%= compile_path %>/opera/' }
         ]
       }
     },
@@ -215,6 +231,7 @@ module.exports = function(grunt) {
       grunt.config.set('browser', aBrowser);
       grunt.task.run([
         'copy:' + aBrowser,
+        'copy:' + aBrowser + '_versioned',
         'compress:' + aBrowser,
         'clean:' + aBrowser
       ]);
