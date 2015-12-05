@@ -23,7 +23,7 @@
         }
     }
     function checkPathFor(locale) {
-        var path = location.pathname;
+        var path = document.location.pathname;
         if (path.match(/^\/superhero/)) {
             createScripts(scripts.superhero, locale);
         } else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
@@ -35,7 +35,7 @@
         }
     }
 
-    var site = location.href;
+    var site = document.location.href;
     if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk|gv\.erinome\.net)/)) {
         checkPathFor('ru');
     } else if (site.match(/^https?:\/\/godvillegame\.com/)) {

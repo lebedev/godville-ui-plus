@@ -2,10 +2,10 @@
 var pw, pw_pb_int;
 var checkHash = function() {
     // scroll to a certain post #
-    var guip_hash = location.hash.match(/#guip_(\d+)/);
+    var guip_hash = document.location.hash.match(/#guip_(\d+)/);
     if (guip_hash) {
         var post = GUIp.$C('spacer')[+guip_hash[1]];
-        location.hash = post ? post.id : '';
+        document.location.hash = post ? post.id : '';
     }
 };
 var highlightCurrentPost = function() {
@@ -14,7 +14,7 @@ var highlightCurrentPost = function() {
         highlighted[0].classList.remove('highlighted');
     }
 
-    var post_hash = location.hash.match(/#(post_\d+)/),
+    var post_hash = document.location.hash.match(/#(post_\d+)/),
         post = post_hash ? GUIp.$id(post_hash[1] + '-row') : null;
     if (post) {
         post.classList.add('highlighted');
@@ -65,7 +65,7 @@ var picturesAutoreplace = function() {
                 imgs[i] = null;
             },
             onload = function(i) {
-                var oldBottom, hash = location.hash.match(/\d+/),
+                var oldBottom, hash = document.location.hash.match(/\d+/),
                     post = findPost(links[i]),
                     linkBeforeCurrentPost = hash ? +post.id.match(/\d+/)[0] < +hash[0] : false;
                 if (linkBeforeCurrentPost) {
@@ -104,7 +104,7 @@ var picturesAutoreplace = function() {
 var updatePostsNumber = function() {
     var topics = JSON.parse(GUIp.storage.get(GUIp.subforumId));
     if (topics[GUIp.topicId]) {
-        var page = location.search.match(/page=(\d+)/);
+        var page = document.location.search.match(/page=(\d+)/);
         page = page ? +page[1] - 1 : 0;
         var posts = page*25 + document.getElementsByClassName('post').length;
         if (topics[GUIp.topicId].posts < posts) {

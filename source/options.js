@@ -54,7 +54,7 @@ var storage = {
                 this.set(key, options[key]);
             }
             window.alert(GUIp.i18n.import_success);
-            location.reload();
+            document.location.reload();
         } catch(e) {
             window.alert(GUIp.i18n.import_fail);
         }

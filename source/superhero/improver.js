@@ -47,7 +47,7 @@ GUIp.improver.softRefresh = function() {
 };
 GUIp.improver.hardRefresh = function() {
     window.console.warn('Godville UI+ log: Hard reloading...');
-    location.reload();
+    document.location.reload();
 };
 GUIp.improver.improve = function() {
     this.improveInProcess = true;

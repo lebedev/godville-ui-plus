@@ -10,7 +10,7 @@ var addSmallElements = function() {
 var followOnclick = function(e) {
     try {
         e.preventDefault();
-        var topicId = GUIp.isTopic ? location.pathname.match(/\d+/)[0]
+        var topicId = GUIp.isTopic ? document.location.pathname.match(/\d+/)[0]
                                    : this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
             posts = GUIp.isTopic ? +GUIp.$c('subtitle').textContent.match(/\d+/)[0]
                                  : +this.parentElement.parentElement.nextElementSibling.textContent,
@@ -36,7 +36,7 @@ var addOnclickToFollow = function() {
 var unfollowOnclick = function(e) {
     try {
         e.preventDefault();
-        var topicId = GUIp.isTopic ? location.pathname.match(/\d+/)[0]
+        var topicId = GUIp.isTopic ? document.location.pathname.match(/\d+/)[0]
                                    : this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
             topics = JSON.parse(GUIp.storage.get(GUIp.subforumId)),
             informers = JSON.parse(GUIp.storage.get('ForumInformers'));
@@ -61,7 +61,7 @@ var addLinks = function() {
         topics = JSON.parse(GUIp.storage.get(GUIp.subforumId)),
         isFollowed;
     for (var i = 0, len = links_containers.length; i < len; i++) {
-        GUIp.topicId = GUIp.isTopic ? location.pathname.match(/\d+/)[0]
+        GUIp.topicId = GUIp.isTopic ? document.location.pathname.match(/\d+/)[0]
                                     : links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
         isFollowed = topics[GUIp.topicId];
         links_containers[i].insertAdjacentHTML('beforeend',

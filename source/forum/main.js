@@ -35,9 +35,9 @@ GUIp.storage = {
 };
 
 var setInitVariables = function() {
-    GUIp.isTopic = location.pathname.match(/topic/) !== null;
+    GUIp.isTopic = document.location.pathname.match(/topic/) !== null;
     GUIp.subforumId = 'Forum' + (GUIp.isTopic ? GUIp.$q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
-                                              : location.pathname.match(/forums\/show\/(\d+)/)[1]);
+                                              : document.location.pathname.match(/forums\/show\/(\d+)/)[1]);
     var greetings = GUIp.$id('menu_top').textContent;
     GUIp.storage.god_name = greetings.match(localStorage.getItem('GUIp:lastGodname'))[0] ||
                             greetings.match(localStorage.getItem('GUIp:godnames'))[0];

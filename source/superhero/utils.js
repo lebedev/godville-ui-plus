@@ -320,7 +320,7 @@ GUIp.utils.processError = function(error, isDebugMode) {
                         '<div>' + GUIp.i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>' +
                      '</div>',
             callback: function() {
-                document.getElementById('press_here_to_reload').onclick = location.reload.bind(location);
+                document.getElementById('press_here_to_reload').onclick = document.location.reload.bind(document.location);
                 document.getElementById('press_here_to_show_details').onclick = function() {
                     GUIp.utils.hideElem(document.getElementById('possible_actions'), true);
                     GUIp.utils.hideElem(document.getElementById('error_details'), false);

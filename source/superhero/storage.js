@@ -72,7 +72,7 @@ GUIp.storage.clear = function(what) {
             localStorage.removeItem(key);
         }
     }
-    location.reload();
+    document.location.reload();
 };
 GUIp.storage._rename = function(from, to) {
     for (var key in localStorage) {

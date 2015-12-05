@@ -7,7 +7,7 @@ window.GUIp = window.GUIp || {};
 GUIp.log = {};
 
 GUIp.log.godname = localStorage.getItem('GUIp:lastGodname');
-GUIp.log.customDomain = !location.href.match(/^https?:\/\/(godville\.net|godvillegame\.com)\/duels\/log/);
+GUIp.log.customDomain = !document.location.href.match(/^https?:\/\/(godville\.net|godvillegame\.com)\/duels\/log/);
 GUIp.log.xhrCount = 0;
 GUIp.log.chronicles = {};
 GUIp.log.directionlessMoveIndex = 0;
@@ -223,7 +223,7 @@ GUIp.log.parseChronicles = function() {
     }
     var lastNotParsed, texts = [], infls = [],
         matches = document.querySelector('#last_items_arena').innerHTML.match(/<div class="new_line ?"( style="[^"]*")?>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g),
-        reversed = !!location.href.match('sort=desc');
+        reversed = !!document.location.href.match('sort=desc');
     if (reversed) {
         matches.reverse();
     }
@@ -260,8 +260,8 @@ GUIp.log.parseChronicles = function() {
 GUIp.log.enumerateSteps = function() {
     var i, len, step, stepholder, steplines = [], dcapt = false,
         matches = document.querySelector('#last_items_arena').getElementsByClassName('new_line'),
-        reversed = !!location.href.match('sort=desc'),
-        duel = !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/) || location.href.match('boss=');
+        reversed = !!document.location.href.match('sort=desc'),
+        duel = !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/) || document.location.href.match('boss=');
     for (i = 0, len = matches.length; i < len; i++) {
         steplines.push(matches[i]);
     }
@@ -701,7 +701,7 @@ GUIp.log.saverSendLog = function() {
 
 GUIp.log.saverFetchPage = function(boss_no) {
     GUIp.log.xhrCount = 0;
-    GUIp.log.getXHR(location.protocol + '//' + location.host + location.pathname + (boss_no ? '?boss=' + boss_no : ''), GUIp.log.saverProcessPage.bind(null), GUIp.log.saverFetchFailed.bind(null), boss_no);
+    GUIp.log.getXHR(document.location.protocol + '//' + document.location.host + document.location.pathname + (boss_no ? '?boss=' + boss_no : ''), GUIp.log.saverProcessPage.bind(null), GUIp.log.saverFetchFailed.bind(null), boss_no);
 };
 
 GUIp.log.saverProcessPage = function(xhr) {
@@ -742,7 +742,7 @@ GUIp.log.saverPrepareLog = function() {
     GUIp.log.saverBanner = 'до тепловой смерти Вселенной (или пока не умрет сервер) благодаря <a href="//godville.net/gods/Mave">Mave</a> и <a href="//godville.net/gods/Бэдлак">Бэдлаку</a>';
     GUIp.log.saverLoaderGIF = '//gdvl.tk/images/loader.gif';
     try {
-        GUIp.log.saverLogId = (location.href.match(/^https?:\/\/godville.net\/duels\/log\/(.{5})/) || [])[1];
+        GUIp.log.saverLogId = (document.location.href.match(/^https?:\/\/godville.net\/duels\/log\/(.{5})/) || [])[1];
         GUIp.log.saverPages = [];
         if (!GUIp.log.saverLogId) {
             throw 'можно загружать только логи Годвилля';
@@ -786,13 +786,13 @@ GUIp.log.starter = function() {
         };
     }
 
-    if (location.href.match('boss=') || !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/)) {
+    if (document.location.href.match('boss=') || !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/)) {
         GUIp.log.enumerateSteps();
         return;
     }
 
     try {
-        this.logID = 'Log:' + location.href.match(/duels\/log\/([^\?]+)/)[1] + ':';
+        this.logID = 'Log:' + document.location.href.match(/duels\/log\/([^\?]+)/)[1] + ':';
         var steps = +document.getElementById('fight_log_capt').textContent.match(/(?:Хроника подземелья \(шаг|Dungeon Journal \(step) (\d+)\)/)[1];
         // add step numbers to chronicle log
         GUIp.log.enumerateSteps();
@@ -816,7 +816,7 @@ GUIp.log.starter = function() {
         }
         // send button and other stuff
         var $box = document.querySelector('#hero2 fieldset') || document.getElementById('right_block');
-        if (location.href.match('sort')) {
+        if (document.location.href.match('sort')) {
             $box.insertAdjacentHTML('beforeend', '<span>' + GUIp.i18n.wrong_entries_order + '</span>');
             return;
         }

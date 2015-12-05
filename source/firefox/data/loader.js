@@ -24,7 +24,7 @@ var attachScripts = function(specificScripts) {
 };
 
 for (var pathname in specificScripts) {
-    if (location.pathname.match(pathname)) {
+    if (document.location.pathname.match(pathname)) {
         attachScripts(specificScripts[pathname]);
         break;
     }
