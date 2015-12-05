@@ -148,7 +148,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['source/**/*', 'Gruntfile.js'],
-        tasks: ['notify_hooks', 'debug:firefox'],
+        tasks: ['debug:firefox'],
         options: {
           spawn: true,
           atBegin: true
