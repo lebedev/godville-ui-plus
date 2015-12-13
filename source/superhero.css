@@ -45,7 +45,10 @@ body {
 }
 
 .frInputArea textarea {
-	resize: vertical;
+	resize: none;
+}
+.frInputArea textarea + div {
+	word-wrap: break-all;
 }
 .frDockCell.left .frMsgBlock {
 	left: -1px;
