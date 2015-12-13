@@ -14,7 +14,12 @@ module.exports = function(grunt) {
       chrome_versioned: {
         options: {
           process: function(aContent) {
-            return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
+            if (grunt.config('compile_path') === 'debug') {
+              return aContent.replace(/\$VERSION_NAME/g, grunt.config('current_version') + ' debug build ' + grunt.config('build_number'))
+                             .replace(/\$VERSION/g, grunt.config('current_version'));
+            } else {
+              return aContent.replace(/\$VERSION|\$VERSION_NAME/g, grunt.config('new_version'));
+            }
           }
         },
         files: [
@@ -33,7 +38,11 @@ module.exports = function(grunt) {
       firefox_versioned: {
         options: {
           process: function(aContent) {
-            return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
+            if (grunt.config('compile_path') === 'debug') {
+              return aContent.replace(/\$VERSION/g, grunt.config('current_version') + ' debug build ' + grunt.config('build_number'));
+            } else {
+              return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
+            }
           }
         },
         files: [
@@ -185,10 +194,10 @@ module.exports = function(grunt) {
     grunt.loadTasks('publish');
   }
 
-  grunt.registerTask('debug', 'Compiles in debug mode.', function(browser) {
+  grunt.registerTask('debug', 'Compiles in debug mode.', function (aBrowser) {
     grunt.log.ok('Compiling in debug mode.');
     grunt.config.set('compile_path', 'debug');
-    if (browser === 'firefox') {
+    if (aBrowser.match(/firefox|chrome/)) {
       var build;
       try {
         build = (+grunt.file.read('debug/build') + 1) || 1;
@@ -197,17 +206,19 @@ module.exports = function(grunt) {
       } finally {
         grunt.file.write('debug/build', build);
       }
-      grunt.config.set('new_version', grunt.file.read('current_version') + '-' + build);
-    } else {
-      grunt.config.set('new_version', grunt.file.read('current_version'));
+      grunt.config.set('build_number', build);
     }
-    grunt.log.ok('Debug version is *' + grunt.config.get('new_version') + '*.');
+    grunt.config.set('current_version', grunt.file.read('current_version'));
+    grunt.log.ok(
+      'Debug version is ' +
+      '*' + grunt.config('current_version') + ' debug build ' + grunt.config('build_number') + '*.'
+    );
     var tasks = [
       'notify:start',
       'jshint',
       'concat'
     ];
-    switch(browser) {
+    switch(aBrowser) {
     case 'chrome': tasks.push('build:chrome'); break;
     case 'firefox': tasks.push('build:firefox', 'update_installed_addon'); break;
     case 'opera': tasks.push('build:opera'); break;
@@ -217,7 +228,7 @@ module.exports = function(grunt) {
     grunt.task.run(tasks);
   });
 
-  grunt.registerTask('update_installed_addon', 'Sends debug .xpi to FF.', function() {
+  grunt.registerTask('update_installed_addon', 'Sends debug .xpi to FF.', function () {
     require("request").post({ url: "http://localhost:8888", body: require("fs").readFileSync("debug/godville-ui-plus@badluck.dicey.xpi") });
   });
 
@@ -229,12 +240,16 @@ module.exports = function(grunt) {
       grunt.fatal('Wrong parameter. Possible values are: *chrome*, *firefox* and *opera*.');
     } else {
       grunt.config.set('browser', aBrowser);
-      grunt.task.run([
+      var tasks = [
         'copy:' + aBrowser,
         'copy:' + aBrowser + '_versioned',
         'compress:' + aBrowser,
         'clean:' + aBrowser
-      ]);
+      ];
+      if (grunt.config('compile_path') === 'debug' && aBrowser === 'chrome') {
+        tasks.splice(2, 2);
+      }
+      grunt.task.run(tasks);
     }
   });
 

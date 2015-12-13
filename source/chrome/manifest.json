@@ -6,6 +6,7 @@
 	"author": "__MSG_author__",
 	"default_locale": "ru",
 	"version": "$VERSION",
+	"version_name": "$VERSION_NAME",
 	"homepage_url": "http://godville.net/forums/show_topic/2812",
 	"permissions": ["http://godville.net/", "https://godville.net/", "http://godvillegame.com/", "https://godvillegame.com/"],
 	"content_scripts": [{
