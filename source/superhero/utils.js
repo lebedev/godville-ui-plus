@@ -74,7 +74,7 @@ GUIp.utils.escapeHTML = function(str) {
 };
 GUIp.utils.addCSS = function () {
     if (GUIp.browser !== 'Opera' && !document.getElementById('ui_css')) {
-        GUIp.addCSSFromURL(GUIp.getResource('superhero.css'), 'guip_css');
+        GUIp.addCSSFromURL(GUIp.common.getResourceURL('superhero.css'), 'guip_css');
     }
 };
 /* aParams: {
@@ -350,7 +350,7 @@ GUIp.utils.informAboutOldVersion = function() {
 GUIp.utils.showNotification = function(title,text,callback) {
     setTimeout(function() {
         var notification = new Notification(title, {
-            icon: GUIp.getResource('icon64.png'),
+            icon: GUIp.common.getResourceURL('icon64.png'),
             body: text
         });
         notification.onclick = callback;

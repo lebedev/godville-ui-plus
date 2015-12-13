@@ -82,7 +82,7 @@ var picturesAutoreplace = function() {
                     new_link.insertAdjacentHTML('beforeend', '<div style="width: ' + width + 'px; height: ' + height + 'px; background-image: url(' + imgs[i].src + '); background-size: ' + width + 'px;"></div>');
                 } else {
                     new_link.insertAdjacentHTML('beforeend', '<div style="width: ' + width + 'px; height: 750px; background-image: url(' + imgs[i].src + '); background-size: ' + width + 'px;"></div>' +
-                                                             '<div style="width: ' + width + 'px; height: ' + (342*width/456) + 'px; background-image: url(' + GUIp.getResource('images/crop.png') + '); background-size: ' + width + 'px; position: absolute; top: ' + (750 - 171*width/456) + 'px;"></div>' +
+                                                             '<div style="width: ' + width + 'px; height: ' + (342*width/456) + 'px; background-image: url(' + GUIp.common.getResourceURL('images/crop.png') + '); background-size: ' + width + 'px; position: absolute; top: ' + (750 - 171*width/456) + 'px;"></div>' +
                                                              '<div style="width: ' + width + 'px; height: 750px; background-image: url(' + imgs[i].src + '); background-size: ' + width + 'px; background-position: 100% 100%;"></div>');
                 }
                 if (linkBeforeCurrentPost) {

@@ -774,7 +774,7 @@ GUIp.log.starter = function() {
 
     // add some styles
     if (GUIp.browser !== 'Opera') {
-        GUIp.addCSSFromURL(GUIp.getResource('superhero.css'), 'guip_css');
+        GUIp.addCSSFromURL(GUIp.common.getResourceURL('superhero.css'), 'guip_css');
     }
 
     // add save links

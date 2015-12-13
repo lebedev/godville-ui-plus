@@ -61,7 +61,7 @@ var main = function() {
         GUIp.initLinks();
 
         if (GUIp.isTopic) {
-            GUIp.addCSSFromURL(GUIp.getResource('forum.css'), 'forum_css');
+            GUIp.addCSSFromURL(GUIp.common.getResourceURL('forum.css'), 'forum_css');
             GUIp.initTopicFormattingFeatures();
             GUIp.initOtherTopicFeatures();
         }

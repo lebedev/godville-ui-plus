@@ -626,7 +626,7 @@ function set_theme_and_background() {
     GUIp.addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'guip_s_css');
     var background = storage.get('Option:useBackground');
     if (background === 'cloud') {
-        document.body.style.backgroundImage = 'url(' + GUIp.getResource('images/background.jpg') + ')';
+        document.body.style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/background.jpg') + ')';
     } else {
         document.body.style.backgroundImage =  background ? 'url(' + background + ')' : '';
     }
@@ -768,7 +768,7 @@ var starterInt = setInterval(function() {
 
         addMenu();
         if (GUIp.browser !== 'Opera') {
-            GUIp.addCSSFromURL(GUIp.getResource('options.css'), 'guip_options_css');
+            GUIp.addCSSFromURL(GUIp.common.getResourceURL('options.css'), 'guip_options_css');
         }
         if (document.location.hash === "#guip_settings") {
             loadOptions();

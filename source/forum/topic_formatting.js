@@ -108,9 +108,9 @@ var initSmartQuotation = function() {
 
     var quoteButton = document.getElementById('quote_button');
 
-    GUIp.$q('#copy', quoteButton).style.backgroundImage = 'url(' + GUIp.getResource('images/copy.png') + ')';
+    GUIp.$q('#copy', quoteButton).style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/copy.png') + ')';
     GUIp.$q('#quote', quoteButton).style.backgroundImage =
-    GUIp.$q('#quote_with_author', quoteButton).style.backgroundImage = 'url(' + GUIp.getResource('images/quote.png') + ')';
+    GUIp.$q('#quote_with_author', quoteButton).style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/quote.png') + ')';
 
     document.onmouseup = function() {
         quoteButton.classList.remove('shown');

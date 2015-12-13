@@ -548,7 +548,7 @@ GUIp.improver.improveStats = function() {
     //Shovel pictogramm start
     var digVoice = document.querySelector('#hk_gold_we .voice_generator');
     if (this.isFirstTime) {
-        digVoice.style.backgroundImage = 'url(' + GUIp.getResource('images/shovel.png') + ')';
+        digVoice.style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/shovel.png') + ')';
     }
     if (GUIp.stats.goldTextLength() > 16 - 2*document.getElementsByClassName('page_wrapper_5c').length) {
         digVoice.classList.add('shovel');
@@ -1137,7 +1137,7 @@ GUIp.improver.improveInterface = function() {
     if (this.isFirstTime || this.optionsChanged) {
         var background = GUIp.storage.get('Option:useBackground');
         if (background === 'cloud') {
-            document.body.style.backgroundImage = 'url(' + GUIp.getResource('images/background.jpg') + ')';
+            document.body.style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/background.jpg') + ')';
         } else {
             document.body.style.backgroundImage = background ? 'url(' + background + ')' : '';
         }

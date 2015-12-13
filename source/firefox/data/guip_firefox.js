@@ -1,6 +1,8 @@
 window.GUIp = window.GUIp || {};
 
+GUIp.common = GUIp.common || {};
+
 GUIp.browser = 'Firefox';
-GUIp.getResource = function(resname) {
+GUIp.common.getResourceURL = function(resname) {
     return 'chrome://godville-ui-plus/content/' + resname;
 };

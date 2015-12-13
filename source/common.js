@@ -1,5 +1,7 @@
 window.GUIp = window.GUIp || {};
 
+GUIp.common = GUIp.common || {};
+
 GUIp.addCSSFromURL = function(href, id) {
     document.head.insertAdjacentHTML('beforeend', '<link id="' + id + '" type="text/css" href="' + href + '" rel="stylesheet" media="screen">');
 };
