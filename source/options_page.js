@@ -403,10 +403,8 @@ return '<p>\n' +
 '                <a id="l_go_south" href="#">' + GUIp.i18n.voices_south + '</a>\n' +
 '                <a id="l_go_west" href="#">' + GUIp.i18n.voices_west + '</a>\n' +
 '                <a id="l_go_east" href="#">' + GUIp.i18n.voices_east + '</a>\n' +
-'                <div id="opt_change_words">\n' +
-'                    <div class="new_line">\n' +
-'                        <textarea id="ta_edit" class="rounded_field" rows="1" wrap="virtual;" style="width: 98%; resize: none;" disabled></textarea>\n' +
-'                    </div>\n' +
+'                <div class="new_line">\n' +
+'                    <textarea id="ta_edit" class="rounded_field" style="width: 98%; resize: none;" disabled></textarea>\n' +
 '                </div>\n' +
 '                <div class="new_line">\n' +
 '                    <input id="save_words" class="input_btn" type="submit" value="' + GUIp.i18n.voices_save + '" disabled>\n' +
@@ -420,7 +418,7 @@ return '<p>\n' +
 '            <div class="bl_capt">' + GUIp.i18n.user_css + '</div>\n' +
 '            <div class="bl_content" style="text-align: center; padding-top: 0.9em;">\n' +
 '                <div class="new_line">\n' +
-'                    <textarea id="user_css" class="rounded_field" wrap="virtual;" style="width: 98%; resize: none;"></textarea>\n' +
+'                    <textarea id="user_css" class="rounded_field" style="width: 98%; resize: none; font: 100% monospace;"></textarea>\n' +
 '                </div>\n' +
 '                <input id="save_user_css" class="input_btn" type="submit" value="' + GUIp.i18n.apply + '" disabled>\n' +
 '            </div>\n' +
@@ -431,7 +429,7 @@ return '<p>\n' +
 '            <div class="bl_capt">' + GUIp.i18n.import_export_capt + '</div>\n' +
 '            <div class="bl_content" style="text-align: center; padding-top: 0.9em;">\n' +
 '                <div class="new_line">\n' +
-'                    <textarea id="guip_settings" class="rounded_field" rows="1" wrap="virtual;" style="width: 98%; resize: none;"></textarea>\n' +
+'                    <textarea id="guip_settings" class="rounded_field" style="width: 98%; resize: none;"></textarea>\n' +
 '                </div>\n' +
 '                <input id="settings_import" class="input_btn" type="submit" value="' + GUIp.i18n.import + '">\n' +
 '                <input id="settings_export" class="input_btn" type="submit" value="' + GUIp.i18n.export + '">\n' +

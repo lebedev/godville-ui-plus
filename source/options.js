@@ -15,19 +15,52 @@ var $q = function(selector) {
     return doc.querySelector(selector);
 };
 
-var setTextareaResize = function(id, inner_func) {
-    var ta = $id(id);
-    ta.onchange =
-    ta.oncut =
-    ta.onfocus =
-    ta.oninput =
-    ta.onpaste = function() {
-        var rows = this.value.match(/\n/g);
-        if (rows) {
-            this.setAttribute('rows', rows.length + 1);
-        }
-        if (inner_func) { inner_func(); }
+var setAutoGrowWithCallback = function(callback) {
+    var actor = this,
+        actor_style = window.getComputedStyle(actor),
+        understudy = document.createElement('textarea');
+
+    understudy.classList.add('understudy');
+
+    understudy.style.width      = actor_style.width;
+    understudy.style.fontSize   = actor_style.fontSize;
+    understudy.style.fontFamily = actor_style.fontFamily;
+
+    actor.parentElement.appendChild(understudy);
+
+    var recalculateHeight = function() {
+
+        understudy.value = actor.value;
+
+        actor.style.height = understudy.scrollHeight + 'px';
+
+        if (callback) { callback(); }
     };
+
+    actor.onchange =
+    actor.oncut    =
+    actor.onfocus  =
+    actor.oninput  =
+    actor.onpaste  = recalculateHeight;
+
+    recalculateHeight();
+
+    var block = actor;
+    while (!block.classList.contains('bl_cell')) {
+        block = block.parentElement;
+    }
+    var collapseHeightOnOutsideClickFocusEvent = function(e) {
+        var target = e.target;
+        while (target !== block) {
+            target = target.parentElement;
+            if (!target) {
+                actor.style.height = '';
+                return;
+            }
+        }
+    };
+    document.addEventListener('focus', collapseHeightOnOutsideClickFocusEvent, true);
+    document.addEventListener('click', collapseHeightOnOutsideClickFocusEvent, true);
 };
 
 var storage = {
@@ -181,9 +214,8 @@ function loadOptions() {
         $q('#voice_menu .g_desc').textContent = $q('#voice_menu .g_desc').textContent.replace('герою', 'героине');
     }
 
-    setTextareaResize('ta_edit', setSaveWordsButtonState);
-
-    setTextareaResize('user_css', setUserCSSSaveButtonState);
+    $id('ta_edit').onfocus = setAutoGrowWithCallback.bind($id('ta_edit'), setSaveWordsButtonState);
+    $id('user_css').onfocus = setAutoGrowWithCallback.bind($id('user_css'), setUserCSSSaveButtonState);
 
     $id('settings_import').onclick = function() {
         storage.importSettings($id('guip_settings').value);
@@ -214,10 +246,7 @@ function addOnClick(sect) {
 }
 
 function delete_custom_words() {
-    var ta = $id('ta_edit'),
-        text = def.phrases[curr_sect];
-    ta.setAttribute('rows', text.length);
-    ta.value = text.join('\n');
+    $id('ta_edit').value = def.phrases[curr_sect].join('\n');
     storage.remove('CustomPhrases:' + curr_sect);
     storage.set('phrasesChanged', 'true');
     setSaveWordsButtonState();
@@ -426,8 +455,8 @@ function setText(sect) {
         text = text_list ? text_list.split('||') : def.phrases[curr_sect],
         textarea = $id('ta_edit');
     textarea.removeAttribute('disabled');
-    textarea.setAttribute('rows', text.length);
     textarea.value = text.join('\n');
+    textarea.focus();
     setSaveWordsButtonState();
     setDefaultWordsButtonState(text_list);
 }
@@ -738,11 +767,11 @@ var starterInt = setInterval(function() {
                    greetings.match(localStorage.getItem('GUIp:godnames'))[0];
 
         addMenu();
-        if (location.hash === "#guip_settings") {
-            loadOptions();
-        }
         if (GUIp.browser !== 'Opera') {
             GUIp.addCSSFromURL(GUIp.getResource('options.css'), 'guip_options_css');
+        }
+        if (document.location.hash === "#guip_settings") {
+            loadOptions();
         }
         set_theme_and_background();
         improve_blocks();
