@@ -7,10 +7,7 @@
 	<icon src="icon64.png" />
 	<icon src="icon128.png" />
 	<access origin="*" />
-	<license href="http://opensource.org/licenses/MIT" xml:lang="en">
-		Licensed under the MIT License
-	</license>
-	<license href="http://opensource.org/licenses/MIT" xml:lang="ru">
-		Под лицензией MIT
+	<license href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/LICENSE" xml:lang="en">
+		Licensed under Custom Non-free License
 	</license>
 </widget>
