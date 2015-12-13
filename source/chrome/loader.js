@@ -1,37 +1,30 @@
 (function() {
     var prefix = chrome.extension.getURL('');
     localStorage.setItem('GUIp_prefix', prefix);
-    var scripts = {
-        common: prefix + 'common.js',
-        superhero: prefix + 'superhero.js',
-        phrases_ru: prefix + 'phrases_ru.js',
-        phrases_en: prefix + 'phrases_en.js',
-        guip_chrome: prefix + 'guip_chrome.js',
-        options_page: prefix + 'options_page.js',
-        options: prefix + 'options.js',
-        forum: prefix + 'forum.js',
-        log: prefix + 'log.js'
-    };
-    function createScripts(urls, locale) {
-        urls = [scripts.common, scripts.guip_chrome, scripts['phrases_' + locale]].concat(urls);
-        for (var i = 0, len = urls.length; i < len; i++) {
-            var scr = document.createElement('script');
-            scr.type = 'text/javascript';
-            scr.src = urls[i];
-            scr.id = 'godville-ui-plus';
-            document.head.appendChild(scr);
+
+    function createScripts(aUrls, aLocale) {
+        aUrls = ['common.js', 'guip_chrome.js', 'phrases_' + aLocale + '.js'].concat(aUrls);
+
+        document.body.insertAdjacentHTML('beforeend', '<div id="guip_scripts"/>');
+        var container = document.getElementById('guip_scripts'),
+            script;
+        for (var n in aUrls) {
+            script = document.createElement('script');
+            script.src = prefix + aUrls[n];
+            container.appendChild(script);
         }
     }
-    function checkPathFor(locale) {
+
+    function checkPathFor(aLocale) {
         var path = document.location.pathname;
         if (path.match(/^\/superhero/)) {
-            createScripts(scripts.superhero, locale);
+            createScripts('superhero.js', aLocale);
         } else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-            createScripts([scripts.options_page, scripts.options], locale);
+            createScripts(['options_page.js', 'options.js'], aLocale);
         } else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-            createScripts(scripts.forum, locale);
+            createScripts('forum.js', aLocale);
         } else if (path.match(/^\/duels\/log\//)) {
-            createScripts(scripts.log, locale);
+            createScripts('log.js', aLocale);
         }
     }
 
