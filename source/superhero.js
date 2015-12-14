@@ -1,9 +1,27 @@
 // starter
 window.GUIp = window.GUIp || {};
 
-GUIp.starter = {};
+GUIp.superhero = {};
 
-GUIp.starter._init = function() {
+GUIp.superhero.modules = [
+    'data',
+    'forum',
+    'help',
+    'improver',
+    'informer',
+    'inventory',
+    'logger',
+    'observers',
+    'stats',
+    'storage',
+    'timeout',
+    'timers',
+    'trycatcher',
+    'utils',
+    'words'
+];
+
+GUIp.superhero._init = function() {
     GUIp.data.init();
     GUIp.storage.migrate();
     GUIp.utils.addCSS();
@@ -20,7 +38,7 @@ GUIp.starter._init = function() {
     GUIp.observers.init();
     GUIp.improver.initOverrides();
 };
-GUIp.starter.start = function() {
+GUIp.superhero.start = function() {
     if (window.$ &&
         (document.getElementById('m_info') || document.getElementById('stats')) &&
         GUIp.browser &&
@@ -49,7 +67,7 @@ GUIp.starter.start = function() {
 
         GUIp.trycatcher.process(GUIp);
 
-        GUIp.starter._init();
+        GUIp.superhero._init();
 
         if (!GUIp.data.isFight) {
             window.onmousemove = window.onscroll = window.ontouchmove = GUIp.improver.activity;
@@ -75,5 +93,13 @@ GUIp.starter.start = function() {
     }
 };
 
+var container = document.getElementById('guip_scripts'),
+    tagName = 'script',
+    script;
+for (var i in GUIp.superhero.modules) {
+    script = document.createElement(tagName);
+    script.src = GUIp.common.getResourceURL('modules/' + GUIp.superhero.modules[i] + '.js');
+    container.appendChild(script);
+}
 
-var starterInt = setInterval(function() { GUIp.starter.start(); }, 200);
+var starterInt = setInterval(function() { GUIp.superhero.start(); }, 200);
