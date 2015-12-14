@@ -6,6 +6,7 @@ module.exports = function(grunt) {
       chrome: {
         files: [
           { expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome/', filter: 'isFile' },
+          { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/chrome/modules/' },
           { expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/' },
           { expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/' },
           { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/chrome/' }
@@ -29,6 +30,7 @@ module.exports = function(grunt) {
       firefox: {
         files: [
           { expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/' },
+          { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/firefox/data/modules/' },
           { expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile' },
           { expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile' },
           { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' },
@@ -216,7 +218,7 @@ module.exports = function(grunt) {
     var tasks = [
       'notify:start',
       'jshint',
-      'concat'
+      'concat:forum'
     ];
     switch(aBrowser) {
     case 'chrome': tasks.push('build:chrome'); break;
