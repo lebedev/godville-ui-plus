@@ -236,12 +236,13 @@ module.exports = function(grunt) {
       grunt.config.set('browser', aBrowser);
       var tasks = [
         'copy:' + aBrowser,
-        'copy:' + aBrowser + '_versioned',
-        'compress:' + aBrowser,
-        'clean:' + aBrowser
+        'copy:' + aBrowser + '_versioned'
       ];
-      if (grunt.config('compile_path') === 'debug' && aBrowser === 'chrome') {
-        tasks.splice(2, 2);
+      if (grunt.config('compile_path') !== 'debug' || aBrowser !== 'chrome') {
+        tasks.push(
+          'compress:' + aBrowser,
+          'clean:' + aBrowser
+        );
       }
       grunt.task.run(tasks);
     }
