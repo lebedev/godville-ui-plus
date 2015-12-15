@@ -86,9 +86,9 @@ module.exports = function(grunt) {
     },
     clean: {
       temp: "<%= compile_path %>/*.js",
-      chrome: "<%= compile_path %>/chrome/*",
-      firefox: "<%= compile_path %>/firefox/*",
-      opera: "<%= compile_path %>/opera/*"
+      chrome: "<%= compile_path %>/chrome",
+      firefox: "<%= compile_path %>/firefox",
+      opera: "<%= compile_path %>/opera"
     },
     compress: {
       chrome: {
