@@ -61,7 +61,11 @@ module.exports = function(grunt) {
       opera_versioned: {
         options: {
           process: function(aContent) {
-            return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
+            if (grunt.config('compile_path') === 'debug') {
+              return aContent.replace(/\$VERSION/g, grunt.config('current_version') + ' debug build ' + grunt.config('build_number'));
+            } else {
+              return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
+            }
           }
         },
         files: [
