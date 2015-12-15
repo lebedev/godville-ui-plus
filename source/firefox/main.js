@@ -1,10 +1,14 @@
-var tabs = require('sdk/tabs');
+var tabs = require('sdk/tabs'),
+    version = require("sdk/self").version;
 
 var domainsUrls = 'https?:\/\/(godville\\.net|gdvl\\.tk|gv\\.erinome\\.net|godvillegame\\.com)\/.*';
 
 function attachGUIpLoaderTo(tab) {
     tab.attach({
-        contentScriptFile: './loader.js'
+        contentScriptFile: './loader.js',
+        contentScriptOptions: {
+            version: version
+        }
     });
 }
 

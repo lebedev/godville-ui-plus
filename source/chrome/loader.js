@@ -2,36 +2,36 @@
     var prefix = chrome.extension.getURL('');
     localStorage.setItem('GUIp_prefix', prefix);
 
-    function createScripts(aUrls, aLocale) {
-        aUrls = ['common.js', 'guip_chrome.js', 'phrases_' + aLocale + '.js'].concat(aUrls);
+    var specificScripts = {
+        'superhero.*':                     'superhero.js',
+        'user\/(?:profile|rk_success).*': ['options_page.js', 'options.js'],
+        'forums\/show(?:_topic)?\/\\d+.*': 'forum.js',
+        'duels\/log\/.*':                  'log.js'
+    };
 
-        document.body.insertAdjacentHTML('beforeend', '<div id="guip_scripts"/>');
-        var container = document.getElementById('guip_scripts'),
+    var attachScripts = function(aSpecificScripts) {
+        var ruUrlRegExp = 'godville\\.net|gdvl\\.tk|gv\\.erinome\\.net',
+            locale = document.location.hostname.match(ruUrlRegExp) ? 'ru' : 'en',
+            commonScriptNames = ['common.js', 'guip_firefox.js', 'phrases_' + locale + '.js'],
+            scriptNames = commonScriptNames.concat(aSpecificScripts);
+
+        document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
+        var container = document.getElementById('guip'),
             script;
-        for (var n in aUrls) {
+        for (var n in scriptNames) {
             script = document.createElement('script');
-            script.src = prefix + aUrls[n];
+            script.src = 'resource://godville-ui-plus-at-badluck-dot-dicey/data/' + scriptNames[n];
             container.appendChild(script);
         }
-    }
+        script = document.createElement('script');
+        script.textContent = 'window.GUIp = window.GUIp || {};\n\nGUIp.version = "' + chrome.runtime.getManifest().version_name + '";';
+        container.appendChild(script);
+    };
 
-    function checkPathFor(aLocale) {
-        var path = document.location.pathname;
-        if (path.match(/^\/superhero/)) {
-            createScripts('superhero.js', aLocale);
-        } else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-            createScripts(['options_page.js', 'options.js'], aLocale);
-        } else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-            createScripts('forum.js', aLocale);
-        } else if (path.match(/^\/duels\/log\//)) {
-            createScripts('log.js', aLocale);
+    for (var pathname in specificScripts) {
+        if (document.location.pathname.match(pathname)) {
+            attachScripts(specificScripts[pathname]);
+            break;
         }
-    }
-
-    var site = document.location.href;
-    if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk|gv\.erinome\.net)/)) {
-        checkPathFor('ru');
-    } else if (site.match(/^https?:\/\/godvillegame\.com/)) {
-        checkPathFor('en');
     }
 })();

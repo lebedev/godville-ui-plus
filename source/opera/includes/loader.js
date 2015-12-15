@@ -1,65 +1,53 @@
 window.addEventListener('DOMContentLoaded', function() {
-    // Path to the library:
-    if (document.location.host.match(/godville\.net|godvillegame\.com|gdvl\.tk|gv\.erinome\.net/)) {
-        var createElement = function(type) {
-            var el = document.createElement(type);
-            el.id = 'godville-ui-plus';
+    if (!document.location.host.match(/godville\.net|godvillegame\.com|gdvl\.tk|gv\.erinome\.net/)) {
+        return;
+    }
+
+    var attachFiles = function(aSpecificFileNames, aLocale) {
+        var createElement = function(aTagName) {
+            var el = document.createElement(aTagName);
             el.textContent = this.result;
-            document.head.appendChild(el);
+            container.appendChild(el);
         };
-        var createScripts = function(urls, locale) {
-            urls = [scripts.common, scripts.guip_opera, scripts['phrases_' + locale]].concat(urls);
-            for (var i = 0, len = urls.length; i < len; i++) {
-                var fileObj = opera.extension.getFile('/content/' + urls[i]);
-                if (fileObj) {
-                    var fr = new FileReader();
-                    fr.onload = createElement.bind(fr, 'script');
-                    fr.readAsText(fileObj);
-                }
-            }
+
+        // Reads version number from config.
+        var fr = new FileReader();
+        fr.onload = function() {
+            var GUIp_version_script = document.createElement('script');
+            GUIp_version_script.textContent = 'window.GUIp = window.GUIp || {};\n\nGUIp.version = "' + this.result.match(/widget .+? version="([^"]+)"/)[1] + '";';
+            container.appendChild(GUIp_version_script);
         };
-        var createCSS = function(url) {
-            var fileObj = opera.extension.getFile('/content/' + url);
+        fr.readAsText(opera.extension.getFile('/config.xml'));
+
+        var ruUrlRegExp = 'godville\\.net|gdvl\\.tk|gv\\.erinome\\.net',
+            locale = document.location.hostname.match(ruUrlRegExp) ? 'ru' : 'en',
+            commonScriptNames = ['common.js', 'guip_firefox.js', 'phrases_' + locale + '.js'],
+            fileNames = commonScriptNames.concat(aSpecificFileNames);
+
+        document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
+        var container = document.getElementById('guip');
+
+        for (var i in fileNames) {
+            var fileObj = opera.extension.getFile('/content/' + fileNames[i]);
             if (fileObj) {
-                var fr = new FileReader();
-                fr.onload = createElement.bind(fr, 'style');
+                fr = new FileReader();
+                fr.onload = createElement.bind(fr, fileNames[i].match(/\.js$/) ? 'script' : 'style');
                 fr.readAsText(fileObj);
             }
-        };
-        var processLocale = function(locale) {
-            var path = document.location.pathname;
-            if (path.match(/^\/superhero/)) {
-                createScripts([scripts.wm, scripts.mo, scripts.superhero], locale);
-                createCSS('superhero.css');
-            } else if (path.match(/^\/user\/(?:profile|rk_success)/)) {
-                createScripts([scripts.options_page, scripts.options], locale);
-                createCSS('options.css');
-            } else if (path.match(/^\/forums\/show(?:\_topic)?\/\d+/)) {
-                createScripts([scripts.wm, scripts.mo, scripts.forum], locale);
-                createCSS('forum.css');
-            } else if (path.match(/^\/(?:duels\/log|hero\/duel_perm_link)\//)) {
-                createScripts(scripts.log, locale);
-                createCSS('superhero.css');
-            }
-        };
-        var scripts = {
-            common: 'common.js',
-            wm: 'WeakMap.js',
-            mo: 'MutationObserver.js',
-            superhero: 'superhero.js',
-            phrases_ru: 'phrases_ru.js',
-            phrases_en: 'phrases_en.js',
-            guip_opera: 'guip_opera.js',
-            options_page: 'options_page.js',
-            options: 'options.js',
-            forum: 'forum.js',
-            log: 'log.js'
-        };
-        var site = document.location.href;
-        if (site.match(/^https?:\/\/(godville\.net|gdvl\.tk|gv\.erinome\.net)/)) {
-            processLocale('ru');
-        } else if (site.match(/^https?:\/\/godvillegame\.com/)) {
-            processLocale('en');
+        }
+    };
+
+    var specificFileNames = {
+        'superhero.*':                     ['polyfills/Promise.js', 'polyfills/WeakMap.js', 'polyfills/MutationObserver.js', 'superhero.js', 'superhero.css'],
+        'user\/(?:profile|rk_success).*':  ['options_page.js', 'options.js', 'options.css'],
+        'forums\/show(?:_topic)?\/\\d+.*': ['polyfills/WeakMap.js', 'polyfills/MutationObserver.js', 'forum.js', 'forum.css'],
+        'duels\/log\/.*':                  ['log.js', 'superhero.css']
+    };
+
+    for (var pathname in specificFileNames) {
+        if (document.location.pathname.match(pathname)) {
+            attachFiles(specificFileNames[pathname]);
+            break;
         }
     }
 }, false);
