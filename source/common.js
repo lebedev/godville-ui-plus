@@ -1,5 +1,11 @@
 window.GUIp = window.GUIp || {};
 
+GUIp.common = GUIp.common || {};
+
+GUIp.common.getGithubSourceURL = function(aPath) {
+    return 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/' + aPath;
+};
+
 GUIp.addCSSFromURL = function(aHref, aId) {
     document.getElementById('guip').insertAdjacentHTML('beforeend', '<link id="' + aId + '" type="text/css" href="' + aHref + '" rel="stylesheet" media="screen">');
 };
@@ -68,3 +74,5 @@ GUIp.mapSubIteration = function(MapData, iPointer, jPointer, step, limit, specwa
         }
     }
 };
+
+GUIp.common.loaded_common = true;

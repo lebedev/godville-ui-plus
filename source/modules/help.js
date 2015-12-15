@@ -62,3 +62,5 @@ GUIp.help.toggleDialog = function() {
     GUIp.storage.set('helpDialogVisible', !GUIp.storage.get('helpDialogVisible'));
     window.$('#guip_help').slideToggle('slow');
 };
+
+GUIp.help.loaded = true;

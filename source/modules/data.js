@@ -109,3 +109,5 @@ GUIp.data._parseWantedMonster = function(xhr) {
         GUIp.improver.wantedMonsters = new RegExp(newWantedMonster);
     }
 };
+
+GUIp.data.loaded = true;

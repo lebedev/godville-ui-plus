@@ -159,3 +159,5 @@ GUIp.inventory._pushItemCombo = function(combo, first, second) {
     GUIp.inventory[combo].push(first + GUIp.i18n.and + second);
     GUIp.inventory[combo].push(second + GUIp.i18n.and + first);
 };
+
+GUIp.inventory.loaded = true;

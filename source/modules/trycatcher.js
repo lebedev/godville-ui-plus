@@ -41,3 +41,5 @@ GUIp.trycatcher._process = function(object) {
         }
     }
 };
+
+GUIp.trycatcher.loaded = true;

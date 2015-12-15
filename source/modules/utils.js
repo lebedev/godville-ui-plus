@@ -387,3 +387,5 @@ GUIp.utils.getCurrentChat = function() {
         return null;
     }*/
 };
+
+GUIp.utils.loaded = true;

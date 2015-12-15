@@ -359,6 +359,15 @@ return '<p>\n' +
     '            </div>\n' +
     '            <div class="new_line">\n' +
     '                <div class="g_desc">' + GUIp.i18n.disable_favicon_flashing_desc + '</div>\n' +
+    '            </div>\n' +
+    '            <div class="new_line">\n' +
+    '                <label class="l_capt" for="use_beta_channel">' + GUIp.i18n.use_beta_channel + '</label>\n' +
+    '                <div class="field_content">\n' +
+    '                    <input id="use_beta_channel" name="use_beta_channel" class="menu-checkbox" type="checkbox">\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '            <div class="new_line">\n' +
+    '                <div class="g_desc">' + GUIp.i18n.use_beta_channel_desc + '</div>\n' +
     '            </div>\n'
 ) +
 '                <div class="new_line">\n' +

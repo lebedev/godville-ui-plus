@@ -636,6 +636,8 @@ GUIp.i18n = {
     hide_godville_clock: 'Скрыть синхронизированное время',
     disable_favicon_flashing: 'Выключить моргание фавиконки',
     disable_favicon_flashing_desc: 'для тех, кого это раздражает',
+    use_beta_channel: 'Использовать beta-канал',
+    use_beta_channel_desc: 'загружает модули с гитхаба вместо встроенных',
     enable_debug_mode: 'Включить режим отладки',
     enable_debug_mode_desc: 'чисто девелоперская штучка',
     apply: 'Применить',
@@ -739,5 +741,7 @@ GUIp.i18n = {
     coords_error_desc: 'Разница координат',
     step_n: 'Шаг #'
 };
+
+GUIp.i18n.loaded = true;
 
 })();

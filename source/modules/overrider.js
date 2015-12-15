@@ -83,3 +83,5 @@ GUIp.overrider._overridePMNotifications = function() {
         }, 2000);
     }
 };
+
+GUIp.overrider.loaded = true;

@@ -149,3 +149,5 @@ GUIp.informer.hide = function(flag) {
     GUIp.informer._deleteLabel(flag);
     GUIp.informer._save();
 };
+
+GUIp.informer.loaded = true;

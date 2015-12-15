@@ -1376,3 +1376,5 @@ GUIp.improver.improvementDebounce = function() {
         }
     }, 250);
 };
+
+GUIp.improver.loaded = true;

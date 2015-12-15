@@ -187,3 +187,5 @@ GUIp.logger.update = function() {
     GUIp.logger._updateWatchers(this.commonWatchers);
     this.separatorIsNeeded = true;
 };
+
+GUIp.logger.loaded = true;

@@ -84,3 +84,5 @@ GUIp.words.craftPhrase = function(items) {
 GUIp.words.usableItemType = function(desc) {
     return this.base.usable_items.descriptions.indexOf(desc);
 };
+
+GUIp.words.loaded = true;

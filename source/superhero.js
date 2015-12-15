@@ -64,7 +64,7 @@ var waitFor = function(aTargetCheckFunc) {
                 clearInterval(int);
                 aResolve();
             }
-            if (ticker++ > 10000) {
+            if (ticker++ > 6000) {
                 aReject();
             }
         }
@@ -74,41 +74,31 @@ var waitFor = function(aTargetCheckFunc) {
 };
 
 waitFor(function() {
-    return GUIp.common;
+    return GUIp.common && GUIp.common.loaded_specific && GUIp.common.loaded_common;
 }).then(function() {
     window.console.log('GUIp: v' + GUIp.version + ' is about to start.');
     window.console.log('GUIp: waiting for modules <script>-tags to be created...');
     window.console.time('GUIp: created modules <script>-tags in');
     var container = document.getElementById('guip'),
         tagName = 'script',
+        getUrl = window.localStorage.getItem('GUIp_beta') === 'true' || GUIp.browser === 'Opera' ? 'getGithubSourceURL' : 'getResourceURL',
         script;
     for (var i in GUIp.superhero.modules) {
         script = document.createElement(tagName);
-        script.src = GUIp.common.getResourceURL('modules/' + GUIp.superhero.modules[i] + '.js');
+        script.src = GUIp.common[getUrl]('modules/' + GUIp.superhero.modules[i] + '.js');
         container.appendChild(script);
     }
     window.console.timeEnd('GUIp: created modules <script>-tags in');
     window.console.log('GUIp: waiting for modules to be loaded...');
     window.console.time('GUIp: modules loaded in');
 }).then(waitFor.bind(null, function() {
-    return GUIp.browser &&
-           GUIp.i18n &&
-           GUIp.addCSSFromURL &&
-           GUIp.data &&
-           GUIp.forum &&
-           GUIp.help &&
-           GUIp.improver &&
-           GUIp.informer &&
-           GUIp.inventory &&
-           GUIp.logger &&
-           GUIp.observers &&
-           GUIp.stats &&
-           GUIp.storage &&
-           GUIp.timeout &&
-           GUIp.timers &&
-           GUIp.trycatcher &&
-           GUIp.utils &&
-           GUIp.words;
+    var modules = GUIp.superhero.modules.concat('i18n');
+    for (var i in modules) {
+        if (!GUIp[modules[i]] || !GUIp[modules[i]].loaded) {
+            return false;
+        }
+    }
+    return true;
 })).then(function() {
     window.console.timeEnd('GUIp: modules loaded in');
     window.console.log('GUIp: waiting for Godville to start...');

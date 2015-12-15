@@ -154,3 +154,5 @@ GUIp.observers.node_insertion = {
     },
     target: ['body']
 };
+
+GUIp.observers.loaded = true;

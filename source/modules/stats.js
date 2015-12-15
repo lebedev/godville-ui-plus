@@ -191,3 +191,5 @@ GUIp.stats.petIsKnockedOut = function() {
 GUIp.stats.townName = function() {
     return window.so.state.stats.town_name && window.so.state.stats.town_name.value;
 };
+
+GUIp.stats.loaded = true;

@@ -214,6 +214,8 @@ function loadOptions() {
         $q('#voice_menu .g_desc').textContent = $q('#voice_menu .g_desc').textContent.replace('герою', 'героине');
     }
 
+    document.getElementById('use_beta_channel').checked = window.localStorage.getItem('GUIp_beta') === 'true';
+
     $id('ta_edit').onfocus = setAutoGrowWithCallback.bind($id('ta_edit'), setSaveWordsButtonState);
     $id('user_css').onfocus = setAutoGrowWithCallback.bind($id('user_css'), setUserCSSSaveButtonState);
 
@@ -418,6 +420,8 @@ function saveOptions() {
         }
     }
     storage.set('Option:forbiddenCraft', forbiddenCraft.join());
+
+    window.localStorage.setItem('GUIp_beta', document.getElementById('use_beta_channel').checked);
 
     //jQuery('#general_settings_spinner').fadeOut('slow');
     setTimeout(function() {

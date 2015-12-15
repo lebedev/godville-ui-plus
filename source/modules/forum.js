@@ -110,3 +110,5 @@ GUIp.forum._parse = function(xhr) {
     GUIp.storage.set('Forum' + forum_no, JSON.stringify(forum));
     GUIp.forum._process(forum_no);
 };
+
+GUIp.forum.loaded = true;

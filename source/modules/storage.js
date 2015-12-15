@@ -127,3 +127,5 @@ GUIp.storage.addToNames = function(godname) {
     var godnames = localStorage.getItem('GUIp:godnames');
     localStorage.setItem('GUIp:godnames', (godnames ? godnames + '|' : '') + godname);
 };
+
+GUIp.storage.loaded = true;

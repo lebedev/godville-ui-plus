@@ -43,3 +43,5 @@ GUIp.timeout._delayedStart = function() {
     }
     GUIp.timeout.bar.classList.add('running');
 };
+
+GUIp.timeout.loaded = true;

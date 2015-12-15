@@ -138,3 +138,5 @@ GUIp.timers.toggleTimers = function(e) {
         timerElem.fadeIn(500);
     });
 };
+
+GUIp.timers.loaded = true;
