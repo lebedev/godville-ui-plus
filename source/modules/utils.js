@@ -262,7 +262,7 @@ GUIp.utils.hideElem = function(elem, hide) {
 GUIp.utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCallback, xhr) {
     var match = xhr.responseText.match(/Godville UI\+ (\d+)\.(\d+)\.(\d+)\.(\d+)/);
     if (match) {
-        var currentVersion = GUIp.data.currentVersion.split('.'),
+        var currentVersion = GUIp.version.split(/\.| /),
             lastVersion = [+match[1], +match[2], +match[3], +match[4]],
             isNewest = +currentVersion[0] < lastVersion[0] ? false :
                        +currentVersion[0] > lastVersion[0] ? true  :
@@ -315,7 +315,7 @@ GUIp.utils.processError = function(error, isDebugMode) {
                      '<div id="error_details" class="hidden">' +
                         '<div>' + GUIp.i18n.error_message_subtitle + '</div>' +
                         '<div>' + GUIp.i18n.browser + ' <b>' + GUIp.browser + ' ' + navigator.userAgent.match(GUIp.browser + '\/([\\d.]+)')[1] +'</b>.</div>' +
-                        '<div>' + GUIp.i18n.version + ' <b>' + GUIp.data.currentVersion + '</b>.</div>' +
+                        '<div>' + GUIp.i18n.version + ' <b>' + GUIp.version + '</b>.</div>' +
                         '<div>' + GUIp.i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
                         '<div>' + GUIp.i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>' +
                      '</div>',

@@ -28,7 +28,6 @@ GUIp.data.init = function() {
     setInterval(function() { GUIp.data._getWantedMonster(); }, 5*60*1000);
 };
 GUIp.data._initVariables = function() {
-    this.currentVersion = '$VERSION';
     this.isFight = GUIp.stats.isFight();
     this.isDungeon = GUIp.stats.isDungeon();
     document.body.classList.add(this.isDungeon ? 'dungeon' : this.isFight ? 'fight' : 'field');

@@ -11,7 +11,7 @@ GUIp.help.init = function() {
 GUIp.help._createHelpDialog = function() {
     document.getElementById('menu_bar').insertAdjacentHTML('afterend',
         '<div id="guip_help" class="hint_bar" style="padding-bottom: 0.7em; display: none;">' +
-        '<div class="hint_bar_capt"><b>Godville UI+ (v' + GUIp.data.currentVersion + ')</b>, ' + GUIp.i18n.help_dialog_capt + '</div>' +
+        '<div class="hint_bar_capt"><b>Godville UI+ (v' + GUIp.version + ')</b>, ' + GUIp.i18n.help_dialog_capt + '</div>' +
         '<div class="hint_bar_content" style="padding: 0.5em 0.8em;">'+
             '<div style="text-align: left;">' +
                 '<div>' + GUIp.i18n.how_to_update + '</div>' +
