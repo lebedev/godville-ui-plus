@@ -83,9 +83,9 @@ GUIp.logger._appendStr = function(cssClass, aText, aHint) {
 };
 GUIp.logger._watchStatsValue = function(aId, aName, aDescription) {
     // Remove id prefixes.
-    aId = aId.replace(/^Hero_|^Map_|\d$/, '');
+    aId = aId.replace(/^Hero_|^Map_/, '');
 
-    var cssClass = aId.toLowerCase();
+    var cssClass = aId.replace(/\d$/, '').toLowerCase();
 
     var i, len, diff;
     if (aName === 'a:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
