@@ -112,7 +112,9 @@ GUIp.observers.news = {
         return !GUIp.data.isFight && !GUIp.data.isDungeon;
     },
     config: { childList: true, characterData: true, subtree: true },
-    func: GUIp.improver.improvementDebounce,
+    func: function() {
+        GUIp.improver.improvementDebounce();
+    },
     target: ['.f_news']
 };
 GUIp.observers.chronicles = {
