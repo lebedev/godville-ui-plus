@@ -190,25 +190,10 @@ module.exports = function(grunt) {
   grunt.registerTask('debug', 'Compiles in debug mode.', function (aBrowser) {
     grunt.log.ok('Compiling in debug mode.');
     grunt.config.set('compile_path', 'debug');
-    if (aBrowser.match(/firefox|chrome/)) {
-      var build;
-      try {
-        build = (+grunt.file.read('debug/build') + 1) || 1;
-      } catch(e) {
-        build = 1;
-      } finally {
-        grunt.file.write('debug/build', build);
-      }
-      grunt.config.set('build_number', build);
-    }
-    grunt.config.set('current_version', grunt.file.read('current_version'));
-    grunt.log.ok(
-      'Debug version is ' +
-      '*' + grunt.config('current_version') + ' debug build ' + grunt.config('build_number') + '*.'
-    );
     var tasks = [
       'notify:start',
       'jshint',
+      'bump_debug_build',
       'concat:forum'
     ];
     switch(aBrowser) {
@@ -225,6 +210,22 @@ module.exports = function(grunt) {
     require("request").post({ url: "http://localhost:8888", body: require("fs").readFileSync("debug/godville-ui-plus@badluck.dicey.xpi") });
   });
 
+  grunt.registerTask('bump_debug_build', 'Bumps debug build number.', function () {
+    grunt.config.set('current_version', grunt.file.read('current_version'));
+    var build;
+    try {
+      build = (+grunt.file.read('debug/build') + 1) || 1;
+    } catch(e) {
+      build = 1;
+    } finally {
+      grunt.file.write('debug/build', build);
+    }
+    grunt.config.set('build_number', build);
+    grunt.log.ok(
+      'Debug version is ' +
+      '*' + grunt.config('current_version') + ' debug build ' + grunt.config('build_number') + '*.'
+    );
+  });
 
   grunt.registerTask('build', 'Compiles extension for a specific browser.', function(aBrowser) {
     if (!aBrowser) {
