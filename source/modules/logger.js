@@ -3,79 +3,92 @@ window.GUIp = window.GUIp || {};
 
 GUIp.logger = {};
 
+GUIp.logger.WIDTH_MARGIN = 100;
+
 GUIp.logger.create = function() {
-    this.updating = false;
-    this.bar = window.$('<ul id="logger" style="mask: url(#fader_masking);"/>');
-    window.$('#menu_bar').after(this.bar);
+    document.getElementById('hero_block').insertAdjacentHTML(
+        'afterbegin',
+        '<ul id="logger" style="mask: url(#fader_masking);"></ul>'
+    );
+
+    this._container = document.getElementById('logger');
     this.need_separator = false;
     this.dungeonWatchers = [
-        ['Map_HP', 'hp', GUIp.i18n.hero_health, 'hp'],
-        ['Map_Exp', 'exp', GUIp.i18n.exp, 'exp'],
-        ['Map_Inv', 'inv', GUIp.i18n.inventory, 'inv'],
-        ['Map_Gold', 'gld', GUIp.i18n.gold, 'gold'],
-        ['Map_Charges', 'ch', GUIp.i18n.charges, 'charges'],
-        ['Map_Allies_HP', 'a:hp', GUIp.i18n.allies_health, 'allies']
+        ['Map_Allies_HP', 'a:hp', GUIp.i18n.allies_health],
+        ['Map_Charges',   'ch',   GUIp.i18n.charges,     ],
+        ['Map_Exp',       'exp',  GUIp.i18n.exp,         ],
+        ['Map_Gold',      'gld',  GUIp.i18n.gold,        ],
+        ['Map_HP',        'hp',   GUIp.i18n.hero_health, ],
+        ['Map_Inv',       'inv',  GUIp.i18n.inventory,   ]
     ];
-    this.battleWatchers = [
-        ['Hero_HP', 'h:hp', GUIp.i18n.hero_health, 'hp'],
-        ['Enemies_HP', 'e:hp', GUIp.i18n.enemy_health, 'death'],
-        ['Hero_Allies_HP', 'a:hp', GUIp.i18n.allies_health, 'allies'],
-        ['Hero_Inv', 'h:inv', GUIp.i18n.inventory, 'inv'],
-        ['Hero_Gold', 'h:gld', GUIp.i18n.gold, 'gold'],
-        ['Hero_Charges', 'ch', GUIp.i18n.charges, 'charges'],
-        ['Enemy_Gold', 'e:gld', GUIp.i18n.gold, 'monster'],
-        ['Enemy_Inv', 'e:inv', GUIp.i18n.inventory, 'monster']
+    this.fightWatchers = [
+        ['Enemies_HP',     'e:hp',  GUIp.i18n.enemy_health ],
+        ['Enemy_Gold',     'e:gld', GUIp.i18n.gold         ],
+        ['Enemy_Inv',      'e:inv', GUIp.i18n.inventory    ],
+        ['Hero_Allies_HP', 'a:hp',  GUIp.i18n.allies_health],
+        ['Hero_Charges',   'ch',    GUIp.i18n.charges      ],
+        ['Hero_Gold',      'h:gld', GUIp.i18n.gold         ],
+        ['Hero_HP',        'h:hp',  GUIp.i18n.hero_health  ],
+        ['Hero_Inv',       'h:inv', GUIp.i18n.inventory    ]
     ];
     this.fieldWatchers = [
-        ['Exp', 'exp', GUIp.i18n.exp],
-        ['Level', 'lvl', GUIp.i18n.level],
-        ['HP', 'hp', GUIp.i18n.health],
-        ['Charges', 'ch', GUIp.i18n.charges],
-        ['Task', 'tsk', GUIp.i18n.task],
-        ['Monster', 'mns', GUIp.i18n.monsters],
-        ['Inv', 'inv', GUIp.i18n.inventory],
-        ['Gold', 'gld', GUIp.i18n.gold],
-        ['Bricks', 'br', GUIp.i18n.bricks],
-        ['Logs', 'wd', GUIp.i18n.logs],
-        ['Savings', 'rtr', GUIp.i18n.savings],
-        ['Equip1', 'eq1', GUIp.i18n.weapon, 'equip'],
-        ['Equip2', 'eq2', GUIp.i18n.shield, 'equip'],
-        ['Equip3', 'eq3', GUIp.i18n.head, 'equip'],
-        ['Equip4', 'eq4', GUIp.i18n.body, 'equip'],
-        ['Equip5', 'eq5', GUIp.i18n.arms, 'equip'],
-        ['Equip6', 'eq6', GUIp.i18n.legs, 'equip'],
-        ['Equip7', 'eq7', GUIp.i18n.talisman, 'equip'],
-        ['Death', 'death', GUIp.i18n.death_count],
-        ['Pet_Level', 'pet_level', GUIp.i18n.pet_level, 'monster']
+        ['Bricks',    'br',        GUIp.i18n.bricks     ],
+        ['Charges',   'ch',        GUIp.i18n.charges    ],
+        ['Death',     'death',     GUIp.i18n.death_count],
+        ['Equip1',    'eq1',       GUIp.i18n.weapon     ],
+        ['Equip2',    'eq2',       GUIp.i18n.shield     ],
+        ['Equip3',    'eq3',       GUIp.i18n.head       ],
+        ['Equip4',    'eq4',       GUIp.i18n.body       ],
+        ['Equip5',    'eq5',       GUIp.i18n.arms       ],
+        ['Equip6',    'eq6',       GUIp.i18n.legs       ],
+        ['Equip7',    'eq7',       GUIp.i18n.talisman   ],
+        ['Exp',       'exp',       GUIp.i18n.exp        ],
+        ['Gold',      'gld',       GUIp.i18n.gold       ],
+        ['HP',        'hp',        GUIp.i18n.health     ],
+        ['Inv',       'inv',       GUIp.i18n.inventory  ],
+        ['Level',     'lvl',       GUIp.i18n.level      ],
+        ['Logs',      'wd',        GUIp.i18n.logs       ],
+        ['Monster',   'mns',       GUIp.i18n.monsters   ],
+        ['Pet_Level', 'pet_level', GUIp.i18n.pet_level  ],
+        ['Savings',   'rtr',       GUIp.i18n.savings    ],
+        ['Task',      'tsk',       GUIp.i18n.task       ]
     ];
     this.commonWatchers = [
-        ['Females', 'females', GUIp.i18n.females, 'godmonster'],
-        ['Godpower', 'gp', GUIp.i18n.godpower],
-        ['Males', 'males', GUIp.i18n.males, 'godmonster']
+        ['Females',  'females', GUIp.i18n.females ],
+        ['Godpower', 'gp',      GUIp.i18n.godpower],
+        ['Males',    'males',   GUIp.i18n.males   ]
     ];
 };
-GUIp.logger._appendStr = function(id, klass, str, descr) {
-    // append separator if needed
-    if (this.need_separator) {
-        this.need_separator = false;
-        if (this.bar.children().length > 0) {
-            this.bar.append('<li class="separator">|</li>');
+GUIp.logger._appendStr = function(cssClass, aText, aHint) {
+    if (this.separatorIsNeeded) {
+        this.separatorIsNeeded = false;
+        if (this._container.children.length) {
+            this._container.insertAdjacentHTML('beforeend', '<li class="separator">|</li>');
         }
     }
-    // append string
-    this.bar.append('<li class="' + klass + '" title="' + descr + '">' + str + '</li>');
-    this.bar.scrollLeft(10000); //Dirty fix
-    while (window.$('#logger li').position().left + window.$('#logger li').width() < 0 || window.$('#logger li')[0].className === "separator") {
-        window.$('#logger li:first').remove();
-    }
-};
-GUIp.logger._watchStatsValue = function(id, name, descr, klass) {
-    // Remove id prefixes.
-    id = id.replace(/^Hero_|^Map_/, '');
 
-    klass = (klass || id).toLowerCase();
+    this._container.insertAdjacentHTML('beforeend', '<li class="' + cssClass + '" title="' + aHint + '">' + aText + '</li>');
+
+    var firstEntry;
+    while (
+        (firstEntry = this._container.querySelector('li')) &&
+        (this._container.scrollWidth > this._container.getBoundingClientRect().width + this.WIDTH_MARGIN ||
+         firstEntry.classList.contains('separator'))
+    ) {
+        firstEntry.remove();
+    }
+
+    this._container.scrollLeft = this._container.scrollWidth - this._container.getBoundingClientRect().width;
+
+};
+GUIp.logger._watchStatsValue = function(aId, aName, aDescription) {
+    // Remove id prefixes.
+    aId = aId.replace(/^Hero_|^Map_|\d$/, '');
+
+    var cssClass = aId.toLowerCase();
+
     var i, len, diff;
-    if (name === 'a:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
+    if (aName === 'a:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
         var damageData = [];
         for (i = 1, len = GUIp.stats.Allies_Count(); i <= len; i++)
         {
@@ -108,69 +121,69 @@ GUIp.logger._watchStatsValue = function(id, name, descr, klass) {
                 continue;
             }
             if (damageData[i].fuzz) {
-                GUIp.logger._appendStr(id, klass, 'a:hp' + (damageData[i].fuzz > 0 ? '⨦' : '≂') + Math.abs(Math.round((damageData[i].fuzz + damageData[i].diff * damageData[i].cnt)/(damageData[i].cnt + damageData[i].cntf + 1))) + 'x' + (damageData[i].cnt + damageData[i].cntf + 1), descr);
+                GUIp.logger._appendStr(cssClass, 'a:hp' + (damageData[i].fuzz > 0 ? '⨦' : '≂') + Math.abs(Math.round((damageData[i].fuzz + damageData[i].diff * damageData[i].cnt)/(damageData[i].cnt + damageData[i].cntf + 1))) + 'x' + (damageData[i].cnt + damageData[i].cntf + 1), aDescription);
             } else if (damageData[i].cnt > 0) {
-                GUIp.logger._appendStr(id, klass, 'a:hp' + (damageData[i].diff > 0 ? '+' : '') + damageData[i].diff + 'x' + (damageData[i].cnt + 1), descr);
+                GUIp.logger._appendStr(cssClass, 'a:hp' + (damageData[i].diff > 0 ? '+' : '') + damageData[i].diff + 'x' + (damageData[i].cnt + 1), aDescription);
             } else {
-                GUIp.logger._appendStr(id, klass, 'a' + damageData[i].num + ':hp' + (damageData[i].diff > 0 ? '+' : '') + damageData[i].diff, descr);
+                GUIp.logger._appendStr(cssClass, 'a' + damageData[i].num + ':hp' + (damageData[i].diff > 0 ? '+' : '') + damageData[i].diff, aDescription);
             }
         }
         return;
     }
-    if (name === 'e:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
+    if (aName === 'e:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
         for (i = 1, len = GUIp.stats.Enemies_Count(); i <= len; i++)
         {
             diff = GUIp.storage.set_with_diff('Logger:Enemy'+i+'_HP', GUIp.stats.Enemy_HP(i));
             if (diff) {
-                GUIp.logger._appendStr(id, klass, 'e' + (len > 1 ? i : '') + ':hp' + (diff > 0 ? '+' : '') + diff, descr);
+                GUIp.logger._appendStr(cssClass, 'e' + (len > 1 ? i : '') + ':hp' + (diff > 0 ? '+' : '') + diff, aDescription);
             }
         }
         return;
     }
-    var s;
-    diff = GUIp.storage.set_with_diff('Logger:' + id, GUIp.stats[id]());
+    var status;
+    diff = GUIp.storage.set_with_diff('Logger:' + aId, GUIp.stats[aId]());
     if (diff) {
         // Если нужно, то преобразовываем в число с одним знаком после запятой
         if (parseInt(diff) !== diff) { diff = diff.toFixed(1); }
         // Добавление плюcа, минуса или стрелочки
         if (diff < 0) {
-            if (name === 'exp' && +GUIp.storage.get('Logger:Level') !== GUIp.stats.Level()) {
-                s = '→' + GUIp.stats.Exp();
-            } else if (name === 'tsk' && GUIp.storage.get('Logger:Task_Name') !== GUIp.stats.Task_Name()) {
+            if (aName === 'exp' && +GUIp.storage.get('Logger:Level') !== GUIp.stats.Level()) {
+                status = '→' + GUIp.stats.Exp();
+            } else if (aName === 'tsk' && GUIp.storage.get('Logger:Task_Name') !== GUIp.stats.Task_Name()) {
                 GUIp.storage.set('Logger:Task_Name', GUIp.stats.Task_Name());
-                s = '→' + GUIp.stats.Task();
+                status = '→' + GUIp.stats.Task();
             } else {
-                s = diff;
+                status = diff;
             }
         } else {
-            s = '+' + diff;
+            status = '+' + diff;
         }
         // pet changing
-        if (name === 'pet_level' && GUIp.storage.get('Logger:Pet_NameType') !== GUIp.stats.Pet_NameType()) {
-            s = '→' + GUIp.stats.Pet_Level();
+        if (aName === 'pet_level' && GUIp.storage.get('Logger:Pet_NameType') !== GUIp.stats.Pet_NameType()) {
+            status = '→' + GUIp.stats.Pet_Level();
         }
-        GUIp.logger._appendStr(id, klass, name + s, descr);
+        GUIp.logger._appendStr(cssClass, aName + status, aDescription);
     }
 };
-GUIp.logger._updateWatchers = function(watchersList) {
-    for (var i = 0, len = watchersList.length; i < len; i++) {
-        GUIp.logger._watchStatsValue.apply(null, watchersList[i]);
+GUIp.logger._updateWatchers = function(aWatchers) {
+    for (var i = 0, len = aWatchers.length; i < len; i++) {
+        GUIp.logger._watchStatsValue.apply(null, aWatchers[i]);
     }
 };
 GUIp.logger.update = function() {
     if (GUIp.storage.get('Option:disableLogger')) {
-        this.bar.hide();
+        this._container.style.display = 'none';
         return;
     } else {
-        this.bar.show();
+        this._container.style.display = 'block';
     }
     if (GUIp.data.isDungeon) {
         GUIp.logger._updateWatchers(this.dungeonWatchers);
     } else if (GUIp.data.isFight) {
-        GUIp.logger._updateWatchers(this.battleWatchers);
+        GUIp.logger._updateWatchers(this.fightWatchers);
     } else {
         GUIp.logger._updateWatchers(this.fieldWatchers);
     }
     GUIp.logger._updateWatchers(this.commonWatchers);
-    this.need_separator = true;
+    this.separatorIsNeeded = true;
 };

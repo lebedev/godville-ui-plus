@@ -1420,10 +1420,10 @@ GUIp.improver.initOverrides = function() {
     }
 };
 GUIp.improver.activity = function() {
-    if (!GUIp.logger.updating) {
-        GUIp.logger.updating = true;
+    if (!GUIp.improver.updatingInFight) {
+        GUIp.improver.updatingInFight = true;
         setTimeout(function() {
-            GUIp.logger.updating = false;
+            GUIp.improver.updatingInFight = false;
         }, 500);
         GUIp.logger.update();
     }

@@ -190,13 +190,18 @@ body {
 #logger .inv { color: #882D17; }
 #logger .hp { color: green; }
 #logger .gold { color: #ffd700; }
-#logger .monster { color: darkmagenta; }
-#logger .godmonster { color: darkmagenta; font-weight: bold; }
-#logger .death { color: red; }
+#logger .monster,
+#logger .pet_level,
+#logger .enemy_gold,
+#logger .enemy_inv { color: darkmagenta; }
+#logger .females,
+#logger .males { color: darkmagenta; font-weight: bold; }
+#logger .death,
+#logger .enemies_hp { color: red; }
 #logger .bricks { color: goldenrod; font-weight: bold; }
 #logger .logs { color: saddlebrown; font-weight: bold; }
 #logger .charges,
-#logger .allies { color: blue; }
+#logger .allies_hp { color: blue; }
 #logger .savings { color: darkorange; }
 #logger {
 	display: block;
