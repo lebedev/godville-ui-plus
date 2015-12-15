@@ -12,6 +12,7 @@ GUIp.superhero.modules = [
     'inventory',
     'logger',
     'observers',
+    'overrider',
     'stats',
     'storage',
     'timeout',
@@ -37,6 +38,7 @@ GUIp.superhero._init = function() {
     GUIp.timers.init();
     GUIp.observers.init();
     GUIp.improver.initOverrides();
+    GUIp.overrider.init();
 };
 GUIp.superhero.start = function() {
     window.console.time('Godville UI+ initialized in');
