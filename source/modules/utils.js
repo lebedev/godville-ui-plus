@@ -10,9 +10,6 @@ GUIp.utils.setVoice = function(voice) {
     this.voiceInput.value = voice;
     GUIp.utils.triggerChangeOnVoiceInput();
 };
-GUIp.utils.triggerChangeOnVoiceInput = function() {
-    window.$(this.voiceInput).change();
-};
 // finds a label with given name
 GUIp.utils.findLabel = function($base_elem, label_name) {
     return window.$('.l_capt', $base_elem).filter(function() {

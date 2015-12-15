@@ -96,14 +96,22 @@ GUIp.improver.improveVoiceDialog = function() {
     // Add voicegens and show timeout bar after saying
     if (this.isFirstTime) {
         GUIp.utils.setVoiceSubmitState(this.freezeVoiceButton.match('when_empty'), true);
-        window.$(document).on('change keypress paste focus textInput input', '#god_phrase', function() {
+        var godPhrase = document.getElementById('god_phrase');
+        godPhrase.onchange =
+        godPhrase.oncut    =
+        godPhrase.onfocus  =
+        godPhrase.oninput  =
+        godPhrase.onpaste  = function() {
             if (!GUIp.utils.setVoiceSubmitState(this.value && !(GUIp.improver.freezeVoiceButton.match('after_voice') && parseInt(GUIp.timeout.bar.style.width)), false)) {
                 GUIp.utils.setVoiceSubmitState(GUIp.improver.freezeVoiceButton.match('when_empty'), true);
             }
             GUIp.utils.hideElem(document.getElementById('clear_voice_input'), !this.value);
-        }).on('click', '.gv_text.div_link', function() {
-            GUIp.utils.triggerChangeOnVoiceInput();
-        });
+        };
+        document.onclick = function(e) {
+            if (e.target.classList.contains('gv_text') && e.target.classList.contains('div_link')) {
+                godPhrase.focus();
+            }
+        };
         document.getElementById('voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover hidden" title="' + GUIp.i18n.clear_voice_input + '">×</div>');
         document.getElementById('clear_voice_input').onclick = function() {
             GUIp.utils.setVoice('');
