@@ -9,7 +9,7 @@ module.exports = function(grunt) {
           { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/chrome/modules/' },
           { expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/' },
           { expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/' },
-          { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/chrome/' }
+          { expand: true, cwd: '<%= compile_path %>/', src: 'forum.js', dest: '<%= compile_path %>/chrome/' }
         ]
       },
       chrome_versioned: {
@@ -30,11 +30,11 @@ module.exports = function(grunt) {
       firefox: {
         files: [
           { expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/' },
-          { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/firefox/data/modules/' },
+          { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/firefox/content/modules/' },
           { expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile' },
           { expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile' },
           { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' },
-          { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/firefox/data/' }
+          { expand: true, cwd: '<%= compile_path %>/', src: 'forum.js', dest: '<%= compile_path %>/firefox/data/' }
         ]
       },
       firefox_versioned: {
@@ -55,8 +55,7 @@ module.exports = function(grunt) {
         files: [
           { expand: true, cwd: 'source/opera', src: '**', dest: '<%= compile_path %>/opera/' },
           { expand: true, cwd: 'source/', src: '*', dest: '<%= compile_path %>/opera/content/', filter: 'isFile' },
-          { expand: true, cwd: 'source/vendor/', src: '*', dest: '<%= compile_path %>/opera/content/' },
-          { expand: true, cwd: '<%= compile_path %>/', src: ['forum.js', 'superhero.js'], dest: '<%= compile_path %>/opera/content/' }
+          { expand: true, cwd: '<%= compile_path %>/', src: 'forum.js', dest: '<%= compile_path %>/opera/content/' }
         ]
       },
       opera_versioned: {
@@ -79,18 +78,6 @@ module.exports = function(grunt) {
         },
         src: 'source/forum/*.js',
         dest: '<%= compile_path %>/forum.js'
-      },
-      superhero: {
-        options: {
-          banner: "(function() {\n" +
-                  "'use strict';\n\n",
-          footer: "\n\n})();",
-          process: function(aContent) {
-            return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
-          }
-        },
-        src: 'source/superhero/*.js',
-        dest: '<%= compile_path %>/superhero.js'
       }
     },
     clean: {
