@@ -1135,12 +1135,15 @@ GUIp.improver.improveInterface = function() {
     }
 
     if (this.isFirstTime || this.optionsChanged) {
-        var background = GUIp.storage.get('Option:useBackground');
-        if (background === 'cloud') {
-            document.body.style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/background.jpg') + ')';
-        } else {
-            document.body.style.backgroundImage = background ? 'url(' + background + ')' : '';
+        var background = GUIp.storage.get('Option:useBackground'),
+            cssRule = '';
+        if (background) {
+            cssRule =
+                'body {\n' +
+                '    background-image: url(' + (background === 'cloud' ? GUIp.common.getResourceURL('images/background.jpg') : background) + ')\n' +
+                '}';
         }
+        GUIp.addCSSFromString(cssRule, 'guip_background');
     }
 };
 GUIp.improver.improveChat = function() {
