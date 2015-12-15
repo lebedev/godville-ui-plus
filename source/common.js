@@ -1,15 +1,13 @@
 window.GUIp = window.GUIp || {};
 
-GUIp.common = GUIp.common || {};
-
-GUIp.addCSSFromURL = function(href, id) {
-    document.head.insertAdjacentHTML('beforeend', '<link id="' + id + '" type="text/css" href="' + href + '" rel="stylesheet" media="screen">');
+GUIp.addCSSFromURL = function(aHref, aId) {
+    document.getElementById('guip').insertAdjacentHTML('beforeend', '<link id="' + aId + '" type="text/css" href="' + aHref + '" rel="stylesheet" media="screen">');
 };
-GUIp.addCSSFromString = function(text) {
-    if (!document.getElementById('guip_user_css')) {
-        document.head.insertAdjacentHTML('beforeend', '<style id="guip_user_css" />');
+GUIp.addCSSFromString = function(aText, aId) {
+    if (!document.getElementById(aId)) {
+        document.getElementById('guip').insertAdjacentHTML('beforeend', '<style id="' + aId + '" />');
     }
-    document.getElementById('guip_user_css').textContent = text;
+    document.getElementById(aId).textContent = aText;
 };
 GUIp.mapIteration = function(MapData, iPointer, jPointer, step, specway) {
     if (++step > MapData.maxStep) {

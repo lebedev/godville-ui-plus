@@ -1,6 +1,6 @@
 (function() {
     var prefix = chrome.extension.getURL('');
-    localStorage.setItem('GUIp_prefix', prefix);
+    sessionStorage.setItem('GUIp_prefix', prefix);
 
     var specificScripts = {
         'superhero.*':                     'superhero.js',

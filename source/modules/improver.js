@@ -1125,7 +1125,7 @@ GUIp.improver.improveInterface = function() {
     }
     if (this.isFirstTime || GUIp.storage.get('UserCssChanged') === true) {
         GUIp.storage.set('UserCssChanged', false);
-        GUIp.addCSSFromString(GUIp.storage.get('UserCss'));
+        GUIp.addCSSFromString(GUIp.storage.get('UserCss'), 'guip_user_css');
     }
 
     if (localStorage.getItem('ui_s') !== GUIp.storage.get('ui_s')) {
