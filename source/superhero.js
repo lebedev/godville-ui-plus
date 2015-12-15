@@ -37,7 +37,6 @@ GUIp.superhero._init = function() {
     GUIp.improver.improve();
     GUIp.timers.init();
     GUIp.observers.init();
-    GUIp.improver.initOverrides();
     GUIp.overrider.init();
 };
 GUIp.superhero.start = function() {
