@@ -3,7 +3,11 @@ window.GUIp = window.GUIp || {};
 
 GUIp.trycatcher = {};
 
-GUIp.trycatcher.wrap = function(method) {
+GUIp.trycatcher.init = function() {
+    GUIp.trycatcher._process(GUIp);
+};
+
+GUIp.trycatcher._wrap = function(method) {
     return function() {
         try {
             return method.apply(this, arguments);
@@ -17,7 +21,7 @@ GUIp.trycatcher.wrap = function(method) {
     };
 };
 
-GUIp.trycatcher.process = function(object) {
+GUIp.trycatcher._process = function(object) {
     var type, method;
     var showOriginalSource = function() {
         return this.original.toString();
@@ -27,12 +31,12 @@ GUIp.trycatcher.process = function(object) {
         switch(type) {
         case 'Function':
             method = object[key];
-            object[key] = GUIp.trycatcher.wrap(method);
+            object[key] = GUIp.trycatcher._wrap(method);
             object[key].original = method;
             object[key].toString = showOriginalSource;
             break;
         case 'Object':
-            GUIp.trycatcher.process(object[key]);
+            GUIp.trycatcher._process(object[key]);
             break;
         }
     }

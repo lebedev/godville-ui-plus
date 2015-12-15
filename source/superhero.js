@@ -4,47 +4,31 @@ window.GUIp = window.GUIp || {};
 GUIp.superhero = {};
 
 GUIp.superhero.modules = [
+    'trycatcher',
     'data',
+    'storage',
     'forum',
     'help',
-    'improver',
     'informer',
+    'words',
     'inventory',
     'logger',
     'observers',
     'overrider',
     'stats',
-    'storage',
     'timeout',
     'timers',
-    'trycatcher',
     'utils',
-    'words'
+    'improver'
 ];
 
-GUIp.superhero._init = function() {
-    GUIp.data.init();
-    GUIp.storage.migrate();
-    GUIp.utils.addCSS();
-    GUIp.utils.inform();
-    GUIp.words.init();
-    GUIp.logger.create();
-    GUIp.timeout.create();
-    GUIp.help.init();
-    GUIp.informer.init();
-    GUIp.forum.init();
-    GUIp.inventory.init();
-    GUIp.improver.improve();
-    GUIp.timers.init();
-    GUIp.observers.init();
-    GUIp.overrider.init();
-};
 GUIp.superhero.start = function() {
-    window.console.time('Godville UI+ initialized in');
+    window.console.log('GUIp: initializing modules...');
+    window.console.time('GUIp: modules initialized in');
 
-    GUIp.trycatcher.process(GUIp);
-
-    GUIp.superhero._init();
+    for (var i in GUIp.superhero.modules) {
+        GUIp[GUIp.superhero.modules[i]].init();
+    }
 
     if (!GUIp.data.isFight) {
         window.onmousemove = window.onscroll = window.ontouchmove = GUIp.improver.activity;
@@ -68,7 +52,8 @@ GUIp.superhero.start = function() {
         );
     }
 
-    window.console.timeEnd('Godville UI+ initialized in');
+    window.console.timeEnd('GUIp: modules initialized in');
+    window.console.info('GUIp: started. Enjoy! :3');
 };
 
 var waitFor = function(aTargetCheckFunc) {
@@ -91,6 +76,9 @@ var waitFor = function(aTargetCheckFunc) {
 waitFor(function() {
     return GUIp.common;
 }).then(function() {
+    window.console.log('GUIp: v' + GUIp.version + ' is about to start.');
+    window.console.log('GUIp: waiting for modules <script>-tags to be created...');
+    window.console.time('GUIp: created modules <script>-tags in');
     var container = document.getElementById('guip'),
         tagName = 'script',
         script;
@@ -99,10 +87,11 @@ waitFor(function() {
         script.src = GUIp.common.getResourceURL('modules/' + GUIp.superhero.modules[i] + '.js');
         container.appendChild(script);
     }
+    window.console.timeEnd('GUIp: created modules <script>-tags in');
+    window.console.log('GUIp: waiting for modules to be loaded...');
+    window.console.time('GUIp: modules loaded in');
 }).then(waitFor.bind(null, function() {
-    return window.$ &&
-          (document.getElementById('m_info') || document.getElementById('stats')) &&
-           GUIp.browser &&
+    return GUIp.browser &&
            GUIp.i18n &&
            GUIp.addCSSFromURL &&
            GUIp.data &&
@@ -119,7 +108,17 @@ waitFor(function() {
            GUIp.timers &&
            GUIp.trycatcher &&
            GUIp.utils &&
-           GUIp.words &&
+           GUIp.words;
+})).then(function() {
+    window.console.timeEnd('GUIp: modules loaded in');
+    window.console.log('GUIp: waiting for Godville to start...');
+    window.console.time('GUIp: Godville started in');
+}).then(waitFor.bind(null, function() {
+    return window.$ &&
+          (document.getElementById('m_info') || document.getElementById('stats')) &&
            window.so &&
            window.so.state;
-})).then(GUIp.superhero.start);
+})).then(function() {
+    window.console.timeEnd('GUIp: Godville started in');
+    GUIp.superhero.start();
+});

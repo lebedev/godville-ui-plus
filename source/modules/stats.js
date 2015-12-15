@@ -3,6 +3,8 @@ window.GUIp = window.GUIp || {};
 
 GUIp.stats = {};
 
+GUIp.stats.init = function() {};
+
 GUIp.stats._count = function(aParty) {
     return Object.keys(window.so.state[aParty]).length;
 };

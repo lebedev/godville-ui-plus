@@ -3,6 +3,10 @@ window.GUIp = window.GUIp || {};
 
 GUIp.storage = {};
 
+GUIp.storage.init = function() {
+    GUIp.storage._migrate();
+};
+
 GUIp.storage._get_key = function(key) {
     return 'GUIp_' + GUIp.data.god_name + ':' + key;
 };
@@ -89,7 +93,7 @@ GUIp.storage._delete = function(regexp) {
         }
     }
 };
-GUIp.storage.migrate = function() {
+GUIp.storage._migrate = function() {
     if (!GUIp.storage._migratedAt('151009')) {
         localStorage.removeItem('GUIp_migrated');
         localStorage.removeItem('GUIp_CurrentUser');

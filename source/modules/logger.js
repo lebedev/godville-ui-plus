@@ -5,14 +5,14 @@ GUIp.logger = {};
 
 GUIp.logger.WIDTH_MARGIN = 100;
 
-GUIp.logger.create = function() {
+GUIp.logger.init = function() {
     document.getElementById('hero_block').insertAdjacentHTML(
         'afterbegin',
         '<ul id="logger" style="mask: url(#fader_masking);"></ul>'
     );
 
     this._container = document.getElementById('logger');
-    this.need_separator = false;
+    this.separatorIsNeeded = false;
     this.dungeonWatchers = [
         ['Map_Allies_HP', 'a:hp', GUIp.i18n.allies_health],
         ['Map_Charges',   'ch',   GUIp.i18n.charges,     ],

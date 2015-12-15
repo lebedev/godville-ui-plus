@@ -3,7 +3,11 @@ window.GUIp = window.GUIp || {};
 
 GUIp.timeout = {};
 
-GUIp.timeout.bar = null;
+GUIp.timeout.init = function() {
+    document.getElementById('guip').insertAdjacentHTML('beforeend', '<div id="timeout_bar"></div>');
+    this.bar = document.getElementById('timeout_bar');
+};
+
 GUIp.timeout.timeout = 0;
 GUIp.timeout._finishtDate = 0;
 GUIp.timeout._tickInt = 0;
@@ -17,12 +21,7 @@ GUIp.timeout._tick = function() {
         GUIp.utils.setVoiceSubmitState(!GUIp.improver.freezeVoiceButton.match('when_empty') || document.querySelector('#god_phrase').value, false);
     }
 };
-// creates timeout bar element
-GUIp.timeout.create = function() {
-    this.bar = document.createElement('div');
-    this.bar.id = 'timeout_bar';
-    document.body.insertBefore(this.bar, document.body.firstChild);
-};
+
 // starts timeout bar
 GUIp.timeout.start = function() {
     clearInterval(this._tickInt);
@@ -33,6 +32,7 @@ GUIp.timeout.start = function() {
     this._tickInt = setInterval(function() { GUIp.timeout._tick(); }, 100);
     GUIp.utils.setVoiceSubmitState(GUIp.improver.freezeVoiceButton.match('after_voice'), true);
 };
+
 GUIp.timeout._delayedStart = function() {
     var customTimeout = GUIp.storage.get('Option:voiceTimeout');
     if (parseInt(customTimeout) > 0) {

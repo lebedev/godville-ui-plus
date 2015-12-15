@@ -3,6 +3,10 @@ window.GUIp = window.GUIp || {};
 
 GUIp.improver = {};
 
+GUIp.improver.init = function() {
+    GUIp.improver.improve();
+};
+
 GUIp.improver.improveTmt = 0;
 GUIp.improver.isFirstTime = true;
 GUIp.improver.pmParsed = false;

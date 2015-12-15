@@ -3,6 +3,11 @@ window.GUIp = window.GUIp || {};
 
 GUIp.utils = {};
 
+GUIp.utils.init = function() {
+    GUIp.utils.addCSS();
+    GUIp.utils.inform();
+};
+
 GUIp.utils.notiLaunch = 0;
 GUIp.utils.messagesShown = [];
 // base phrase say algorythm
