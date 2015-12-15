@@ -9,6 +9,12 @@
 	"version_name": "$VERSION_NAME",
 	"homepage_url": "http://godville.net/forums/show_topic/2812",
 	"permissions": ["http://godville.net/", "https://godville.net/", "http://godvillegame.com/", "https://godvillegame.com/"],
+
+	"background": {
+		"scripts": ["reload_godville_pages_on_extension_install_or_update.js"],
+		"persistent": true
+	},
+
 	"content_scripts": [{
 		"js": [
 			"loader.js"
