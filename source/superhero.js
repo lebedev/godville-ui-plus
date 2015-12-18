@@ -80,11 +80,10 @@ waitFor(function() {
     window.console.log('GUIp: waiting for modules <script>-tags to be created...');
     window.console.time('GUIp: created modules <script>-tags in');
     var container = document.getElementById('guip'),
-        tagName = 'script',
         getUrl = window.localStorage.getItem('GUIp_beta') === 'true' || GUIp.browser === 'Opera' ? 'getGithubSourceURL' : 'getResourceURL',
         script;
     for (var i in GUIp.superhero.modules) {
-        script = document.createElement(tagName);
+        script = document.createElement('script');
         script.src = GUIp.common[getUrl]('modules/' + GUIp.superhero.modules[i] + '.js');
         container.appendChild(script);
     }
