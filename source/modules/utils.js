@@ -12,8 +12,9 @@ GUIp.utils.notiLaunch = 0;
 GUIp.utils.messagesShown = [];
 // base phrase say algorythm
 GUIp.utils.setVoice = function(voice) {
+    this.voiceInput.focus();
     this.voiceInput.value = voice;
-    GUIp.utils.triggerChangeOnVoiceInput();
+    this.voiceInput.focus();
 };
 // finds a label with given name
 GUIp.utils.findLabel = function($base_elem, label_name) {
