@@ -22,7 +22,9 @@ GUIp.overrider._overrideSounds = function() {
                         return false;
                     }
                 }
-                setTimeout(document.location.reload.bind(document.location), 3e3);
+                setTimeout(function() {
+                    document.location.reload();
+                }, 3e3);
             } else {
                 window.so.a_notify_orig();
             }
