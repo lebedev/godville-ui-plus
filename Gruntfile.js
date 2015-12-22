@@ -16,8 +16,8 @@ module.exports = function(grunt) {
         options: {
           process: function(aContent) {
             if (grunt.config('compile_path') === 'debug') {
-              return aContent.replace(/\$VERSION_NAME/g, grunt.config('current_version') + ' debug build ' + grunt.config('build_number'))
-                             .replace(/\$VERSION/g, grunt.config('current_version'));
+              return aContent.replace(/\$VERSION_NAME/g, grunt.config('debug_version') + ' debug build ' + grunt.config('debug_build'))
+                             .replace(/\$VERSION/g, grunt.config('debug_version'));
             } else {
               return aContent.replace(/\$VERSION|\$VERSION_NAME/g, grunt.config('new_version'));
             }
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
         options: {
           process: function(aContent) {
             if (grunt.config('compile_path') === 'debug') {
-              return aContent.replace(/\$VERSION/g, grunt.config('current_version') + ' debug build ' + grunt.config('build_number'));
+              return aContent.replace(/\$VERSION/g, grunt.config('debug_version') + ' debug build ' + grunt.config('debug_build'));
             } else {
               return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
             }
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
         options: {
           process: function(aContent) {
             if (grunt.config('compile_path') === 'debug') {
-              return aContent.replace(/\$VERSION/g, grunt.config('current_version') + ' debug build ' + grunt.config('build_number'));
+              return aContent.replace(/\$VERSION/g, grunt.config('debug_version') + ' debug build ' + grunt.config('debug_build'));
             } else {
               return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
             }
@@ -211,19 +211,22 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('bump_debug_build', 'Bumps debug build number.', function () {
-    grunt.config.set('current_version', grunt.file.read('current_version'));
-    var build;
+    var current_version_octets = grunt.file.read('current_version').split('.');
+    current_version_octets[3]++;
+    grunt.config.set('debug_version', current_version_octets.join('.'));
+
+    var debug_build;
     try {
-      build = (+grunt.file.read('debug/build') + 1) || 1;
+      debug_build = (+grunt.file.read('debug/build') + 1) || 1;
     } catch(e) {
-      build = 1;
+      debug_build = 1;
     } finally {
-      grunt.file.write('debug/build', build);
+      grunt.file.write('debug/build', debug_build);
     }
-    grunt.config.set('build_number', build);
+    grunt.config.set('debug_build', debug_build);
     grunt.log.ok(
       'Debug version is ' +
-      '*' + grunt.config('current_version') + ' debug build ' + grunt.config('build_number') + '*.'
+      '*' + grunt.config('debug_version') + ' debug build ' + grunt.config('debug_build') + '*.'
     );
   });
 
