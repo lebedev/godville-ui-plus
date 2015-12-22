@@ -1,18 +1,143 @@
-(function() {
-'use strict';
-// log
-
+// map_log
 window.GUIp = window.GUIp || {};
 
-GUIp.log = {};
+GUIp.map_log = {};
 
-GUIp.log.godname = localStorage.getItem('GUIp:lastGodname');
-GUIp.log.customDomain = !document.location.href.match(/^https?:\/\/(godville\.net|godvillegame\.com)\/duels\/log/);
-GUIp.log.xhrCount = 0;
-GUIp.log.chronicles = {};
-GUIp.log.directionlessMoveIndex = 0;
-GUIp.log.directionlessMoveCombo = "";
-GUIp.log.dungeonPhrases = [
+GUIp.map_log.init = function() {
+    // add some styles
+    if (GUIp.browser !== 'Opera') {
+        GUIp.addCSSFromURL(GUIp.common.getResourceURL('superhero.css'), 'guip_css');
+    }
+
+    // add save links
+    if (!GUIp.map_log.customDomain && GUIp.locale === 'ru' && (!document.getElementsByClassName('lastduelpl')[1] || !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/))) {
+        document.getElementsByClassName('lastduelpl_f')[1].insertAdjacentHTML('beforeend', '<div>Сохранить в <a id="gdvltk_saver" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;">gdvl.tk</a></div>');
+        document.getElementById('gdvltk_saver').onclick = function(e) {
+            e.preventDefault();
+            var d=document,c="createElement",h=d.head,a="appendChild",tn="script",s=d[c](tn);s.src='//gdvl.tk/send.js';h[a](s);
+        };
+    }
+
+    if (document.location.href.match('boss=') || !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/)) {
+        GUIp.map_log.enumerateSteps();
+        return;
+    }
+
+    try {
+        this.map_logID = 'Log:' + document.location.href.match(/duels\/log\/([^\?]+)/)[1] + ':';
+        var steps = +document.getElementById('fight_log_capt').textContent.match(/(?:Хроника подземелья \(шаг|Dungeon Journal \(step) (\d+)\)/)[1];
+        // add step numbers to chronicle log
+        GUIp.map_log.enumerateSteps();
+        // add a map for a translation-type chronicle
+        if (!document.querySelector('#dmap') && steps === +GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'steps')) {
+            var map = JSON.parse(GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'map')),
+                map_elem = '<div id="hero2"><div class="box"><fieldset style="min-width:0;"><legend>' + GUIp.i18n.map + '</legend><div id="dmap" class="new_line">';
+            for (var i = 0, ilen = map.length; i < ilen; i++) {
+                map_elem += '<div class="dml" style="width:' + (map[0].length * 21) + 'px;">';
+                for (var j = 0, jlen = map[0].length; j < jlen; j++) {
+                    map_elem += '<div class="dmc">' + map[i][j] + '</div>';
+                }
+                map_elem += '</div>';
+            }
+            map_elem += '</div></fieldset></div></div>';
+            document.getElementById('right_block').insertAdjacentHTML('beforeend', map_elem);
+        }
+        // add some colors to the map. if possible
+        if (document.querySelector('#dmap')) {
+            GUIp.map_log.initColorMap.call(GUIp.map_log);
+        }
+        // send button and other stuff
+        var $box = document.querySelector('#hero2 fieldset') || document.getElementById('right_block');
+        if (document.location.href.match('sort')) {
+            $box.insertAdjacentHTML('beforeend', '<span>' + GUIp.i18n.wrong_entries_order + '</span>');
+            return;
+        }
+        var steps_min = GUIp.map_log.storageGet('LEMRestrictions:FirstRequest') || 12;
+        if (steps < steps_min) {
+            $box.insertAdjacentHTML('beforeend', '<span>' + GUIp.i18n.the_button_will_appear_after + steps_min + GUIp.i18n.step + '</span>');
+            return;
+        }
+        $box.insertAdjacentHTML('beforeend',
+            '<form target="_blank" method="post" enctype="multipart/form-data" action="//www.godalert.info/Dungeons/index' + (GUIp.locale === 'en' ? '-eng' : '') + '.cgi" id="send_to_LEM_form" style="padding-top: calc(2em + 3px);">' +
+                '<input type="hidden" id="fight_text" name="fight_text">' +
+                '<input type="hidden" name="map_type" value="map_graphic">' +
+                '<input type="hidden" name="min" value="X">' +
+                '<input type="hidden" name="partial" value="X">' +
+                '<input type="hidden" name="room_x" value="">' +
+                '<input type="hidden" name="room_y" value="">' +
+                '<input type="hidden" name="Submit" value="' + GUIp.i18n.get_your_map + '">' +
+                '<input type="hidden" name="guip" value="1">' +
+                '<input type="checkbox" id="match" name="match" value="1"><label for="match">' + GUIp.i18n.search_database + '</label>' +
+                '<div id="search_mode" style="display: none;">' +
+                    '<input type="checkbox" id="match_partial" name="match_partial" value="1"><label for="match_partial">' + GUIp.i18n.relaxed_search + '</label>' +
+                    '<div><input type="radio" id="exact" name="search_mode" value="exact"><label for="exact">' + GUIp.i18n.exact + '</label></div>' +
+                    '<div><input type="radio" id="high" name="search_mode" value="high"><label for="high">' + GUIp.i18n.high_precision + '</label></div>' +
+                    '<div><input type="radio" id="medium" name="search_mode" value="medium" checked=""><label for="medium">' + GUIp.i18n.normal + '</label></div>' +
+                    '<div><input type="radio" id="low" name="search_mode" value="low"><label for="low">' + GUIp.i18n.primary + '</label></div>' +
+                '</div>' +
+                '<table style="box-shadow: none; width: 100%;"><tr>' +
+                    '<td style="border: none; padding: 0;"><label for="stoneeater">' + GUIp.i18n.corrections + '</label></td>' +
+                    '<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="' + (GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'corrections') || GUIp.map_log.directionlessMoveCombo) + '" style=" width: 100%; padding: 0;"></td>' +
+                '</tr></table>' +
+                '<input type="checkbox" id="high_contrast" name="high_contrast" value="1"><label for="high_contrast">' + GUIp.i18n.high_contrast + '</label>' +
+                '<button id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
+            '</form>');
+        document.querySelector('#fight_text').value = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' +
+                                                            document.getElementsByTagName('html')[0].innerHTML.replace(/<(?:script|style)[\S\s]+?<\/(?:script|style)>/g, '')
+                                                                                                              .replace(/onclick="[^"]+?"/g, '')
+                                                                                                              .replace(/"javascript[^"]+"/g, '""')
+                                                                                                              .replace(/<form[\s\S]+?<\/form>/g, '')
+                                                                                                              .replace(/<iframe[\s\S]+?<\/iframe>/g, '')
+                                                                                                              .replace(/\t/g, '')
+                                                                                                              .replace(/<div[^>]+class="dmc[^>]+>/g,'<div class="dmc">')
+                                                                                                              .replace(/ {2,}/g, ' ')
+                                                                                                              .replace(/\n{2,}/g, '\n') +
+                                                      '</html>';
+        this.button = document.getElementById('send_to_LEM');
+        this.timeFrameSeconds = (GUIp.map_log.storageGet('LEMRestrictions:TimeFrame') || 20)*60;
+        this.requestLimit = GUIp.map_log.storageGet('LEMRestrictions:RequestLimit') || 5;
+
+        var match = document.getElementById('match'),
+            search_mode = document.getElementById('search_mode'),
+            high_contrast = document.getElementById('high_contrast');
+        this.button.onclick = function(e) {
+            e.preventDefault();
+            for (var i = GUIp.map_log.requestLimit; i > 1; i--) {
+                GUIp.map_log.storageSet(GUIp.map_log.map_logID + 'sentToLEM' + i, GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'sentToLEM' + (i - 1)));
+            }
+            GUIp.map_log.storageSet(GUIp.map_log.map_logID + 'sentToLEM1', Date.now());
+            GUIp.map_log.updateButton();
+            this.form.submit();
+            document.getElementById('match').checked = false;
+            document.getElementById('match_partial').checked = false;
+            document.getElementById('medium').click();
+            document.getElementById('search_mode').style.display = "none";
+        };
+
+        GUIp.map_log.updateButton();
+        setInterval(function() {
+            GUIp.map_log.updateButton();
+            GUIp.map_log.deleteOldEntries();
+        }, 1000);
+        match.onchange = function() {
+            search_mode.style.display = search_mode.style.display === 'none' ? 'block' : 'none';
+        };
+        high_contrast.checked = localStorage.getItem('GUIp_highContrast') === 'true';
+        high_contrast.onchange = function() {
+            localStorage.setItem('GUIp_highContrast', document.getElementById('high_contrast').checked);
+        };
+    } catch(e) {
+        window.console.map_log(e);
+    }
+};
+
+GUIp.map_log.godname = localStorage.getItem('GUIp:lastGodname');
+GUIp.map_log.customDomain = !document.location.href.match(/^https?:\/\/(godville\.net|godvillegame\.com)\/duels\/log/);
+GUIp.map_log.xhrCount = 0;
+GUIp.map_log.chronicles = {};
+GUIp.map_log.directionlessMoveIndex = 0;
+GUIp.map_log.directionlessMoveCombo = "";
+GUIp.map_log.dungeonPhrases = [
     'bossHint',
     'boss',
     'bonusGodpower',
@@ -27,8 +152,8 @@ GUIp.log.dungeonPhrases = [
     'pointerMarker'
 ];
 
-GUIp.log.corrections = { n: 'north', e: 'east', s: 'south', w: 'west' };
-GUIp.log.pointerRegExp = new RegExp('[^а-яa-z](северо-восток|северо-запад|юго-восток|юго-запад|' +
+GUIp.map_log.corrections = { n: 'north', e: 'east', s: 'south', w: 'west' };
+GUIp.map_log.pointerRegExp = new RegExp('[^а-яa-z](северо-восток|северо-запад|юго-восток|юго-запад|' +
                                                     'север|восток|юг|запад|' +
                                                     'очень холодно|холодно|свежо|тепло|очень горячо|горячо|' +
                                                     'north-east|north-west|south-east|south-west|' +
@@ -36,24 +161,24 @@ GUIp.log.pointerRegExp = new RegExp('[^а-яa-z](северо-восток|се�
                                                     'freezing|very cold|cold|mild|warm|hot|burning|very hot|hot)', 'gi');
 
 
-GUIp.log.get_key = function(key) {
-    return 'GUIp_' + GUIp.log.godname + ':' + key;
+GUIp.map_log.get_key = function(key) {
+    return 'GUIp_' + GUIp.map_log.godname + ':' + key;
 };
 
-GUIp.log.storageSet = function(id, value) {
-    localStorage.setItem(GUIp.log.get_key(id), value);
+GUIp.map_log.storageSet = function(id, value) {
+    localStorage.setItem(GUIp.map_log.get_key(id), value);
     return value;
 };
 
-GUIp.log.storageGet = function(id) {
-    var val = localStorage.getItem(GUIp.log.get_key(id));
+GUIp.map_log.storageGet = function(id) {
+    var val = localStorage.getItem(GUIp.map_log.get_key(id));
     if (val === 'true') { return true; }
     if (val === 'false') { return false; }
     return val;
 };
 
-GUIp.log.getXHR = function(path, success_callback, fail_callback, extra_arg) {
-    if (GUIp.log.xhrCount++ > 3) {
+GUIp.map_log.getXHR = function(path, success_callback, fail_callback, extra_arg) {
+    if (GUIp.map_log.xhrCount++ > 3) {
         return;
     }
     var xhr = new XMLHttpRequest();
@@ -76,7 +201,7 @@ GUIp.log.getXHR = function(path, success_callback, fail_callback, extra_arg) {
     xhr.send();
 };
 
-GUIp.log.clearDungeonPhrases = function() {
+GUIp.map_log.clearDungeonPhrases = function() {
     for (var key in localStorage) {
         if (key.match(/^LogDB:/)) {
             localStorage.removeItem(key);
@@ -84,7 +209,7 @@ GUIp.log.clearDungeonPhrases = function() {
     }
 };
 
-GUIp.log.parseDungeonPhrases = function(xhr) {
+GUIp.map_log.parseDungeonPhrases = function(xhr) {
     var j = 0;
     for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
         if (!(temp = xhr.responseText.match(new RegExp('<p>' + this.dungeonPhrases[i] + '\\b([\\s\\S]+?)<\/p>')))) {
@@ -103,7 +228,7 @@ GUIp.log.parseDungeonPhrases = function(xhr) {
     }
 };
 
-GUIp.log.parseSingleChronicle = function(texts, infls, step) {
+GUIp.map_log.parseSingleChronicle = function(texts, infls, step) {
     if (!this.chronicles[step]) {
         this.chronicles[step] = { direction: null, marks: [], pointers: [], jumping: false, directionless: false, text: texts.join(' '), infls: infls.join('\n') };
     }
@@ -172,19 +297,19 @@ GUIp.log.parseSingleChronicle = function(texts, infls, step) {
     }
 };
 
-GUIp.log.fallbackColorization = function() {
+GUIp.map_log.fallbackColorization = function() {
     this.prepareMap();
     this.highlightTreasuryZone();
 };
 
-GUIp.log.initColorMap = function() {
+GUIp.map_log.initColorMap = function() {
     var updateRequired = false;
     // get markers if needed
     if (+localStorage.getItem('LogDB:lastUpdate') < (Date.now() - 3*60*60*1000)) {
         updateRequired = true;
     }
     if (!localStorage.getItem('LogDB:pointerMarkerPhrases') || updateRequired) {
-        if (!GUIp.log.customDomain) {
+        if (!GUIp.map_log.customDomain) {
             var customChronicler = this.storageGet('Option:customDungeonChronicler') || '';
             this.getXHR('/gods/' + (customChronicler.length >= 3 ? customChronicler : 'Dungeoneer'), this.parseDungeonPhrases.bind(this), this.fallbackColorization.bind(this));
         } else {
@@ -204,7 +329,7 @@ GUIp.log.initColorMap = function() {
     this.highlightTreasuryZone();
 };
 
-GUIp.log.prepareMap = function() {
+GUIp.map_log.prepareMap = function() {
     // make dmap feel a bit like normal map
     document.querySelector('#dmap').innerHTML = document.querySelector('#dmap').innerHTML.replace(/>\s{2,}</g, "><");
     var cells = document.querySelectorAll('.dml .dmc');
@@ -216,7 +341,7 @@ GUIp.log.prepareMap = function() {
     }
 };
 
-GUIp.log.parseChronicles = function() {
+GUIp.map_log.parseChronicles = function() {
     var step, step_max = document.getElementById('fight_log_capt').textContent.match(/([0-9]+)/);
     if (!step_max || step_max[0] === '1') {
         return;
@@ -233,7 +358,7 @@ GUIp.log.parseChronicles = function() {
     for (var i = 0; step <= step_max; i++) {
         if (!matches[i]) {
             if (step !== step_max) {
-                window.console.log('not enough steps detected! required: '+step_max+', got: '+step);
+                window.console.map_log('not enough steps detected! required: '+step_max+', got: '+step);
             }
             break;
         }
@@ -245,7 +370,7 @@ GUIp.log.parseChronicles = function() {
         }
         if (!reversed && matches[i].match(/<div class="new_line ?" style="[^"]+">/) ||
              reversed && (!matches[i+1] || matches[i+1].match(/<div class="new_line ?" style="[^"]+">/))) {
-            GUIp.log.parseSingleChronicle(texts, infls, step);
+            GUIp.map_log.parseSingleChronicle(texts, infls, step);
             lastNotParsed = false;
             texts = [];
             infls = [];
@@ -253,11 +378,11 @@ GUIp.log.parseChronicles = function() {
         }
     }
     if (lastNotParsed) {
-        GUIp.log.parseSingleChronicle(texts, infls, step);
+        GUIp.map_log.parseSingleChronicle(texts, infls, step);
     }
 };
 
-GUIp.log.enumerateSteps = function() {
+GUIp.map_log.enumerateSteps = function() {
     var i, len, step, stepholder, steplines = [], dcapt = false,
         matches = document.querySelector('#last_items_arena').getElementsByClassName('new_line'),
         reversed = !!document.location.href.match('sort=desc'),
@@ -279,24 +404,24 @@ GUIp.log.enumerateSteps = function() {
     }
 };
 
-GUIp.log.describeMap = function() {
+GUIp.map_log.describeMap = function() {
     var step, mark_no, marks_length, steptext, lasttext, titlemod, titletext, currentCell,
         trapMoveLossCount = 0,
-        coords = GUIp.log.calculateExitXY(),
+        coords = GUIp.map_log.calculateExitXY(),
         steps = Object.keys(this.chronicles),
         steps_max = steps.length;
     for (step = 1; step <= steps_max; step++) {
         if (this.chronicles[step].directionless) {
-            var shortCorrection = (GUIp.log.storageGet(this.logID + 'corrections') || [])[this.directionlessMoveIndex++];
+            var shortCorrection = (GUIp.map_log.storageGet(this.map_logID + 'corrections') || [])[this.directionlessMoveIndex++];
             if (shortCorrection) {
                 this.chronicles[step].direction = this.corrections[shortCorrection];
             } else {
-                window.console.log('warning: detected directionless move! the following direction (re-)calculation is currently in beta and might not work at all under some circumstances!');
-                this.chronicles[step].direction = GUIp.log.calculateDirectionlessMove(coords, step);
+                window.console.map_log('warning: detected directionless move! the following direction (re-)calculation is currently in beta and might not work at all under some circumstances!');
+                this.chronicles[step].direction = GUIp.map_log.calculateDirectionlessMove(coords, step);
             }
             this.chronicles[step].directionless = false;
         }
-        GUIp.log.moveCoords(coords, this.chronicles[step]);
+        GUIp.map_log.moveCoords(coords, this.chronicles[step]);
         currentCell = document.querySelectorAll('#dmap .dml')[coords.y].children[coords.x];
         if (currentCell.textContent.trim() === '#') {
             break;
@@ -347,13 +472,13 @@ GUIp.log.describeMap = function() {
             currentCell.title = '#' + step + ' : ' + steptext;
         }
     }
-    var heroesCoords = GUIp.log.calculateXY(document.getElementsByClassName('map_pos')[0]);
+    var heroesCoords = GUIp.map_log.calculateXY(document.getElementsByClassName('map_pos')[0]);
     if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
-        window.console.log('chronicle processing failed, coords diff: x: ' + (heroesCoords.x - coords.x) + ', y: ' + (heroesCoords.y - coords.y) + '.');
+        window.console.map_log('chronicle processing failed, coords diff: x: ' + (heroesCoords.x - coords.x) + ', y: ' + (heroesCoords.y - coords.y) + '.');
     }
 };
 
-GUIp.log.highlightTreasuryZone = function() {
+GUIp.map_log.highlightTreasuryZone = function() {
     if (document.querySelectorAll('#dmap .dml').length) {
         var i, j, ik, jk, len, chronolen = +Object.keys(this.chronicles).reverse()[0],
             $boxML = document.querySelectorAll('#dmap .dml'),
@@ -397,7 +522,7 @@ GUIp.log.highlightTreasuryZone = function() {
                             case 'burning':  ttl += '✺'; break;
                         }
                     }
-                    window.console.log("current position has pointers: " + ttl);
+                    window.console.map_log("current position has pointers: " + ttl);
                 }
                 if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1 || ttl.length && ttl.match('←|→|↓|↑|↙|↘|↖|↗')) {
                     MaxMap++;
@@ -550,7 +675,7 @@ GUIp.log.highlightTreasuryZone = function() {
     }
 };
 
-GUIp.log.moveCoords = function(coords, chronicle) {
+GUIp.map_log.moveCoords = function(coords, chronicle) {
     if (chronicle.direction) {
         var step = chronicle.jumping ? 2 : 1;
         switch(chronicle.direction) {
@@ -566,29 +691,29 @@ GUIp.log.moveCoords = function(coords, chronicle) {
     }
 };
 
-GUIp.log.calculateXY = function(cell) {
+GUIp.map_log.calculateXY = function(cell) {
     var coords = {};
-    coords.x = GUIp.log.getNodeIndex(cell);
-    coords.y = GUIp.log.getNodeIndex(cell.parentNode);
+    coords.x = GUIp.map_log.getNodeIndex(cell);
+    coords.y = GUIp.map_log.getNodeIndex(cell.parentNode);
     return coords;
 };
 
-GUIp.log.calculateExitXY = function() {
+GUIp.map_log.calculateExitXY = function() {
     var exit_coords = { x: null, y: null },
         cells = document.querySelectorAll('.dml .dmc');
     for (var i = 0, len = cells.length; i < len; i++) {
         if (cells[i].textContent.trim().match(/В|E/)) {
-            exit_coords = GUIp.log.calculateXY(cells[i]);
+            exit_coords = GUIp.map_log.calculateXY(cells[i]);
             break;
         }
     }
     if (!exit_coords.x) {
-        exit_coords = GUIp.log.calculateXY(document.getElementsByClassName('map_pos')[0]);
+        exit_coords = GUIp.map_log.calculateXY(document.getElementsByClassName('map_pos')[0]);
     }
     return exit_coords;
 };
 
-GUIp.log.getRPerms = function(array, size, initialStuff, output) {
+GUIp.map_log.getRPerms = function(array, size, initialStuff, output) {
     if (initialStuff.length >= size) {
         output.push(initialStuff);
     } else {
@@ -598,57 +723,57 @@ GUIp.log.getRPerms = function(array, size, initialStuff, output) {
     }
 };
 
-GUIp.log.getAllRPerms = function(array, size) {
+GUIp.map_log.getAllRPerms = function(array, size) {
     var output = [];
     this.getRPerms(array, size, [], output);
     return output;
 };
 
-GUIp.log.calculateDirectionlessMove = function(initCoords, initStep) {
+GUIp.map_log.calculateDirectionlessMove = function(initCoords, initStep) {
     var i, len, j, len2, coords = { x: initCoords.x, y: initCoords.y },
         dmap = document.querySelectorAll('#dmap .dml'),
-        heroesCoords = GUIp.log.calculateXY(document.getElementsByClassName('map_pos')[0]),
+        heroesCoords = GUIp.map_log.calculateXY(document.getElementsByClassName('map_pos')[0]),
         steps = Object.keys(this.chronicles),
         directionless = 0;
 
-    window.console.log('going to calculate directionless moves from step #'+initStep);
+    window.console.map_log('going to calculate directionless moves from step #'+initStep);
     for (i = initStep, len = steps.length; i <= len; i++) {
         if (this.chronicles[i].directionless) {
             directionless++;
         }
-        GUIp.log.moveCoords(coords, this.chronicles[i]);
+        GUIp.map_log.moveCoords(coords, this.chronicles[i]);
     }
 
     var variations = this.getAllRPerms('nesw'.split(''),directionless);
 
     for (i = 0, len = variations.length; i < len; i++) {
-        //window.console.log('trying combo '+variations[i].join());
+        //window.console.map_log('trying combo '+variations[i].join());
         coords = { x: initCoords.x, y: initCoords.y };
         directionless = 0;
         for (j = initStep, len2 = steps.length; j <= len2; j++) {
             if (this.chronicles[j].directionless) {
-                GUIp.log.moveCoords(coords, { direction: this.corrections[variations[i][directionless]] });
+                GUIp.map_log.moveCoords(coords, { direction: this.corrections[variations[i][directionless]] });
                 directionless++;
             } else {
-                GUIp.log.moveCoords(coords, this.chronicles[j]);
+                GUIp.map_log.moveCoords(coords, this.chronicles[j]);
             }
             if (!dmap[coords.y] || !dmap[coords.y].children[coords.x] || dmap[coords.y].children[coords.x].textContent.match(/#|!|\?/)) {
                 break;
             }
         }
         if (heroesCoords.x - coords.x === 0 && heroesCoords.y - coords.y === 0) {
-            var currentCorrections = this.storageGet(GUIp.log.logID + 'corrections') || '';
-            window.console.log('found result: '+variations[i].join());
+            var currentCorrections = this.storageGet(GUIp.map_log.map_logID + 'corrections') || '';
+            window.console.map_log('found result: '+variations[i].join());
             this.directionlessMoveCombo = currentCorrections + variations[i].join('');
             if (!this.customDomain) {
-                this.storageSet(GUIp.log.logID + 'corrections', currentCorrections + variations[i].join(''));
+                this.storageSet(GUIp.map_log.map_logID + 'corrections', currentCorrections + variations[i].join(''));
             }
             return this.corrections[variations[i][0]];
         }
     }
 };
 
-GUIp.log.getNodeIndex = function(node) {
+GUIp.map_log.getNodeIndex = function(node) {
     var i = 0;
     while ((node = node.previousElementSibling)) {
         i++;
@@ -656,95 +781,95 @@ GUIp.log.getNodeIndex = function(node) {
     return i;
 };
 
-GUIp.log.deleteOldEntries = function() {
+GUIp.map_log.deleteOldEntries = function() {
     for (var key in localStorage) {
-        if (key.match('GUIp_' + GUIp.log.godname + ':Log:\\w{5}:') && !key.match(GUIp.log.logID + '|' + GUIp.log.storageGet('Log:current'))) {
+        if (key.match('GUIp_' + GUIp.map_log.godname + ':Log:\\w{5}:') && !key.match(GUIp.map_log.map_logID + '|' + GUIp.map_log.storageGet('Log:current'))) {
             localStorage.removeItem(key);
         }
     }
 };
 
-GUIp.log.updateButton = function() {
+GUIp.map_log.updateButton = function() {
     var i;
-    if (!isNaN(GUIp.log.storageGet(GUIp.log.logID + 'sentToLEM' + GUIp.log.requestLimit)) && Date.now() - GUIp.log.storageGet(GUIp.log.logID + 'sentToLEM' + GUIp.log.requestLimit) < GUIp.log.timeFrameSeconds*1000) {
-        var time = GUIp.log.timeFrameSeconds - (Date.now() - GUIp.log.storageGet(GUIp.log.logID + 'sentToLEM' + GUIp.log.requestLimit))/1000,
+    if (!isNaN(GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'sentToLEM' + GUIp.map_log.requestLimit)) && Date.now() - GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'sentToLEM' + GUIp.map_log.requestLimit) < GUIp.map_log.timeFrameSeconds*1000) {
+        var time = GUIp.map_log.timeFrameSeconds - (Date.now() - GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'sentToLEM' + GUIp.map_log.requestLimit))/1000,
             minutes = Math.floor(time/60),
             seconds = Math.floor(time%60);
         seconds = seconds < 10 ? '0' + seconds : seconds;
-        GUIp.log.button.innerHTML = GUIp.i18n.send_log_to_LEMs_script + GUIp.i18n.till_next_try + minutes + ':' + seconds;
-        GUIp.log.button.setAttribute('disabled', 'disabled');
+        GUIp.map_log.button.innerHTML = GUIp.i18n.send_log_to_LEMs_script + GUIp.i18n.till_next_try + minutes + ':' + seconds;
+        GUIp.map_log.button.setAttribute('disabled', 'disabled');
     } else {
         var tries = 0;
-        for (i = 0; i < GUIp.log.requestLimit; i++) {
-            if (isNaN(GUIp.log.storageGet(GUIp.log.logID + 'sentToLEM' + i)) || Date.now() - GUIp.log.storageGet(GUIp.log.logID + 'sentToLEM' + i) > GUIp.log.timeFrameSeconds*1000) {
+        for (i = 0; i < GUIp.map_log.requestLimit; i++) {
+            if (isNaN(GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'sentToLEM' + i)) || Date.now() - GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'sentToLEM' + i) > GUIp.map_log.timeFrameSeconds*1000) {
                 tries++;
             }
         }
-        GUIp.log.button.innerHTML = GUIp.i18n.send_log_to_LEMs_script + GUIp.i18n.tries_left + tries;
-        GUIp.log.button.removeAttribute('disabled');
+        GUIp.map_log.button.innerHTML = GUIp.i18n.send_log_to_LEMs_script + GUIp.i18n.tries_left + tries;
+        GUIp.map_log.button.removeAttribute('disabled');
     }
 };
 
-GUIp.log.saverSendLog = function() {
-    var i, div = document.createElement('div'), inputs = '<input type="hidden" name="bosses_count" value="' + GUIp.log.saverBossesCnt + '"><input type="hidden" name="log_id" value="' + GUIp.log.saverLogId + '">';
-    for (i = 0; i < GUIp.log.saverPages.length; i++) {
+GUIp.map_log.saverSendLog = function() {
+    var i, div = document.createElement('div'), inputs = '<input type="hidden" name="bosses_count" value="' + GUIp.map_log.saverBossesCnt + '"><input type="hidden" name="log_id" value="' + GUIp.map_log.saverLogId + '">';
+    for (i = 0; i < GUIp.map_log.saverPages.length; i++) {
         inputs += '<input type="hidden" name="' + i + '">';
     }
-    div.insertAdjacentHTML('beforeend', '<form method="post" action="'+GUIp.log.saverURL+'" enctype="multipart/form-data" accept-charset="utf-8">' + inputs + '</form>');
-    for (i = 0; i < GUIp.log.saverPages.length; i++) {
-        div.querySelector('input[name="' + i + '"]').setAttribute('value', GUIp.log.saverPages[i]);
+    div.insertAdjacentHTML('beforeend', '<form method="post" action="'+GUIp.map_log.saverURL+'" enctype="multipart/form-data" accept-charset="utf-8">' + inputs + '</form>');
+    for (i = 0; i < GUIp.map_log.saverPages.length; i++) {
+        div.querySelector('input[name="' + i + '"]').setAttribute('value', GUIp.map_log.saverPages[i]);
     }
     document.body.appendChild(div);
     div.firstChild.submit();
     document.body.removeChild(div);
 };
 
-GUIp.log.saverFetchPage = function(boss_no) {
-    GUIp.log.xhrCount = 0;
-    GUIp.log.getXHR(document.location.protocol + '//' + document.location.host + document.location.pathname + (boss_no ? '?boss=' + boss_no : ''), GUIp.log.saverProcessPage.bind(null), GUIp.log.saverFetchFailed.bind(null), boss_no);
+GUIp.map_log.saverFetchPage = function(boss_no) {
+    GUIp.map_log.xhrCount = 0;
+    GUIp.map_log.getXHR(document.location.protocol + '//' + document.location.host + document.location.pathname + (boss_no ? '?boss=' + boss_no : ''), GUIp.map_log.saverProcessPage.bind(null), GUIp.map_log.saverFetchFailed.bind(null), boss_no);
 };
 
-GUIp.log.saverProcessPage = function(xhr) {
+GUIp.map_log.saverProcessPage = function(xhr) {
     var boss_no = xhr.extra_arg || 0;
     if (!xhr.responseText.match(/Извините, но по этой ссылке найти хронику не удалось./)) {
-        GUIp.log.saverPages.push(xhr.responseText.replace(/<img[^>]+>/g, '')
+        GUIp.map_log.saverPages.push(xhr.responseText.replace(/<img[^>]+>/g, '')
                                  .replace(/<script[\s\S]+?<\/script>/g, '')
                                  .replace(/\.css\?\d+/g, '.css')
-                                 .replace(/трое суток/, GUIp.log.saverBanner));
-        if (boss_no < GUIp.log.saverBossesCnt) {
-            GUIp.log.saverFetchPage(boss_no + 1);
+                                 .replace(/трое суток/, GUIp.map_log.saverBanner));
+        if (boss_no < GUIp.map_log.saverBossesCnt) {
+            GUIp.map_log.saverFetchPage(boss_no + 1);
         } else {
-            GUIp.log.saverSendLog();
+            GUIp.map_log.saverSendLog();
         }
     } else {
-        GUIp.log.saverRemoveLoader();
+        GUIp.map_log.saverRemoveLoader();
         window.alert('При сохранении произошла ошибка - хроника не существует.');
     }
 };
 
-GUIp.log.saverFetchFailed = function() {
-    GUIp.log.saverRemoveLoader();
+GUIp.map_log.saverFetchFailed = function() {
+    GUIp.map_log.saverRemoveLoader();
     window.alert('При запросе хроники произошла ошибка.\nПопробуйте еще раз.');
 };
 
-GUIp.log.saverAddLoader = function() {
-    document.body.insertAdjacentHTML('beforeend', '<div id="godvillepehu_loader" style="position: fixed; left: 50%; top: 50%; margin: -24px; padding: 8px; background: rgba(255,255,255,0.9);"><img src="'+GUIp.log.saverLoaderGIF+'"></div>');
+GUIp.map_log.saverAddLoader = function() {
+    document.body.insertAdjacentHTML('beforeend', '<div id="godvillepehu_loader" style="position: fixed; left: 50%; top: 50%; margin: -24px; padding: 8px; background: rgba(255,255,255,0.9);"><img src="'+GUIp.map_log.saverLoaderGIF+'"></div>');
 };
 
-GUIp.log.saverRemoveLoader = function() {
+GUIp.map_log.saverRemoveLoader = function() {
     if (document.getElementById('godvillepehu_loader')) {
         document.body.removeChild(document.getElementById('godvillepehu_loader'));
     }
 };
 
-GUIp.log.saverPrepareLog = function() {
-    GUIp.log.saverURL = '//gdvl.tk/upload.php';
-    GUIp.log.saverBanner = 'до тепловой смерти Вселенной (или пока не умрет сервер) благодаря <a href="//godville.net/gods/Mave">Mave</a> и <a href="//godville.net/gods/Бэдлак">Бэдлаку</a>';
-    GUIp.log.saverLoaderGIF = '//gdvl.tk/images/loader.gif';
+GUIp.map_log.saverPrepareLog = function() {
+    GUIp.map_log.saverURL = '//gdvl.tk/upload.php';
+    GUIp.map_log.saverBanner = 'до тепловой смерти Вселенной (или пока не умрет сервер) благодаря <a href="//godville.net/gods/Mave">Mave</a> и <a href="//godville.net/gods/Бэдлак">Бэдлаку</a>';
+    GUIp.map_log.saverLoaderGIF = '//gdvl.tk/images/loader.gif';
     try {
-        GUIp.log.saverLogId = (document.location.href.match(/^https?:\/\/godville.net\/duels\/log\/(.{5})/) || [])[1];
-        GUIp.log.saverPages = [];
-        if (!GUIp.log.saverLogId) {
+        GUIp.map_log.saverLogId = (document.location.href.match(/^https?:\/\/godville.net\/duels\/log\/(.{5})/) || [])[1];
+        GUIp.map_log.saverPages = [];
+        if (!GUIp.map_log.saverLogId) {
             throw 'можно загружать только логи Годвилля';
         }
         if (document.getElementById('search_status') && document.getElementById('search_status').textContent.match(/Извините, но по этой ссылке найти хронику не удалось./)) {
@@ -758,147 +883,14 @@ GUIp.log.saverPrepareLog = function() {
             window.alert('Лог уже загружается!');
             return;
         } else {
-            GUIp.log.saverAddLoader();
+            GUIp.map_log.saverAddLoader();
         }
-        GUIp.log.saverBossesCnt = document.querySelectorAll('a[href*="boss"]').length;
-        GUIp.log.saverFetchPage(null);
+        GUIp.map_log.saverBossesCnt = document.querySelectorAll('a[href*="boss"]').length;
+        GUIp.map_log.saverFetchPage(null);
     } catch(e) {
-        GUIp.log.saverRemoveLoader();
+        GUIp.map_log.saverRemoveLoader();
         window.alert('Ошибка: ' + e);
     }
 };
 
-GUIp.log.starter = function() {
-    if (!GUIp.locale || !GUIp.i18n) { return; }
-    clearInterval(starterInt);
-
-    // add some styles
-    if (GUIp.browser !== 'Opera') {
-        GUIp.addCSSFromURL(GUIp.common.getResourceURL('superhero.css'), 'guip_css');
-    }
-
-    // add save links
-    if (!GUIp.log.customDomain && GUIp.locale === 'ru' && (!document.getElementsByClassName('lastduelpl')[1] || !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/))) {
-        document.getElementsByClassName('lastduelpl_f')[1].insertAdjacentHTML('beforeend', '<div>Сохранить в <a id="gdvltk_saver" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;">gdvl.tk</a></div>');
-        document.getElementById('gdvltk_saver').onclick = function(e) {
-            e.preventDefault();
-            var d=document,c="createElement",h=d.head,a="appendChild",tn="script",s=d[c](tn);s.src='//gdvl.tk/send.js';h[a](s);
-        };
-    }
-
-    if (document.location.href.match('boss=') || !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/)) {
-        GUIp.log.enumerateSteps();
-        return;
-    }
-
-    try {
-        this.logID = 'Log:' + document.location.href.match(/duels\/log\/([^\?]+)/)[1] + ':';
-        var steps = +document.getElementById('fight_log_capt').textContent.match(/(?:Хроника подземелья \(шаг|Dungeon Journal \(step) (\d+)\)/)[1];
-        // add step numbers to chronicle log
-        GUIp.log.enumerateSteps();
-        // add a map for a translation-type chronicle
-        if (!document.querySelector('#dmap') && steps === +GUIp.log.storageGet(GUIp.log.logID + 'steps')) {
-            var map = JSON.parse(GUIp.log.storageGet(GUIp.log.logID + 'map')),
-                map_elem = '<div id="hero2"><div class="box"><fieldset style="min-width:0;"><legend>' + GUIp.i18n.map + '</legend><div id="dmap" class="new_line">';
-            for (var i = 0, ilen = map.length; i < ilen; i++) {
-                map_elem += '<div class="dml" style="width:' + (map[0].length * 21) + 'px;">';
-                for (var j = 0, jlen = map[0].length; j < jlen; j++) {
-                    map_elem += '<div class="dmc">' + map[i][j] + '</div>';
-                }
-                map_elem += '</div>';
-            }
-            map_elem += '</div></fieldset></div></div>';
-            document.getElementById('right_block').insertAdjacentHTML('beforeend', map_elem);
-        }
-        // add some colors to the map. if possible
-        if (document.querySelector('#dmap')) {
-            GUIp.log.initColorMap.call(GUIp.log);
-        }
-        // send button and other stuff
-        var $box = document.querySelector('#hero2 fieldset') || document.getElementById('right_block');
-        if (document.location.href.match('sort')) {
-            $box.insertAdjacentHTML('beforeend', '<span>' + GUIp.i18n.wrong_entries_order + '</span>');
-            return;
-        }
-        var steps_min = GUIp.log.storageGet('LEMRestrictions:FirstRequest') || 12;
-        if (steps < steps_min) {
-            $box.insertAdjacentHTML('beforeend', '<span>' + GUIp.i18n.the_button_will_appear_after + steps_min + GUIp.i18n.step + '</span>');
-            return;
-        }
-        $box.insertAdjacentHTML('beforeend',
-            '<form target="_blank" method="post" enctype="multipart/form-data" action="//www.godalert.info/Dungeons/index' + (GUIp.locale === 'en' ? '-eng' : '') + '.cgi" id="send_to_LEM_form" style="padding-top: calc(2em + 3px);">' +
-                '<input type="hidden" id="fight_text" name="fight_text">' +
-                '<input type="hidden" name="map_type" value="map_graphic">' +
-                '<input type="hidden" name="min" value="X">' +
-                '<input type="hidden" name="partial" value="X">' +
-                '<input type="hidden" name="room_x" value="">' +
-                '<input type="hidden" name="room_y" value="">' +
-                '<input type="hidden" name="Submit" value="' + GUIp.i18n.get_your_map + '">' +
-                '<input type="hidden" name="guip" value="1">' +
-                '<input type="checkbox" id="match" name="match" value="1"><label for="match">' + GUIp.i18n.search_database + '</label>' +
-                '<div id="search_mode" style="display: none;">' +
-                    '<input type="checkbox" id="match_partial" name="match_partial" value="1"><label for="match_partial">' + GUIp.i18n.relaxed_search + '</label>' +
-                    '<div><input type="radio" id="exact" name="search_mode" value="exact"><label for="exact">' + GUIp.i18n.exact + '</label></div>' +
-                    '<div><input type="radio" id="high" name="search_mode" value="high"><label for="high">' + GUIp.i18n.high_precision + '</label></div>' +
-                    '<div><input type="radio" id="medium" name="search_mode" value="medium" checked=""><label for="medium">' + GUIp.i18n.normal + '</label></div>' +
-                    '<div><input type="radio" id="low" name="search_mode" value="low"><label for="low">' + GUIp.i18n.primary + '</label></div>' +
-                '</div>' +
-                '<table style="box-shadow: none; width: 100%;"><tr>' +
-                    '<td style="border: none; padding: 0;"><label for="stoneeater">' + GUIp.i18n.corrections + '</label></td>' +
-                    '<td style="border: none; padding: 0 1.5px 0 0; width: 100%;"><input type="text" id="stoneeater" name="stoneeater" value="' + (GUIp.log.storageGet(GUIp.log.logID + 'corrections') || GUIp.log.directionlessMoveCombo) + '" style=" width: 100%; padding: 0;"></td>' +
-                '</tr></table>' +
-                '<input type="checkbox" id="high_contrast" name="high_contrast" value="1"><label for="high_contrast">' + GUIp.i18n.high_contrast + '</label>' +
-                '<button id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
-            '</form>');
-        document.querySelector('#fight_text').value = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' +
-                                                            document.getElementsByTagName('html')[0].innerHTML.replace(/<(?:script|style)[\S\s]+?<\/(?:script|style)>/g, '')
-                                                                                                              .replace(/onclick="[^"]+?"/g, '')
-                                                                                                              .replace(/"javascript[^"]+"/g, '""')
-                                                                                                              .replace(/<form[\s\S]+?<\/form>/g, '')
-                                                                                                              .replace(/<iframe[\s\S]+?<\/iframe>/g, '')
-                                                                                                              .replace(/\t/g, '')
-                                                                                                              .replace(/<div[^>]+class="dmc[^>]+>/g,'<div class="dmc">')
-                                                                                                              .replace(/ {2,}/g, ' ')
-                                                                                                              .replace(/\n{2,}/g, '\n') +
-                                                      '</html>';
-        this.button = document.getElementById('send_to_LEM');
-        this.timeFrameSeconds = (GUIp.log.storageGet('LEMRestrictions:TimeFrame') || 20)*60;
-        this.requestLimit = GUIp.log.storageGet('LEMRestrictions:RequestLimit') || 5;
-
-        var match = document.getElementById('match'),
-            search_mode = document.getElementById('search_mode'),
-            high_contrast = document.getElementById('high_contrast');
-        this.button.onclick = function(e) {
-            e.preventDefault();
-            for (var i = GUIp.log.requestLimit; i > 1; i--) {
-                GUIp.log.storageSet(GUIp.log.logID + 'sentToLEM' + i, GUIp.log.storageGet(GUIp.log.logID + 'sentToLEM' + (i - 1)));
-            }
-            GUIp.log.storageSet(GUIp.log.logID + 'sentToLEM1', Date.now());
-            GUIp.log.updateButton();
-            this.form.submit();
-            document.getElementById('match').checked = false;
-            document.getElementById('match_partial').checked = false;
-            document.getElementById('medium').click();
-            document.getElementById('search_mode').style.display = "none";
-        };
-
-        GUIp.log.updateButton();
-        setInterval(function() {
-            GUIp.log.updateButton();
-            GUIp.log.deleteOldEntries();
-        }, 1000);
-        match.onchange = function() {
-            search_mode.style.display = search_mode.style.display === 'none' ? 'block' : 'none';
-        };
-        high_contrast.checked = localStorage.getItem('GUIp_highContrast') === 'true';
-        high_contrast.onchange = function() {
-            localStorage.setItem('GUIp_highContrast', document.getElementById('high_contrast').checked);
-        };
-    } catch(e) {
-        window.console.log(e);
-    }
-};
-
-var starterInt = setInterval(function() { GUIp.log.starter(); }, 50);
-
-})();
+GUIp.map_log.loaded = true;
