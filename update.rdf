@@ -2,35 +2,35 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Seq RDF:about="rdf:#$RoUyq">
-    <RDF:li RDF:resource="rdf:#$SoUyq"/>
-  </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHDbzXte9c5ZgA6+qthzmh75ofQuIjfn6C3ljSRvi3FAC7rMODHBHIvBC5GfNq6Zrezbo1X2OcWJFhfp6b260DmW2ZcTbHppZ17wDp0kReav5ptW3ow9uDFMYkfbjHKLLRcZ/K95ggUrz/jr5shp/KJ4BGwmyAXfhWtgwv119Ixj">
+    <em:updates RDF:resource="rdf:#$RoUyq"/>
+  </RDF:Description>
   <RDF:Description RDF:about="rdf:#$SoUyq"
-                   em:version="0.40.159.6">
+                   em:version="0.40.159.8">
     <em:targetApplication RDF:resource="rdf:#$VoUyq"/>
     <em:targetApplication RDF:resource="rdf:#$0pUyq"/>
     <em:targetApplication RDF:resource="rdf:#$7pUyq"/>
-  </RDF:Description>
-  <RDF:Description RDF:about="rdf:#$7pUyq"
-                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                   em:minVersion="34.0"
-                   em:maxVersion="46.0"
-                   em:updateLink="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.xpi"
-                   em:updateHash="sha256:34354bad60e6ffd265c24978072dbc3db66d8479ad99610f5750784fc8cb042e" />
-  <RDF:Description RDF:about="rdf:#$0pUyq"
-                   em:id="{aa3c5121-dab2-40e2-81ca-7ea25febc110}"
-                   em:minVersion="34.0"
-                   em:maxVersion="46.0"
-                   em:updateLink="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.xpi"
-                   em:updateHash="sha256:34354bad60e6ffd265c24978072dbc3db66d8479ad99610f5750784fc8cb042e" />
-  <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAEW/Av9NCqzxB2tBDidQ6xhZZ2ekhweYtV++H+PLY6eU/C2jNAhZYrPgMG+lNClnnLFKQFq1aIWkSl2Ngu7Y2DlWWXGhZnDJbcHa9aVs32zN5uphhYMpIdIwYz/8phJL1b37skn1e6UEKwsG4pm1CkDDUjfUZOCAXJNaky3BCFWB">
-    <em:updates RDF:resource="rdf:#$RoUyq"/>
   </RDF:Description>
   <RDF:Description RDF:about="rdf:#$VoUyq"
                    em:id="{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}"
                    em:minVersion="2.40"
                    em:maxVersion="2.42"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.xpi"
-                   em:updateHash="sha256:34354bad60e6ffd265c24978072dbc3db66d8479ad99610f5750784fc8cb042e" />
+                   em:updateHash="sha256:2d82afb0b515729eddd0f8b92056209c8d9dd27e98964a39c24edaa5978c3cf5" />
+  <RDF:Seq RDF:about="rdf:#$RoUyq">
+    <RDF:li RDF:resource="rdf:#$SoUyq"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="rdf:#$7pUyq"
+                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   em:minVersion="34.0"
+                   em:maxVersion="46.0"
+                   em:updateLink="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.xpi"
+                   em:updateHash="sha256:2d82afb0b515729eddd0f8b92056209c8d9dd27e98964a39c24edaa5978c3cf5" />
+  <RDF:Description RDF:about="rdf:#$0pUyq"
+                   em:id="{aa3c5121-dab2-40e2-81ca-7ea25febc110}"
+                   em:minVersion="34.0"
+                   em:maxVersion="46.0"
+                   em:updateLink="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.xpi"
+                   em:updateHash="sha256:2d82afb0b515729eddd0f8b92056209c8d9dd27e98964a39c24edaa5978c3cf5" />
 </RDF:RDF>
