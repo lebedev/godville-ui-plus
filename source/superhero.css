@@ -725,3 +725,13 @@ body.has_temple.field #hk_health .p_bar:before {
 .guildsmanAlly {
 	font-style: italic;
 }
+
+#imp_button {
+	display: block !important;
+}
+.page_wrapper .s_col #imp_button {
+	left: 36px;
+}
+.page_wrapper_5c .s_col #imp_button {
+	left: 34px;
+}
