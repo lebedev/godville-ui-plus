@@ -662,14 +662,8 @@ var createLightbox = function(lbType) {
     var setLightboxTA = function(lbData) {
         var i, len, lbInput = $id('lightbox_input');
         lbInput.value = '';
-        if (lbType !== 'pets') {
-            for (i = 0, len = lbData.length; i < len; i++) {
-                lbInput.value += lbData[i] + '\n';
-            }
-        } else {
-            for (i = 0, len = lbData.length; i < len; i++) {
-                lbInput.value += lbData[i].name + '|' + lbData[i].min_level + '\n';
-            }
+        for (i = 0, len = lbData.length; i < len; i++) {
+            lbInput.value += (lbType === 'pets' ? lbData[i].name + '|' + lbData[i].min_level : lbData[i]) + '\n';
         }
     };
 
@@ -681,10 +675,10 @@ var createLightbox = function(lbType) {
             } catch (error) {
                 lbData = [];
             }
-            setLightboxTA(lbType,lbData);
+            setLightboxTA(lbData);
             $id('lightbox_reset').disabled = false;
         } else {
-            setLightboxTA(lbType,def[lbType]);
+            setLightboxTA(def[lbType]);
         }
     };
 
