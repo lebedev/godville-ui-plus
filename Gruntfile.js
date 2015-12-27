@@ -19,7 +19,7 @@ module.exports = function(grunt) {
               return aContent.replace(/\$VERSION_NAME/g, grunt.config('debug_version') + ' debug build ' + grunt.config('debug_build'))
                              .replace(/\$VERSION/g, grunt.config('debug_version'));
             } else {
-              return aContent.replace(/\$VERSION|\$VERSION_NAME/g, grunt.config('new_version'));
+              return aContent.replace(/\$VERSION_NAME|\$VERSION/g, grunt.config('new_version'));
             }
           }
         },
