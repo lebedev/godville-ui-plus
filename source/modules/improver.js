@@ -521,7 +521,7 @@ GUIp.improver.improveStats = function() {
             health_lim = GUIp.stats.Max_HP() * 0.05 * GUIp.stats.Enemies_AliveCount();
         } else if (GUIp.stats.Allies_Count() === 0) { // single enemy
             health_lim = GUIp.stats.Max_HP() * 0.15;
-        } else { // raid boss or dungeon boss
+        } else if (window.so.state.fight_type() !== "sail") { // raid boss or dungeon boss
             health_lim = (GUIp.stats.Allies_MaxHP() + GUIp.stats.Max_HP()) * (GUIp.stats.Enemy_HasAbility("second_strike") ? 0.094 : 0.068);
             if (GUIp.stats.Enemies_AliveCount() > 1) { // boss has an active minion
                 health_lim *= 1.3;

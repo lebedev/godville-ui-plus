@@ -80,8 +80,8 @@ GUIp.observers.refresher = {
             var tgt = mutations[i].target,
                 id = tgt.id,
                 cl = tgt.className;
-            if (!(id && id.match(/logger|pet_badge|equip_badge/)) &&
-                !(cl && cl.match(/voice_generator|inspect_button|m_hover|craft_button/))) {
+            if (!(id && id.match && id.match(/logger|pet_badge|equip_badge/)) &&
+                !(cl && cl.match && cl.match(/voice_generator|inspect_button|m_hover|craft_button/))) {
                 toReset = true;
                 break;
             }
