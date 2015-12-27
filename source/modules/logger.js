@@ -63,11 +63,11 @@ GUIp.logger._appendStr = function(cssClass, aText, aHint) {
     if (this.separatorIsNeeded) {
         this.separatorIsNeeded = false;
         if (this._container.children.length) {
-            this._container.insertAdjacentHTML('beforeend', '<li class="separator">|</li>');
+            this._container.insertAdjacentHTML('beforeend', '<span class="whitespace"> </span><li class="separator">|</li>');
         }
     }
 
-    this._container.insertAdjacentHTML('beforeend', '<li class="' + cssClass + '" title="' + aHint + '">' + aText + '</li>');
+    this._container.insertAdjacentHTML('beforeend', '<span class="whitespace"> </span><li class="' + cssClass + '" title="' + aHint + '">' + aText + '</li>');
 
     var firstEntry;
     while (

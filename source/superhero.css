@@ -169,8 +169,10 @@ body {
 
 #logger {
 	-webkit-mask-image: linear-gradient(to left, black 94%, transparent 100%);
+	display: block;
 	margin: auto;
 	overflow-x: hidden;
+	position: relative;
 	white-space: nowrap;
 	width: 90%;
 }
@@ -203,9 +205,11 @@ body {
 #logger .charges,
 #logger .allies_hp { color: blue; }
 #logger .savings { color: darkorange; }
-#logger {
-	display: block;
-	position: relative;
+
+#logger .whitespace {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
 }
 
 #timeout_bar {
