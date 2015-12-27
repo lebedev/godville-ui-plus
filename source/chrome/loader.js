@@ -12,7 +12,7 @@
     var attachScripts = function(aSpecificScripts) {
         var ruUrlRegExp = 'godville\\.net|gdvl\\.tk|gv\\.erinome\\.net',
             locale = document.location.hostname.match(ruUrlRegExp) ? 'ru' : 'en',
-            commonScriptNames = ['common.js', 'guip_firefox.js', 'phrases_' + locale + '.js'],
+            commonScriptNames = ['common.js', 'guip_chrome.js', 'phrases_' + locale + '.js'],
             scriptNames = commonScriptNames.concat(aSpecificScripts);
 
         document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
@@ -20,7 +20,7 @@
             script;
         for (var n in scriptNames) {
             script = document.createElement('script');
-            script.src = 'resource://godville-ui-plus-at-badluck-dot-dicey/data/' + scriptNames[n];
+            script.src = prefix + scriptNames[n];
             container.appendChild(script);
         }
         script = document.createElement('script');
