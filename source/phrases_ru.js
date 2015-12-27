@@ -236,7 +236,6 @@ GUIp.getPhrases = function() {
             'arena box',
             'black box',
             'boss box',
-            'catch box',
             'charge box',
             'coolstory box',
             'friend box',
@@ -250,6 +249,7 @@ GUIp.getPhrases = function() {
             'temper box',
             'to arena box',
             'transformer',
+            'treasure box',
             'quest box'
         ],
         descriptions: [
@@ -257,7 +257,6 @@ GUIp.getPhrases = function() {
             'При активации этого предмета в дуэли герои перестанут промахиваться и начнут биться в полную силу',
             'Этот предмет может случайным образом повлиять на героя',
             'Этот предмет ищет для героя босса',
-            'Внутри может найтись как ерунда, так и что-то ценное',
             'Этот предмет добавляет заряд в прано-аккумулятор',
             'Этот предмет сочиняет о герое былину',
             'Этот предмет заводит герою случайного друга из числа активных героев',
@@ -271,6 +270,7 @@ GUIp.getPhrases = function() {
             'Этот предмет делает характер героя немного ярче',
             'Этот предмет отправляет героя на арену',
             'Этот предмет превращает один или несколько жирных предметов из инвентаря героя в золотые кирпичи',
+            'Внутри может найтись как ерунда, так и что-то ценное',
             'Этот предмет отправляет героя в мини-квест'
         ]
     },
@@ -598,7 +598,6 @@ GUIp.i18n = {
     forbidden_informers_aura_box: 'наделяющие случайной аурой',
     forbidden_informers_black_box: 'оказывающие случайный эффект',
     forbidden_informers_boss_box: 'вызывающие сильного монстра',
-    forbidden_informers_catch_box: 'улов с рыбалки',
     forbidden_informers_charge_box: 'пакующие прану за полцены',
     forbidden_informers_coolstory_box: 'сочиняющие былину',
     forbidden_informers_gift_box: 'дарующие кирпич',
@@ -612,6 +611,7 @@ GUIp.i18n = {
     forbidden_informers_teleporter: 'телепортирующие в город',
     forbidden_informers_temper_box: 'меняющие характер героя',
     forbidden_informers_to_arena_box: 'отправляющие на арену',
+    forbidden_informers_treasure_box: 'улов с рыбалки или заплыва',
     forbidden_informers_transformer: 'меняющие <b>предметы</b> на кирпичи',
     enable_desktop_alerts: 'Включить всплывающие уведомления',
     enable_informer_alerts: 'при активации информеров',

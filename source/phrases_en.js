@@ -131,7 +131,6 @@ GUIp.getPhrases = function() {
             //'arena box',
             'black box',
             'boss box',
-            'catch box',
             'charge box',
             //'coolstory box',
             'friend box',
@@ -145,6 +144,7 @@ GUIp.getPhrases = function() {
             'temper box',
             'to arena box',
             'transformer',
+            'treasure box',
             'quest box'
         ],
         descriptions: [
@@ -152,7 +152,6 @@ GUIp.getPhrases = function() {
             //'Данный предмет можно активировать только во время дуэли',
             'This item can affect the hero in a good or bad way',
             'This item summons a boss-monster for the hero to fight',
-            'Inside could be something valuable or some rubbish',
             'This item adds one accumulator charge when activated',
             //'Этот предмет сочиняет о герое былину',
             'This item helps your hero find a new friend',
@@ -166,6 +165,7 @@ GUIp.getPhrases = function() {
             'This item makes hero\'s alignment more defined',
             'This item teleports the hero to the arena when activated',
             'This item can transform one or several bold items in inventory into golden bricks',
+            'Inside could be something valuable or some rubbish',
             'This item sends the hero on a mini-quest when activated'
         ]
     },
@@ -478,7 +478,6 @@ GUIp.i18n = {
     forbidden_informers_black_box: 'trophies randomly affecting a hero',
     forbidden_informers_boss_box: 'trophies summoning a boss monster',
     forbidden_informers_charge_box: 'trophies giving a godpower charge',
-    forbidden_informers_catch_box: 'a catch from fishing',
     //forbidden_informers_coolstory_box: 'composing a tale',
     forbidden_informers_gift_box: 'free golden brick',
     forbidden_informers_friend_box: 'making random friend',
@@ -492,6 +491,7 @@ GUIp.i18n = {
     forbidden_informers_temper_box: 'changing hero\'s alignment',
     forbidden_informers_to_arena_box: 'sending hero to arena',
     forbidden_informers_transformer: 'transforming <b>items</b> into golden bricks',
+    forbidden_informers_treasure_box: 'a catch from fishing or a booty',
     enable_desktop_alerts: 'Show desktop notifications',
     enable_informer_alerts: 'when informers are activated',
     enable_pm_alerts: 'when receiving new private messages',
