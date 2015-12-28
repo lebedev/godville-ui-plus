@@ -85,6 +85,7 @@ GUIp.logger._watchStatsValue = function(aId, aName, aDescription) {
     // Remove id prefixes.
     aId = aId.replace(/^Hero_|^Map_/, '');
 
+    // Prevent field logger to show wood-1 if a hero is going to a Dungeon of Pledge.
     if (aId === 'Logs' && GUIp.stats.isField() && GUIp.stats.Logs() < +GUIp.storage.get('Logger:Logs')) {
         return;
     }

@@ -183,7 +183,7 @@ GUIp.stats.isField = function() {
     return !window.so.state.is_fighting();
 };
 GUIp.stats.isFight = function() {
-    return !window.so.state.fight_type().match('dungeon|sail');
+    return window.so.state.is_fighting() && !window.so.state.fight_type().match('dungeon|sail');
 };
 GUIp.stats.isMale = function() {
     return window.so.state.stats.gender.value === 'male';
