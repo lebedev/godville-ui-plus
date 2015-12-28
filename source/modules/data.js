@@ -28,23 +28,21 @@ GUIp.data.init = function() {
     setInterval(function() { GUIp.data._getWantedMonster(); }, 5*60*1000);
 };
 GUIp.data._initVariables = function() {
-    this.isFight = GUIp.stats.isFight();
-    this.isDungeon = GUIp.stats.isDungeon();
-    document.body.classList.add(this.isDungeon ? 'dungeon' : this.isFight ? 'fight' : 'field');
-    this.god_name = GUIp.stats.godName();
-    this.char_name = GUIp.stats.charName();
+    document.body.classList.add(
+        GUIp.stats.isDungeon() ? 'dungeon' :
+        GUIp.stats.isSail()    ? 'sail'    :
+        GUIp.stats.isFight()   ? 'fight'   : 'field');
     this.char_sex = GUIp.stats.isMale() ? GUIp.i18n.hero : GUIp.i18n.heroine;
     GUIp.storage.set('ui_s', '');
     GUIp.storage.set('charIsMale', GUIp.stats.isMale());
 
-    if (GUIp.storage.isNewProfile(this.god_name)) {
-        GUIp.storage.addToNames(this.god_name);
+    if (GUIp.storage.isNewProfile(GUIp.stats.godName())) {
+        GUIp.storage.addToNames(GUIp.stats.godName());
     }
-    localStorage.setItem('GUIp:lastGodname', this.god_name);
+    localStorage.setItem('GUIp:lastGodname', GUIp.stats.godName());
 
-    if (GUIp.stats.Bricks() === 1000) {
+    if (GUIp.stats.hasTemple()) {
         document.body.classList.add('has_temple');
-        this.hasTemple = true;
     }
     GUIp.utils.voiceInput = document.getElementById('god_phrase');
 };
@@ -66,7 +64,7 @@ GUIp.data._initForumData = function() {
     }
 };
 GUIp.data._clearOldDungeonData = function() {
-    if (!this.isFight && !this.isDungeon) {
+    if (GUIp.stats.isField()) {
         for (var key in localStorage) {
             if (key.match(/:Dungeon:/)) {
                 localStorage.removeItem(key);

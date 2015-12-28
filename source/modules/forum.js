@@ -96,7 +96,7 @@ GUIp.forum._parse = function(xhr) {
         forum[topic_no].date = topic.last_post_at;
 
         if (diff > 0) {
-            if (topic.last_post_by !== GUIp.data.god_name) {
+            if (topic.last_post_by !== GUIp.stats.godName()) {
                 informers[topic_no] = {
                     diff: diff + (informers[topic_no] ? informers[topic_no].diff : 0),
                     name: topic.title

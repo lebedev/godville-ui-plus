@@ -30,7 +30,7 @@ GUIp.superhero.start = function() {
         GUIp[GUIp.superhero.modules[i]].init();
     }
 
-    if (!GUIp.data.isFight) {
+    if (!GUIp.stats.isField()) {
         window.onmousemove = window.onscroll = window.ontouchmove = GUIp.improver.activity;
     }
 

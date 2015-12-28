@@ -90,8 +90,8 @@ GUIp.observers.refresher = {
             clearInterval(GUIp.improver.softRefreshInt);
             clearInterval(GUIp.improver.hardRefreshInt);
             if (!GUIp.storage.get('Option:disablePageRefresh')) {
-                GUIp.improver.softRefreshInt = setInterval(function() { GUIp.improver.softRefresh(); }, (GUIp.data.isFight || GUIp.data.isDungeon) ? 5e3 : 9e4);
-                GUIp.improver.hardRefreshInt = setInterval(function() { GUIp.improver.hardRefresh(); }, (GUIp.data.isFight || GUIp.data.isDungeon) ? 15e3 : 27e4);
+                GUIp.improver.softRefreshInt = setInterval(function() { GUIp.improver.softRefresh(); }, GUIp.stats.isField() ?  9e4 :  5e3);
+                GUIp.improver.hardRefreshInt = setInterval(function() { GUIp.improver.hardRefresh(); }, GUIp.stats.isField() ? 27e4 : 15e3);
             }
         }
     },
@@ -99,17 +99,17 @@ GUIp.observers.refresher = {
 };
 GUIp.observers.diary = {
     get condition() {
-        return !GUIp.data.isFight && !GUIp.data.isDungeon;
+        return GUIp.stats.isField();
     },
     config: { childList: true },
     func: function(mutations) {
-        GUIp.observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;    }, GUIp.improver.improveDiary);
+        GUIp.observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length; }, GUIp.improver.improveDiary);
     },
     target: ['#diary .d_content']
 };
 GUIp.observers.news = {
     get condition() {
-        return !GUIp.data.isFight && !GUIp.data.isDungeon;
+        return GUIp.stats.isField();
     },
     config: { childList: true, characterData: true, subtree: true },
     func: function() {
@@ -119,7 +119,7 @@ GUIp.observers.news = {
 };
 GUIp.observers.chronicles = {
     get condition() {
-        return GUIp.data.isDungeon;
+        return GUIp.stats.isDungeon();
     },
     config: { childList: true },
     func: function(mutations) {
@@ -129,7 +129,7 @@ GUIp.observers.chronicles = {
 };
 GUIp.observers.map_colorization = {
     get condition() {
-        return GUIp.data.isDungeon;
+        return GUIp.stats.isDungeon();
     },
     config: {
         childList: true,

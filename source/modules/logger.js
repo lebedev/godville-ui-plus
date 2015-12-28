@@ -92,7 +92,7 @@ GUIp.logger._watchStatsValue = function(aId, aName, aDescription) {
         var damageData = [];
         for (i = 1, len = GUIp.stats.Allies_Count(); i <= len; i++)
         {
-            diff = GUIp.storage.set_with_diff('Logger:'+ (GUIp.data.isDungeon ? 'Map' : 'Hero') + '_Ally' + i + '_HP', GUIp.stats.Ally_HP(i));
+            diff = GUIp.storage.set_with_diff('Logger:'+ (GUIp.stats.isDungeon() ? 'Map' : 'Hero') + '_Ally' + i + '_HP', GUIp.stats.Ally_HP(i));
             if (diff) {
                 damageData.push({ num: i, diff: diff, cnt: 0, fuzz: 0, cntf: 0 });
             }
@@ -140,7 +140,7 @@ GUIp.logger._watchStatsValue = function(aId, aName, aDescription) {
         }
         return;
     }
-    var status;
+
     diff = GUIp.storage.set_with_diff('Logger:' + aId, GUIp.stats[aId]());
     if (diff) {
         // Если нужно, то преобразовываем в число с одним знаком после запятой
@@ -148,21 +148,19 @@ GUIp.logger._watchStatsValue = function(aId, aName, aDescription) {
         // Добавление плюcа, минуса или стрелочки
         if (diff < 0) {
             if (aName === 'exp' && +GUIp.storage.get('Logger:Level') !== GUIp.stats.Level()) {
-                status = '→' + GUIp.stats.Exp();
+                diff = '→' + GUIp.stats.Exp();
             } else if (aName === 'tsk' && GUIp.storage.get('Logger:Task_Name') !== GUIp.stats.Task_Name()) {
                 GUIp.storage.set('Logger:Task_Name', GUIp.stats.Task_Name());
-                status = '→' + GUIp.stats.Task();
-            } else {
-                status = diff;
+                diff = '→' + GUIp.stats.Task();
             }
         } else {
-            status = '+' + diff;
+            diff = '+' + diff;
         }
         // pet changing
         if (aName === 'pet_level' && GUIp.storage.get('Logger:Pet_NameType') !== GUIp.stats.Pet_NameType()) {
-            status = '→' + GUIp.stats.Pet_Level();
+            diff = '→' + GUIp.stats.Pet_Level();
         }
-        GUIp.logger._appendStr(cssClass, aName + status, aDescription);
+        GUIp.logger._appendStr(cssClass, aName + diff, aDescription);
     }
 };
 GUIp.logger._updateWatchers = function(aWatchers) {
@@ -177,9 +175,9 @@ GUIp.logger.update = function() {
     } else {
         this._container.style.display = 'block';
     }
-    if (GUIp.data.isDungeon) {
+    if (GUIp.stats.isDungeon()) {
         GUIp.logger._updateWatchers(this.dungeonWatchers);
-    } else if (GUIp.data.isFight) {
+    } else if (GUIp.stats.isFight() || GUIp.stats.isSail()) {
         GUIp.logger._updateWatchers(this.fightWatchers);
     } else {
         GUIp.logger._updateWatchers(this.fieldWatchers);

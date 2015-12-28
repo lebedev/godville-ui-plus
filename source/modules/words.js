@@ -31,7 +31,7 @@ GUIp.words._changeFirstLetter = function(text) {
 };
 GUIp.words._addHeroName = function(text) {
     if (!GUIp.storage.get('Option:useHeroName')) { return text; }
-    return GUIp.data.char_name + ', ' + GUIp.words._changeFirstLetter(text);
+    return GUIp.stats.charName() + ', ' + GUIp.words._changeFirstLetter(text);
 };
 GUIp.words._addExclamation = function(text) {
     if (!GUIp.storage.get('Option:useExclamations')) { return text; }
@@ -57,7 +57,7 @@ GUIp.words.longPhrase = function(sect, item_name, len) {
         GUIp.words.init();
         GUIp.storage.set('phrasesChanged', 'false');
     }
-    if (!GUIp.data.isFight && ['heal', 'pray', 'hit'].indexOf(sect) >= 0) {
+    if (GUIp.stats.isField() && ['heal', 'pray', 'hit'].indexOf(sect) >= 0) {
         sect += '_field';
     }
     var prefix = GUIp.words._addHeroName(GUIp.words._addExclamation(''));

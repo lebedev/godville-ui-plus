@@ -20,7 +20,7 @@ GUIp.inventory.observer = {
     target: ['#inventory ul']
 };
 GUIp.inventory.init = function() {
-    if (GUIp.data.isFight) {
+    if (!GUIp.stats.isField()) {
         return;
     }
     GUIp.inventory._createCraftButtons();

@@ -8,7 +8,7 @@ GUIp.storage.init = function() {
 };
 
 GUIp.storage._get_key = function(key) {
-    return 'GUIp_' + GUIp.data.god_name + ':' + key;
+    return 'GUIp_' + GUIp.stats.godName() + ':' + key;
 };
 // gets diff with a value
 GUIp.storage._diff = function(id, value) {
@@ -44,7 +44,7 @@ GUIp.storage.set_with_diff = function(id, value) {
 // dumps all values related to current god_name
 GUIp.storage.dump = function(selector) {
     var lines = [],
-        regexp = '^GUIp[_:]' + (selector ? (GUIp.data.god_name + ':' + selector) : '');
+        regexp = '^GUIp[_:]' + (selector ? (GUIp.stats.godName() + ':' + selector) : '');
     for (var key in localStorage) {
         if (key.match(regexp)) {
             lines.push(key + ' = ' + localStorage.getItem(key));

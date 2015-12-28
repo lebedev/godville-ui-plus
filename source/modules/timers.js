@@ -4,9 +4,9 @@ window.GUIp = window.GUIp || {};
 GUIp.timers = {};
 
 GUIp.timers.init = function() {
-    if (GUIp.data.hasTemple && window.so.state.fight_type() !== "sail") {
+    if (GUIp.stats.hasTemple() && !GUIp.stats.isSail()) {
         document.querySelector('#imp_button').insertAdjacentHTML('afterend', '<div id=\"imp_timer\" class=\"fr_new_badge hidden\" />');
-        if (GUIp.data.isDungeon || (GUIp.data.isFight && GUIp.stats.Allies_Count() > 2)) {
+        if (GUIp.stats.isDungeon()) {
             this.logTimer = document.querySelector('#imp_timer');
             this.logTimerIsDisabled = GUIp.storage.get('Option:disableLogTimer');
             GUIp.utils.hideElem(this.logTimer, this.logTimerIsDisabled);

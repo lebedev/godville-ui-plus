@@ -36,7 +36,7 @@ GUIp.utils.getGenericVoicegenButton = function(text, section, title) {
     var voicegen = document.createElement('a');
     voicegen.title = title;
     voicegen.textContent = text;
-    voicegen.className = 'voice_generator ' + (GUIp.data.isDungeon ? 'dungeon' : GUIp.data.isFight ? 'battle' : 'field') + ' ' + section;
+    voicegen.className = 'voice_generator ' + (GUIp.stats.isDungeon() ? 'dungeon' : GUIp.stats.isFight() ? 'battle' : 'field') + ' ' + section;
     voicegen.onclick = function() {
         if (document.getElementById('god_phrase').getAttribute('disabled') !== 'disabled') {
             GUIp.utils.setVoice(GUIp.words.longPhrase(section));
@@ -244,7 +244,7 @@ GUIp.utils.dateToMoscowTimeZone = function(date) {
           (temp.getDate() < 10 ? '0' : '') + temp.getDate();
 };
 GUIp.utils.setVoiceSubmitState = function(condition, disable) {
-    if (!GUIp.data.isFight && condition) {
+    if (GUIp.stats.isField() && condition) {
         var voice_submit = document.getElementById('voice_submit');
         if (disable) {
             voice_submit.setAttribute('disabled', 'disabled');

@@ -152,6 +152,9 @@ GUIp.stats.Task_Name = function() {
 GUIp.stats.charName = function() {
     return window.so.state.stats.name.value;
 };
+GUIp.stats.fightType = function() {
+    return window.so.state.fight_type();
+};
 GUIp.stats.godName = function() {
     return window.so.state.stats.godname.value;
 };
@@ -160,6 +163,9 @@ GUIp.stats.guildName = function() {
 };
 GUIp.stats.goldTextLength = function() {
     return window.so.state.stats.gold_we.value.length;
+};
+GUIp.stats.hasTemple = function() {
+    return GUIp.stats.Bricks() === 1000;
 };
 GUIp.stats.heroHasPet = function() {
     return window.so.state.has_pet;
@@ -173,11 +179,17 @@ GUIp.stats.isDungeon = function() {
 GUIp.stats.isDungeonAvailable = function() {
     return window.so.state.dungeon_available();
 };
+GUIp.stats.isField = function() {
+    return !window.so.state.is_fighting();
+};
 GUIp.stats.isFight = function() {
-    return window.so.state.is_fighting();
+    return !window.so.state.fight_type().match('dungeon|sail');
 };
 GUIp.stats.isMale = function() {
     return window.so.state.stats.gender.value === 'male';
+};
+GUIp.stats.isSail = function() {
+    return window.so.state.is_fighting() === 'sail';
 };
 GUIp.stats.monsterName = function() {
     return window.so.state.stats.monster_name && window.so.state.stats.monster_name.value;

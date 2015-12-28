@@ -115,8 +115,11 @@ GUIp.informer._updateTitle = function(activeFlags) {
     }
 };
 GUIp.informer.update = function(flag, value) {
-    if (value && (flag === 'fight' || flag === 'low health' || !(GUIp.data.isFight && !GUIp.data.isDungeon)) && !(flag === 'much gold' && GUIp.data.hasTemple && GUIp.stats.townName()) &&
-        !(GUIp.storage.get('Option:forbiddenInformers') && GUIp.storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))) {
+    if (value &&
+       (flag === 'fight' || flag === 'low health' || !GUIp.stats.isFight()) &&
+      !(flag === 'much gold' && GUIp.stats.hasTemple() && GUIp.stats.townName()) &&
+      !(GUIp.storage.get('Option:forbiddenInformers') && GUIp.storage.get('Option:forbiddenInformers').match(flag.replace(/ /g, '_')))
+    ) {
         if (this.flags[flag] === undefined) {
             this.flags[flag] = true;
             GUIp.informer._createLabel(flag);
@@ -126,7 +129,7 @@ GUIp.informer.update = function(flag, value) {
             }
             /* [E] desktop notifications */
             if (GUIp.storage.get('Option:enableInformerAlerts') && GUIp.browser !== 'Opera' && Notification.permission === "granted") {
-                var title = '[INFO] ' + GUIp.data.god_name,
+                var title = '[INFO] ' + GUIp.stats.godName(),
                     text = flag,
                     callback = function(){GUIp.informer.hide(flag);};
                 GUIp.utils.showNotification(title,text,callback);

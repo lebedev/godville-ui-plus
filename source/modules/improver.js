@@ -55,33 +55,34 @@ GUIp.improver.hardRefresh = function() {
 };
 GUIp.improver.improve = function() {
     this.improveInProcess = true;
-    GUIp.informer.update('fight', GUIp.data.isFight && !GUIp.data.isDungeon);
+    GUIp.informer.update('fight', !GUIp.stats.isField());
     GUIp.informer.update('arena available', GUIp.stats.isArenaAvailable());
     GUIp.informer.update('dungeon available', GUIp.stats.isDungeonAvailable());
 
     this.optionsChanged = this.isFirstTime ? false : GUIp.storage.get('optionsChanged');
     if (this.isFirstTime) {
-        if (!GUIp.data.isFight && !GUIp.data.isDungeon) {
+        if (GUIp.stats.isField()) {
             GUIp.improver.improveDiary();
-        }
-        if (GUIp.data.isDungeon) {
+        } else if (GUIp.stats.isDungeon()) {
             GUIp.improver.getDungeonPhrases();
         }
     }
     GUIp.improver.improveStats();
-    GUIp.improver.improvePet();
+    if (GUIp.stats.isField()) {
+        GUIp.improver.improvePet();
+    }
     GUIp.improver.improveVoiceDialog();
-    if (!GUIp.data.isFight) {
+    if (GUIp.stats.isField()) {
         GUIp.improver.improveNews();
         GUIp.improver.improveEquip();
         GUIp.improver.improvePantheons();
     }
-    if (this.isFirstTime && GUIp.data.isDungeon) {
+    if (this.isFirstTime && GUIp.stats.isDungeon()) {
         GUIp.improver.improveMap();
     }
     GUIp.improver.improveInterface();
     GUIp.improver.improveChat();
-    if (GUIp.data.isFight || GUIp.data.isDungeon) {
+    if (!GUIp.stats.isField()) {
         GUIp.improver.improveAllies();
     }
     GUIp.improver.calculateButtonsVisibility();
@@ -129,22 +130,20 @@ GUIp.improver.improveVoiceDialog = function() {
             var gp_label = document.getElementsByClassName('gp_label')[0];
             gp_label.classList.add('l_capt');
             document.getElementsByClassName('gp_val')[0].classList.add('l_val');
-            if (GUIp.data.isDungeon && document.getElementById('map')) {
+            if (GUIp.stats.isDungeon()) {
                 var isContradictions = document.getElementById('map').textContent.match(/Противоречия|Disobedience/);
                 GUIp.utils.addVoicegen(gp_label, GUIp.i18n.east, (isContradictions ? 'go_west' : 'go_east'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_east);
                 GUIp.utils.addVoicegen(gp_label, GUIp.i18n.west, (isContradictions ? 'go_east' : 'go_west'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_west);
                 GUIp.utils.addVoicegen(gp_label, GUIp.i18n.south, (isContradictions ? 'go_north' : 'go_south'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_south);
                 GUIp.utils.addVoicegen(gp_label, GUIp.i18n.north, (isContradictions ? 'go_south' : 'go_north'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_north);
-            } else {
-                if (GUIp.data.isFight) {
-                    GUIp.utils.addVoicegen(gp_label, GUIp.i18n.defend, 'defend', GUIp.i18n.ask4 + GUIp.data.char_sex[0] + GUIp.i18n.to_defend);
-                    GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
-                    GUIp.utils.addVoicegen(gp_label, GUIp.i18n.heal, 'heal', GUIp.i18n.ask6 + GUIp.data.char_sex[1] + GUIp.i18n.to_heal);
-                    GUIp.utils.addVoicegen(gp_label, GUIp.i18n.hit, 'hit', GUIp.i18n.ask7 + GUIp.data.char_sex[1] + GUIp.i18n.to_hit);
-                } else {
-                    GUIp.utils.addVoicegen(gp_label, GUIp.i18n.sacrifice, 'sacrifice', GUIp.i18n.ask8 + GUIp.data.char_sex[1] + GUIp.i18n.to_sacrifice);
-                    GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
-                }
+            } else if (GUIp.stats.isFight()) {
+                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.defend, 'defend', GUIp.i18n.ask4 + GUIp.data.char_sex[0] + GUIp.i18n.to_defend);
+                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
+                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.heal, 'heal', GUIp.i18n.ask6 + GUIp.data.char_sex[1] + GUIp.i18n.to_heal);
+                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.hit, 'hit', GUIp.i18n.ask7 + GUIp.data.char_sex[1] + GUIp.i18n.to_hit);
+            } else if (GUIp.stats.isField()) {
+                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.sacrifice, 'sacrifice', GUIp.i18n.ask8 + GUIp.data.char_sex[1] + GUIp.i18n.to_sacrifice);
+                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
             }
         }
     }
@@ -189,7 +188,7 @@ GUIp.improver.improveNews = function() {
     GUIp.informer.update('tamable monster', isTamableMonster);
     GUIp.informer.update('chosen monster', isFavoriteMonster);
 
-    if (GUIp.data.hasTemple && this.optionsChanged) {
+    if (GUIp.stats.hasTemple() && this.optionsChanged) {
         GUIp.timers.layingTimerIsDisabled = GUIp.storage.get('Option:disableLayingTimer');
         GUIp.utils.hideElem(GUIp.timers.layingTimer ? GUIp.timers.layingTimer : GUIp.timers.logTimer, GUIp.timers.layingTimerIsDisabled); // todo: if it's got enabled, it should also be made clickable and switchable.
         GUIp.timers.tick();
@@ -477,9 +476,9 @@ GUIp.improver.improveOppsHP = function(isAlly) {
     }
 };
 GUIp.improver.improveStats = function() {
-    var i;
+    var i, len;
 
-    if (GUIp.data.isDungeon) {
+    if (GUIp.stats.isDungeon()) {
         if (GUIp.storage.get('Logger:Location') === 'Field') {
             GUIp.storage.set('Logger:Location', 'Dungeon');
             GUIp.storage.set('Logger:Map_HP', GUIp.stats.HP());
@@ -488,7 +487,7 @@ GUIp.improver.improveStats = function() {
             GUIp.storage.set('Logger:Map_Inv', GUIp.stats.Inv());
             GUIp.storage.set('Logger:Map_Charges',GUIp.stats.Charges());
             GUIp.storage.set('Logger:Map_Allies_HP', GUIp.stats.Allies_HP());
-            for (i = 1; i <= 4; i++) {
+            for (i = 1, len = GUIp.stats.Allies_Count(); i <= len; i++) {
                 GUIp.storage.set('Logger:Map_Ally' + i + '_HP', GUIp.stats.Ally_HP(i));
             }
         }
@@ -497,7 +496,7 @@ GUIp.improver.improveStats = function() {
         GUIp.improver.improveOppsHP(true);
         return;
     }
-    if (GUIp.data.isFight) {
+    if (GUIp.stats.isFight() || GUIp.stats.isSail()) {
         if (this.isFirstTime) {
             GUIp.storage.set('Logger:Hero_HP', GUIp.stats.HP());
             GUIp.storage.set('Logger:Hero_Gold', GUIp.stats.Gold());
@@ -507,22 +506,22 @@ GUIp.improver.improveStats = function() {
             GUIp.storage.set('Logger:Enemy_Gold', GUIp.stats.Enemy_Gold());
             GUIp.storage.set('Logger:Enemy_Inv', GUIp.stats.Enemy_Inv());
             GUIp.storage.set('Logger:Hero_Allies_HP', GUIp.stats.Allies_HP());
-            for (i = 1; i <= GUIp.stats.Allies_Count(); i++) {
+            for (i = 1, len = GUIp.stats.Allies_Count(); i < len; i++) {
                 GUIp.storage.set('Logger:Hero_Ally'+i+'_HP', GUIp.stats.Ally_HP(i));
             }
-            for (i = 1; i <= GUIp.stats.Enemies_Count(); i++) {
+            for (i = 1, len = GUIp.stats.Enemies_Count(); i < len; i++) {
                 GUIp.storage.set('Logger:Enemy'+i+'_HP', GUIp.stats.Enemy_HP(i));
             }
             GUIp.storage.set('Logger:Enemies_AliveCount', GUIp.stats.Enemies_AliveCount());
         }
         /* [E] informer to notify about low health when in fight mode */
         var health_lim;
-        if (GUIp.stats.Allies_Count() === 0 && GUIp.stats.Enemies_Count() > 2) { // corovan
+        if (GUIp.stats.fightType() === 'multi_monster') { // corovan
             health_lim = GUIp.stats.Max_HP() * 0.05 * GUIp.stats.Enemies_AliveCount();
-        } else if (GUIp.stats.Allies_Count() === 0) { // single enemy
+        } else if (GUIp.stats.fightType() === 'monster') { // single enemy
             health_lim = GUIp.stats.Max_HP() * 0.15;
-        } else if (window.so.state.fight_type() !== "sail") { // raid boss or dungeon boss
-            health_lim = (GUIp.stats.Allies_MaxHP() + GUIp.stats.Max_HP()) * (GUIp.stats.Enemy_HasAbility("second_strike") ? 0.094 : 0.068);
+        } else if (GUIp.stats.fightType() === 'monster_m') { // raid boss or dungeon boss
+            health_lim = (GUIp.stats.Allies_MaxHP() + GUIp.stats.Max_HP()) * (GUIp.stats.Enemy_HasAbility('second_strike') ? 0.094 : 0.068);
             if (GUIp.stats.Enemies_AliveCount() > 1) { // boss has an active minion
                 health_lim *= 1.3;
             }
@@ -551,7 +550,7 @@ GUIp.improver.improveStats = function() {
         GUIp.utils.addVoicegen(document.querySelector('#hk_distance .l_capt'), document.querySelector('#main_wrapper.page_wrapper_5c') ? '回' : GUIp.i18n.return, 'town', GUIp.i18n.ask14 + GUIp.data.char_sex[0] + GUIp.i18n.to_return);
     }
 
-    GUIp.informer.update('much gold', GUIp.stats.Gold() >= (GUIp.data.hasTemple ? 10000 : 3000));
+    GUIp.informer.update('much gold', GUIp.stats.Gold() >= (GUIp.stats.hasTemple() ? 10000 : 3000));
     GUIp.informer.update('dead', GUIp.stats.HP() === 0);
     var questName = GUIp.stats.Task_Name();
     GUIp.informer.update('guild quest', questName.match(/членом гильдии|member of the guild/) && !questName.match(/\((отменено|cancelled)\)/));
@@ -575,9 +574,6 @@ GUIp.improver.improveStats = function() {
     //Shovel pictogramm end
 };
 GUIp.improver.improvePet = function() {
-    if (GUIp.data.isFight) {
-        return;
-    }
     var pet_badge;
     if (GUIp.stats.petIsKnockedOut()) {
         if (!GUIp.utils.isAlreadyImproved(document.getElementById('pet'))) {
@@ -962,9 +958,6 @@ GUIp.improver.colorDungeonMap = function() {
 };
 GUIp.improver.colorDungeonMapTimer = null;
 GUIp.improver.colorDungeonMapInternal = function() {
-    if (!GUIp.data.isDungeon) {
-        return;
-    }
     GUIp.improver.improveMap();
     var step, mark_no, marks_length, steptext, lasttext, titlemod, titletext, currentCell,
         trapMoveLossCount = 0,
@@ -1118,13 +1111,18 @@ GUIp.improver._clockUpdate = function() {
 
 GUIp.improver.improveInterface = function() {
     if (this.isFirstTime) {
-        window.$('a[href=#]').removeAttr('href');
+        var links = document.querySelectorAll('a[href="#"]');
+        for (var i = 0, len = links.length; i < len; i ++) {
+            links[i].removeAttribute('href');
+        }
+
         GUIp.improver.whenWindowResize();
         window.onresize = function() {
             clearInterval(GUIp.improver.windowResizeInt);
             GUIp.improver.windowResizeInt = setTimeout(function() { GUIp.improver.whenWindowResize(); }, 250);
         };
-        if (GUIp.data.isFight && document.querySelector('#map .block_title, #control .block_title, #m_control .block_title')) {
+
+        if (!GUIp.stats.isField() && document.querySelector('#map .block_title, #control .block_title, #m_control .block_title')) {
             document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + GUIp.stats.logId() + '" target="_blank">' + GUIp.i18n.broadcast + '</a>');
         }
         /* [E] clock is to be initialized somewhere here */
@@ -1248,7 +1246,7 @@ GUIp.improver.improveAllies = function() {
 GUIp.improver.calculateButtonsVisibility = function() {
     var i, len, baseCond = GUIp.stats.Godpower() >= 5 && !GUIp.storage.get('Option:disableVoiceGenerators'),
         isMonster = GUIp.stats.monsterName();
-    if (!GUIp.data.isFight) {
+    if (GUIp.stats.isField()) {
         // pantheon links
         var pantLinks = document.querySelectorAll('#pantheons .arena_link_wrap, #pantheons .chf_link_wrap'),
             pantBefore = [], pantAfter = [];
@@ -1294,7 +1292,7 @@ GUIp.improver.calculateButtonsVisibility = function() {
     }
     var voicegensBefore = [], voicegensAfter = [],
         specialConds, specialClasses;
-    if (!GUIp.data.isFight) {
+    if (GUIp.stats.isField()) {
         var isGoingBack = window.so.state.stats.dir.value !== 'ft',
             isTown = GUIp.stats.townName(),
             isSearching = window.so.state.last_news && window.so.state.last_news.value.match('дорогу'),
@@ -1317,7 +1315,7 @@ GUIp.improver.calculateButtonsVisibility = function() {
     for (i = 0, len = this.voicegens.length; i < len; i++) {
         voicegensBefore[i] = !this.voicegens[i].classList.contains('hidden');
         voicegensAfter[i] = baseCond;
-        if (baseCond && !GUIp.data.isFight) {
+        if (baseCond && GUIp.stats.isField()) {
             for (var j = 0, len2 = specialConds.length; j < len2; j++) {
                 if (specialConds[j] && this.voicegenClasses[i].match(specialClasses[j])) {
                     voicegensAfter[i] = false;
@@ -1371,7 +1369,7 @@ GUIp.improver.improvementDebounce = function() {
     clearTimeout(GUIp.improver.improveTmt);
     GUIp.improver.improveTmt = setTimeout(function() {
         GUIp.improver.improve();
-        if (GUIp.data.isFight) {
+        if (!GUIp.stats.isField()) {
             GUIp.logger.update();
         }
     }, 250);
