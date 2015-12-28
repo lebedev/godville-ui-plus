@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var ruUrlRegExp = 'godville\\.net|gdvl\\.tk|gv\\.erinome\\.net',
             locale = document.location.hostname.match(ruUrlRegExp) ? 'ru' : 'en',
-            commonScriptNames = ['common.js', 'guip_firefox.js', 'phrases_' + locale + '.js'],
+            commonScriptNames = ['common.js', 'guip_opera.js', 'phrases_' + locale + '.js'],
             fileNames = commonScriptNames.concat(aSpecificFileNames);
 
         document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
@@ -41,7 +41,7 @@ window.addEventListener('DOMContentLoaded', function() {
         'superhero.*':                     ['polyfills/Promise.js', 'polyfills/WeakMap.js', 'polyfills/MutationObserver.js', 'superhero.js', 'superhero.css'],
         'user\/(?:profile|rk_success).*':  ['options_page.js', 'options.js', 'options.css'],
         'forums\/show(?:_topic)?\/\\d+.*': ['polyfills/WeakMap.js', 'polyfills/MutationObserver.js', 'forum.js', 'forum.css'],
-        'duels\/log\/.*':                  ['log.js', 'superhero.css']
+        'duels\/log\/.*':                  ['polyfills/Promise.js', 'log.js', 'superhero.css']
     };
 
     for (var pathname in specificFileNames) {

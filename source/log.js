@@ -4,7 +4,6 @@ window.GUIp = window.GUIp || {};
 GUIp.duels_log = {};
 
 GUIp.duels_log.modules = [
-    'log',
     'map_log',
 ];
 
