@@ -128,7 +128,7 @@ var setAllCheckboxesToState = function(classname, state) {
 function loadOptions() {
     if (!$id('profile_main')) {
         setTimeout(function() { loadOptions(); }, 100);
-        return;
+        return false;
     }
     $id('profile_main').innerHTML = GUIp.getOptionsPage();
     setForm();
@@ -230,6 +230,8 @@ function loadOptions() {
     $id('span_tamable').onclick = createLightbox.bind(null,'pets');
     $id('span_chosen').onclick = createLightbox.bind(null,'chosen_monsters');
     $id('span_special').onclick = createLightbox.bind(null,'special_monsters');
+
+    return false;
 }
 
 function setForm() {
