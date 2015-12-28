@@ -47,7 +47,6 @@ GUIp.logger.init = function() {
         ['HP',        'hp',        GUIp.i18n.health     ],
         ['Inv',       'inv',       GUIp.i18n.inventory  ],
         ['Level',     'lvl',       GUIp.i18n.level      ],
-        ['Logs',      'wd',        GUIp.i18n.logs       ],
         ['Monster',   'mns',       GUIp.i18n.monsters   ],
         ['Pet_Level', 'pet_level', GUIp.i18n.pet_level  ],
         ['Savings',   'rtr',       GUIp.i18n.savings    ],
@@ -56,6 +55,7 @@ GUIp.logger.init = function() {
     this.commonWatchers = [
         ['Females',  'females', GUIp.i18n.females ],
         ['Godpower', 'gp',      GUIp.i18n.godpower],
+        ['Logs',     'wd',      GUIp.i18n.logs    ],
         ['Males',    'males',   GUIp.i18n.males   ]
     ];
 };
@@ -85,9 +85,14 @@ GUIp.logger._watchStatsValue = function(aId, aName, aDescription) {
     // Remove id prefixes.
     aId = aId.replace(/^Hero_|^Map_/, '');
 
+    if (aId === 'Logs' && GUIp.stats.isField() && GUIp.stats.Logs() < +GUIp.storage.get('Logger:Logs')) {
+        return;
+    }
+
     var cssClass = aId.replace(/\d$/, '').toLowerCase();
 
     var i, len, diff;
+
     if (aName === 'a:hp' && !GUIp.storage.get('Option:sumAlliesHp')) {
         var damageData = [];
         for (i = 1, len = GUIp.stats.Allies_Count(); i <= len; i++)
