@@ -189,7 +189,7 @@ GUIp.stats.isMale = function() {
     return window.so.state.stats.gender.value === 'male';
 };
 GUIp.stats.isSail = function() {
-    return window.so.state.is_fighting() === 'sail';
+    return window.so.state.fight_type() === 'sail';
 };
 GUIp.stats.monsterName = function() {
     return window.so.state.stats.monster_name && window.so.state.stats.monster_name.value;
