@@ -180,10 +180,10 @@ GUIp.stats.isDungeonAvailable = function() {
     return window.so.state.dungeon_available();
 };
 GUIp.stats.isField = function() {
-    return !window.so.state.is_fighting();
+    return !window.so.state.fight_type();
 };
 GUIp.stats.isFight = function() {
-    return window.so.state.is_fighting() && !window.so.state.fight_type().match('dungeon|sail');
+    return window.so.state.fight_type() && !window.so.state.fight_type().match('dungeon|sail');
 };
 GUIp.stats.isMale = function() {
     return window.so.state.stats.gender.value === 'male';
