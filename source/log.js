@@ -44,7 +44,7 @@ waitFor(function() {
     window.console.log('GUIp: waiting for modules <script>-tags to be created...');
     window.console.time('GUIp: created modules <script>-tags in');
     var container = document.getElementById('guip'),
-        getUrl = window.localStorage.getItem('GUIp_beta') === 'true' || GUIp.browser === 'Opera' ? 'getGithubSourceURL' : 'getResourceURL',
+        getUrl = window.localStorage.getItem('GUIp:beta') === 'true' || GUIp.browser === 'Opera' ? 'getGithubSourceURL' : 'getResourceURL',
         script;
     for (var i = 0, len = GUIp.duels_log.modules.length; i < len; i++) {
         script = document.createElement('script');

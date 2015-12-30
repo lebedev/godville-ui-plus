@@ -215,7 +215,7 @@ function loadOptions() {
     }
 
     if (GUIp.browser !== 'Opera') {
-        document.getElementById('use_beta_channel').checked = window.localStorage.getItem('GUIp_beta') === 'true';
+        document.getElementById('use_beta_channel').checked = window.localStorage.getItem('GUIp:beta') === 'true';
     }
 
     $id('ta_edit').onfocus = setAutoGrowWithCallback.bind($id('ta_edit'), setSaveWordsButtonState);
@@ -425,7 +425,7 @@ function saveOptions() {
     }
     storage.set('Option:forbiddenCraft', forbiddenCraft.join());
 
-    window.localStorage.setItem('GUIp_beta', document.getElementById('use_beta_channel').checked);
+    window.localStorage.setItem('GUIp:beta', document.getElementById('use_beta_channel').checked);
 
     //jQuery('#general_settings_spinner').fadeOut('slow');
     setTimeout(function() {
