@@ -25,7 +25,7 @@
 │  └─ *.css   (разные файлы стилей)
 └─ *          (разные файлы сборки дополнения, номера версии, файла обновления для ФФ и т.п.)
 ```
-Обычно код редактируется только в `source/*`, `source/modules/*` и `source/forum/*`.
+Обычно код редактируется только в `source/*` и `source/modules/*`.
 
 # In english (по-английски):
 ## How to build extension from source:
@@ -54,6 +54,6 @@
 │  └─ *.css   (various stylesheets)
 └─ *          (other files of project building, version number, update file for Firefox add-on etc.)
 ```
-Usually only the code from `source/*`, `source/modules/*` and `source/forum/*` are to be edited.
+Usually only the code from `source/*` and `source/modules/*` are to be edited.
 
 [![Code Climate](https://codeclimate.com/github/zeird/godville-ui-plus/badges/gpa.svg)](https://codeclimate.com/github/zeird/godville-ui-plus)
