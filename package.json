@@ -7,7 +7,6 @@
   "dependencies": {
     "grunt": "*",
     "grunt-contrib-clean": "*",
-    "grunt-contrib-concat": "*",
     "grunt-contrib-compress": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-jshint": "*",
