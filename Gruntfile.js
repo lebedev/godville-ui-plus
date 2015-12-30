@@ -8,8 +8,7 @@ module.exports = function(grunt) {
           { expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome/', filter: 'isFile' },
           { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/chrome/modules/' },
           { expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/' },
-          { expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/' },
-          { expand: true, cwd: '<%= compile_path %>/', src: 'forum.js', dest: '<%= compile_path %>/chrome/' }
+          { expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/' }
         ]
       },
       chrome_versioned: {
@@ -33,8 +32,7 @@ module.exports = function(grunt) {
           { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/firefox/content/modules/' },
           { expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile' },
           { expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile' },
-          { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' },
-          { expand: true, cwd: '<%= compile_path %>/', src: 'forum.js', dest: '<%= compile_path %>/firefox/data/' }
+          { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' }
         ]
       },
       firefox_versioned: {
@@ -54,8 +52,7 @@ module.exports = function(grunt) {
       opera: {
         files: [
           { expand: true, cwd: 'source/opera', src: '**', dest: '<%= compile_path %>/opera/' },
-          { expand: true, cwd: 'source/', src: '*', dest: '<%= compile_path %>/opera/content/', filter: 'isFile' },
-          { expand: true, cwd: '<%= compile_path %>/', src: 'forum.js', dest: '<%= compile_path %>/opera/content/' }
+          { expand: true, cwd: 'source/', src: '*', dest: '<%= compile_path %>/opera/content/', filter: 'isFile' }
         ]
       },
       opera_versioned: {
@@ -73,22 +70,10 @@ module.exports = function(grunt) {
         ]
       }
     },
-    concat: {
-      forum: {
-        options: {
-          banner: "(function() {\n" +
-                  "'use strict';\n\n",
-          footer: "\n\n})();"
-        },
-        src: 'source/forum/*.js',
-        dest: '<%= compile_path %>/forum.js'
-      }
-    },
     clean: {
-      temp: "<%= compile_path %>/*.js",
-      chrome: "<%= compile_path %>/chrome",
-      firefox: "<%= compile_path %>/firefox",
-      opera: "<%= compile_path %>/opera"
+      chrome: '<%= compile_path %>/chrome',
+      firefox: '<%= compile_path %>/firefox',
+      opera: '<%= compile_path %>/opera'
     },
     compress: {
       chrome: {
@@ -193,21 +178,20 @@ module.exports = function(grunt) {
     var tasks = [
       'notify:start',
       'jshint',
-      'bump_debug_build',
-      'concat:forum'
+      'bump_debug_build'
     ];
     switch(aBrowser) {
-    case 'chrome': tasks.push('build:chrome'); break;
+    case 'chrome':  tasks.push('build:chrome'); break;
     case 'firefox': tasks.push('build:firefox', 'update_installed_addon'); break;
-    case 'opera': tasks.push('build:opera'); break;
-    default: tasks.push('build:chrome', 'build:firefox', 'update_installed_addon', 'build:opera');
+    case 'opera':   tasks.push('build:opera'); break;
+    default:        tasks.push('build:chrome', 'build:firefox', 'update_installed_addon', 'build:opera');
     }
-    tasks.push('clean:temp', 'notify:end');
+    tasks.push('notify:end');
     grunt.task.run(tasks);
   });
 
   grunt.registerTask('update_installed_addon', 'Sends debug .xpi to FF.', function () {
-    require("request").post({ url: "http://localhost:8888", body: require("fs").readFileSync("debug/godville-ui-plus@badluck.dicey.xpi") });
+    require('request').post({ url: 'http://localhost:8888', body: require('fs').readFileSync('debug/godville-ui-plus@badluck.dicey.xpi') });
   });
 
   grunt.registerTask('bump_debug_build', 'Bumps debug build number.', function () {
