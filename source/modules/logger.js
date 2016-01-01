@@ -63,11 +63,14 @@ GUIp.logger._appendStr = function(cssClass, aText, aHint) {
     if (this.separatorIsNeeded) {
         this.separatorIsNeeded = false;
         if (this._container.children.length) {
-            this._container.insertAdjacentHTML('beforeend', '<span class="whitespace"> </span><li class="separator">|</li>');
+            // insertAdjacentHTML split to 2 to support Opera 12.17-.
+            this._container.insertAdjacentHTML('beforeend', '<span class="whitespace"> </span>');
+            this._container.insertAdjacentHTML('beforeend', '<li class="separator">|</li>');
         }
     }
 
-    this._container.insertAdjacentHTML('beforeend', '<span class="whitespace"> </span><li class="' + cssClass + '" title="' + aHint + '">' + aText + '</li>');
+    this._container.insertAdjacentHTML('beforeend', '<span class="whitespace"> </span>');
+    this._container.insertAdjacentHTML('beforeend', '<li class="' + cssClass + '" title="' + aHint + '">' + aText + '</li>');
 
     var firstEntry;
     while (
@@ -75,7 +78,8 @@ GUIp.logger._appendStr = function(cssClass, aText, aHint) {
         (this._container.scrollWidth > this._container.getBoundingClientRect().width + this.WIDTH_MARGIN ||
          firstEntry.classList.contains('separator'))
     ) {
-        firstEntry.remove();
+        // parentNode.removeChild() instead of remove() is to support Opera 12.17-.
+        firstEntry.parentNode.removeChild(firstEntry);
     }
 
     this._container.scrollLeft = this._container.scrollWidth - this._container.getBoundingClientRect().width;
