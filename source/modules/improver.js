@@ -427,7 +427,7 @@ GUIp.improver.improveMap = function() {
                         }
                     }
                     //
-                    GUIp.mapIteration(MapData, si, sj, 0, false);
+                    GUIp.common.mapIteration(MapData, si, sj, 0, false);
                     //
                     for (ik = 0; ik < kRow; ik++) {
                         for (jk = 0; jk < kColumn; jk++) {
@@ -444,7 +444,7 @@ GUIp.improver.improveMap = function() {
                                 MapData[cell].substep = 0;
                             }
                         }
-                        GUIp.mapSubIteration(MapData, scanCell.i, scanCell.j, 0, scanCell.lim, false);
+                        GUIp.common.mapSubIteration(MapData, scanCell.i, scanCell.j, 0, scanCell.lim, false);
                     }
                     //
                     for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++) {
@@ -1157,7 +1157,7 @@ GUIp.improver.improveInterface = function() {
     }
     if (this.isFirstTime || GUIp.storage.get('UserCssChanged') === true) {
         GUIp.storage.set('UserCssChanged', false);
-        GUIp.addCSSFromString(GUIp.storage.get('UserCss'), 'guip_user_css');
+        GUIp.common.addCSSFromString(GUIp.storage.get('UserCss'), 'guip_user_css');
     }
 
     if (localStorage.getItem('ui_s') !== GUIp.storage.get('ui_s')) {
@@ -1175,7 +1175,7 @@ GUIp.improver.improveInterface = function() {
                 '    background-image: url(' + (background === 'cloud' ? GUIp.common.getResourceURL('images/background.jpg') : background) + ')\n' +
                 '}';
         }
-        GUIp.addCSSFromString(cssRule, 'guip_background');
+        GUIp.common.addCSSFromString(cssRule, 'guip_background');
     }
 };
 GUIp.improver.improveChat = function() {

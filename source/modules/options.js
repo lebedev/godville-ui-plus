@@ -635,7 +635,7 @@ function set_theme_and_background() {
     if (guip_s_css) {
         guip_s_css.parentNode.removeChild(guip_s_css);
     }
-    GUIp.addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'guip_s_css');
+    GUIp.common.addCSSFromURL('/stylesheets/' + storage.get('ui_s') + '.css', 'guip_s_css');
     var background = storage.get('Option:useBackground');
     if (background === 'cloud') {
         document.body.style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/background.jpg') + ')';
@@ -764,7 +764,7 @@ var createLightbox = function(lbType) {
 var def, curr_sect, god_name;
 
 var starterInt = setInterval(function() {
-    if (GUIp.browser && GUIp.i18n && GUIp.addCSSFromURL) {
+    if (GUIp.browser && GUIp.i18n && GUIp.common.addCSSFromURL) {
         def = GUIp.getPhrases();
         clearInterval(starterInt);
 
@@ -774,7 +774,7 @@ var starterInt = setInterval(function() {
 
         addMenu();
         if (GUIp.browser !== 'Opera') {
-            GUIp.addCSSFromURL(GUIp.common.getResourceURL('options.css'), 'guip_options_css');
+            GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/options.css'), 'guip_options_css');
         }
         if (document.location.hash === "#guip_settings") {
             loadOptions();

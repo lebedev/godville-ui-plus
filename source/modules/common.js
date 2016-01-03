@@ -2,9 +2,7 @@ window.GUIp = window.GUIp || {};
 
 GUIp.common = GUIp.common || {};
 
-GUIp.common.getGithubSourceURL = function(aPath) {
-    return 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/' + aPath;
-};
+GUIp.common.init = function() {};
 
 GUIp.common.addCSSFromURL = function(aHref, aId) {
     document.getElementById('guip').insertAdjacentHTML('beforeend', '<link id="' + aId + '" type="text/css" href="' + aHref + '" rel="stylesheet" media="screen">');
@@ -33,7 +31,7 @@ GUIp.common.mapIteration = function(MapData, iPointer, jPointer, step, specway) 
                             }
                             MapData[iNext + ':' + jNext].specway = tspecway;
                             MapData[iNext + ':' + jNext].step = step;
-                            GUIp.mapIteration(MapData, iNext, jNext, step, tspecway);
+                            GUIp.common.mapIteration(MapData, iNext, jNext, step, tspecway);
                         }
                     }
                 }
@@ -66,7 +64,7 @@ GUIp.common.mapSubIteration = function(MapData, iPointer, jPointer, step, limit,
                                 MapData[iNext + ':' + jNext].specway = false;
                             }
                             MapData[iNext + ':' + jNext].substep = step;
-                            GUIp.mapSubIteration(MapData, iNext, jNext, step, limit, tspecway);
+                            GUIp.common.mapSubIteration(MapData, iNext, jNext, step, limit, tspecway);
                         }
                     }
                 }

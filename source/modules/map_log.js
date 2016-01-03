@@ -620,7 +620,7 @@ GUIp.map_log.highlightTreasuryZone = function() {
                         }
                     }
                     //
-                    GUIp.mapIteration(MapData, si, sj, 0, false);
+                    GUIp.common.mapIteration(MapData, si, sj, 0, false);
                     //
                     for (ik = 0; ik < kRow; ik++) {
                         for (jk = 0; jk < kColumn; jk++) {
@@ -637,7 +637,7 @@ GUIp.map_log.highlightTreasuryZone = function() {
                                 MapData[cell].substep = 0;
                             }
                         }
-                        GUIp.mapSubIteration(MapData, scanCell.i, scanCell.j, 0, scanCell.lim, false);
+                        GUIp.common.mapSubIteration(MapData, scanCell.i, scanCell.j, 0, scanCell.lim, false);
                     }
                     //
                     for (ik = ((si - ThermoMaxStep) > 0 ? si - ThermoMaxStep : 0); ik <= ((si + ThermoMaxStep) < kRow ? si + ThermoMaxStep : kRow - 1); ik++) {

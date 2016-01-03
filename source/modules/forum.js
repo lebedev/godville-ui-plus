@@ -503,7 +503,7 @@ var setInitVariables = function() {
 };
 
 window.addChat = function() {
-    GUIp.addCSSFromURL('/stylesheets/superhero_ru_packaged.css?' + Date.now(), 'superhero_packaged_css');
+    GUIp.common.addCSSFromURL('/stylesheets/superhero_ru_packaged.css?' + Date.now(), 'superhero_packaged_css');
 
     var chatHTML = window.localStorage.getItem('chatHTML');
     document.body.insertAdjacentHTML('beforeend', chatHTML);
