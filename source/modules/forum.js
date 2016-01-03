@@ -502,6 +502,53 @@ var setInitVariables = function() {
                             greetings.match(localStorage.getItem('GUIp:godnames'))[0];
 };
 
+window.addChat = function() {
+    GUIp.addCSSFromURL('/stylesheets/superhero_ru_packaged.css?' + Date.now(), 'superhero_packaged_css');
+
+    var chatHTML = window.localStorage.getItem('chatHTML');
+    document.body.insertAdjacentHTML('beforeend', chatHTML);
+
+    var active = true;
+
+    function chatUpdate() {
+        var chatChanges = JSON.parse(window.localStorage.getItem('chatChanges'));
+
+        for (var i = 0, len = chatChanges.length, target, change; i < len; i ++) {
+            try {
+                target = document.querySelector(chatChanges[i].target);
+                change = chatChanges[i];
+                switch(change.type) {
+                case 'attributes': target.setAttribute(change.attributeName, change.attributeValue); break;
+                case 'childList':
+                    if (change.removedNumber) {
+                        var toRemove = change.removedNumber;
+                        while (toRemove--) {
+                            target.childNodes[change.removedIndex].remove();
+                        }
+                    }
+                    if (change.addedHTML) {
+                        if (change.addedAfter !== null) {
+                            target.childNodes[change.addedAfter].insertAdjacentHTML('afterend', change.addedHTML);
+                        } else {
+                            target.insertAdjacentHTML('afterbegin', change.addedHTML);
+                        }
+                    }
+                }
+            } catch(e) {
+                active = false;
+                window.console.log('Error: ' + e);
+                window.console.log('Mutation that caused it: ' + JSON.stringify(change, null, '    '));
+                break;
+            }
+        }
+    }
+    window.addEventListener('storage', function(e) {
+        if (active && e.storageArea === window.localStorage && e.key === 'chatChanges') {
+            chatUpdate();
+        }
+    }, false);
+};
+
 var main = function() {
     try {
         if (!GUIp.i18n ||
