@@ -1,6 +1,20 @@
 (function() {
 'use strict';
 
+GUIp.forum = {};
+
+GUIp.forum.init = function() {
+    setInitVariables();
+
+    GUIp.initLinks();
+
+    if (GUIp.isTopic) {
+        GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/forum.css'), 'forum_css');
+        GUIp.initTopicFormattingFeatures();
+        GUIp.initOtherTopicFeatures();
+    }
+};
+
 // links initialization
 var addSmallElements = function() {
     var temp = GUIp.$Q('.c2');
@@ -549,32 +563,6 @@ window.addChat = function() {
     }, false);
 };
 
-var main = function() {
-    try {
-        if (!GUIp.i18n ||
-            !GUIp.initLinks ||
-            !GUIp.initTopicFormattingFeatures ||
-            !GUIp.initOtherTopicFeatures ||
-            !GUIp.addCSSFromURL
-        ) {
-            return;
-        }
-
-        clearInterval(starter);
-
-        setInitVariables();
-
-        GUIp.initLinks();
-
-        if (GUIp.isTopic) {
-            GUIp.addCSSFromURL(GUIp.common.getResourceURL('forum.css'), 'forum_css');
-            GUIp.initTopicFormattingFeatures();
-            GUIp.initOtherTopicFeatures();
-        }
-    } catch(e) {
-        window.console.error(e);
-    }
-};
-var starter = setInterval(function() { main(); }, 100);
+GUIp.forum.loaded = true;
 
 })();
