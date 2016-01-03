@@ -9,10 +9,19 @@ if (document.location.pathname.match(validPathnames)) {
         script;
 
     script = document.createElement('script');
-    script.src = window.localStorage.getItem('GUIp:beta') === 'true' ? externalLoaderURL : internalLoaderURL;
+    script.textContent =
+        'window.GUIp = {};\n\n' +
+        'GUIp.version = "' + self.options.version + '";\n' +
+        'GUIp.browser = "firefox";\n' +
+        'GUIp.locale = ' + (document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en') + ';\n\n' +
+        'GUIp.common = {\n' +
+        '    getResourceURL: function(aResName) {\n' +
+        '        return "chrome://godville-ui-plus/content/" + aResName;\n' +
+        '    }\n' +
+        '};';
     container.appendChild(script);
 
     script = document.createElement('script');
-    script.textContent = 'window.GUIp = window.GUIp || {};\n\nGUIp.version = "' + self.options.version + '";';
+    script.src = window.localStorage.getItem('GUIp:beta') === 'true' ? externalLoaderURL : internalLoaderURL;
     container.appendChild(script);
 }
