@@ -8,17 +8,25 @@ if (document.location.pathname.match(validPathnames)) {
         externalLoaderURL = 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/module_loader.js',
         script;
 
+    var basicScript = function() {
+        window.GUIp = {};
+
+        GUIp.browser = 'firefox';
+        GUIp.locale = document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en';
+        GUIp.common = {
+            getResourceURL: function(aResName) {
+                return "chrome://godville-ui-plus/content/" + aResName;
+            },
+            getGithubSourceURL: function(aPath) {
+                return "https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/" + aPath;
+            }
+        };
+    };
+
     script = document.createElement('script');
     script.textContent =
-        'window.GUIp = {};\n\n' +
-        'GUIp.version = "' + self.options.version + '";\n' +
-        'GUIp.browser = "firefox";\n' +
-        'GUIp.locale = ' + (document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en') + ';\n\n' +
-        'GUIp.common = {\n' +
-        '    getResourceURL: function(aResName) {\n' +
-        '        return "chrome://godville-ui-plus/content/" + aResName;\n' +
-        '    }\n' +
-        '};';
+        '(' + basicScript.toString() + ')()\n' +
+        'GUIp.version = "' + self.options.version + '";';
     container.appendChild(script);
 
     script = document.createElement('script');
