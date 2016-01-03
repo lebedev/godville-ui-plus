@@ -1,6 +1,6 @@
 /* global self:false */
 
-var validPathnames = /^\/(?:superhero|user\/(?:profile|rk_success)|forums\/show(?:_topic)?\/\\d+|duels\/log\/)/;
+var validPathnames = /^\/(?:superhero|user\/(?:profile|rk_success)|forums\/show(?:_topic)?\/\d+|duels\/log\/)/;
 if (document.location.pathname.match(validPathnames)) {
     document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
     var container = document.getElementById('guip'),
