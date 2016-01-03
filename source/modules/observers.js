@@ -123,7 +123,7 @@ GUIp.observers.chronicles = {
     },
     config: { childList: true },
     func: function(mutations) {
-        GUIp.observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length;    }, GUIp.improver.improveChronicles.bind(GUIp.improver));
+        GUIp.observers.mutationChecker(mutations, function(mutation) { return mutation.addedNodes.length; }, GUIp.improver.improveChronicles.bind(GUIp.improver));
     },
     target: ['#m_fight_log .d_content']
 };
@@ -148,8 +148,7 @@ GUIp.observers.node_insertion = {
     },
     func: function(mutations) {
         GUIp.observers.mutationChecker(mutations, function(mutation) {
-            // to prevent improving WHEN ENTERING FUCKING TEXT IN FUCKING TEXTAREA
-            return mutation.addedNodes.length && mutation.addedNodes[0].nodeType !== 3;
+            return mutation.addedNodes.length && !mutation.target.parentElement.classList.contains('frInputArea');
         }, GUIp.improver.improvementDebounce);
     },
     target: ['body']
