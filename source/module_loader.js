@@ -72,7 +72,9 @@ GUIp.loader.waiter = (function(){
             return document.getElementById('profile_main');
         },
         forum: function() {
-            return true;
+            return window.Effect &&
+                   window.EditForm &&
+                   window.ReplyForm;
         },
         log: function() {
             return true;
