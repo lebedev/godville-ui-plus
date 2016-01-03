@@ -59,7 +59,7 @@ GUIp.logger.init = function() {
         ['Males',    'males',   GUIp.i18n.males   ]
     ];
 };
-GUIp.logger._appendStr = function(cssClass, aText, aHint) {
+GUIp.logger._appendStr = function(aCssClass, aText, aHint) {
     if (this.separatorIsNeeded) {
         this.separatorIsNeeded = false;
         if (this._container.children.length) {
@@ -70,7 +70,7 @@ GUIp.logger._appendStr = function(cssClass, aText, aHint) {
     }
 
     this._container.insertAdjacentHTML('beforeend', '<span class="whitespace"> </span>');
-    this._container.insertAdjacentHTML('beforeend', '<li class="' + cssClass + '" title="' + aHint + '">' + aText + '</li>');
+    this._container.insertAdjacentHTML('beforeend', '<li class="' + aCssClass + '" title="' + aHint + '">' + aText + '</li>');
 
     var firstEntry;
     while (
