@@ -30,6 +30,7 @@ module.exports = function(grunt) {
         files: [
           { expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/' },
           { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/firefox/content/modules/' },
+          { expand: true, cwd: 'source/css', src: '**', dest: '<%= compile_path %>/firefox/content/css/' },
           { expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile' },
           { expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile' },
           { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' }
