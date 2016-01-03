@@ -739,3 +739,20 @@ body.has_temple.field #hk_health .p_bar:before {
 .page_wrapper_5c .s_col #imp_button {
 	left: 34px;
 }
+
+/* log steps enumeration */
+#last_items_arena .new_line .d_capt {
+	position: relative;
+}
+
+#last_items_arena .new_line .d_capt::after {
+	content: attr(data-step);
+	color: #777;
+	font-size: 85%;
+	position: absolute;
+	width: 100%;
+	left: 50%;
+	bottom: 0px;
+	transform: translateX(-50%) translateY(100%);
+	z-index: 1;
+}
