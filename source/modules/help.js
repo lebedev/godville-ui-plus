@@ -38,7 +38,7 @@ GUIp.help._createButtons = function() {
         GUIp.help._addDumpButton('<span>, </span>', 'log', 'Log:');
 
         document.querySelector('#guip_help .hint_bar_content').insertAdjacentHTML('beforeend', '<div><a class="devel_link" id="force_forum_check">force forum check</a></div>');
-        document.getElementById('force_forum_check').onclick = GUIp.forum._check;
+        document.getElementById('force_forum_check').onclick = GUIp.subs._check;
     }
     GUIp.help._addToggleButton(document.querySelector('#guip_help .hint_bar_close'), GUIp.i18n.close);
 };

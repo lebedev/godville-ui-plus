@@ -1,18 +1,18 @@
-// forum
+// subs
 window.GUIp = window.GUIp || {};
 
-GUIp.forum = {};
+GUIp.subs = {};
 
-GUIp.forum.init = function() {
+GUIp.subs.init = function() {
     if (!GUIp.storage.get('Subs')) {
         GUIp.storage.set('Subs', '{}');
         GUIp.storage.set('SubsNotifications', '{}');
     }
 
     document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
-    setInterval(function() { GUIp.forum._check(); }, (3*60 + 5)*1000);
+    setInterval(function() { GUIp.subs._check(); }, (3*60 + 5)*1000);
 };
-GUIp.forum._check = function() {
+GUIp.subs._check = function() {
     var MAX_TOPICS = 20,
         subs = JSON.parse(GUIp.storage.get('Subs')),
         last = +GUIp.storage.get('Subs:lastChecked'),
@@ -36,20 +36,20 @@ GUIp.forum._check = function() {
     GUIp.utils.postXHR({
         url: '/forums/last_in_topics',
         postData: topicsToBeChecked.map(function(topic) { return 'topic_ids[]=' + topic; }).join('&'),
-        onSuccess: GUIp.forum._parse
+        onSuccess: GUIp.subs._parse
     });
 };
-GUIp.forum._process = function() {
+GUIp.subs._process = function() {
     var informers = JSON.parse(GUIp.storage.get('SubsNotifications')),
         subs = JSON.parse(GUIp.storage.get('Subs'));
     for (var topic_no in subs) {
         if (informers[topic_no]) {
-            GUIp.forum._setInformer(topic_no, informers[topic_no], subs[topic_no].posts);
+            GUIp.subs._setInformer(topic_no, informers[topic_no], subs[topic_no].posts);
         }
     }
     GUIp.informer.clearTitle();
 };
-GUIp.forum._setInformer = function(topic_no, topic_data, posts_count) {
+GUIp.subs._setInformer = function(topic_no, topic_data, posts_count) {
     var informer = document.getElementById('topic' + topic_no);
     if (!informer) {
         document.getElementById('forum_informer_bar').insertAdjacentHTML('beforeend',
@@ -81,7 +81,7 @@ GUIp.forum._setInformer = function(topic_no, topic_data, posts_count) {
     informer.getElementsByTagName('span')[0].textContent = topic_data.name;
     informer.getElementsByTagName('div')[0].textContent = topic_data.diff;
 };
-GUIp.forum._parse = function(xhr) {
+GUIp.subs._parse = function(xhr) {
     var responseJSON = JSON.parse(xhr.responseText);
     if (responseJSON.status !== 'success' || !responseJSON.topics) {
         return;
@@ -118,7 +118,7 @@ GUIp.forum._parse = function(xhr) {
     }
     GUIp.storage.set('SubsNotifications', JSON.stringify(informers));
     GUIp.storage.set('Subs', JSON.stringify(subs));
-    GUIp.forum._process();
+    GUIp.subs._process();
 };
 
-GUIp.forum.loaded = true;
+GUIp.subs.loaded = true;
