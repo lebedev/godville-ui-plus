@@ -380,8 +380,6 @@ GUIp.getPhrases = function() {
     };
 };
 
-GUIp.locale = 'ru';
-
 var getGithubLink = function(link, hint) {
     return '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/' + link +
         '" title="Откроется в новой вкладке">' + hint + '</a>';
@@ -783,6 +781,9 @@ GUIp.i18n = {
     step_n: 'шаг '
 };
 
-GUIp.i18n.loaded = true;
+GUIp.i18n_ru = {
+    init: function() {},
+    loaded: true
+};
 
 })();

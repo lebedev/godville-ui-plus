@@ -251,8 +251,6 @@ GUIp.getPhrases = function() {
     };
 };
 
-GUIp.locale = 'en';
-
 var getGithubLink = function(link, hint) {
     return '<a target="_blank" href="https://raw.githubusercontent.com/zeird/godville-ui-plus/master/' + link +
         '" title="Opens in a new tab">' + hint + '</a>';
@@ -652,6 +650,9 @@ GUIp.i18n = {
     step_n: 'step '
 };
 
-GUIp.i18n.loaded = true;
+GUIp.i18n_en = {
+    init: function() {},
+    loaded: true
+};
 
 })();
