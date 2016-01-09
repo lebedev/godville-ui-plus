@@ -165,7 +165,7 @@ GUIp.getPhrases = function() {
             'This item makes hero\'s alignment more defined',
             'This item teleports the hero to the arena when activated',
             'This item can transform one or several bold items in inventory into golden bricks',
-            'Inside could be something valuable or some rubbish',
+            'There could be something valuable inside or some rubbish',
             'This item sends the hero on a mini-quest when activated'
         ]
     },
