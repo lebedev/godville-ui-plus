@@ -87,6 +87,9 @@ GUIp.forum._parse = function(xhr) {
         topics = responseJSON.topics,
         diff, topic;
     for (var topic_no in topics) {
+        if (!subs[topic_no]) {
+            continue;
+        }
         topic = topics[topic_no];
         diff = topic.cnt - subs[topic_no].posts;
 
