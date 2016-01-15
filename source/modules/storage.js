@@ -95,7 +95,7 @@ GUIp.storage._delete = function(regexp) {
     }
 };
 GUIp.storage._migrate = function() {
-    if (!GUIp.storage._migratedAt('151230')) {
+    if (!GUIp.storage._migratedAt('2015-01-14')) {
         localStorage.setItem('GUIp:beta', localStorage.getItem('GUIp_beta'));
         localStorage.removeItem('GUIp_beta');
         localStorage.setItem('GUIp:godnames', localStorage.getItem('GUIp:godnames').replace(/\|beta|beta\|/, ''));
