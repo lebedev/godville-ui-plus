@@ -34,7 +34,7 @@ GUIp.help._createButtons = function() {
         GUIp.help._addDumpButton('<span>dump: </span>', 'all');
         GUIp.help._addDumpButton('<span>, </span>', 'options', 'Option');
         GUIp.help._addDumpButton('<span>, </span>', 'logger', 'Logger');
-        GUIp.help._addDumpButton('<span>, </span>', 'forum', 'Forum');
+        GUIp.help._addDumpButton('<span>, </span>', 'subs', 'Subs');
         GUIp.help._addDumpButton('<span>, </span>', 'log', 'Log:');
 
         document.querySelector('#guip_help .hint_bar_content').insertAdjacentHTML('beforeend', '<div><a class="devel_link" id="force_forum_check">force forum check</a></div>');
