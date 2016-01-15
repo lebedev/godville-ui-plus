@@ -23,9 +23,9 @@ var followOnclick = function(e) {
                                     : this.parentElement.parentElement.parentElement.getElementsByTagName('abbr')[0].title,
             subforum = GUIp.isTopic ? GUIp.$q('a[href*="forums/show"]').href.match(/\d$/)[0]
                                     : document.location.pathname.match(/\d$/)[0],
-            topics = JSON.parse(GUIp.storage.get(GUIp.subforumId));
-        topics[topicId] = { posts: posts, date: date, subforum: subforum };
-        GUIp.storage.set(GUIp.subforumId, JSON.stringify(topics));
+            subs = JSON.parse(GUIp.storage.get('Subs'));
+        subs[topicId] = { posts: posts, date: date, subforum: subforum };
+        GUIp.storage.set('Subs', JSON.stringify(subs));
         this.style.display = 'none';
         this.parentElement.querySelector('.unfollow').style.display = 'inline';
     } catch(error) {
@@ -43,12 +43,12 @@ var unfollowOnclick = function(e) {
         e.preventDefault();
         var topicId = GUIp.isTopic ? document.location.pathname.match(/\d+/)[0]
                                    : this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-            topics = JSON.parse(GUIp.storage.get(GUIp.subforumId)),
-            informers = JSON.parse(GUIp.storage.get('ForumInformers'));
-        delete topics[topicId];
-        GUIp.storage.set(GUIp.subforumId, JSON.stringify(topics));
+            subs = JSON.parse(GUIp.storage.get('Subs')),
+            informers = JSON.parse(GUIp.storage.get('SubsNotifications'));
+        delete subs[topicId];
+        GUIp.storage.set('Subs', JSON.stringify(subs));
         delete informers[topicId];
-        GUIp.storage.set('ForumInformers', JSON.stringify(informers));
+        GUIp.storage.set('SubsNotifications', JSON.stringify(informers));
         this.style.display = 'none';
         this.parentElement.querySelector('.follow').style.display = 'inline';
     } catch(error) {
@@ -63,12 +63,12 @@ var addOnclickToUnfollow = function() {
 };
 var addLinks = function() {
     var links_containers = GUIp.$Q(GUIp.isTopic ? '#topic_mod' : '.c2 small'),
-        topics = JSON.parse(GUIp.storage.get(GUIp.subforumId)),
+        subs = JSON.parse(GUIp.storage.get('Subs')),
         isFollowed;
     for (var i = 0, len = links_containers.length; i < len; i++) {
         GUIp.topicId = GUIp.isTopic ? document.location.pathname.match(/\d+/)[0]
                                     : links_containers[i].parentElement.getElementsByTagName('a')[0].href.match(/\d+/)[0];
-        isFollowed = topics[GUIp.topicId];
+        isFollowed = subs[GUIp.topicId];
         links_containers[i].insertAdjacentHTML('beforeend',
             (GUIp.isTopic ? '(' : '\n') + '<a class="follow" href="#" style="display: ' + (isFollowed ? 'none' : 'inline') + '">' + (GUIp.isTopic ? GUIp.i18n.Subscribe : GUIp.i18n.subscribe) + '</a>' +
                                         '<a class="unfollow" href="#" style="display: ' + (isFollowed ? 'inline' : 'none') + '">' + (GUIp.isTopic ? GUIp.i18n.Unsubscribe : GUIp.i18n.unsubscribe) + '</a>' + (GUIp.isTopic ? ')' : '')
@@ -436,16 +436,16 @@ var picturesAutoreplace = function() {
     }
 };
 var updatePostsNumber = function() {
-    var topics = JSON.parse(GUIp.storage.get(GUIp.subforumId));
-    if (topics[GUIp.topicId]) {
+    var subs = JSON.parse(GUIp.storage.get('Subs'));
+    if (subs[GUIp.topicId]) {
         var page = document.location.search.match(/page=(\d+)/);
         page = page ? +page[1] - 1 : 0;
         var posts = page*25 + document.getElementsByClassName('post').length;
-        if (topics[GUIp.topicId].posts < posts) {
-            topics[GUIp.topicId].posts = posts;
+        if (subs[GUIp.topicId].posts < posts) {
+            subs[GUIp.topicId].posts = posts;
             var dates = document.getElementsByTagName('abbr');
-            topics[GUIp.topicId].date = dates[dates.length - 1].title;
-            GUIp.storage.set(GUIp.subforumId, JSON.stringify(topics));
+            subs[GUIp.topicId].date = dates[dates.length - 1].title;
+            GUIp.storage.set('Subs', JSON.stringify(subs));
         }
     }
 };
@@ -497,8 +497,6 @@ GUIp.storage = {
 
 var setInitVariables = function() {
     GUIp.isTopic = document.location.pathname.match(/topic/) !== null;
-    GUIp.subforumId = 'Forum' + (GUIp.isTopic ? GUIp.$q('.crumbs a:nth-child(3)').href.match(/forums\/show\/(\d+)/)[1]
-                                              : document.location.pathname.match(/forums\/show\/(\d+)/)[1]);
     var greetings = GUIp.$id('menu_top').textContent;
     GUIp.storage.god_name = greetings.match(localStorage.getItem('GUIp:lastGodname'))[0] ||
                             greetings.match(localStorage.getItem('GUIp:godnames'))[0];
