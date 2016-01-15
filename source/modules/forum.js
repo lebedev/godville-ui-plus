@@ -15,33 +15,31 @@ GUIp.forum.init = function() {
 };
 GUIp.forum._check = function() {
     var requests = 0;
-    for (var forum_no = 1; forum_no <= (GUIp.locale === 'ru' ? 6 : 4); forum_no++) {
-        var current_forum = JSON.parse(GUIp.storage.get('Forum' + forum_no)),
-            topics = [];
-        for (var topic in current_forum) {
-            topics.push('topic_ids[]=' + topic);
-        }
-        for (var i = 0, len = topics.length; i < len; i += 10) {
-            var postData = topics.slice(i, i + 10).join('&');
-            GUIp.forum._sendPostXHR(postData, forum_no, requests++);
-        }
+    var subs = JSON.parse(GUIp.storage.get('Subs')),
+        topics = [];
+    for (var topic_no in subs) {
+        topics.push('topic_ids[]=' + topic_no);
+    }
+    for (var i = 0, len = topics.length; i < len; i += 10) {
+        var postData = topics.slice(i, i + 10).join('&');
+        GUIp.forum._sendPostXHR(postData, requests++);
     }
 };
-GUIp.forum._sendPostXHR = function(postData, forumNo, requestNo) {
+GUIp.forum._sendPostXHR = function(postData, requestNo) {
     setTimeout(function() {
         GUIp.utils.postXHR({
             url: '/forums/last_in_topics',
             postData: postData,
-            onSuccess: GUIp.forum._parse.bind(forumNo)
+            onSuccess: GUIp.forum._parse
         });
     }, 500*requestNo);
 };
-GUIp.forum._process = function(forum_no) {
-    var informers = JSON.parse(GUIp.storage.get('ForumInformers')),
-        topics = JSON.parse(GUIp.storage.get('Forum' + forum_no));
-    for (var topic in topics) {
-        if (informers[topic]) {
-            GUIp.forum._setInformer(topic, informers[topic], topics[topic].posts);
+GUIp.forum._process = function() {
+    var informers = JSON.parse(GUIp.storage.get('SubsNotifications')),
+        subs = JSON.parse(GUIp.storage.get('Subs'));
+    for (var topic_no in subs) {
+        if (informers[topic_no]) {
+            GUIp.forum._setInformer(topic_no, informers[topic_no], subs[topic_no].posts);
         }
     }
     GUIp.informer.clearTitle();
@@ -60,9 +58,9 @@ GUIp.forum._setInformer = function(topic_no, topic_data, posts_count) {
         };
         informer.onmouseup = function(e) {
             if (e.which === 1 || e.which === 2) {
-                var informers = JSON.parse(GUIp.storage.get('ForumInformers'));
+                var informers = JSON.parse(GUIp.storage.get('SubsNotifications'));
                 delete informers[this.id.match(/\d+/)[0]];
-                GUIp.storage.set('ForumInformers', JSON.stringify(informers));
+                GUIp.storage.set('SubsNotifications', JSON.stringify(informers));
                 window.$(this).slideToggle("fast", function() {
                     if (this.parentElement) {
                         this.parentElement.removeChild(this);
@@ -84,21 +82,20 @@ GUIp.forum._parse = function(xhr) {
         return;
     }
 
-    var forum_no = this,
-        forum = JSON.parse(GUIp.storage.get('Forum' + forum_no)),
-        informers = JSON.parse(GUIp.storage.get('ForumInformers')),
+    var subs = JSON.parse(GUIp.storage.get('Subs')),
+        informers = JSON.parse(GUIp.storage.get('SubsNotifications')),
         topics = responseJSON.topics,
         diff, topic;
     for (var topic_no in topics) {
         topic = topics[topic_no];
-        diff = topic.cnt - forum[topic_no].posts;
+        diff = topic.cnt - subs[topic_no].posts;
 
-        if (diff <= 0 && forum[topic_no].date && (Date(forum[topic_no].date) < Date(topic.last_post_at))) {
+        if (diff <= 0 && subs[topic_no].date && (Date(subs[topic_no].date) < Date(topic.last_post_at))) {
             diff = 1;
         }
 
-        forum[topic_no].posts = topic.cnt;
-        forum[topic_no].date = topic.last_post_at;
+        subs[topic_no].posts = topic.cnt;
+        subs[topic_no].date = topic.last_post_at;
 
         if (diff > 0) {
             if (topic.last_post_by !== GUIp.stats.godName()) {
@@ -111,9 +108,9 @@ GUIp.forum._parse = function(xhr) {
             }
         }
     }
-    GUIp.storage.set('ForumInformers', JSON.stringify(informers));
-    GUIp.storage.set('Forum' + forum_no, JSON.stringify(forum));
-    GUIp.forum._process(forum_no);
+    GUIp.storage.set('SubsNotifications', JSON.stringify(informers));
+    GUIp.storage.set('Subs', JSON.stringify(subs));
+    GUIp.forum._process();
 };
 
 GUIp.forum.loaded = true;
