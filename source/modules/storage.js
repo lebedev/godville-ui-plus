@@ -100,6 +100,29 @@ GUIp.storage._migrate = function() {
         localStorage.removeItem('GUIp_beta');
         localStorage.setItem('GUIp:godnames', localStorage.getItem('GUIp:godnames').replace(/\|beta|beta\|/, ''));
     }
+    if (!GUIp.storage._migratedAt('2015-01-15')) {
+        var godnames = localStorage.getItem('GUIp:godnames').split('|'),
+            subforum,
+            godname,
+            subs;
+        for (var i = 0; i < godnames.length; i++) {
+            subs = {};
+            godname = godnames[i];
+
+            for (var subforum_no = 1; subforum_no <= (GUIp.locale === 'ru' ? 6 : 4); subforum_no++) {
+                subforum = JSON.parse(localStorage.getItem('GUIp_' + godname + ':Forum' + subforum_no));
+                for (var topic_no in subforum) {
+                    subs[topic_no] = subforum[topic_no];
+                    subs[topic_no].subforum = subforum_no;
+                }
+
+                localStorage.removeItem('GUIp_' + godname + ':Forum' + subforum_no);
+            }
+            localStorage.setItem('GUIp_' + godname + ':Subs', JSON.stringify(subs));
+
+            GUIp.storage._rename('ForumInformers', 'SubsNotifications');
+        }
+    }
 };
 GUIp.storage._migratedAt = function(date) {
     var lastMigratedAt = localStorage.getItem('GUIp:lastMigratedAt');
