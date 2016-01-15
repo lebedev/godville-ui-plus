@@ -13,16 +13,18 @@ var addSmallElements = function() {
 var followOnclick = function(e) {
     try {
         e.preventDefault();
-        var topicId = GUIp.isTopic ? document.location.pathname.match(/\d+/)[0]
-                                   : this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
-            posts = GUIp.isTopic ? +GUIp.$c('subtitle').textContent.match(/\d+/)[0]
-                                 : +this.parentElement.parentElement.nextElementSibling.textContent,
-            dates = GUIp.isTopic ? document.getElementsByTagName('abbr')
-                                 : null,
-            date =  GUIp.isTopic ? document.getElementsByClassName('disabled next_page').length ? dates[dates.length - 1].title : 0
-                                 : this.parentElement.parentElement.parentElement.getElementsByTagName('abbr')[0].title,
+        var topicId =  GUIp.isTopic ? document.location.pathname.match(/\d+/)[0]
+                                    : this.parentElement.parentElement.querySelector('a').href.match(/\d+/)[0],
+            posts =    GUIp.isTopic ? +GUIp.$c('subtitle').textContent.match(/\d+/)[0]
+                                    : +this.parentElement.parentElement.nextElementSibling.textContent,
+            dates =    GUIp.isTopic ? document.getElementsByTagName('abbr')
+                                    : null,
+            date =     GUIp.isTopic ? document.getElementsByClassName('disabled next_page').length ? dates[dates.length - 1].title : 0
+                                    : this.parentElement.parentElement.parentElement.getElementsByTagName('abbr')[0].title,
+            subforum = GUIp.isTopic ? GUIp.$q('a[href*="forums/show"]').href.match(/\d$/)[0]
+                                    : document.location.pathname.match(/\d$/)[0],
             topics = JSON.parse(GUIp.storage.get(GUIp.subforumId));
-        topics[topicId] = { posts: posts, date: date };
+        topics[topicId] = { posts: posts, date: date, subforum: subforum };
         GUIp.storage.set(GUIp.subforumId, JSON.stringify(topics));
         this.style.display = 'none';
         this.parentElement.querySelector('.unfollow').style.display = 'inline';
