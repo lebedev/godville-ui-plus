@@ -103,11 +103,13 @@ GUIp.storage._migrate = function() {
 };
 GUIp.storage._migratedAt = function(date) {
     var lastMigratedAt = localStorage.getItem('GUIp:lastMigratedAt');
-    if (lastMigratedAt && lastMigratedAt < date) {
+    if (lastMigratedAt && lastMigratedAt < date ||
+       !lastMigratedAt
+    ) {
         localStorage.setItem('GUIp:lastMigratedAt', date);
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 };
 GUIp.storage.isNewProfile = function(godname) {
