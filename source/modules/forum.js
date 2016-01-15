@@ -4,6 +4,11 @@ window.GUIp = window.GUIp || {};
 GUIp.forum = {};
 
 GUIp.forum.init = function() {
+    if (!GUIp.storage.get('Subs')) {
+        GUIp.storage.set('Subs', '{}');
+        GUIp.storage.set('SubsNotifications', '{}');
+    }
+
     document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
     GUIp.forum._check();
     setInterval(function() { GUIp.forum._check(); }, 2.5*60*1000);

@@ -6,7 +6,6 @@ GUIp.data = {};
 // base variables initialization
 GUIp.data.init = function() {
     GUIp.data._initVariables();
-    GUIp.data._initForumData();
     GUIp.data._clearOldDungeonData();
 
     // init mobile cookies
@@ -45,23 +44,6 @@ GUIp.data._initVariables = function() {
         document.body.classList.add('has_temple');
     }
     GUIp.utils.voiceInput = document.getElementById('god_phrase');
-};
-GUIp.data._initForumData = function() {
-    if (!GUIp.storage.get('Forum1')) {
-        GUIp.storage.set('Forum1', '{}');
-        GUIp.storage.set('Forum2', '{}');
-        GUIp.storage.set('Forum3', '{}');
-        GUIp.storage.set('Forum4', '{}');
-        GUIp.storage.set('ForumInformers', '{}');
-
-        if (GUIp.locale === 'ru') {
-            //GUIp.storage.set('Forum2', '{"2812": {"posts": 0, "date": 0}}');
-            GUIp.storage.set('Forum5', '{}');
-            GUIp.storage.set('Forum6', '{}');
-        } else {
-            //GUIp.storage.set('Forum1', '{"2800": {"posts": 0, "date": 0}}');
-        }
-    }
 };
 GUIp.data._clearOldDungeonData = function() {
     if (GUIp.stats.isField()) {
