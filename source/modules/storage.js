@@ -95,22 +95,6 @@ GUIp.storage._delete = function(regexp) {
     }
 };
 GUIp.storage._migrate = function() {
-    if (!GUIp.storage._migratedAt('151009')) {
-        localStorage.removeItem('GUIp_migrated');
-        localStorage.removeItem('GUIp_CurrentUser');
-
-        var godnames = [],
-            godname;
-        for(var key in localStorage) {
-            if (key.match(/^GUIp_([^:]+)/)) {
-                godname = key.match(/^GUIp_([^:]+)/)[1];
-                if (godname && !~godnames.indexOf(godname)) {
-                    godnames.push(godname);
-                }
-            }
-        }
-        localStorage.setItem('GUIp:godnames', godnames.join('|'));
-    }
     if (!GUIp.storage._migratedAt('151230')) {
         localStorage.setItem('GUIp:beta', localStorage.getItem('GUIp_beta'));
         localStorage.removeItem('GUIp_beta');
