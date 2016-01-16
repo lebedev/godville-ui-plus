@@ -3,7 +3,9 @@ window.GUIp = window.GUIp || {};
 
 GUIp.stats = {};
 
-GUIp.stats.init = function() {};
+GUIp.stats.init = function() {
+    GUIp.stats._fight_type = window.so.state.fight_type();
+};
 
 GUIp.stats._count = function(aParty) {
     return Object.keys(window.so.state[aParty]).length;
@@ -153,7 +155,7 @@ GUIp.stats.charName = function() {
     return window.so.state.stats.name.value;
 };
 GUIp.stats.fightType = function() {
-    return window.so.state.fight_type();
+    return GUIp.stats._fight_type;
 };
 GUIp.stats.godName = function() {
     return window.so.state.stats.godname.value;
@@ -174,22 +176,22 @@ GUIp.stats.isArenaAvailable = function() {
     return window.so.state.arena_available();
 };
 GUIp.stats.isDungeon = function() {
-    return window.so.state.fight_type() === 'dungeon';
+    return GUIp.stats._fight_type === 'dungeon';
 };
 GUIp.stats.isDungeonAvailable = function() {
     return window.so.state.dungeon_available();
 };
 GUIp.stats.isField = function() {
-    return !window.so.state.fight_type();
+    return !GUIp.stats._fight_type;
 };
 GUIp.stats.isFight = function() {
-    return window.so.state.fight_type() && !window.so.state.fight_type().match('dungeon|sail');
+    return !!GUIp.stats._fight_type && !GUIp.stats._fight_type.match('dungeon|sail');
 };
 GUIp.stats.isMale = function() {
     return window.so.state.stats.gender.value === 'male';
 };
 GUIp.stats.isSail = function() {
-    return window.so.state.fight_type() === 'sail';
+    return GUIp.stats._fight_type === 'sail';
 };
 GUIp.stats.monsterName = function() {
     return window.so.state.stats.monster_name && window.so.state.stats.monster_name.value;
