@@ -100,21 +100,21 @@ GUIp.improver.improveVoiceDialog = function() {
     }
     // Add voicegens and show timeout bar after saying
     if (this.isFirstTime) {
-        GUIp.utils.setVoiceSubmitState(this.freezeVoiceButton.match('when_empty'), true);
-        var godPhrase = document.getElementById('god_phrase');
-        godPhrase.onchange =
-        godPhrase.oncut    =
-        godPhrase.onfocus  =
-        godPhrase.oninput  =
-        godPhrase.onpaste  = function() {
-            if (!GUIp.utils.setVoiceSubmitState(this.value && !(GUIp.improver.freezeVoiceButton.match('after_voice') && parseInt(GUIp.timeout.bar.style.width)), false)) {
-                GUIp.utils.setVoiceSubmitState(GUIp.improver.freezeVoiceButton.match('when_empty'), true);
-            }
-            GUIp.utils.hideElem(document.getElementById('clear_voice_input'), !this.value);
+        GUIp.utils.setVoiceSubmitState(this.freezeVoiceButton.match('when_empty'), GUIp.utils.BUTTON_ENABLED);
+        var voiceInput = document.getElementById('god_phrase');
+        voiceInput.onchange =
+        voiceInput.oncut    =
+        voiceInput.onfocus  =
+        voiceInput.oninput  =
+        voiceInput.onpaste  = function() {
+            GUIp.utils.setVoice(voiceInput.value);
         };
         document.onclick = function(e) {
-            if (e.target.classList.contains('gv_text') && e.target.classList.contains('div_link')) {
-                godPhrase.focus();
+            if (e.target.classList &&
+                e.target.classList.contains('gv_text') &&
+                e.target.classList.contains('div_link')
+            ) {
+                GUIp.utils.setVoice(voiceInput.value);
             }
         };
         document.getElementById('voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover hidden" title="' + GUIp.i18n.clear_voice_input + '">×</div>');
@@ -126,7 +126,7 @@ GUIp.improver.improveVoiceDialog = function() {
             GUIp.improver.voiceSubmitted = true;
         };
 
-            if (!GUIp.utils.isAlreadyImproved(document.getElementById('cntrl'))) {
+        if (!GUIp.utils.isAlreadyImproved(document.getElementById('cntrl'))) {
             var gp_label = document.getElementsByClassName('gp_label')[0];
             gp_label.classList.add('l_capt');
             document.getElementsByClassName('gp_val')[0].classList.add('l_val');

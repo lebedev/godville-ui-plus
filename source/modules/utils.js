@@ -8,13 +8,23 @@ GUIp.utils.init = function() {
     GUIp.utils.inform();
 };
 
+GUIp.utils.BUTTON_ENABLED = true;
+GUIp.utils.BUTTON_DISABLED = false;
+
 GUIp.utils.notiLaunch = 0;
 GUIp.utils.messagesShown = [];
 // base phrase say algorythm
 GUIp.utils.setVoice = function(voice) {
-    this.voiceInput.focus();
-    this.voiceInput.value = voice;
-    this.voiceInput.focus();
+    var voiceInput = document.getElementById('god_phrase');
+    voiceInput.value = voice;
+
+    var condition = voiceInput.value && !(GUIp.improver.freezeVoiceButton.match('after_voice') && parseInt(GUIp.timeout.bar.style.width));
+    if (!GUIp.utils.setVoiceSubmitState(condition, GUIp.utils.BUTTON_DISABLED)) {
+        condition = GUIp.improver.freezeVoiceButton.match('when_empty');
+        GUIp.utils.setVoiceSubmitState(condition, GUIp.utils.BUTTON_ENABLED);
+    }
+
+    GUIp.utils.hideElem(document.getElementById('clear_voice_input'), !voiceInput.value);
 };
 // finds a label with given name
 GUIp.utils.findLabel = function($base_elem, label_name) {
@@ -243,10 +253,10 @@ GUIp.utils.dateToMoscowTimeZone = function(date) {
           (temp.getMonth() + 1 < 10 ? '0' : '') + (temp.getMonth() + 1) + '/' +
           (temp.getDate() < 10 ? '0' : '') + temp.getDate();
 };
-GUIp.utils.setVoiceSubmitState = function(condition, disable) {
+GUIp.utils.setVoiceSubmitState = function(condition, toDisabledState) {
     if (GUIp.stats.isField() && condition) {
         var voice_submit = document.getElementById('voice_submit');
-        if (disable) {
+        if (toDisabledState) {
             voice_submit.setAttribute('disabled', 'disabled');
         } else {
             voice_submit.removeAttribute('disabled');

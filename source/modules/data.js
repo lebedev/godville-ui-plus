@@ -43,7 +43,6 @@ GUIp.data._initVariables = function() {
     if (GUIp.stats.hasTemple()) {
         document.body.classList.add('has_temple');
     }
-    GUIp.utils.voiceInput = document.getElementById('god_phrase');
 };
 GUIp.data._clearOldDungeonData = function() {
     if (GUIp.stats.isField()) {
