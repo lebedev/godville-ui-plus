@@ -10,29 +10,34 @@ GUIp.forum.init = function() {
     }
 
     document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
-    GUIp.forum._check();
-    setInterval(function() { GUIp.forum._check(); }, 2.5*60*1000);
+    setInterval(function() { GUIp.forum._check(); }, (3*60 + 5)*1000);
 };
 GUIp.forum._check = function() {
-    var requests = 0;
-    var subs = JSON.parse(GUIp.storage.get('Subs')),
-        topics = [];
-    for (var topic_no in subs) {
-        topics.push('topic_ids[]=' + topic_no);
+    var MAX_TOPICS = 10,
+        subs = JSON.parse(GUIp.storage.get('Subs')),
+        last = +GUIp.storage.get('Subs:lastChecked'),
+        topics = Object.keys(subs).sort(function(a, b) { return +a > +b; }),
+        topicsToBeChecked = [],
+        startIndex = 0;
+    if (topics.length < MAX_TOPICS) {
+        topicsToBeChecked = topics;
+    } else {
+        for (var i = 0, len = topics.length; i < len; i++) {
+            if (topics[i] > last) {
+                topicsToBeChecked = topics.slice(i, i + MAX_TOPICS);
+                break;
+            }
+        }
+        if (topicsToBeChecked.length < MAX_TOPICS) {
+            topicsToBeChecked = topicsToBeChecked.concat(topics.slice(0, MAX_TOPICS - topicsToBeChecked.length));
+        }
+        GUIp.storage.set('Subs:lastChecked', topicsToBeChecked[MAX_TOPICS - 1]);
     }
-    for (var i = 0, len = topics.length; i < len; i += 10) {
-        var postData = topics.slice(i, i + 10).join('&');
-        GUIp.forum._sendPostXHR(postData, requests++);
-    }
-};
-GUIp.forum._sendPostXHR = function(postData, requestNo) {
-    setTimeout(function() {
-        GUIp.utils.postXHR({
-            url: '/forums/last_in_topics',
-            postData: postData,
-            onSuccess: GUIp.forum._parse
-        });
-    }, 500*requestNo);
+    GUIp.utils.postXHR({
+        url: '/forums/last_in_topics',
+        postData: topicsToBeChecked.map(function(topic) { return 'topic_ids[]=' + topic; }).join('&'),
+        onSuccess: GUIp.forum._parse
+    });
 };
 GUIp.forum._process = function() {
     var informers = JSON.parse(GUIp.storage.get('SubsNotifications')),
