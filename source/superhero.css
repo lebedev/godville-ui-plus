@@ -206,7 +206,7 @@ body {
 #logger .allies_hp { color: blue; }
 #logger .savings { color: darkorange; }
 
-#logger .whitespace {
+html:not(.opera) #logger .whitespace {
 	position: absolute;
 	left: -9999px;
 	top: -9999px;
