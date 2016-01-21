@@ -28,8 +28,8 @@ GUIp.help._createHelpDialog = function() {
 };
 GUIp.help._createButtons = function() {
     var menu_bar = document.querySelector('#menu_bar ul');
-    menu_bar.insertAdjacentHTML('beforeend', '| <li><a href="user/profile#guip_settings">' + GUIp.i18n.guip_settings_top_menu + '</a></li> | <li></li>');
-    GUIp.help._addToggleButton(menu_bar.lastElementChild, '<strong>' + GUIp.i18n.guip_help + '</strong>');
+    menu_bar.querySelector('a[href*="logout"]').parentNode.insertAdjacentHTML('beforebegin', '<li><a href="user/profile#guip_settings">' + GUIp.i18n.guip_settings_top_menu + '</a></li> | <li id="help_dialog_toggle_button"></li> | ');
+    GUIp.help._addToggleButton(document.getElementById('help_dialog_toggle_button'), '<strong>' + GUIp.i18n.guip_help + '</strong>');
     if (GUIp.storage.get('Option:enableDebugMode')) {
         GUIp.help._addDumpButton('<span>dump: </span>', 'all');
         GUIp.help._addDumpButton('<span>, </span>', 'options', 'Option');
