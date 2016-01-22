@@ -48,7 +48,7 @@ waitFor(function() {
         script;
     for (var i = 0, len = GUIp.duels_log.modules.length; i < len; i++) {
         script = document.createElement('script');
-        script.src = GUIp.common[getUrl]('modules/' + GUIp.duels_log.modules[i] + '.js');
+        script.src = GUIp.common[getUrl]('modules/module_' + GUIp.duels_log.modules[i] + '.js');
         container.appendChild(script);
     }
     window.console.timeEnd('GUIp: created modules <script>-tags in');
