@@ -13,7 +13,7 @@ GUIp.forum.init = function() {
     setInterval(function() { GUIp.forum._check(); }, (3*60 + 5)*1000);
 };
 GUIp.forum._check = function() {
-    var MAX_TOPICS = 10,
+    var MAX_TOPICS = 20,
         subs = JSON.parse(GUIp.storage.get('Subs')),
         last = +GUIp.storage.get('Subs:lastChecked'),
         topics = Object.keys(subs).sort(function(a, b) { return +a > +b; }),
