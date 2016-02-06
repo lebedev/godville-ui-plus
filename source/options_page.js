@@ -243,25 +243,13 @@ return '<p>\n' +
 '                        <input class="informer-checkbox" id="guild_quest" name="guild_quest" type="checkbox"><label for="guild_quest">' + GUIp.i18n.forbidden_informers_guild_quest + '</label><br>\n' +
 '                        <input class="informer-checkbox" id="mini_quest" name="mini_quest" type="checkbox"><label for="mini_quest">' + GUIp.i18n.forbidden_informers_mini_quest + '</label><br>\n' +
 '                        <b>' + GUIp.i18n.forbidden_informers_usable_items + '</b> (' + GUIp.i18n.forbidden_informers_check + ' <a id="check_all" style="cursor: pointer;">' + GUIp.i18n.forbidden_informers_check_all + '</a> ' + GUIp.i18n.forbidden_informers_or + ' <a id="uncheck_all" style="cursor: pointer;">' + GUIp.i18n.forbidden_informers_check_none + '</a>):<br>\n' +
-(isEN ? '' : '            <input class="item-informer informer-checkbox" id="arena_box" name="arena_box" type="checkbox"><label for="arena_box">' + GUIp.i18n.forbidden_informers_arena_box + '</label><br>\n') +
-'                        <input class="item-informer informer-checkbox" id="aura_box" name="aura_box" type="checkbox"><label for="aura_box">' + GUIp.i18n.forbidden_informers_aura_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="black_box" name="black_box" type="checkbox"><label for="black_box">' + GUIp.i18n.forbidden_informers_black_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="boss_box" name="boss_box" type="checkbox"><label for="boss_box">' + GUIp.i18n.forbidden_informers_boss_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="treasure_box" name="treasure_box" type="checkbox"><label for="treasure_box">' + GUIp.i18n.forbidden_informers_treasure_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="charge_box" name="charge_box" type="checkbox"><label for="charge_box">' + GUIp.i18n.forbidden_informers_charge_box + '</label><br>\n' +
-(isEN ? '' : '            <input class="item-informer informer-checkbox" id="coolstory_box" name="coolstory_box" type="checkbox"><label for="coolstory_box">' + GUIp.i18n.forbidden_informers_coolstory_box + '</label><br>\n') +
-'                        <input class="item-informer informer-checkbox" id="friend_box" name="friend_box" type="checkbox"><label for="friend_box">' + GUIp.i18n.forbidden_informers_friend_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="gift_box" name="gift_box" type="checkbox"><label for="gift_box">' + GUIp.i18n.forbidden_informers_gift_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="good_box" name="good_box" type="checkbox"><label for="good_box">' + GUIp.i18n.forbidden_informers_good_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="heal_box" name="heal_box" type="checkbox"><label for="heal_box">' + GUIp.i18n.forbidden_informers_heal_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="invite" name="invite" type="checkbox"><label for="invite">' + GUIp.i18n.forbidden_informers_invite + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="raidboss_box" name="raidboss_box" type="checkbox"><label for="raidboss_box">' + GUIp.i18n.forbidden_informers_raidboss_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="quest_box" name="quest_box" type="checkbox"><label for="quest_box">' + GUIp.i18n.forbidden_informers_quest_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="smelter" name="smelter" type="checkbox"><input class="item-informer informer-checkbox" id="smelt!" name="smelt!" type="checkbox" style="display: none;"><label for="smelter">' + GUIp.i18n.forbidden_informers_smelter + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="teleporter" name="teleporter" type="checkbox"><label for="teleporter">' + GUIp.i18n.forbidden_informers_teleporter + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="temper_box" name="temper_box" type="checkbox"><label for="temper_box">' + GUIp.i18n.forbidden_informers_temper_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="to_arena_box" name="to_arena_box" type="checkbox"><label for="to_arena_box">' + GUIp.i18n.forbidden_informers_to_arena_box + '</label><br>\n' +
-'                        <input class="item-informer informer-checkbox" id="transformer" name="transformer" type="checkbox"><input class="item-informer informer-checkbox" id="transform!" name="transform!" type="checkbox" style="display: none;"><label for="transformer">' + GUIp.i18n.forbidden_informers_transformer + '</label><br>\n' +
+                        (function() {
+                            var types = GUIp.getPhrases().usableItemTypes;
+                            return types.map(function(aType) {
+                                var name = aType.name.replace(/ /g, '_');
+                                return '<input class="item-informer informer-checkbox" id="' + name + '" name="' + name + '" type="checkbox"><label for="' + name + '">' + GUIp.i18n['forbidden_informers_' + name] + '</label><br>\n';
+                            }).join('');
+                        })() +
 '                    </div>\n' +
 '                </div>\n' +
 '                <div class="new_line">\n' +
