@@ -125,50 +125,82 @@ GUIp.getPhrases = function() {
         ]
     },
 
-    usable_items: {
-        types: [
-            'aura box',
-            //'arena box',
-            'black box',
-            'boss box',
-            'charge box',
-            //'coolstory box',
-            'friend box',
-            'gift box',
-            'good box',
-            'invite',
-            'heal box',
-            'raidboss box',
-            'smelter',
-            'teleporter',
-            'temper box',
-            'to arena box',
-            'transformer',
-            'treasure box',
-            'quest box'
-        ],
-        descriptions: [
-            'This item gives a new aura to the hero',
-            //'Данный предмет можно активировать только во время дуэли',
-            'This item can affect the hero in a good or bad way',
-            'This item summons a boss-monster for the hero to fight',
-            'This item adds one accumulator charge when activated',
-            //'Этот предмет сочиняет о герое былину',
-            'This item helps your hero find a new friend',
-            'This spooky item can turn into something',
-            'This item may give your hero a pleasant surprise',
-            'Activating this item will increase the number of available invitations.',
-            'This item can completely restore the hero\'s health',
-            'This item makes the hero search for allies against an underground boss',
-            'This item kills the monster or tries to melt a golden brick out of 3000 gold coins',
-            'This item can teleport the hero into a random town',
-            'This item makes hero\'s alignment more defined',
-            'This item teleports the hero to the arena when activated',
-            'This item can transform one or several bold items in inventory into golden bricks',
-            'There could be something valuable inside or some rubbish',
-            'This item sends the hero on a mini-quest when activated'
-        ]
-    },
+    usableItemTypes: [
+        {
+            name: 'aura box',
+            description: 'This item gives a new aura to the hero'
+        },
+        {
+            name: 'black box',
+            description: 'This item can affect the hero in a good or bad way'
+        },
+        {
+            name: 'boss box',
+            description: 'This item summons a boss-monster for the hero to fight'
+        },
+        {
+            name: 'catch box',
+            description: 'There could be something valuable inside or some rubbish',
+            condition: function(item) { return item.needs_godpower === 0; }
+        },
+        {
+            name: 'charge box',
+            description: 'This item adds one accumulator charge when activated'
+        },
+        {
+            name: 'friend box',
+            description: 'This item helps your hero find a new friend'
+        },
+        {
+            name: 'gift box',
+            description: 'This spooky item can turn into something'
+        },
+        {
+            name: 'good box',
+            description: 'This item may give your hero a pleasant surprise'
+        },
+        {
+            name: 'invite',
+            description: 'Activating this item will increase the number of available invitations.'
+        },
+        {
+            name: 'heal box',
+            description: 'This item can completely restore the hero\'s health'
+        },
+        {
+            name: 'raidboss box',
+            description: 'This item makes the hero search for allies against an underground boss'
+        },
+        {
+            name: 'smelter',
+            description: 'This item kills the monster or tries to melt a golden brick out of 3000 gold coins'
+        },
+        {
+            name: 'teleporter',
+            description: 'This item can teleport the hero into a random town'
+        },
+        {
+            name: 'temper box',
+            description: 'This item makes hero\'s alignment more defined'
+        },
+        {
+            name: 'to arena box',
+            description: 'This item teleports the hero to the arena when activated'
+        },
+        {
+            name: 'transformer',
+            description: 'This item can transform one or several bold items in inventory into golden bricks'
+        },
+        {
+            name: 'treasure box',
+            description: 'There could be something valuable inside or some rubbish',
+            condition: function(item) { return item.needs_godpower !== 0; }
+        },
+        {
+            name: 'quest box',
+            description: 'This item sends the hero on a mini-quest when activated'
+        },
+    ],
 
     pets: [
         {name: 'Ninja Tortoise', min_level: 18},
