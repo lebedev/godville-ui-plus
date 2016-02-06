@@ -75,10 +75,10 @@ GUIp.inventory._update = function() {
         item = window.so.state.inventory[item_name];
         // color items and add buttons
         if (item.description) { // usable item
-            var sect = GUIp.words.usableItemType(item.description);
+            var typeIndex = GUIp.words.usableItemType(item.description);
             bold_items++;
-            if (sect !== -1) {
-                flags[sect] = true;
+            if (typeIndex !== -1) {
+                flags[typeIndex] = true;
             } else if (!~GUIp.utils.messagesShown.indexOf('info')) {
                 GUIp.utils.showMessage('info', {
                     title: GUIp.i18n.unknown_item_type_title,
