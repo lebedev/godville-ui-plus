@@ -76,7 +76,11 @@ GUIp.inventory._update = function() {
         // color items and add buttons
         if (item.description) { // usable item
             var typeIndex = GUIp.words.getUsableItemTypeOf(item);
-            bold_items++;
+
+            if (item.price) {
+                bold_items++;
+            }
+
             if (typeIndex !== -1) {
                 flags[typeIndex] = true;
             } else if (!~GUIp.utils.messagesShown.indexOf('info')) {
