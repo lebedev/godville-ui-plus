@@ -66,7 +66,7 @@ GUIp.inventory._update = function() {
         trophy_boldness = {},
         forbidden_craft = GUIp.storage.get('Option:forbiddenCraft') || '';
 
-    for (i = 0, len = GUIp.words.base.usable_items.types.length; i < len; i++) {
+    for (i = 0, len = GUIp.words.base.usableItemTypes.length; i < len; i++) {
         flags[i] = false;
     }
 
@@ -75,7 +75,7 @@ GUIp.inventory._update = function() {
         item = window.so.state.inventory[item_name];
         // color items and add buttons
         if (item.description) { // usable item
-            var typeIndex = GUIp.words.usableItemType(item.description);
+            var typeIndex = GUIp.words.getUsableItemTypeOf(item);
             bold_items++;
             if (typeIndex !== -1) {
                 flags[typeIndex] = true;
@@ -116,10 +116,11 @@ GUIp.inventory._update = function() {
     }
 
     for (i = 0, len = flags.length; i < len; i++) {
-        GUIp.informer.update(GUIp.words.base.usable_items.types[i], flags[i]);
+        GUIp.informer.update(GUIp.words.base.usableItemTypes[i].name, flags[i]);
     }
-    GUIp.informer.update('transform!', flags[GUIp.words.base.usable_items.types.indexOf('transformer')] && bold_items >= 2);
-    GUIp.informer.update('smelt!', flags[GUIp.words.base.usable_items.types.indexOf('smelter')] && GUIp.stats.Gold() >= 3000);
+    var typeNames = GUIp.words.base.usableItemTypes.map(function(aType) { return aType.name; });
+    GUIp.informer.update('transform!', flags[typeNames.indexOf('transformer')] && bold_items >= 2);
+    GUIp.informer.update('smelt!', flags[typeNames.indexOf('smelter')] && GUIp.stats.Gold() >= 3000);
 
     GUIp.inventory._updateCraftCombos(trophy_boldness);
 };
