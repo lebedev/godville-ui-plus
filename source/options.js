@@ -406,14 +406,18 @@ function saveOptions() {
     if (!$id('forbidden_craft').checked) {
         setAllCheckboxesToState('craft-checkbox', true);
     }
-    $id('smelt!').checked = $id('smelter').checked;
-    $id('transform!').checked = $id('transformer').checked;
     var forbiddenInformers = [],
         fiCheckboxes = $C('informer-checkbox');
     for (i = 0, len = fiCheckboxes.length; i < len; i++) {
         if (!fiCheckboxes[i].checked) {
             forbiddenInformers.push(fiCheckboxes[i].id);
         }
+    }
+    if (~forbiddenInformers.indexOf('smelter')) {
+        forbiddenInformers.push('smelt!');
+    }
+    if (~forbiddenInformers.indexOf('transformer')) {
+        forbiddenInformers.push('transform!');
     }
     storage.set('Option:forbiddenInformers', forbiddenInformers.join());
     var forbiddenCraft = [],
