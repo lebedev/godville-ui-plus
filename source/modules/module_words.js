@@ -81,8 +81,21 @@ GUIp.words.craftPhrase = function(items) {
     return GUIp.words.longPhrase('craft_prefix', items);
 };
 // Checkers
-GUIp.words.usableItemType = function(desc) {
-    return this.base.usable_items.descriptions.indexOf(desc);
+GUIp.words.getUsableItemTypeOf = function(item) {
+    var type;
+    for (var i = 0, len = this.base.usableItemTypes.length; i < len; i++) {
+        type = this.base.usableItemTypes[i];
+        if (item.description === type.description &&
+            (
+                !type.hasOwnProperty('condition') ||
+                 type.condition(item)
+            )
+        ) {
+            return i;
+        }
+    }
+
+    return -1;
 };
 
 GUIp.words.loaded = true;
