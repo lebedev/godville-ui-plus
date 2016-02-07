@@ -124,7 +124,7 @@ GUIp.loader.waitFor(function() {
         script;
     for (var i = 0, len = GUIp.loader.modules.length; i < len; i++) {
         script = document.createElement('script');
-        script.src = GUIp.common[getUrl]('modules/' + GUIp.loader.modules[i] + '.js');
+        script.src = GUIp.common[getUrl]('modules/module_' + GUIp.loader.modules[i] + '.js');
         container.appendChild(script);
     }
     window.console.timeEnd('GUIp: created modules <script>-tags in');
