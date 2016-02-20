@@ -6,7 +6,7 @@
 
 var browser = 'chrome';
 var isBeta = localStorage.getItem('GUIp:beta') === 'true';
-var prefix = isBeta ? 'https://raw.githubusercontent.com/zeird/godville-ui-plus/beta/source/'
+var prefix = isBeta ? 'https://rawgit.com/zeird/godville-ui-plus/beta/source/'
                     : chrome.extension.getURL('');
 var version = chrome.runtime.getManifest().version_name;
 
