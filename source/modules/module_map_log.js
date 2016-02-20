@@ -6,7 +6,7 @@ GUIp.map_log = {};
 GUIp.map_log.init = function() {
     // add some styles
     if (GUIp.browser !== 'Opera') {
-        GUIp.addCSSFromURL(GUIp.common.getResourceURL('superhero.css'), 'guip_css');
+        GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/superhero.css'), 'guip_css');
     }
 
     // add save links
