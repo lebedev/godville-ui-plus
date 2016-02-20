@@ -127,7 +127,7 @@ GUIp.map_log.init = function() {
             localStorage.setItem('GUIp_highContrast', document.getElementById('high_contrast').checked);
         };
     } catch(e) {
-        window.console.map_log(e);
+        window.console.log(e);
     }
 };
 
@@ -358,7 +358,7 @@ GUIp.map_log.parseChronicles = function() {
     for (var i = 0; step <= step_max; i++) {
         if (!matches[i]) {
             if (step !== step_max) {
-                window.console.map_log('not enough steps detected! required: '+step_max+', got: '+step);
+                window.console.log('not enough steps detected! required: '+step_max+', got: '+step);
             }
             break;
         }
@@ -416,7 +416,7 @@ GUIp.map_log.describeMap = function() {
             if (shortCorrection) {
                 this.chronicles[step].direction = this.corrections[shortCorrection];
             } else {
-                window.console.map_log('warning: detected directionless move! the following direction (re-)calculation is currently in beta and might not work at all under some circumstances!');
+                window.console.log('warning: detected directionless move! the following direction (re-)calculation is currently in beta and might not work at all under some circumstances!');
                 this.chronicles[step].direction = GUIp.map_log.calculateDirectionlessMove(coords, step);
             }
             this.chronicles[step].directionless = false;
@@ -474,7 +474,7 @@ GUIp.map_log.describeMap = function() {
     }
     var heroesCoords = GUIp.map_log.calculateXY(document.getElementsByClassName('map_pos')[0]);
     if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
-        window.console.map_log('chronicle processing failed, coords diff: x: ' + (heroesCoords.x - coords.x) + ', y: ' + (heroesCoords.y - coords.y) + '.');
+        window.console.log('chronicle processing failed, coords diff: x: ' + (heroesCoords.x - coords.x) + ', y: ' + (heroesCoords.y - coords.y) + '.');
     }
 };
 
@@ -522,7 +522,7 @@ GUIp.map_log.highlightTreasuryZone = function() {
                             case 'burning':  ttl += '✺'; break;
                         }
                     }
-                    window.console.map_log("current position has pointers: " + ttl);
+                    window.console.log("current position has pointers: " + ttl);
                 }
                 if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1 || ttl.length && ttl.match('←|→|↓|↑|↙|↘|↖|↗')) {
                     MaxMap++;
@@ -736,7 +736,7 @@ GUIp.map_log.calculateDirectionlessMove = function(initCoords, initStep) {
         steps = Object.keys(this.chronicles),
         directionless = 0;
 
-    window.console.map_log('going to calculate directionless moves from step #'+initStep);
+    window.console.log('going to calculate directionless moves from step #'+initStep);
     for (i = initStep, len = steps.length; i <= len; i++) {
         if (this.chronicles[i].directionless) {
             directionless++;
@@ -747,7 +747,7 @@ GUIp.map_log.calculateDirectionlessMove = function(initCoords, initStep) {
     var variations = this.getAllRPerms('nesw'.split(''),directionless);
 
     for (i = 0, len = variations.length; i < len; i++) {
-        //window.console.map_log('trying combo '+variations[i].join());
+        //window.console.log('trying combo '+variations[i].join());
         coords = { x: initCoords.x, y: initCoords.y };
         directionless = 0;
         for (j = initStep, len2 = steps.length; j <= len2; j++) {
@@ -763,7 +763,7 @@ GUIp.map_log.calculateDirectionlessMove = function(initCoords, initStep) {
         }
         if (heroesCoords.x - coords.x === 0 && heroesCoords.y - coords.y === 0) {
             var currentCorrections = this.storageGet(GUIp.map_log.map_logID + 'corrections') || '';
-            window.console.map_log('found result: '+variations[i].join());
+            window.console.log('found result: '+variations[i].join());
             this.directionlessMoveCombo = currentCorrections + variations[i].join('');
             if (!this.customDomain) {
                 this.storageSet(GUIp.map_log.map_logID + 'corrections', currentCorrections + variations[i].join(''));
