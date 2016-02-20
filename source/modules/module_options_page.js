@@ -3,6 +3,10 @@
 
 window.GUIp = window.GUIp || {};
 
+GUIp.options_page = {};
+
+GUIp.options_page.init = function() {};
+
 GUIp.getOptionsPage = function() {
 var isEN = GUIp.locale === 'en',
     isOpera = GUIp.browser === 'Opera';
@@ -435,5 +439,7 @@ return '<p>\n' +
 '    </div>\n' +
 '</div>';
 };
+
+GUIp.options_page.loaded = true;
 
 })();

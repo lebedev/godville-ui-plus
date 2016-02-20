@@ -1,6 +1,12 @@
 (function() {
 'use strict';
 
+window.GUIp = window.GUIp || {};
+
+GUIp.options = {};
+
+GUIp.options.init = function() {};
+
 var doc = document;
 
 var $id = function(id) {
@@ -790,5 +796,7 @@ var starterInt = setInterval(function() {
         });
     }
 }, 100);
+
+GUIp.options.loaded = true;
 
 })();
