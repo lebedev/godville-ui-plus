@@ -9,7 +9,7 @@ module.exports = function(grunt) {
           { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/chrome/modules/' },
           { expand: true, cwd: 'source/css', src: '**', dest: '<%= compile_path %>/chrome/css/' },
           { expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/' },
-          { expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/' }
+          { expand: true, cwd: 'source/chrome/images', src: '**', dest: '<%= compile_path %>/chrome/images/' }
         ]
       },
       chrome_versioned: {
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
           { expand: true, flatten: true, src: 'source/module_loader.js', dest: '<%= compile_path %>/firefox/content/' },
           { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/firefox/content/modules/' },
           { expand: true, cwd: 'source/css', src: '**', dest: '<%= compile_path %>/firefox/content/css/' },
-          { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' }
+          { expand: true, cwd: 'source/images', src: '**', dest: '<%= compile_path %>/firefox/content/images' }
         ]
       },
       firefox_versioned: {
