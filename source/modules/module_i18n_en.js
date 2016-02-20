@@ -277,16 +277,16 @@ GUIp.i18n = {
     close: 'close',
     help_dialog_capt: 'help dialog',
     how_to_update: 'How to update <b>Godville UI+</b> manually:',
-    help_update_Firefox: '<li>Open Firefox add-ons page (2 or <b>Ctrl+Shift+A</b>). ' +
+    help_update_firefox: '<li>Open Firefox add-ons page (2 or <b>Ctrl+Shift+A</b>). ' +
         getGithubLink('help_guide/firefox_manual_update_1.png', 'Picture') + '.</li>' +
         '<li>Click the "gear" (3), then "Check for updates" (4) and wait for a few seconds. ' +
         getGithubLink('help_guide/firefox_manual_update_2.png', 'Picture') + '.</li>',
-    help_update_Chrome: '<li>Open Chrome settings (2). ' +
+    help_update_chrome: '<li>Open Chrome settings (2). ' +
         getGithubLink('help_guide/chrome_manual_update_1.png', 'Picture') + '.</li>' +
         '<li>Choose "Extensions" (3), check "Developer mode" (4), click "Update extensions" button (5), ' +
         'which will appear, wait until the browser will refresh the extension,  uncheck the box (6). ' +
         getGithubLink('help_guide/chrome_manual_update_2.png', 'Picture') + '.</li>',
-    help_update_Opera: '<li>Open the extensions page (<b>Ctrl+Shift+E</b>) and uninstall old version of the extension. ' +
+    help_update_opera: '<li>Open the extensions page (<b>Ctrl+Shift+E</b>) and uninstall old version of the extension. ' +
         getGithubLink('help_guide/opera_manual_update_1.png', 'Picture') + '.</li>' +
         '<li>Download new version of the extension from the following link and install it. ' +
         getGithubLink('release/godville-ui-plus@badluck.dicey.oex', 'Link to the new version.') + '</li>',

@@ -406,16 +406,16 @@ GUIp.i18n = {
     close: 'закрыть',
     help_dialog_capt: 'окошко помощи',
     how_to_update: 'Как вручную обновить <b>Godville UI+</b>:',
-    help_update_Firefox: '<li>Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). ' +
+    help_update_firefox: '<li>Откройте страницу дополнений Файрфокса (2 или <b>Ctrl+Shift+A</b>). ' +
         getGithubLink('help_guide/firefox_manual_update_1.png', 'Картинка') + '.</li>' +
         '<li>Нажмите на шестеренку (3), потом "Проверить наличие обновлений" (4) и подождите несколько секунд. ' +
         getGithubLink('help_guide/firefox_manual_update_2.png', 'Картинка') + '.</li>',
-    help_update_Chrome: '<li>Откройте страницу настроек Хрома (2). ' +
+    help_update_chrome: '<li>Откройте страницу настроек Хрома (2). ' +
         getGithubLink('help_guide/chrome_manual_update_1.png', 'Картинка') + '.</li>' +
         '<li>Выберите "Расширения" (3), поставьте флажок "Режим разработчика" (4), нажмите появившуюся кнопку ' +
         '"Обновить расширения" (5), подождите, пока браузер обновит расширение, снимите флажок (6). ' +
         getGithubLink('help_guide/chrome_manual_update_2.png', 'Картинка') + '.</li>',
-    help_update_Opera: '<li>Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию расширения. ' +
+    help_update_opera: '<li>Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию расширения. ' +
         getGithubLink('help_guide/opera_manual_update_1.png', 'Картинка') + '.</li>' +
         '<li>Скачайте новую версию расширения по ссылке и установите ее. ' +
         getGithubLink('release/godville-ui-plus@badluck.dicey.oex', 'Ссылка на новую версию.') + '</li>',
