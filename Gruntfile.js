@@ -5,8 +5,9 @@ module.exports = function(grunt) {
     copy: {
       chrome: {
         files: [
-          { expand: true, flatten: true, src: ['source/chrome/*', 'source/*'], dest: '<%= compile_path %>/chrome/', filter: 'isFile' },
+          { expand: true, flatten: true, src: ['source/chrome/*', 'source/module_loader.js'], dest: '<%= compile_path %>/chrome/', filter: 'isFile' },
           { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/chrome/modules/' },
+          { expand: true, cwd: 'source/css', src: '**', dest: '<%= compile_path %>/chrome/css/' },
           { expand: true, cwd: 'source/chrome/_locales', src: '**', dest: '<%= compile_path %>/chrome/_locales/' },
           { expand: true, src: 'images/*', dest: '<%= compile_path %>/chrome/' }
         ]
@@ -29,10 +30,9 @@ module.exports = function(grunt) {
       firefox: {
         files: [
           { expand: true, cwd: 'source/firefox', src: '**', dest: '<%= compile_path %>/firefox/' },
+          { expand: true, flatten: true, src: 'source/module_loader.js', dest: '<%= compile_path %>/firefox/content/' },
           { expand: true, cwd: 'source/modules', src: '**', dest: '<%= compile_path %>/firefox/content/modules/' },
           { expand: true, cwd: 'source/css', src: '**', dest: '<%= compile_path %>/firefox/content/css/' },
-          { expand: true, flatten: true, src: 'source/*.js', dest: '<%= compile_path %>/firefox/data/', filter: 'isFile' },
-          { expand: true, flatten: true, src: 'source/*.css', dest: '<%= compile_path %>/firefox/content/', filter: 'isFile' },
           { expand: true, src: 'images/*', dest: '<%= compile_path %>/firefox/content/' }
         ]
       },
@@ -117,7 +117,6 @@ module.exports = function(grunt) {
         options: {
           'globals': {
             // Native
-            'chrome': false,
             'module': false,
             'opera': false,
             'require': false,
