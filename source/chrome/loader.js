@@ -1,37 +1,45 @@
+/* global chrome:false */
+
 (function() {
-    var prefix = chrome.extension.getURL('');
-    sessionStorage.setItem('GUIp_prefix', prefix);
 
-    var specificScripts = {
-        'superhero.*':                     'superhero.js',
-        'user\/(?:profile|rk_success).*': ['options_page.js', 'options.js'],
-        'forums\/show(?:_topic)?\/\\d+.*': 'forum.js',
-        'duels\/log\/.*':                  'log.js'
+'use strict';
+
+var prefix = chrome.extension.getURL('');
+sessionStorage.setItem('GUIp_prefix', prefix);
+
+var version = chrome.runtime.getManifest().version_name;
+
+var validPathnames = /^\/(?:superhero|user\/(?:profile|rk_success)|forums\/show(?:_topic)?\/\d+|duels\/log\/)/;
+if (document.location.pathname.match(validPathnames)) {
+    document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
+    var container = document.getElementById('guip'),
+        internalLoaderURL = prefix + 'module_loader.js',
+        externalLoaderURL = 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/module_loader.js',
+        script;
+
+    var basicScript = function() {
+        window.GUIp = {};
+
+        GUIp.version = '$VERSION';
+        GUIp.browser = 'firefox';
+        GUIp.locale = document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en';
+        GUIp.common = {
+            getResourceURL: function(aResName) {
+                return sessionStorage.getItem('GUIp_prefix') + aResName;
+            },
+            getGithubSourceURL: function(aPath) {
+                return 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/' + aPath;
+            }
+        };
     };
 
-    var attachScripts = function(aSpecificScripts) {
-        var ruUrlRegExp = 'godville\\.net|gdvl\\.tk|gv\\.erinome\\.net',
-            locale = document.location.hostname.match(ruUrlRegExp) ? 'ru' : 'en',
-            commonScriptNames = ['common.js', 'guip_chrome.js', 'phrases_' + locale + '.js'],
-            scriptNames = commonScriptNames.concat(aSpecificScripts);
+    script = document.createElement('script');
+    script.textContent = '(' + basicScript.toString().replace('$VERSION', version) + ')();';
+    container.appendChild(script);
 
-        document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
-        var container = document.getElementById('guip'),
-            script;
-        for (var n in scriptNames) {
-            script = document.createElement('script');
-            script.src = prefix + scriptNames[n];
-            container.appendChild(script);
-        }
-        script = document.createElement('script');
-        script.textContent = 'window.GUIp = window.GUIp || {};\n\nGUIp.version = "' + chrome.runtime.getManifest().version_name + '";';
-        container.appendChild(script);
-    };
+    script = document.createElement('script');
+    script.src = window.localStorage.getItem('GUIp:beta') === 'true' ? externalLoaderURL : internalLoaderURL;
+    container.appendChild(script);
+}
 
-    for (var pathname in specificScripts) {
-        if (document.location.pathname.match(pathname)) {
-            attachScripts(specificScripts[pathname]);
-            break;
-        }
-    }
 })();

@@ -34,23 +34,12 @@
 	},
 
 	"web_accessible_resources": [
-		"superhero.css",
-		"forum.css",
-		"options.css",
+		"module_loader.js",
+		"modules/*.js",
 
-		"common.js",
-		"superhero.js",
-		"guip_chrome.js",
-		"phrases_ru.js",
-		"phrases_en.js",
-		"options_page.js",
-		"options.js",
-		"forum.js",
-		"log.js",
+		"css/*.css",
 
-		"images/*",
-
-		"modules/*.js"
+		"images/*"
 	]
 
 }

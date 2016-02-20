@@ -1,3 +1,5 @@
+/* global chrome:false */
+
 chrome.runtime.onInstalled.addListener(function() {
     chrome.tabs.query({
         url: [
