@@ -4,31 +4,29 @@
 
 'use strict';
 
-var prefix = 'chrome://godville-ui-plus/content/';
-sessionStorage.setItem('GUIp_prefix', prefix);
-
+var browser = 'firefox';
+var isBeta = localStorage.getItem('GUIp:beta') === 'true';
+var prefix = isBeta ? 'https://raw.githubusercontent.com/zeird/godville-ui-plus/beta/source/'
+                    : 'chrome://godville-ui-plus/content/';
 var version = self.options.version;
 
 var validPathnames = /^\/(?:superhero|user\/(?:profile|rk_success)|forums\/show(?:_topic)?\/\d+|duels\/log\/)/;
 if (document.location.pathname.match(validPathnames)) {
     document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
-    var container = document.getElementById('guip'),
-        internalLoaderURL = prefix + 'module_loader.js',
-        externalLoaderURL = 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/module_loader.js',
-        script;
+    var guipContainer = document.getElementById('guip');
 
-    var basicScript = function() {
+    var loaderURL = prefix + 'module_loader.js';
+    var script;
+
+    var initScript = function() {
         window.GUIp = {};
 
         GUIp.version = '$VERSION';
-        GUIp.browser = 'firefox';
+        GUIp.browser = '$BROWSER';
         GUIp.locale = document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en';
         GUIp.common = {
             getResourceURL: function(aResName) {
-                return sessionStorage.getItem('GUIp_prefix') + aResName;
-            },
-            getGithubSourceURL: function(aPath) {
-                return 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/' + aPath;
+                return '$PREFIX' + aResName;
             }
         };
     };
@@ -47,18 +45,18 @@ if (document.location.pathname.match(validPathnames)) {
     };
 
     script = document.createElement('script');
-    script.textContent = '(' + basicScript.toString().replace('$VERSION', version) + ')();';
-    container.appendChild(script);
+    script.textContent = '(' + initScript.toString().replace('$VERSION', version).replace('$PREFIX', prefix).replace('$BROWSER', browser) + ')();';
+    guipContainer.appendChild(script);
 
-    if (window.localStorage.getItem('GUIp:beta') === 'true') {
+    if (isBeta) {
         script = document.createElement('script');
         script.textContent = '(' + disableBetaScript.toString() + ')();';
-        container.appendChild(script);
+        guipContainer.appendChild(script);
     }
 
     script = document.createElement('script');
-    script.src = window.localStorage.getItem('GUIp:beta') === 'true' ? externalLoaderURL : internalLoaderURL;
-    container.appendChild(script);
+    script.src = loaderURL;
+    guipContainer.appendChild(script);
 }
 
 })();
