@@ -84,18 +84,6 @@ GUIp.loader.waiter = (function(){
     return waiters[GUIp.loader.section];
 })();
 
-GUIp.loader.start = function() {
-    window.console.log('GUIp: initializing modules...');
-    window.console.time('GUIp: modules initialized in');
-
-    for (var i = 0, len = GUIp.loader.modules.length; i < len; i++) {
-        GUIp[GUIp.loader.modules[i]].init();
-    }
-
-    window.console.timeEnd('GUIp: modules initialized in');
-    window.console.info('GUIp: started. Enjoy! :3');
-};
-
 GUIp.loader.waitFor = function(aTargetCheckFunc) {
     return new window.Promise(function (aResolve, aReject) {
         var ticker = 0;
@@ -148,7 +136,22 @@ GUIp.loader.waitFor(function() {
     window.console.time('GUIp: Godville started in');
 }).then(GUIp.loader.waitFor.bind(null, GUIp.loader.waiter)).then(function() {
     window.console.timeEnd('GUIp: Godville started in');
-    GUIp.loader.start();
+
+    window.console.log('GUIp: initializing modules...');
+    window.console.time('GUIp: modules initialized in');
+
+    for (var i = 0, len = GUIp.loader.modules.length; i < len; i++) {
+        GUIp[GUIp.loader.modules[i]].init();
+    }
+
+    window.console.timeEnd('GUIp: modules initialized in');
+
+    var betaWarning = document.getElementById('guip_beta_warning');
+    if (betaWarning) {
+        betaWarning.remove();
+    }
+
+    window.console.info('GUIp: started. Enjoy! :3');
 });
 
 })();

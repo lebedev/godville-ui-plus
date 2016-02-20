@@ -33,9 +33,28 @@ if (document.location.pathname.match(validPathnames)) {
         };
     };
 
+    var disableBetaScript = function() {
+        var ruWarning = 'Включен beta-канал. В случае проблем нажмите <a id="guip_disable_beta" href="#">сюда</a>, чтоб выключить его.';
+        var enWarning = 'Beta-channel is enabled. In case of problems press <a id="guip_disable_beta" href="#">here</a> to disable it.';
+        document.body.insertAdjacentHTML(
+            'afterbegin',
+            '<div style="text-align: center;" id="guip_beta_warning">GUIp: ' + (GUIp.locale === 'ru' ? ruWarning : enWarning) + '</div>'
+        );
+        document.getElementById('guip_disable_beta').onclick = function() {
+            localStorage.setItem('GUIp:beta', false);
+            document.location.reload();
+        };
+    };
+
     script = document.createElement('script');
     script.textContent = '(' + basicScript.toString().replace('$VERSION', version) + ')();';
     container.appendChild(script);
+
+    if (window.localStorage.getItem('GUIp:beta') === 'true') {
+        script = document.createElement('script');
+        script.textContent = '(' + disableBetaScript.toString() + ')();';
+        container.appendChild(script);
+    }
 
     script = document.createElement('script');
     script.src = window.localStorage.getItem('GUIp:beta') === 'true' ? externalLoaderURL : internalLoaderURL;
