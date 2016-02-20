@@ -277,11 +277,9 @@ var initSmartQuotation = function() {
                     return el;
                 };
 
-                var post = findPost(container),
-                    author = post.querySelector('.post_info a').textContent;
                 setTimeout(function() {
-                    window.ReplyForm.add_name(author);
-                }, 100);
+                    findPost(container).querySelector('.gravatar a').click();
+                }, 75);
                 window.getSelection().collapseToStart();
                 return false;
             };
