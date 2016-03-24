@@ -14,7 +14,7 @@ if (document.location.pathname.match(validPathnames)) {
     document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
     var container = document.getElementById('guip'),
         internalLoaderURL = prefix + 'module_loader.js',
-        externalLoaderURL = 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/module_loader.js',
+        externalLoaderURL = 'https://rawgit.com/zeird/godville-ui-plus/master/source/module_loader.js',
         script;
 
     var basicScript = function() {
@@ -28,7 +28,7 @@ if (document.location.pathname.match(validPathnames)) {
                 return sessionStorage.getItem('GUIp_prefix') + aResName;
             },
             getGithubSourceURL: function(aPath) {
-                return 'https://raw.githubusercontent.com/zeird/godville-ui-plus/master/source/' + aPath;
+                return 'https://rawgit.com/zeird/godville-ui-plus/master/source/' + aPath;
             }
         };
     };
