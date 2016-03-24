@@ -63,6 +63,9 @@ GUIp.loader.modules = (function() {
 GUIp.loader.waiter = (function(){
     var waiters = {
         superhero: function() {
+            if (!window.so) {
+                window.so = window.Hero.current_transport.packet_handler.callback_obj;
+            }
             return window.$ &&
                   (document.getElementById('m_info') || document.getElementById('stats')) &&
                    window.so &&
