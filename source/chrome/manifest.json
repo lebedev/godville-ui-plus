@@ -9,6 +9,10 @@
 	"version_name": "$VERSION_NAME",
 	"homepage_url": "http://godville.net/forums/show_topic/2812",
 
+	"permissions": [
+		"tabs"
+	],
+
 	"background": {
 		"scripts": ["reload_godville_pages_on_extension_install_or_update.js"],
 		"persistent": true
