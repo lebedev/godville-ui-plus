@@ -86,9 +86,7 @@ GUIp.utils.escapeHTML = function(str) {
                       .replace(/>/g, "&gt;");
 };
 GUIp.utils.addCSS = function () {
-    if (GUIp.browser !== 'Opera' && !document.getElementById('guip_css')) {
-        GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/superhero.css'), 'guip_css');
-    }
+    GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/superhero.css'), 'guip_css');
 };
 /* aParams: {
     url:       string,

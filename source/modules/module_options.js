@@ -773,9 +773,9 @@ var starterInt = setInterval(function() {
                    greetings.match(localStorage.getItem('GUIp:godnames'))[0];
 
         addMenu();
-        if (GUIp.browser !== 'Opera') {
-            GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/options.css'), 'guip_options_css');
-        }
+
+        GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/options.css'), 'guip_options_css');
+
         if (document.location.hash === "#guip_settings") {
             loadOptions();
         }
