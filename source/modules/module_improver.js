@@ -1369,7 +1369,7 @@ GUIp.improver.chatsFix = function() {
     //padding for page settings link
     var chats = document.getElementsByClassName('frDockCell'),
         clen = chats.length,
-        padding_bottom = clen ? chats[0].getBoundingClientRect().bottom - chats[clen - 1].getBoundingClientRect().top : GUIp.browser === 'Opera' ? 27 : 0,
+        padding_bottom = clen ? chats[0].getBoundingClientRect().bottom - chats[clen - 1].getBoundingClientRect().top : GUIp.browser === 'opera' ? 27 : 0,
         isBottom = window.scrollY >= document.documentElement.scrollHeight - document.documentElement.clientHeight - 10;
     padding_bottom = Math.floor(padding_bottom*10)/10 + 10;
     padding_bottom = (padding_bottom < 0) ? 0 : padding_bottom + 'px';

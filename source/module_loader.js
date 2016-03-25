@@ -113,7 +113,7 @@ GUIp.loader.waitFor(function() {
 
     window.console.time('GUIp: created modules <script>-tags in');
     var container = document.getElementById('guip'),
-        getUrl = window.localStorage.getItem('GUIp:beta') === 'true' || GUIp.browser === 'Opera' ? 'getGithubSourceURL' : 'getResourceURL',
+        getUrl = window.localStorage.getItem('GUIp:beta') === 'true' || GUIp.browser === 'opera' ? 'getGithubSourceURL' : 'getResourceURL',
         script;
     for (var i = 0, len = GUIp.loader.modules.length; i < len; i++) {
         script = document.createElement('script');

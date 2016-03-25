@@ -16,7 +16,7 @@ GUIp.data.init = function() {
     }
 
     /* [E] desktop notifications - asking user for a permission */
-    if ((GUIp.storage.get('Option:enableInformerAlerts') || GUIp.storage.get('Option:enablePmAlerts')) && GUIp.browser !== 'Opera' && Notification.permission !== "granted") {
+    if ((GUIp.storage.get('Option:enableInformerAlerts') || GUIp.storage.get('Option:enablePmAlerts')) && GUIp.browser !== 'opera' && Notification.permission !== "granted") {
         Notification.requestPermission();
     }
 
