@@ -214,7 +214,7 @@ function loadOptions() {
         $q('#voice_menu .g_desc').textContent = $q('#voice_menu .g_desc').textContent.replace('герою', 'героине');
     }
 
-    if (GUIp.browser !== 'Opera') {
+    if (GUIp.browser !== 'opera') {
         document.getElementById('use_beta_channel').checked = window.localStorage.getItem('GUIp:beta') === 'true';
     }
 

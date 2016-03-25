@@ -5,7 +5,7 @@ window.GUIp = window.GUIp || {};
 
 GUIp.getOptionsPage = function() {
 var isEN = GUIp.locale === 'en',
-    isOpera = GUIp.browser === 'Opera';
+    isOpera = GUIp.browser === 'opera';
 return '<p>\n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=settings\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + GUIp.i18n.profile_menu_settings + '</a> | \n' +
 '<a href="#" onclick="Element.show(\'spinner_prof\'); new Ajax.Request(\'/user/update_data?type=informers\', {asynchronous:true, evalScripts:true, onComplete:function(request) {Element.hide(\'spinner_prof\')}});">' + GUIp.i18n.profile_menu_informers + '</a> | \n' +

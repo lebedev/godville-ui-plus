@@ -41,7 +41,7 @@ GUIp.overrider._overrideSounds = function() {
 };
 
 GUIp.overrider._overridePMNotifications = function() {
-    if (GUIp.storage.get('Option:enablePmAlerts') && GUIp.browser !== 'Opera' && Notification.permission === "granted") {
+    if (GUIp.storage.get('Option:enablePmAlerts') && GUIp.browser !== 'opera' && Notification.permission === "granted") {
         setTimeout(function() {
             // assume that all messages are loaded at this point, make a list of existing unread ones
             for (var contact in window.so.messages.h_friends) {

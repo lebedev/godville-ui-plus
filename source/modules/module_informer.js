@@ -107,7 +107,7 @@ GUIp.informer._updateTitle = function(activeFlags) {
     this.odd_tick = !this.odd_tick;
     var sep = this.odd_tick ? '!!!' : '...';
     document.title = GUIp.informer._getTitleNotices() + sep + ' ' + activeFlags.join('! ') + ' ' + sep;
-    if (GUIp.browser !== 'Opera' && !GUIp.storage.get('Option:disableFaviconFlashing')) {
+    if (GUIp.browser !== 'opera' && !GUIp.storage.get('Option:disableFaviconFlashing')) {
         this.favicon.href = this.odd_tick ? 'images/favicon.ico'
                                           : 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
     } else if (this.favicon.href !== 'images/favicon.ico') {
@@ -128,7 +128,7 @@ GUIp.informer.update = function(flag, value) {
                 GUIp.informer._tick();
             }
             /* [E] desktop notifications */
-            if (GUIp.storage.get('Option:enableInformerAlerts') && GUIp.browser !== 'Opera' && Notification.permission === "granted") {
+            if (GUIp.storage.get('Option:enableInformerAlerts') && GUIp.browser !== 'opera' && Notification.permission === "granted") {
                 var title = '[INFO] ' + GUIp.stats.godName(),
                     text = flag,
                     callback = function(){GUIp.informer.hide(flag);};
