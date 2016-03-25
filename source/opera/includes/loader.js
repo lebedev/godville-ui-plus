@@ -3,51 +3,57 @@ window.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    var attachFiles = function(aSpecificFileNames, aLocale) {
-        var createElement = function(aTagName) {
-            var el = document.createElement(aTagName);
-            el.textContent = this.result;
-            container.appendChild(el);
-        };
+    document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
+    var container = document.getElementById('guip'),
+        loaderURL = 'https://rawgit.com/zeird/godville-ui-plus/master/source/module_loader.js',
+        script;
 
-        // Reads version number from config.
-        var fr = new FileReader();
-        fr.onload = function() {
-            var GUIp_version_script = document.createElement('script');
-            GUIp_version_script.textContent = 'window.GUIp = window.GUIp || {};\n\nGUIp.version = "' + this.result.match(/widget .+? version="([^"]+)"/)[1] + '";';
-            container.appendChild(GUIp_version_script);
-        };
-        fr.readAsText(opera.extension.getFile('/config.xml'));
-
-        var ruUrlRegExp = 'godville\\.net|gdvl\\.tk|gv\\.erinome\\.net',
-            locale = document.location.hostname.match(ruUrlRegExp) ? 'ru' : 'en',
-            commonScriptNames = ['common.js', 'guip_opera.js', 'phrases_' + locale + '.js'],
-            fileNames = commonScriptNames.concat(aSpecificFileNames);
-
-        document.body.insertAdjacentHTML('beforeend', '<div id="guip" />');
-        var container = document.getElementById('guip');
-
-        for (var i in fileNames) {
-            var fileObj = opera.extension.getFile('/content/' + fileNames[i]);
-            if (fileObj) {
-                fr = new FileReader();
-                fr.onload = createElement.bind(fr, fileNames[i].match(/\.js$/) ? 'script' : 'style');
-                fr.readAsText(fileObj);
-            }
-        }
+    var polyfills = ['polyfills/Promise.js', 'polyfills/WeakMap.js', 'polyfills/MutationObserver.js'];
+    var onloadCallback = function() {
+        script = document.createElement('script');
+        script.textContent = this.result;
+        container.appendChild(script);
     };
-
-    var specificFileNames = {
-        'superhero.*':                     ['polyfills/Promise.js', 'polyfills/WeakMap.js', 'polyfills/MutationObserver.js', 'superhero.js', 'superhero.css'],
-        'user\/(?:profile|rk_success).*':  ['options_page.js', 'options.js', 'options.css'],
-        'forums\/show(?:_topic)?\/\\d+.*': ['polyfills/WeakMap.js', 'polyfills/MutationObserver.js', 'forum.js', 'forum.css'],
-        'duels\/log\/.*':                  ['polyfills/Promise.js', 'log.js', 'superhero.css']
-    };
-
-    for (var pathname in specificFileNames) {
-        if (document.location.pathname.match(pathname)) {
-            attachFiles(specificFileNames[pathname]);
-            break;
+    for (var i = 0, polyfill; (polyfill = polyfills[i]); i++) {
+        var fileObj = opera.extension.getFile('/content/' + polyfill);
+        if (fileObj) {
+            fr = new FileReader();
+            fr.onload = onloadCallback;
+            fr.readAsText(fileObj);
         }
     }
+
+    // Reads version number from config.
+    var fr = new FileReader();
+    fr.onload = function() {
+        var version = this.result.match(/widget .+? version="([^"]+)"/)[1];
+
+        var prefix = 'https://rawgit.com/zeird/godville-ui-plus/master/source/';
+
+        var basicScript = function() {
+            window.GUIp = {};
+
+            GUIp.version = '$VERSION';
+            GUIp.browser = 'Opera';
+            GUIp.locale = document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en';
+            GUIp.common = {
+                getResourceURL: function(aResName) {
+                    return 'https://rawgit.com/zeird/godville-ui-plus/master/source/' + aResName;
+                },
+                getGithubSourceURL: function(aPath) {
+                    return 'https://rawgit.com/zeird/godville-ui-plus/master/source/' + aPath;
+                }
+            };
+        };
+
+        script = document.createElement('script');
+        script.textContent = '(' + basicScript.toString().replace('$VERSION', version) + ')();';
+        container.appendChild(script);
+
+        script = document.createElement('script');
+        script.src = loaderURL;
+        container.appendChild(script);
+    };
+    fr.readAsText(opera.extension.getFile('/config.xml'));
+
 }, false);
