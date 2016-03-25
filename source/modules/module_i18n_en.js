@@ -289,7 +289,7 @@ GUIp.i18n = {
     help_update_opera: '<li>Open the extensions page (<b>Ctrl+Shift+E</b>) and uninstall old version of the extension. ' +
         getGithubLink('help_guide/opera_manual_update_1.png', 'Picture') + '.</li>' +
         '<li>Download new version of the extension from the following link and install it. ' +
-        getGithubLink('release/godville-ui-plus@badluck.dicey.oex', 'Link to the new version.') + '</li>',
+        '<a href="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.oex">Link to the new version.</a></li>',
     help_useful_links: 'Useful links: ' +
         '<a href="/forums/show_topic/2800" title="Opens in a new tab" target="_blank">forum thread</a>, ' +
         //'<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +

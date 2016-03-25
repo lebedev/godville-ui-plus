@@ -418,7 +418,7 @@ GUIp.i18n = {
     help_update_opera: '<li>Откройте страницу дополнений Оперы (<b>Ctrl+Shift+E</b>) и удалите старую версию расширения. ' +
         getGithubLink('help_guide/opera_manual_update_1.png', 'Картинка') + '.</li>' +
         '<li>Скачайте новую версию расширения по ссылке и установите ее. ' +
-        getGithubLink('release/godville-ui-plus@badluck.dicey.oex', 'Ссылка на новую версию.') + '</li>',
+        '<a href="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.oex">Ссылка на новую версию.</a></li>',
     help_useful_links: 'Полезные ссылки: ' +
         '<a href="/forums/show_topic/2812" title="Откроется в новой вкладке" target="_blank">тема на форуме</a>, ' +
         '<a href="http://wiki.godville.net/Godville_UI+" title="Откроется в новой вкладке" target="about:blank">статья в богии</a>, ' +
