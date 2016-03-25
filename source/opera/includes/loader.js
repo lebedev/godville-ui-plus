@@ -8,14 +8,14 @@ window.addEventListener('DOMContentLoaded', function() {
         loaderURL = 'https://rawgit.com/zeird/godville-ui-plus/master/source/module_loader.js',
         script;
 
-    var polyfills = ['polyfills/Promise.js', 'polyfills/WeakMap.js', 'polyfills/MutationObserver.js'];
+    var polyfills = ['Promise.js', 'WeakMap.js', 'MutationObserver.js'];
     var onloadCallback = function() {
         script = document.createElement('script');
         script.textContent = this.result;
         container.appendChild(script);
     };
     for (var i = 0, polyfill; (polyfill = polyfills[i]); i++) {
-        var fileObj = opera.extension.getFile('/content/' + polyfill);
+        var fileObj = opera.extension.getFile('/polyfills/' + polyfill);
         if (fileObj) {
             fr = new FileReader();
             fr.onload = onloadCallback;

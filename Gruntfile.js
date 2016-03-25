@@ -127,7 +127,7 @@ module.exports = function(grunt) {
         src: [
           'Gruntfile.js',
           'source/**/*.js',
-          '!source/opera/content/polyfills/*.js',
+          '!source/opera/polyfills/*.js',
           '!source/firefox/bootstrap.js'
         ]
       }
