@@ -18,7 +18,9 @@ GUIp.timeout._tick = function() {
             this.bar.style.transitionDuration = '';
         }
         this.bar.classList.remove('running');
-        GUIp.utils.setVoiceSubmitState(!GUIp.improver.freezeVoiceButton.match('when_empty') || document.querySelector('#god_phrase').value, GUIp.utils.BUTTON_DISABLED);
+        if (!GUIp.improver.freezeVoiceButton.match('when_empty') || document.querySelector('#god_phrase').value) {
+            GUIp.utils.setVoiceSubmitState(GUIp.utils.BUTTON_DISABLED);
+        }
     }
 };
 
@@ -30,7 +32,9 @@ GUIp.timeout.start = function() {
     setTimeout(function() { GUIp.timeout._delayedStart(); }, 10);
     this._finishtDate = Date.now() + this.timeout*1000;
     this._tickInt = setInterval(function() { GUIp.timeout._tick(); }, 100);
-    GUIp.utils.setVoiceSubmitState(GUIp.improver.freezeVoiceButton.match('after_voice'), GUIp.utils.BUTTON_ENABLED);
+    if (GUIp.improver.freezeVoiceButton.match('after_voice')) {
+        GUIp.utils.setVoiceSubmitState(GUIp.utils.BUTTON_ENABLED);
+    }
 };
 
 GUIp.timeout._delayedStart = function() {

@@ -18,10 +18,10 @@ GUIp.utils.setVoice = function(voice) {
     var voiceInput = document.getElementById('god_phrase');
     voiceInput.value = voice;
 
-    var condition = voiceInput.value && !(GUIp.improver.freezeVoiceButton.match('after_voice') && parseInt(GUIp.timeout.bar.style.width));
-    if (!GUIp.utils.setVoiceSubmitState(condition, GUIp.utils.BUTTON_DISABLED)) {
-        condition = GUIp.improver.freezeVoiceButton.match('when_empty');
-        GUIp.utils.setVoiceSubmitState(condition, GUIp.utils.BUTTON_ENABLED);
+    if (voiceInput.value && !(GUIp.improver.freezeVoiceButton.match('after_voice') && parseInt(GUIp.timeout.bar.style.width))) {
+        GUIp.utils.setVoiceSubmitState(GUIp.utils.BUTTON_DISABLED);
+    } else if (GUIp.improver.freezeVoiceButton.match('when_empty')) {
+        GUIp.utils.setVoiceSubmitState(GUIp.utils.BUTTON_ENABLED);
     }
 
     GUIp.utils.hideElem(document.getElementById('clear_voice_input'), !voiceInput.value);
@@ -251,17 +251,15 @@ GUIp.utils.dateToMoscowTimeZone = function(date) {
           (temp.getMonth() + 1 < 10 ? '0' : '') + (temp.getMonth() + 1) + '/' +
           (temp.getDate() < 10 ? '0' : '') + temp.getDate();
 };
-GUIp.utils.setVoiceSubmitState = function(condition, toDisabledState) {
-    if (GUIp.stats.isField() && condition) {
+GUIp.utils.setVoiceSubmitState = function(toDisabledState) {
+    if (GUIp.stats.isField()) {
         var voice_submit = document.getElementById('voice_submit');
         if (toDisabledState) {
             voice_submit.setAttribute('disabled', 'disabled');
         } else {
             voice_submit.removeAttribute('disabled');
         }
-        return true;
     }
-    return false;
 };
 GUIp.utils.hideElem = function(elem, hide) {
     if (hide) {

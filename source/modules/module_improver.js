@@ -122,7 +122,9 @@ GUIp.improver.improveVoiceDialog = function() {
     }
     // Add voicegens and show timeout bar after saying
     if (this.isFirstTime) {
-        GUIp.utils.setVoiceSubmitState(this.freezeVoiceButton.match('when_empty'), GUIp.utils.BUTTON_ENABLED);
+        if (this.freezeVoiceButton.match('when_empty')) {
+            GUIp.utils.setVoiceSubmitState(GUIp.utils.BUTTON_ENABLED);
+        }
         var voiceInput = document.getElementById('god_phrase');
         voiceInput.onchange =
         voiceInput.oncut    =
