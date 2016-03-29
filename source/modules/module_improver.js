@@ -131,6 +131,7 @@ GUIp.improver.improveVoiceDialog = function() {
         voiceInput.onfocus  =
         voiceInput.oninput  =
         voiceInput.onpaste  = function() {
+            window.console.log(voiceInput.value);
             GUIp.utils.setVoice(voiceInput.value);
         };
         document.onclick = function(e) {
