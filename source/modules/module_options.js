@@ -138,30 +138,22 @@ function loadOptions() {
     setForm();
     restore_options();
     $id('forbidden_informers').onclick = function() {
-        //jQuery('#informers').slideToggle("slow");
         $id('informers').style.display = $id('informers').style.display === 'none' ? 'block' : 'none';
     };
     $id('forbidden_craft').onclick = function() {
-        //jQuery('#craft_categories').slideToggle("slow");
         $id('craft_categories').style.display = $id('craft_categories').style.display === 'none' ? 'block' : 'none';
     };
     $id('relocate_duel_buttons').onclick = function() {
-        //jQuery('#relocate_duel_buttons_desc').slideToggle("slow");
         window.console.log($id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none');
         $id('relocate_duel_buttons_desc').style.display = $id('relocate_duel_buttons_desc').style.display === 'none' ? 'block' : 'none';
-        //jQuery('#relocate_duel_buttons_choice').slideToggle("slow");
         $id('relocate_duel_buttons_choice').style.display = $id('relocate_duel_buttons_choice').style.display === 'none' ? 'block' : 'none';
     };
     $id('forbidden_title_notices').onclick = function() {
-        //jQuery('#forbidden_title_notices_desc').slideToggle("slow");
         $id('forbidden_title_notices_desc').style.display = $id('forbidden_title_notices_desc').style.display === 'none' ? 'block' : 'none';
-        //jQuery('#forbidden_title_notices_choice').slideToggle("slow");
         $id('forbidden_title_notices_choice').style.display = $id('forbidden_title_notices_choice').style.display === 'none' ? 'block' : 'none';
     };
     $id('use_background').onclick = function() {
-        //jQuery('#background_choice').slideToggle("slow");
         $id('background_choice').style.display = $id('background_choice').style.display === 'none' ? 'block' : 'none';
-        //jQuery('#background_desc').slideToggle("slow");
         $id('background_desc').style.display = $id('background_desc').style.display === 'none' ? 'block' : 'none';
     };
     $id('custom_file').onclick = function() {
@@ -172,15 +164,11 @@ function loadOptions() {
         $id('custom_background').click();
     };
     $id('voice_timeout').onclick = function() {
-        //jQuery('#voice_timeout_choice').slideToggle("slow");
         $id('voice_timeout_choice').style.display = $id('voice_timeout_choice').style.display === 'none' ? 'block' : 'none';
-        //jQuery('#voice_timeout_desc').slideToggle("slow");
         $id('voice_timeout_desc').style.display = $id('voice_timeout_desc').style.display === 'none' ? 'block' : 'none';
     };
     $id('freeze_voice_button').onclick = function() {
-        //jQuery('#freeze_voice_button_choice').slideToggle("slow");
         $id('freeze_voice_button_choice').style.display = $id('freeze_voice_button_choice').style.display === 'none' ? 'block' : 'none';
-        //jQuery('#freeze_voice_button_desc').slideToggle("slow");
         $id('freeze_voice_button_desc').style.display = $id('freeze_voice_button_desc').style.display === 'none' ? 'block' : 'none';
     };
     $id('informer_alerts_timeout').onclick = function() {
@@ -208,9 +196,7 @@ function loadOptions() {
         return false;
     };
     $id('disable_voice_generators').onclick = function() {
-        //jQuery('#voice_menu').slideToggle("slow");
         $id('voice_menu').style.display = $id('voice_menu').style.display === 'none' ? 'block' : 'none';
-        //jQuery('#words').slideToggle("slow");
         $id('words').style.display = $id('words').style.display === 'none' ? 'block' : 'none';
     };
     if (!storage.get('charIsMale')) {
@@ -280,7 +266,6 @@ function saveWords() {
 }
 
 function saveOptions() {
-    //jQuery('#general_settings_spinner').show();
     $id('general_settings_spinner').style.display = 'inline';
 
     var i, len, option_checkboxes = $C('option-checkbox');
@@ -342,10 +327,8 @@ function saveOptions() {
                 }, 150);
                 storage.set('Option:useBackground', 'cloud');
             }
-            //jQuery('#cb_status').fadeIn();
             $id('cb_status').style.display = 'block';
             setTimeout(function() {
-                //jQuery('#cb_status').fadeOut();
                 $id('cb_status').style.display = 'none';
             }, 1000);
         }
@@ -435,7 +418,6 @@ function saveOptions() {
 
     window.localStorage.setItem('GUIp:beta', document.getElementById('use_beta_channel').checked);
 
-    //jQuery('#general_settings_spinner').fadeOut('slow');
     setTimeout(function() {
         $id('general_settings_spinner').style.display = 'none';
     }, 300);
@@ -511,54 +493,44 @@ function restore_options() {
     }
 
     if ($id('relocate_duel_buttons').checked) {
-        //jQuery('#relocate_duel_buttons_desc').hide();
         $id('relocate_duel_buttons_desc').style.display = 'none';
         var buttons = storage.get('Option:relocateDuelButtons');
         if (buttons.match('arena')) { $id('relocate_arena').checked = true; }
         if (buttons.match('chf')) { $id('relocate_chf').checked = true; }
     } else {
-        //jQuery('#relocate_duel_buttons_choice').hide();
         $id('relocate_duel_buttons_choice').style.display = 'none';
     }
     if ($id('forbidden_title_notices').checked) {
-        //jQuery('#forbidden_title_notices_desc').hide();
         $id('forbidden_title_notices_desc').style.display = 'none';
         var notices = storage.get('Option:forbiddenTitleNotices');
         if (notices.match('pm')) { $id('title_notice_pm').checked = false; }
         if (notices.match('gm')) { $id('title_notice_gm').checked = false; }
         if (notices.match('fi')) { $id('title_notice_fi').checked = false; }
     } else {
-        //jQuery('#forbidden_title_notices_choice').hide();
         $id('forbidden_title_notices_choice').style.display = 'none';
     }
     if ($id('use_background').checked) {
-        //jQuery('#background_desc').hide();
         $id('background_desc').style.display = 'none';
         var bg = storage.get('Option:useBackground');
         if (bg !== 'cloud') {
             $id('custom_background').click();
         }
     } else {
-        //jQuery('#background_choice').hide();
         $id('background_choice').style.display = 'none';
     }
     if ($id('voice_timeout').checked) {
-        //jQuery('#voice_timeout_desc').hide();
         $id('voice_timeout_desc').style.display = 'none';
         $id('voice_timeout_value').value = storage.get('Option:voiceTimeout');
     } else {
-        //jQuery('#voice_timeout_choice').hide();
         $id('voice_timeout_choice').style.display = 'none';
         $id('voice_timeout_value').value = '20';
     }
     if ($id('freeze_voice_button').checked) {
-        //jQuery('#freeze_voice_button_desc').hide();
         $id('freeze_voice_button_desc').style.display = 'none';
         var cases = storage.get('Option:freezeVoiceButton');
         if (cases.match('after_voice')) { $id('freeze_after_voice').checked = true; }
         if (cases.match('when_empty')) { $id('freeze_when_empty').checked = true; }
     } else {
-        //jQuery('#freeze_voice_button_choice').hide();
         $id('freeze_voice_button_choice').style.display = 'none';
     }
     if ($id('informer_alerts_timeout').checked) {
@@ -600,7 +572,6 @@ function restore_options() {
         }
     } else {
         setAllCheckboxesToState('informer-checkbox', true);
-        //jQuery('#informers').hide();
         $id('informers').style.display = 'none';
     }
     var forbiddenCraft = storage.get('Option:forbiddenCraft');
@@ -614,13 +585,10 @@ function restore_options() {
         }
     } else {
         setAllCheckboxesToState('craft-checkbox', true);
-        //jQuery('#craft_categories').hide();
         $id('craft_categories').style.display = 'none';
     }
     if ($id('disable_voice_generators').checked) {
-        //jQuery('#voice_menu').hide();
         $id('voice_menu').style.display = 'none';
-        //jQuery('#words').hide();
         $id('words').style.display = 'none';
     }
 
