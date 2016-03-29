@@ -1,9 +1,11 @@
-(function() {
-'use strict';
-
+// options_page
 window.GUIp = window.GUIp || {};
 
-GUIp.getOptionsPage = function() {
+GUIp.options_page = {};
+
+GUIp.options_page.init = function() {};
+
+GUIp.options_page.get = function() {
 var isEN = GUIp.locale === 'en',
     isOpera = GUIp.browser === 'opera';
 return '<p>\n' +
@@ -436,4 +438,4 @@ return '<p>\n' +
 '</div>';
 };
 
-})();
+GUIp.options_page.loaded = true;

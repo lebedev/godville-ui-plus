@@ -1,5 +1,9 @@
-(function() {
-'use strict';
+// options
+window.GUIp = window.GUIp || {};
+
+GUIp.options = {};
+
+GUIp.options.init = function() {};
 
 var doc = document;
 
@@ -130,7 +134,7 @@ function loadOptions() {
         setTimeout(function() { loadOptions(); }, 100);
         return false;
     }
-    $id('profile_main').innerHTML = GUIp.getOptionsPage();
+    $id('profile_main').innerHTML = GUIp.options_page.get();
     setForm();
     restore_options();
     $id('forbidden_informers').onclick = function() {
@@ -791,4 +795,4 @@ var starterInt = setInterval(function() {
     }
 }, 100);
 
-})();
+GUIp.options.loaded = true;
