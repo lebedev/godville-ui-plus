@@ -21,7 +21,7 @@ if (document.location.pathname.match(validPathnames)) {
         window.GUIp = {};
 
         GUIp.version = '$VERSION';
-        GUIp.browser = 'firefox';
+        GUIp.browser = 'chrome';
         GUIp.locale = document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en';
         GUIp.common = {
             getResourceURL: function(aResName) {
