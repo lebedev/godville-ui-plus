@@ -16,7 +16,9 @@ GUIp.utils.messagesShown = [];
 // base phrase say algorythm
 GUIp.utils.setVoice = function(voice) {
     var voiceInput = document.getElementById('god_phrase');
-    voiceInput.value = voice;
+    if (voiceInput.value !== voice) {
+        voiceInput.value = voice;
+    }
 
     if (voiceInput.value && !(GUIp.improver.freezeVoiceButton.match('after_voice') && parseInt(GUIp.timeout.bar.style.width))) {
         GUIp.utils.setVoiceSubmitState(GUIp.utils.BUTTON_DISABLED);
