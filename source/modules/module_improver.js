@@ -809,7 +809,7 @@ GUIp.improver.calculateExitXY = function() {
     var exit_coords = { x: null, y: null },
         cells = document.querySelectorAll('.dml .dmc');
     for (var i = 0, len = cells.length; i < len; i++) {
-        if (cells[i].textContent.trim().match(/В|E/)) {
+        if (cells[i].textContent.trim().match(/В|E|🚪/)) {
             exit_coords = GUIp.improver.calculateXY(cells[i]);
             break;
         }
