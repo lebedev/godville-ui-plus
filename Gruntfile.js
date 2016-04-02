@@ -196,7 +196,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('bump_debug_build', 'Bumps debug build number.', function () {
     var current_version_octets = grunt.file.read('current_version').split('.');
-    current_version_octets[3]++;
+    current_version_octets[2]++;
     grunt.config.set('debug_version', current_version_octets.join('.'));
 
     var debug_build;
