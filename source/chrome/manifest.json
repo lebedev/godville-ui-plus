@@ -20,6 +20,14 @@
 
 	"content_scripts": [{
 		"js": [
+			"interceptor.js"
+		],
+		"matches": [
+			"*://godville.net/superhero*"
+		],
+		"run_at": "document_start"
+	}, {
+		"js": [
 			"loader.js"
 		],
 		"matches": [
