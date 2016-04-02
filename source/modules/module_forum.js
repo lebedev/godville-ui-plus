@@ -438,7 +438,7 @@ var picturesAutoreplace = function() {
             };
         for (var i = 0, len = links.length; i < len; i++) {
             if (links[i].href.match(/jpe?g|png|gif/i)) {
-                links[i].insertAdjacentHTML('beforeend', '<img class="img_spinner" src="http://godville.net/images/spinner.gif">');
+                links[i].insertAdjacentHTML('beforeend', '<img class="img_spinner" src="//godville.net/images/spinner.gif">');
                 imgs[i] = document.createElement('img');
                 imgs[i].onerror = onerror.bind(null, i);
                 imgs[i].onload = onload.bind(null, i);
