@@ -988,8 +988,8 @@ GUIp.improver.colorDungeonMapInternal = function() {
         trapMoveLossCount = 0,
         coords = GUIp.improver.calculateExitXY(),
         steps = Object.keys(this.chronicles),
-        steps_max = steps.length;
-    for (step = 1; step <= steps_max; step++) {
+        steps_length = steps.length;
+    for (step = 1; step <= steps_length; step++) {
         if (this.chronicles[step].directionless) {
             var shortCorrection = GUIp.storage.get('Log:' + GUIp.stats.logId() + ':corrections')[this.directionlessMoveIndex++];
             if (shortCorrection) {
@@ -1012,7 +1012,7 @@ GUIp.improver.colorDungeonMapInternal = function() {
         steptext = steptext.match(/[^\.]+[\.]+/g);
         if (step === 1) {
             steptext = steptext.slice(0,-1);
-        } else if (step === steps_max) {
+        } else if (step === steps_length) {
             steptext = steptext.slice(1);
         } else if (this.chronicles[step].marks.indexOf('boss') !== -1) {
             steptext = steptext.slice(1,-2);
@@ -1047,19 +1047,21 @@ GUIp.improver.colorDungeonMapInternal = function() {
             currentCell.title = '#' + step + ' : ' + steptext;
         }
     }
-    var heroesCoords = GUIp.improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
-    if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
-        window.console.log('current chronicles');
-        window.console.log(this.chronicles);
-        window.console.log(JSON.stringify(this.chronicles));
-        window.console.log('m_fight_log');
-        window.console.log(document.getElementById('m_fight_log').innerHTML);
-        if (GUIp.utils.hasShownInfoMessage !== true) {
-            GUIp.utils.showMessage('info', {
-                title: GUIp.i18n.coords_error_title,
-                content: '<div>' + GUIp.i18n.coords_error_desc + ': [x:' + (heroesCoords.x - coords.x) + ', y:' + (heroesCoords.y - coords.y) + '].</div>'
-            });
-            GUIp.utils.hasShownInfoMessage = true;
+
+    if (steps_length) {
+        var heroesCoords = GUIp.improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
+        if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
+            /*window.console.log('current chronicles');
+            window.console.log(this.chronicles);
+            window.console.log('m_fight_log');
+            window.console.log(document.getElementById('m_fight_log').innerHTML);*/
+            if (GUIp.utils.hasShownInfoMessage !== true) {
+                GUIp.utils.showMessage('info', {
+                    title: GUIp.i18n.coords_error_title,
+                    content: '<div>' + GUIp.i18n.coords_error_desc + ': [x:' + (heroesCoords.x - coords.x) + ', y:' + (heroesCoords.y - coords.y) + '].</div>'
+                });
+                GUIp.utils.hasShownInfoMessage = true;
+            }
         }
     }
 };
