@@ -1,5 +1,5 @@
-var tabs = require('sdk/tabs'),
-    version = require('sdk/self').version;
+var tabs = require('sdk/tabs');
+var version = require('sdk/self').version;
 
 var domainsUrls = 'https?:\/\/(godville\\.net|gdvl\\.tk|gv\\.erinome\\.net|godvillegame\\.com)\/.*';
 
