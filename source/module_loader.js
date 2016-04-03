@@ -23,6 +23,7 @@ GUIp.loader.section = (function() {
 
 GUIp.loader.modules = (function() {
     var common = [
+        'trycatcher',
         'common',
         'i18n_' + GUIp.locale
     ];

@@ -271,22 +271,22 @@ GUIp.utils.hideElem = function(elem, hide) {
     }
 };
 GUIp.utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failCallback, xhr) {
-    var match = xhr.responseText.match(/Godville UI\+ (\d+)\.(\d+)\.(\d+)\.(\d+)/);
+    var match = xhr.responseText.match(/Godville UI\+ (\d+)\.(\d+)\.(\d+)/);
     if (match) {
         var currentVersion = GUIp.version.split(/\.| /),
-            lastVersion = [+match[1], +match[2], +match[3], +match[4]],
+            lastVersion = [+match[1], +match[2], +match[3]],
             isNewest = +currentVersion[0] < lastVersion[0] ? false :
                        +currentVersion[0] > lastVersion[0] ? true  :
                        +currentVersion[1] < lastVersion[1] ? false :
                        +currentVersion[1] > lastVersion[1] ? true  :
-                       +currentVersion[2] < lastVersion[2] ? false :
-                       +currentVersion[2] > lastVersion[2] ? true  :
-                       +currentVersion[3] < lastVersion[3] ? false : true;
+                       +currentVersion[2] < lastVersion[2] ? false : true;
         if (isNewest) {
+            GUIp.isNewestVersion = true;
             if (isNewestCallback) {
                 isNewestCallback();
             }
         } else if (isNotNewestCallback) {
+            GUIp.isNewestVersion = false;
             isNotNewestCallback();
         }
     } else if (failCallback) {
@@ -294,12 +294,16 @@ GUIp.utils._parseVersion = function(isNewestCallback, isNotNewestCallback, failC
     }
 };
 GUIp.utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCallback) {
-    GUIp.utils.postXHR({
-        url: '/forums/last_in_topics',
-        postData: 'topic_ids[]=' + (GUIp.locale === 'ru' ? '2812' : '2800'),
-        onSuccess: GUIp.utils._parseVersion.bind(null, isNewestCallback, isNotNewestCallback, failCallback),
-        onFail: failCallback
-    });
+    switch(GUIp.isNewestVersion) {
+    case true: isNewestCallback(); break;
+    case false: isNotNewestCallback(); break;
+    default:
+        GUIp.utils.getXHR({
+            url: '/forums/show/' + (GUIp.locale === 'ru' ? '2' : '1'),
+            onSuccess: GUIp.utils._parseVersion.bind(null, isNewestCallback, isNotNewestCallback, failCallback),
+            onFail: failCallback
+        });
+    }
 };
 
 GUIp.utils.processError = function(error, isDebugMode) {
@@ -325,7 +329,7 @@ GUIp.utils.processError = function(error, isDebugMode) {
                      '</div>' +
                      '<div id="error_details" class="hidden">' +
                         '<div>' + GUIp.i18n.error_message_subtitle + '</div>' +
-                        '<div>' + GUIp.i18n.browser + ' <b>' + GUIp.browser + ' ' + navigator.userAgent.match(GUIp.browser + '\/([\\d.]+)')[1] +'</b>.</div>' +
+                        '<div>' + GUIp.i18n.browser + ' <b>' + GUIp.browser + ' ' + navigator.userAgent.match(GUIp.browser + '\/([\\d.]+)', 'i')[1] +'</b>.</div>' +
                         '<div>' + GUIp.i18n.version + ' <b>' + GUIp.version + '</b>.</div>' +
                         '<div>' + GUIp.i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
                         '<div>' + GUIp.i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>' +
