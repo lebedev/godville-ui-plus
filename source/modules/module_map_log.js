@@ -658,7 +658,7 @@ GUIp.map_log.highlightTreasuryZone = function() {
         if (regularPointersCount !== 0 || thermoPointersCount !== 0) {
             for (i = 0; i < kRow; i++) {
                 for (j = 0; j < kColumn; j++) {
-                    if (!$boxML[i].children[j].textContent.match(/[?!]/)) {
+                    if (!$boxML[i].children[j].textContent.match(/[?!@]/)) {
                         continue;
                     }
                     if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*thermoPointersCount) {
