@@ -285,6 +285,8 @@ GUIp.improver.improveMap = function() {
         }
         for (var si = 0; si < kRow; si++) {
             for (var sj = 0; sj < kColumn; sj++) {
+                var pointer = $boxML[si].children[sj].textContent.trim();
+
                 // Check for heroes position and voicegens
                 if (pointer === '@') {
                     var isMoveLoss = [];
@@ -294,24 +296,23 @@ GUIp.improver.improveMap = function() {
                     var directionsShouldBeShown = !isMoveLoss[0] || (isMoveLoss[1] && (!isMoveLoss[2] || isMoveLoss[3]));
                     if (directionsShouldBeShown) {
                         //    Проверяем куда можно пройти
-                        if ($boxML[si - 1].children[sj].texContent.trim() !== '#' || isJumping && (si === 1 || $boxML[si - 2].children[sj].texContent.trim() !== '#')) {
+                        if ($boxML[si - 1].children[sj].textContent.trim() !== '#' || isJumping && (si === 1 || $boxML[si - 2].children[sj].textContent.trim() !== '#')) {
                             $box[0].style.visibility = '';    //    Север
                         }
-                        if ($boxML[si + 1].children[sj].texContent.trim() !== '#' || isJumping && (si === kRow - 2 || $boxML[si + 2].children[sj].texContent.trim() !== '#')) {
+                        if ($boxML[si + 1].children[sj].textContent.trim() !== '#' || isJumping && (si === kRow - 2 || $boxML[si + 2].children[sj].textContent.trim() !== '#')) {
                             $box[1].style.visibility = '';    //    Юг
                         }
-                        if ($boxML[si].children[sj - 1].texContent.trim() !== '#' || isJumping && (sj === 1 || $boxML[si].children[sj - 2].texContent.trim() !== '#')) {
+                        if ($boxML[si].children[sj - 1].textContent.trim() !== '#' || isJumping && (sj === 1 || $boxML[si].children[sj - 2].textContent.trim() !== '#')) {
                             $box[2].style.visibility = '';    //    Запад
                         }
-                        if ($boxML[si].children[sj + 1].texContent.trim() !== '#' || isJumping && (sj === kColumn - 2 || $boxML[si].children[sj + 2].texContent.trim() !== '#')) {
+                        if ($boxML[si].children[sj + 1].textContent.trim() !== '#' || isJumping && (sj === kColumn - 2 || $boxML[si].children[sj + 2].textContent.trim() !== '#')) {
                             $box[3].style.visibility = '';    //    Восток
                         }
                     }
                 }
                 // Ищем указатели
-                var ij, ttl = '',
-                    pointer = $boxML[si].children[sj].textContent.trim(),
-                    chronopointers = chronolen > 1 ? this.chronicles[chronolen].pointers : [];
+                var ij, ttl = '';
+                var chronopointers = chronolen > 1 ? this.chronicles[chronolen].pointers : [];
                 /* [E] check if current position has some directions in chronicle */
                 if (pointer === '@' && chronopointers.length) {
                     for (i = 0, len = chronopointers.length; i < len; i++) {
@@ -473,11 +474,11 @@ GUIp.improver.improveMap = function() {
                         continue;
                     }
                     if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*thermoPointersCount) {
-                        $boxML[i].children[j].style.color = ($boxML[i].children[j].texContent.trim() === '@') ? 'blue' : 'red';
+                        $boxML[i].children[j].style.color = ($boxML[i].children[j].textContent.trim() === '@') ? 'blue' : 'red';
                     } else {
                         for (ik = 0; ik < thermoPointersCount; ik++) {
                             if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*ik + (thermoPointersCount - ik)) {
-                                $boxML[i].children[j].style.color = ($boxML[i].children[j].texContent.trim() === '@') ? 'blue' : 'darkorange';
+                                $boxML[i].children[j].style.color = ($boxML[i].children[j].textContent.trim() === '@') ? 'blue' : 'darkorange';
                             }
                         }
                     }
