@@ -480,16 +480,17 @@ GUIp.map_log.highlightTreasuryZone = function() {
     if (document.querySelectorAll('#dmap .dml').length) {
         var i, j, ik, jk, len, chronolen = +Object.keys(GUIp.map_log.chronicles).reverse()[0],
             $boxML = document.querySelectorAll('#dmap .dml'),
-            $boxMC = document.querySelectorAll('#dmap .dmc'),
             kRow = $boxML.length,
             kColumn = $boxML[0].textContent.length,
-            MaxMap = 0,          // count of any pointers
-            MaxMapThermo = 0, // count of thermo pointers
+            regularPointersCount = 0,          // count of any pointers
+            thermoPointersCount = 0, // count of thermo pointers
             MapArray = [];
+        var REGULAR_POINTER_MATCH = 1024;
+        var THERMO_POINTER_MATCH = 128;
         for (i = 0; i < kRow; i++) {
             MapArray[i] = [];
             for (j = 0; j < kColumn; j++) {
-                MapArray[i][j] = ('?!@'.indexOf($boxML[i].textContent[j]) !== - 1) ? 0 : -1;
+                MapArray[i][j] = 0;
             }
         }
         for (var si = 0; si < kRow; si++) {
@@ -498,7 +499,7 @@ GUIp.map_log.highlightTreasuryZone = function() {
             //    Ищем указатели
             for (var sj = 0; sj < kColumn; sj++) {
                 var ij, ttl = '',
-                    pointer = $boxML[si].textContent[sj],
+                    pointer = $boxML[si].children[sj].textContent.trim(),
                     chronopointers = chronolen > 1 ? GUIp.map_log.chronicles[chronolen].pointers : [];
                 /* [E] check if current position has some directions in chronicle */
                 if (pointer === '@' && chronopointers.length) {
@@ -522,9 +523,9 @@ GUIp.map_log.highlightTreasuryZone = function() {
                     }
                     window.console.log("current position has pointers: " + ttl);
                 }
-                if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1 || ttl.length && ttl.match('←|→|↓|↑|↙|↘|↖|↗')) {
-                    MaxMap++;
-                    $boxMC[si * kColumn + sj].style.color = 'green';
+                if (pointer.match(/[←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>]/) || ttl.match(/[←→↓↑↙↘↖↗]/)) {
+                    regularPointersCount++;
+                    $boxML[si].children[sj].style.color = 'green';
                     /* [E] get directions from the arrows themselves, not relying on parsed chronicles */
                     if (!ttl.length) {
                         switch (pointer) {
@@ -539,25 +540,24 @@ GUIp.map_log.highlightTreasuryZone = function() {
                             default: ttl = pointer; break;
                         }
                     }
-                    for (ij = 0, len = ttl.length; ij < len; ij++){
-                        if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) !== - 1){
+                    for (ij = 0, len = ttl.length; ij < len; ij++) {
+                        if (ttl[ij].match(/[→←↓↑↘↙↖↗]/)) {
                             for (ik = 0; ik < kRow; ik++) {
                                 for (jk = 0; jk < kColumn; jk++) {
-                                    var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
-                                        jstep = parseInt((Math.abs(ik - si) - 1) / 5);
-                                    if ('←→'.indexOf(ttl[ij]) !== -1 && ik >= si - istep && ik <= si + istep ||
-                                        ttl[ij] === '↓' && ik >= si + istep ||
-                                        ttl[ij] === '↑' && ik <= si - istep ||
-                                        '↙↘'.indexOf(ttl[ij]) !== -1 && ik > si + istep ||
-                                        '↖↗'.indexOf(ttl[ij]) !== -1 && ik < si - istep) {
-                                        if (ttl[ij] === '→' && jk >= sj + jstep ||
-                                            ttl[ij] === '←' && jk <= sj - jstep ||
-                                            '↓↑'.indexOf(ttl[ij]) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
-                                            '↘↗'.indexOf(ttl[ij]) !== -1 && jk > sj + jstep ||
-                                            '↙↖'.indexOf(ttl[ij]) !== -1 && jk < sj - jstep) {
-                                            if (MapArray[ik][jk] >= 0) {
-                                                MapArray[ik][jk]+=1024;
-                                            }
+                                    var relativeX = jk - sj;
+                                    var relativeY = ik - si;
+                                    var arrow = ttl[ij];
+                                    if (arrow === '→' && 5*relativeY <   relativeX && 5*relativeY >    -relativeX ||
+                                        arrow === '←' && 5*relativeY >   relativeX && 5*relativeY <    -relativeX ||
+                                        arrow === '↓' &&   relativeY > 5*relativeX &&   relativeY >  -5*relativeX ||
+                                        arrow === '↑' &&   relativeY < 5*relativeX &&   relativeY <  -5*relativeX ||
+                                        arrow === '↘' && 5*relativeY >=  relativeX &&   relativeY <=  5*relativeX ||
+                                        arrow === '↙' && 5*relativeY >= -relativeX &&   relativeY <= -5*relativeX ||
+                                        arrow === '↖' && 5*relativeY <=  relativeX &&   relativeY >=  5*relativeX ||
+                                        arrow === '↗' && 5*relativeY <= -relativeX &&   relativeY >= -5*relativeX
+                                    ) {
+                                        if (!(relativeX === 0 && relativeY === 0) && MapArray[ik][jk] >= 0) {
+                                            MapArray[ik][jk] += REGULAR_POINTER_MATCH;
                                         }
                                     }
                                 }
@@ -565,9 +565,9 @@ GUIp.map_log.highlightTreasuryZone = function() {
                         }
                     }
                 }
-                if ('✺☀♨☁❄✵'.indexOf(pointer) !== -1 || ttl.length && '✺☀♨☁❄✵'.indexOf(ttl) !== -1) {
-                    MaxMapThermo++;
-                    $boxMC[si*kColumn + sj].style.color = 'green';
+                if (pointer.match(/[✺☀♨☁❄✵]/) || ttl.match(/[✺☀♨☁❄✵]/)) {
+                    thermoPointersCount++;
+                    $boxML[si].children[sj].style.color = 'green';
                     /* [E] if we're standing on the pointer - use parsed value from chronicle */
                     if (ttl.length) {
                         pointer = ttl;
@@ -597,11 +597,11 @@ GUIp.map_log.highlightTreasuryZone = function() {
                                 continue;
                             }
                             MapData[ik + ':' + jk] = {
-                                explored: '#?!'.indexOf($boxML[ik].textContent[jk]) === -1,
+                                explored: !$boxML[ik].children[jk].textContent.trim().match(/[#?!]/),
                                 specway: false,
                                 scanned: false,
-                                wall: $boxML[ik].textContent[jk] === '#',
-                                unknown: $boxML[ik].textContent[jk] === '?'
+                                wall: $boxML[ik].children[jk].textContent.trim() === '#',
+                                unknown: $boxML[ik].children[jk].textContent.trim() === '?'
                             };
                         }
                     }
@@ -642,7 +642,7 @@ GUIp.map_log.highlightTreasuryZone = function() {
                         for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++) {
                             if (MapData[ik + ':' + jk].step >= ThermoMinStep & MapData[ik + ':' + jk].step <= ThermoMaxStep) {
                                 if (MapArray[ik][jk] >= 0) {
-                                    MapArray[ik][jk]+=128;
+                                    MapArray[ik][jk] += THERMO_POINTER_MATCH;
                                 }
                             } else if (MapData[ik + ':' + jk].step < ThermoMinStep && MapData[ik + ':' + jk].specway) {
                                 if (MapArray[ik][jk] >= 0) {
@@ -655,15 +655,18 @@ GUIp.map_log.highlightTreasuryZone = function() {
             }
         }
         //    Отрисовываем возможный клад
-        if (MaxMap !== 0 || MaxMapThermo !== 0) {
+        if (regularPointersCount !== 0 || thermoPointersCount !== 0) {
             for (i = 0; i < kRow; i++) {
                 for (j = 0; j < kColumn; j++) {
-                    if (MapArray[i][j] === 1024*MaxMap + 128*MaxMapThermo) {
-                        $boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'red';
+                    if (!$boxML[i].children[j].textContent.match(/[?!]/)) {
+                        continue;
+                    }
+                    if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*thermoPointersCount) {
+                        $boxML[i].children[j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'red';
                     } else {
-                        for (ik = 0; ik < MaxMapThermo; ik++) {
-                            if (MapArray[i][j] === 1024*MaxMap + 128*ik + (MaxMapThermo - ik)) {
-                                $boxMC[i*kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'darkorange';
+                        for (ik = 0; ik < thermoPointersCount; ik++) {
+                            if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*ik + (thermoPointersCount - ik)) {
+                                $boxML[i].children[j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'darkorange';
                             }
                         }
                     }
@@ -700,7 +703,7 @@ GUIp.map_log.calculateExitXY = function() {
     var exit_coords = { x: null, y: null },
         cells = document.querySelectorAll('.dml .dmc');
     for (var i = 0, len = cells.length; i < len; i++) {
-        if (cells[i].textContent.trim().match(/В|E/)) {
+        if (cells[i].textContent.trim().match(/В|E|🚪/)) {
             exit_coords = GUIp.map_log.calculateXY(cells[i]);
             break;
         }

@@ -265,17 +265,18 @@ GUIp.improver.improveMap = function() {
         var i, j, ik, jk, len, chronolen = +Object.keys(this.chronicles).reverse()[0],
             $box = window.$('#cntrl .voice_generator'),
             $boxML = window.$('#map .dml'),
-            $boxMC = window.$('#map .dmc'),
             kRow = $boxML.length,
             kColumn = $boxML[0].textContent.length,
             isJumping = document.getElementById('map').textContent.match(/Прыгучести|Jumping|Загадки|Mystery/), /* [E] allow moving almost everywhere in Mystery as it could be Jumping or Disobedience */
-            MaxMap = 0,          // count of any pointers
-            MaxMapThermo = 0, // count of thermo pointers
+            regularPointersCount = 0,          // count of any pointers
+            thermoPointersCount = 0, // count of thermo pointers
             MapArray = [];
+        var REGULAR_POINTER_MATCH = 1024;
+        var THERMO_POINTER_MATCH = 128;
         for (i = 0; i < kRow; i++) {
             MapArray[i] = [];
             for (j = 0; j < kColumn; j++) {
-                MapArray[i][j] = ('?!@'.indexOf($boxML[i].textContent[j]) !== - 1) ? 0 : -1;
+                MapArray[i][j] = 0;
             }
         }
         // Гласы направления делаем невидимыми
@@ -283,34 +284,33 @@ GUIp.improver.improveMap = function() {
             $box[i].style.visibility = 'hidden';
         }
         for (var si = 0; si < kRow; si++) {
-            // Ищем где мы находимся
-            j = $boxML[si].textContent.indexOf('@');
-            if (j !== -1) {
-                var isMoveLoss = [];
-                for (i = 0; i < 4; i++) {
-                    isMoveLoss[i] = chronolen > i && this.chronicles[chronolen - i].marks.indexOf('trapMoveLoss') !== -1;
-                }
-                var directionsShouldBeShown = !isMoveLoss[0] || (isMoveLoss[1] && (!isMoveLoss[2] || isMoveLoss[3]));
-                if (directionsShouldBeShown) {
-                    //    Проверяем куда можно пройти
-                    if ($boxML[si - 1].textContent[j] !== '#' || isJumping && (si === 1 || si !== 1 && $boxML[si - 2].textContent[j] !== '#')) {
-                        $box[0].style.visibility = '';    //    Север
-                    }
-                    if ($boxML[si + 1].textContent[j] !== '#' || isJumping && (si === kRow - 2 || si !== kRow - 2 && $boxML[si + 2].textContent[j] !== '#')) {
-                        $box[1].style.visibility = '';    //    Юг
-                    }
-                    if ($boxML[si].textContent[j - 1] !== '#' || isJumping && $boxML[si].textContent[j - 2] !== '#') {
-                        $box[2].style.visibility = '';    //    Запад
-                    }
-                    if ($boxML[si].textContent[j + 1] !== '#' || isJumping && $boxML[si].textContent[j + 2] !== '#') {
-                        $box[3].style.visibility = '';    //    Восток
-                    }
-                }
-            }
-            //    Ищем указатели
             for (var sj = 0; sj < kColumn; sj++) {
+                // Check for heroes position and voicegens
+                if (pointer === '@') {
+                    var isMoveLoss = [];
+                    for (i = 0; i < 4; i++) {
+                        isMoveLoss[i] = chronolen > i && this.chronicles[chronolen - i].marks.indexOf('trapMoveLoss') !== -1;
+                    }
+                    var directionsShouldBeShown = !isMoveLoss[0] || (isMoveLoss[1] && (!isMoveLoss[2] || isMoveLoss[3]));
+                    if (directionsShouldBeShown) {
+                        //    Проверяем куда можно пройти
+                        if ($boxML[si - 1].children[sj].texContent.trim() !== '#' || isJumping && (si === 1 || $boxML[si - 2].children[sj].texContent.trim() !== '#')) {
+                            $box[0].style.visibility = '';    //    Север
+                        }
+                        if ($boxML[si + 1].children[sj].texContent.trim() !== '#' || isJumping && (si === kRow - 2 || $boxML[si + 2].children[sj].texContent.trim() !== '#')) {
+                            $box[1].style.visibility = '';    //    Юг
+                        }
+                        if ($boxML[si].children[sj - 1].texContent.trim() !== '#' || isJumping && (sj === 1 || $boxML[si].children[sj - 2].texContent.trim() !== '#')) {
+                            $box[2].style.visibility = '';    //    Запад
+                        }
+                        if ($boxML[si].children[sj + 1].texContent.trim() !== '#' || isJumping && (sj === kColumn - 2 || $boxML[si].children[sj + 2].texContent.trim() !== '#')) {
+                            $box[3].style.visibility = '';    //    Восток
+                        }
+                    }
+                }
+                // Ищем указатели
                 var ij, ttl = '',
-                    pointer = $boxML[si].textContent[sj],
+                    pointer = $boxML[si].children[sj].textContent.trim(),
                     chronopointers = chronolen > 1 ? this.chronicles[chronolen].pointers : [];
                 /* [E] check if current position has some directions in chronicle */
                 if (pointer === '@' && chronopointers.length) {
@@ -334,9 +334,9 @@ GUIp.improver.improveMap = function() {
                     }
                     window.console.log("current position has pointers: "+ttl);
                 }
-                if ('←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>'.indexOf(pointer) !== -1 || ttl.length && ttl.match('←|→|↓|↑|↙|↘|↖|↗')) {
-                    MaxMap++;
-                    $boxMC[si * kColumn + sj].style.color = 'green';
+                if (pointer.match(/[←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>]/) || ttl.match(/[←→↓↑↙↘↖↗]/)) {
+                    regularPointersCount++;
+                    $boxML[si].children[sj].style.color = 'green';
                     /* [E] get directions from the arrows themselves, not relying on parsed chronicles */
                     if (!ttl.length) {
                         switch (pointer) {
@@ -351,25 +351,24 @@ GUIp.improver.improveMap = function() {
                             default: ttl = pointer; break;
                         }
                     }
-                    for (ij = 0, len = ttl.length; ij < len; ij++){
-                        if ('→←↓↑↘↙↖↗'.indexOf(ttl[ij]) !== - 1){
+                    for (ij = 0, len = ttl.length; ij < len; ij++) {
+                        if (ttl[ij].match(/[→←↓↑↘↙↖↗]/)) {
                             for (ik = 0; ik < kRow; ik++) {
                                 for (jk = 0; jk < kColumn; jk++) {
-                                    var istep = parseInt((Math.abs(jk - sj) - 1) / 5),
-                                        jstep = parseInt((Math.abs(ik - si) - 1) / 5);
-                                    if ('←→'.indexOf(ttl[ij]) !== -1 && ik >= si - istep && ik <= si + istep ||
-                                        ttl[ij] === '↓' && ik >= si + istep ||
-                                        ttl[ij] === '↑' && ik <= si - istep ||
-                                        '↙↘'.indexOf(ttl[ij]) !== -1 && ik > si + istep ||
-                                        '↖↗'.indexOf(ttl[ij]) !== -1 && ik < si - istep) {
-                                        if (ttl[ij] === '→' && jk >= sj + jstep ||
-                                            ttl[ij] === '←' && jk <= sj - jstep ||
-                                            '↓↑'.indexOf(ttl[ij]) !== -1 && jk >= sj - jstep && jk <= sj + jstep ||
-                                            '↘↗'.indexOf(ttl[ij]) !== -1 && jk > sj + jstep ||
-                                            '↙↖'.indexOf(ttl[ij]) !== -1 && jk < sj - jstep) {
-                                            if (MapArray[ik][jk] >= 0) {
-                                                MapArray[ik][jk]+=1024;
-                                            }
+                                    var relativeX = jk - sj;
+                                    var relativeY = ik - si;
+                                    var arrow = ttl[ij];
+                                    if (arrow === '→' && 5*relativeY <   relativeX && 5*relativeY >    -relativeX ||
+                                        arrow === '←' && 5*relativeY >   relativeX && 5*relativeY <    -relativeX ||
+                                        arrow === '↓' &&   relativeY > 5*relativeX &&   relativeY >  -5*relativeX ||
+                                        arrow === '↑' &&   relativeY < 5*relativeX &&   relativeY <  -5*relativeX ||
+                                        arrow === '↘' && 5*relativeY >=  relativeX &&   relativeY <=  5*relativeX ||
+                                        arrow === '↙' && 5*relativeY >= -relativeX &&   relativeY <= -5*relativeX ||
+                                        arrow === '↖' && 5*relativeY <=  relativeX &&   relativeY >=  5*relativeX ||
+                                        arrow === '↗' && 5*relativeY <= -relativeX &&   relativeY >= -5*relativeX
+                                    ) {
+                                        if (!(relativeX === 0 && relativeY === 0) && MapArray[ik][jk] >= 0) {
+                                            MapArray[ik][jk] += REGULAR_POINTER_MATCH;
                                         }
                                     }
                                 }
@@ -377,9 +376,9 @@ GUIp.improver.improveMap = function() {
                         }
                     }
                 }
-                if ('✺☀♨☁❄✵'.indexOf(pointer) !== -1 || ttl.length && '✺☀♨☁❄✵'.indexOf(ttl) !== -1) {
-                    MaxMapThermo++;
-                    $boxMC[si * kColumn + sj].style.color = 'green';
+                if (pointer.match(/[✺☀♨☁❄✵]/) || ttl.match(/[✺☀♨☁❄✵]/)) {
+                    thermoPointersCount++;
+                    $boxML[si].children[sj].style.color = 'green';
                     /* [E] if we're standing on the pointer - use parsed value from chronicle */
                     if (ttl.length) {
                         pointer = ttl;
@@ -409,11 +408,11 @@ GUIp.improver.improveMap = function() {
                                 continue;
                             }
                             MapData[ik+':'+jk] = {
-                                explored: '#?!'.indexOf($boxML[ik].textContent[jk]) === -1,
+                                explored: !$boxML[ik].children[jk].textContent.trim().match(/[#?!]/),
                                 specway: false,
                                 scanned: false,
-                                wall: $boxML[ik].textContent[jk] === '#',
-                                unknown: $boxML[ik].textContent[jk] === '?'
+                                wall: $boxML[ik].children[jk].textContent.trim() === '#',
+                                unknown: $boxML[ik].children[jk].textContent.trim() === '?'
                             };
                         }
                     }
@@ -454,7 +453,7 @@ GUIp.improver.improveMap = function() {
                         for (jk = ((sj - ThermoMaxStep) > 0 ? sj - ThermoMaxStep : 0); jk <= ((sj + ThermoMaxStep) < kColumn ? sj + ThermoMaxStep : kColumn - 1); jk++) {
                             if (MapData[ik+':'+jk].step >= ThermoMinStep & MapData[ik+':'+jk].step <= ThermoMaxStep) {
                                 if (MapArray[ik][jk] >= 0) {
-                                    MapArray[ik][jk]+=128;
+                                    MapArray[ik][jk] += THERMO_POINTER_MATCH;
                                 }
                             } else if (MapData[ik+':'+jk].step < ThermoMinStep && MapData[ik+':'+jk].specway) {
                                 if (MapArray[ik][jk] >= 0) {
@@ -467,15 +466,18 @@ GUIp.improver.improveMap = function() {
             }
         }
         //    Отрисовываем возможный клад
-        if (MaxMap !== 0 || MaxMapThermo !== 0) {
+        if (regularPointersCount !== 0 || thermoPointersCount !== 0) {
             for (i = 0; i < kRow; i++) {
                 for (j = 0; j < kColumn; j++) {
-                    if (MapArray[i][j] === 1024*MaxMap + 128*MaxMapThermo) {
-                        $boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'red';
+                    if (!$boxML[i].children[j].textContent.match(/[?!]/)) {
+                        continue;
+                    }
+                    if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*thermoPointersCount) {
+                        $boxML[i].children[j].style.color = ($boxML[i].children[j].texContent.trim() === '@') ? 'blue' : 'red';
                     } else {
-                        for (ik = 0; ik < MaxMapThermo; ik++) {
-                            if (MapArray[i][j] === 1024*MaxMap + 128*ik + (MaxMapThermo - ik)) {
-                                $boxMC[i * kColumn + j].style.color = ($boxML[i].textContent[j] === '@') ? 'blue' : 'darkorange';
+                        for (ik = 0; ik < thermoPointersCount; ik++) {
+                            if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*ik + (thermoPointersCount - ik)) {
+                                $boxML[i].children[j].style.color = ($boxML[i].children[j].texContent.trim() === '@') ? 'blue' : 'darkorange';
                             }
                         }
                     }
