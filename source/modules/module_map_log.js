@@ -80,6 +80,7 @@ GUIp.map_log.init = function() {
                 '<input type="checkbox" id="high_contrast" name="high_contrast" value="1"><label for="high_contrast">' + GUIp.i18n.high_contrast + '</label>' +
                 '<button id="send_to_LEM" style="font-size: 15px; height: 100px; width: 100%;">' +
             '</form>');
+        GUIp.map_log.form = document.getElementById('send_to_LEM_form');
         document.querySelector('#fight_text').value = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' +
                                                             document.getElementsByTagName('html')[0].innerHTML.replace(/<(?:script|style)[\S\s]+?<\/(?:script|style)>/g, '')
                                                                                                               .replace(/onclick="[^"]+?"/g, '')
