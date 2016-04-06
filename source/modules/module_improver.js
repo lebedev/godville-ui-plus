@@ -113,36 +113,42 @@ GUIp.improver.improve = function() {
     GUIp.storage.set('optionsChanged', false);
 };
 GUIp.improver.improveVoiceDialog = function() {
-    // If playing in pure ZPG mode there won't be present voice input block at all;
-    if (!document.getElementById('voice_edit_wrap')) {
+    // If playing in pure ZPG mode there won't be control block at all.
+    if (!document.querySelector('#control, #m_control')) {
+        if (this.isFirstTime) {
+            GUIp.improver.isPureZPG = true;
+        }
         return;
     }
     if (this.isFirstTime || this.optionsChanged) {
         this.freezeVoiceButton = GUIp.storage.get('Option:freezeVoiceButton') || '';
     }
     // Add voicegens and show timeout bar after saying
-    if (this.isFirstTime) {
+    var controlDialog = document.getElementById('cntrl');
+    if (!GUIp.utils.isAlreadyImproved(controlDialog)) {
         if (this.freezeVoiceButton.match('when_empty')) {
             GUIp.utils.setVoiceSubmitState(GUIp.utils.BUTTON_ENABLED);
         }
-        var voiceInput = document.getElementById('god_phrase');
+        var voiceInput = document.querySelector('#godvoice, #god_phrase');
         voiceInput.onchange =
         voiceInput.oncut    =
         voiceInput.onfocus  =
         voiceInput.oninput  =
         voiceInput.onpaste  = function() {
-            window.console.log(voiceInput.value);
-            GUIp.utils.setVoice(voiceInput.value);
+            if (voiceInput) {
+                GUIp.utils.setVoice(voiceInput.value);
+            }
         };
         document.onclick = function(e) {
             if (e.target.classList &&
                 e.target.classList.contains('gv_text') &&
-                e.target.classList.contains('div_link')
+                e.target.classList.contains('div_link') &&
+                voiceInput
             ) {
                 GUIp.utils.setVoice(voiceInput.value);
             }
         };
-        document.getElementById('voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover hidden" title="' + GUIp.i18n.clear_voice_input + '">×</div>');
+        document.querySelector('#ve_wrap, #voice_edit_wrap').insertAdjacentHTML('afterbegin', '<div id="clear_voice_input" class="div_link_nu gvl_popover hidden" title="' + GUIp.i18n.clear_voice_input + '">×</div>');
         document.getElementById('clear_voice_input').onclick = function() {
             GUIp.utils.setVoice('');
         };
@@ -151,25 +157,23 @@ GUIp.improver.improveVoiceDialog = function() {
             GUIp.improver.voiceSubmitted = true;
         };
 
-        if (!GUIp.utils.isAlreadyImproved(document.getElementById('cntrl'))) {
-            var gp_label = document.getElementsByClassName('gp_label')[0];
-            gp_label.classList.add('l_capt');
-            document.getElementsByClassName('gp_val')[0].classList.add('l_val');
-            if (GUIp.stats.isDungeon()) {
-                var isContradictions = document.getElementById('map').textContent.match(/Противоречия|Disobedience/);
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.east, (isContradictions ? 'go_west' : 'go_east'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_east);
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.west, (isContradictions ? 'go_east' : 'go_west'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_west);
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.south, (isContradictions ? 'go_north' : 'go_south'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_south);
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.north, (isContradictions ? 'go_south' : 'go_north'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_north);
-            } else if (GUIp.stats.isFight()) {
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.defend, 'defend', GUIp.i18n.ask4 + GUIp.data.char_sex[0] + GUIp.i18n.to_defend);
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.heal, 'heal', GUIp.i18n.ask6 + GUIp.data.char_sex[1] + GUIp.i18n.to_heal);
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.hit, 'hit', GUIp.i18n.ask7 + GUIp.data.char_sex[1] + GUIp.i18n.to_hit);
-            } else if (GUIp.stats.isField()) {
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.sacrifice, 'sacrifice', GUIp.i18n.ask8 + GUIp.data.char_sex[1] + GUIp.i18n.to_sacrifice);
-                GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
-            }
+        var gp_label = document.getElementsByClassName('gp_label')[0];
+        gp_label.classList.add('l_capt');
+        document.getElementsByClassName('gp_val')[0].classList.add('l_val');
+        if (GUIp.stats.isDungeon()) {
+            var isContradictions = document.getElementById('map').textContent.match(/Противоречия|Disobedience/);
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.east, (isContradictions ? 'go_west' : 'go_east'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_east);
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.west, (isContradictions ? 'go_east' : 'go_west'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_west);
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.south, (isContradictions ? 'go_north' : 'go_south'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_south);
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.north, (isContradictions ? 'go_south' : 'go_north'), GUIp.i18n.ask3 + GUIp.data.char_sex[0] + GUIp.i18n.go_north);
+        } else if (GUIp.stats.isFight()) {
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.defend, 'defend', GUIp.i18n.ask4 + GUIp.data.char_sex[0] + GUIp.i18n.to_defend);
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.heal, 'heal', GUIp.i18n.ask6 + GUIp.data.char_sex[1] + GUIp.i18n.to_heal);
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.hit, 'hit', GUIp.i18n.ask7 + GUIp.data.char_sex[1] + GUIp.i18n.to_hit);
+        } else if (GUIp.stats.isField()) {
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.sacrifice, 'sacrifice', GUIp.i18n.ask8 + GUIp.data.char_sex[1] + GUIp.i18n.to_sacrifice);
+            GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
         }
     }
     //hide_charge_button
@@ -243,30 +247,31 @@ GUIp.improver.improveMap = function() {
         var control = document.getElementById('m_control'),
             map = document.getElementById('map'),
             right_block = document.getElementById('a_right_block');
-        if (GUIp.storage.get('Option:relocateMap')) {
-            if (!document.querySelector('#a_central_block #map')) {
-                control.parentNode.insertBefore(map, control);
-                right_block.insertBefore(control, null);
-                if (GUIp.locale === 'ru') {
-                    document.querySelector('#m_control .block_title').textContent = 'Пульт';
+        if (control) {
+            if (GUIp.storage.get('Option:relocateMap')) {
+                if (!document.querySelector('#a_central_block #map')) {
+                    control.parentNode.insertBefore(map, control);
+                    right_block.insertBefore(control, null);
+                    if (GUIp.locale === 'ru') {
+                        document.querySelector('#m_control .block_title').textContent = 'Пульт';
+                    }
                 }
-            }
-        } else {
-            if (!document.querySelector('#a_right_block #map')) {
-                map.parentNode.insertBefore(control, map);
-                right_block.insertBefore(map, null);
-                if (GUIp.locale === 'ru') {
-                    document.querySelector('#m_control .block_title').textContent = 'Пульт вмешательства в личную жизнь';
+            } else {
+                if (!document.querySelector('#a_right_block #map')) {
+                    map.parentNode.insertBefore(control, map);
+                    right_block.insertBefore(map, null);
+                    if (GUIp.locale === 'ru') {
+                        document.querySelector('#m_control .block_title').textContent = 'Пульт вмешательства в личную жизнь';
+                    }
                 }
             }
         }
     }
     if (document.querySelectorAll('#map .dml').length) {
-        var i, j, ik, jk, len, chronolen = +Object.keys(this.chronicles).reverse()[0],
-            $box = window.$('#cntrl .voice_generator'),
-            $boxML = window.$('#map .dml'),
-            kRow = $boxML.length,
-            kColumn = $boxML[0].textContent.length,
+        var i, j, ik, jk, len, directionVoicegens, chronolen = +Object.keys(this.chronicles).reverse()[0],
+            mapRows = document.querySelectorAll('#map .dml'),
+            kRow = mapRows.length,
+            kColumn = mapRows[0].textContent.length,
             isJumping = document.getElementById('map').textContent.match(/Прыгучести|Jumping|Загадки|Mystery/), /* [E] allow moving almost everywhere in Mystery as it could be Jumping or Disobedience */
             regularPointersCount = 0,          // count of any pointers
             thermoPointersCount = 0, // count of thermo pointers
@@ -279,34 +284,39 @@ GUIp.improver.improveMap = function() {
                 MapArray[i][j] = 0;
             }
         }
-        // Гласы направления делаем невидимыми
-        for (i = 0; i < 4; i++) {
-            $box[i].style.visibility = 'hidden';
+        directionVoicegens = document.querySelectorAll('#cntrl .voice_generator');
+        if (!GUIp.improver.isPureZPG && directionVoicegens.length) {
+            // Гласы направления делаем невидимыми
+            for (i = 0; i < 4; i++) {
+                directionVoicegens[i].style.visibility = 'hidden';
+            }
         }
         for (var si = 0; si < kRow; si++) {
             for (var sj = 0; sj < kColumn; sj++) {
-                var pointer = $boxML[si].children[sj].textContent.trim();
+                var pointer = mapRows[si].children[sj].textContent.trim();
 
                 // Check for heroes position and voicegens
                 if (pointer === '@') {
-                    var isMoveLoss = [];
-                    for (i = 0; i < 4; i++) {
-                        isMoveLoss[i] = chronolen > i && this.chronicles[chronolen - i].marks.indexOf('trapMoveLoss') !== -1;
-                    }
-                    var directionsShouldBeShown = !isMoveLoss[0] || (isMoveLoss[1] && (!isMoveLoss[2] || isMoveLoss[3]));
-                    if (directionsShouldBeShown) {
-                        //    Проверяем куда можно пройти
-                        if ($boxML[si - 1].children[sj].textContent.trim() !== '#' || isJumping && (si === 1 || $boxML[si - 2].children[sj].textContent.trim() !== '#')) {
-                            $box[0].style.visibility = '';    //    Север
+                    if (!GUIp.improver.isPureZPG && directionVoicegens.length) {
+                        var isMoveLoss = [];
+                        for (i = 0; i < 4; i++) {
+                            isMoveLoss[i] = chronolen > i && this.chronicles[chronolen - i].marks.indexOf('trapMoveLoss') !== -1;
                         }
-                        if ($boxML[si + 1].children[sj].textContent.trim() !== '#' || isJumping && (si === kRow - 2 || $boxML[si + 2].children[sj].textContent.trim() !== '#')) {
-                            $box[1].style.visibility = '';    //    Юг
-                        }
-                        if ($boxML[si].children[sj - 1].textContent.trim() !== '#' || isJumping && (sj === 1 || $boxML[si].children[sj - 2].textContent.trim() !== '#')) {
-                            $box[2].style.visibility = '';    //    Запад
-                        }
-                        if ($boxML[si].children[sj + 1].textContent.trim() !== '#' || isJumping && (sj === kColumn - 2 || $boxML[si].children[sj + 2].textContent.trim() !== '#')) {
-                            $box[3].style.visibility = '';    //    Восток
+                        var directionsShouldBeShown = !isMoveLoss[0] || (isMoveLoss[1] && (!isMoveLoss[2] || isMoveLoss[3]));
+                        if (directionsShouldBeShown) {
+                            //    Проверяем куда можно пройти
+                            if (mapRows[si - 1].children[sj].textContent.trim() !== '#' || isJumping && (si === 1 || mapRows[si - 2].children[sj].textContent.trim() !== '#')) {
+                                directionVoicegens[0].style.visibility = '';    //    Север
+                            }
+                            if (mapRows[si + 1].children[sj].textContent.trim() !== '#' || isJumping && (si === kRow - 2 || mapRows[si + 2].children[sj].textContent.trim() !== '#')) {
+                                directionVoicegens[1].style.visibility = '';    //    Юг
+                            }
+                            if (mapRows[si].children[sj - 1].textContent.trim() !== '#' || isJumping && (sj === 1 || mapRows[si].children[sj - 2].textContent.trim() !== '#')) {
+                                directionVoicegens[2].style.visibility = '';    //    Запад
+                            }
+                            if (mapRows[si].children[sj + 1].textContent.trim() !== '#' || isJumping && (sj === kColumn - 2 || mapRows[si].children[sj + 2].textContent.trim() !== '#')) {
+                                directionVoicegens[3].style.visibility = '';    //    Восток
+                            }
                         }
                     }
                 }
@@ -337,7 +347,7 @@ GUIp.improver.improveMap = function() {
                 }
                 if (pointer.match(/[←→↓↑↙↘↖↗⌊⌋⌈⌉∨<∧>]/) || ttl.match(/[←→↓↑↙↘↖↗]/)) {
                     regularPointersCount++;
-                    $boxML[si].children[sj].style.color = 'green';
+                    mapRows[si].children[sj].style.color = 'green';
                     /* [E] get directions from the arrows themselves, not relying on parsed chronicles */
                     if (!ttl.length) {
                         switch (pointer) {
@@ -379,7 +389,7 @@ GUIp.improver.improveMap = function() {
                 }
                 if (pointer.match(/[✺☀♨☁❄✵]/) || ttl.match(/[✺☀♨☁❄✵]/)) {
                     thermoPointersCount++;
-                    $boxML[si].children[sj].style.color = 'green';
+                    mapRows[si].children[sj].style.color = 'green';
                     /* [E] if we're standing on the pointer - use parsed value from chronicle */
                     if (ttl.length) {
                         pointer = ttl;
@@ -409,11 +419,11 @@ GUIp.improver.improveMap = function() {
                                 continue;
                             }
                             MapData[ik+':'+jk] = {
-                                explored: !$boxML[ik].children[jk].textContent.trim().match(/[#?!]/),
+                                explored: !mapRows[ik].children[jk].textContent.trim().match(/[#?!]/),
                                 specway: false,
                                 scanned: false,
-                                wall: $boxML[ik].children[jk].textContent.trim() === '#',
-                                unknown: $boxML[ik].children[jk].textContent.trim() === '?'
+                                wall: mapRows[ik].children[jk].textContent.trim() === '#',
+                                unknown: mapRows[ik].children[jk].textContent.trim() === '?'
                             };
                         }
                     }
@@ -470,15 +480,15 @@ GUIp.improver.improveMap = function() {
         if (regularPointersCount !== 0 || thermoPointersCount !== 0) {
             for (i = 0; i < kRow; i++) {
                 for (j = 0; j < kColumn; j++) {
-                    if (!$boxML[i].children[j].textContent.match(/[?!@]/)) {
+                    if (!mapRows[i].children[j].textContent.match(/[?!@]/)) {
                         continue;
                     }
                     if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*thermoPointersCount) {
-                        $boxML[i].children[j].style.color = ($boxML[i].children[j].textContent.trim() === '@') ? 'blue' : 'red';
+                        mapRows[i].children[j].style.color = (mapRows[i].children[j].textContent.trim() === '@') ? 'blue' : 'red';
                     } else {
                         for (ik = 0; ik < thermoPointersCount; ik++) {
                             if (MapArray[i][j] === REGULAR_POINTER_MATCH*regularPointersCount + THERMO_POINTER_MATCH*ik + (thermoPointersCount - ik)) {
-                                $boxML[i].children[j].style.color = ($boxML[i].children[j].textContent.trim() === '@') ? 'blue' : 'darkorange';
+                                mapRows[i].children[j].style.color = (mapRows[i].children[j].textContent.trim() === '@') ? 'blue' : 'darkorange';
                             }
                         }
                     }
@@ -808,6 +818,11 @@ GUIp.improver.calculateXY = function(cell) {
     coords.y = GUIp.utils.getNodeIndex(cell.parentNode);
     return coords;
 };
+GUIp.improver.getHeroesCell = function() {
+    return Array.prototype.filter.call(document.querySelectorAll('.dml .dmc'), function(cell) {
+        return cell.textContent.match(/@/);
+    })[0];
+};
 GUIp.improver.calculateExitXY = function() {
     var exit_coords = { x: null, y: null },
         cells = document.querySelectorAll('.dml .dmc');
@@ -818,7 +833,7 @@ GUIp.improver.calculateExitXY = function() {
         }
     }
     if (!exit_coords.x) {
-        exit_coords = GUIp.improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
+        exit_coords = GUIp.improver.calculateXY(GUIp.improver.getHeroesCell());
     }
     return exit_coords;
 };
@@ -941,7 +956,7 @@ GUIp.improver.getAllRPerms = function(array, size) {
 GUIp.improver.calculateDirectionlessMove = function(initCoords, initStep) {
     var i, len, j, len2, coords = { x: initCoords.x, y: initCoords.y },
         dmap = document.querySelectorAll('#map .dml'),
-        heroesCoords = GUIp.improver.calculateXY(document.getElementsByClassName('map_pos')[0]),
+        heroesCoords = GUIp.improver.calculateXY(GUIp.improver.getHeroesCell()),
         steps = Object.keys(this.chronicles),
         directionless = 0;
 
@@ -1052,7 +1067,7 @@ GUIp.improver.colorDungeonMapInternal = function() {
     }
 
     if (steps_length) {
-        var heroesCoords = GUIp.improver.calculateXY(document.getElementsByClassName('map_pos')[0]);
+        var heroesCoords = GUIp.improver.calculateXY(GUIp.improver.getHeroesCell());
         if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
             /*window.console.log('current chronicles');
             window.console.log(this.chronicles);

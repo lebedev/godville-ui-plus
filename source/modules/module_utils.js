@@ -15,7 +15,7 @@ GUIp.utils.notiLaunch = 0;
 GUIp.utils.messagesShown = [];
 // base phrase say algorythm
 GUIp.utils.setVoice = function(voice) {
-    var voiceInput = document.getElementById('god_phrase');
+    var voiceInput = document.querySelector('#godvoice, #god_phrase');
     if (voiceInput.value !== voice) {
         voiceInput.value = voice;
     }
@@ -225,11 +225,7 @@ GUIp.utils.messages = {
     }*/]
 };
 GUIp.utils.getNodeIndex = function(node) {
-    var i = 0;
-    while ((node = node.previousElementSibling)) {
-        i++;
-    }
-    return i;
+    return Array.prototype.indexOf.call(node.parentNode.children, node);
 };
 GUIp.utils.openChatWith = function(friend, e) {
     if (e) {
