@@ -50,7 +50,7 @@ GUIp.utils.getGenericVoicegenButton = function(text, section, title) {
     voicegen.textContent = text;
     voicegen.className = 'voice_generator ' + (GUIp.stats.isDungeon() ? 'dungeon' : GUIp.stats.isFight() ? 'battle' : 'field') + ' ' + section;
     voicegen.onclick = function() {
-        if (document.getElementById('god_phrase').getAttribute('disabled') !== 'disabled') {
+        if (document.querySelector('#godvoice, #god_phrase').getAttribute('disabled') !== 'disabled') {
             GUIp.utils.setVoice(GUIp.words.longPhrase(section));
             GUIp.words.currentPhrase = "";
         }
