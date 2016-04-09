@@ -3,6 +3,9 @@ window.GUIp = window.GUIp || {};
 
 GUIp.informer = {};
 
+GUIp.informer.iconBlank = 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
+GUIp.informer.iconGodville = GUIp.informer.iconBlank;
+
 GUIp.informer.init = function() {
     //title saver
     this.title = document.title;
@@ -11,9 +14,28 @@ GUIp.informer.init = function() {
     // container
     document.getElementById('main_wrapper').insertAdjacentHTML('afterbegin', '<div id="informer_bar" />');
     this.container = document.getElementById('informer_bar');
+
+    // get favicon as base64-encoded data-string
+    GUIp.informer._getFavicon();
+
     // load
     GUIp.informer._load();
 };
+GUIp.informer._getFavicon = function() {
+    var favicon = new Image();
+    favicon.crossOrigin = 'Anonymous';
+    favicon.onload = function() {
+        var canvas = document.createElement('CANVAS');
+        var ctx = canvas.getContext('2d');
+        canvas.height = this.height;
+        canvas.width = this.width;
+        ctx.drawImage(this, 0, 0);
+        GUIp.informer.iconGodville = canvas.toDataURL('image/x-icon');
+        canvas = null;
+    };
+    favicon.src = 'images/favicon.ico';
+};
+
 GUIp.informer._load = function() {
     this.flags = JSON.parse(GUIp.storage.get('informer_flags') || '{}');
     for (var flag in this.flags) {
@@ -66,7 +88,7 @@ GUIp.informer.clearTitle = function() {
         }
     }
     document.title = GUIp.informer._getTitleNotices() + this.title;
-    this.favicon.href = 'images/favicon.ico';
+    this.favicon.href = GUIp.informer.iconGodville;
 };
 GUIp.informer._getTitleNotices = function() {
     var forbidden_title_notices = GUIp.storage.get('Option:forbiddenTitleNotices') || '';
@@ -108,10 +130,10 @@ GUIp.informer._updateTitle = function(activeFlags) {
     var sep = this.odd_tick ? '!!!' : '...';
     document.title = GUIp.informer._getTitleNotices() + sep + ' ' + activeFlags.join('! ') + ' ' + sep;
     if (GUIp.browser !== 'opera' && !GUIp.storage.get('Option:disableFaviconFlashing')) {
-        this.favicon.href = this.odd_tick ? 'images/favicon.ico'
-                                          : 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
-    } else if (this.favicon.href !== 'images/favicon.ico') {
-        this.favicon.href = 'images/favicon.ico';
+        this.favicon.href = this.odd_tick ? GUIp.informer.iconGodville
+                                          : GUIp.informer.iconBlank;
+    } else if (this.favicon.href !== GUIp.informer.iconGodville) {
+        this.favicon.href = GUIp.informer.iconGodville;
     }
 };
 GUIp.informer.update = function(flag, value) {
