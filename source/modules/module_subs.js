@@ -6,6 +6,8 @@ GUIp.subs = {};
 GUIp.subs.init = function() {
     if (!GUIp.storage.get('Subs')) {
         GUIp.storage.set('Subs', '{}');
+    }
+    if (!GUIp.storage.get('SubsNotifications')) {
         GUIp.storage.set('SubsNotifications', '{}');
     }
 
