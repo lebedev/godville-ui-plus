@@ -40,7 +40,6 @@ GUIp.loader.modules = (function() {
             'inventory',
             'logger',
             'observers',
-            'overrider',
             'timeout',
             'timers',
             'utils',
