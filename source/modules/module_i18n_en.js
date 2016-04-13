@@ -464,8 +464,6 @@ GUIp.i18n = {
     voice_timeout_hint: 'input time (in seconds)',
     hide_charge_button: 'Remove "Charge" button',
     hide_charge_button_desc: 'for those who don\'t buy charges',
-    relocate_map: 'Swap remote control with map',
-    relocate_map_desc: 'in the dungeons',
     freeze_voice_button: 'Freeze godvoice button',
     freeze_voice_button_desc: 'freezes godvoice button in certain cases',
     freeze_voice_button_after_voice: 'after voice has been heard',

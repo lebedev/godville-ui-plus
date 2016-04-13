@@ -180,15 +180,6 @@ return '<p>\n' +
 '                    <div class="g_desc">' + GUIp.i18n.hide_charge_button_desc + '</div>\n' +
 '                </div>\n' +
 '                <div class="new_line">\n' +
-'                    <label class="l_capt" for="relocate_map">' + GUIp.i18n.relocate_map + '</label>\n' +
-'                    <div class="field_content">\n' +
-'                        <input id="relocate_map" name="relocate_map" class="option-checkbox" type="checkbox">\n' +
-'                    </div>\n' +
-'                </div>\n' +
-'                <div class="new_line">\n' +
-'                    <div class="g_desc">' + GUIp.i18n.relocate_map_desc + '</div>\n' +
-'                </div>\n' +
-'                <div class="new_line">\n' +
 '                    <label class="l_capt" for="freeze_voice_button">' + GUIp.i18n.freeze_voice_button + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="freeze_voice_button" name="freeze_voice_button" class="menu-checkbox" type="checkbox">\n' +

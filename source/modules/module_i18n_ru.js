@@ -593,8 +593,6 @@ GUIp.i18n = {
     voice_timeout_hint: 'введите число (секунд)',
     hide_charge_button: 'Убрать кнопку "Зарядить"',
     hide_charge_button_desc: 'для тех, кто не тратит деньги',
-    relocate_map: 'Поменять местами пульт и карту',
-    relocate_map_desc: 'в подземельях',
     freeze_voice_button: 'Замораживать кнопку гласа',
     freeze_voice_button_desc: 'замораживает кнопку гласа в некоторых случаях',
     freeze_voice_button_after_voice: 'после реакции на глас',
