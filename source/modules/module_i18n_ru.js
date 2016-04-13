@@ -778,7 +778,8 @@ GUIp.i18n = {
     lb_special_monsters_desc: 'Список префиксов по одному на строке:',
     coords_error_title: 'Ошибка обработки хроники!',
     coords_error_desc: 'Разница координат',
-    step_n: 'шаг '
+    step_n: 'шаг ',
+    legend: 'легенда'
 };
 
 GUIp.i18n_ru = {

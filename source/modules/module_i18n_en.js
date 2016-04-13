@@ -647,7 +647,8 @@ GUIp.i18n = {
     lb_special_monsters_desc: 'List prefixes one by line:',
     coords_error_title: 'Chronicle parsing failed!',
     coords_error_desc: 'Coordinates mismatch',
-    step_n: 'step '
+    step_n: 'step ',
+    legend: 'legend'
 };
 
 GUIp.i18n_en = {

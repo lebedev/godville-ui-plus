@@ -225,7 +225,19 @@ GUIp.improver.improveNews = function() {
 };
 GUIp.improver.improveMap = function() {
     if (this.isFirstTime) {
-        var legendDiv = document.getElementsByClassName('map_legend')[0].nextElementSibling;
+        var legendDiv;
+        try {
+            legendDiv = document.getElementsByClassName('map_legend')[0].nextElementSibling;
+        } catch(e) {
+            var block_content = document.querySelector('#map .block_content');
+            block_content.insertAdjacentHTML('beforeend', '<div class="map_legend div_link">' + GUIp.i18n.legend + '</div>');
+            block_content.insertAdjacentHTML('beforeend', '<div class="map_legend_container" style="display: none;"></div>');
+            var legendButton = document.getElementsByClassName('map_legend')[0];
+            legendDiv = document.getElementsByClassName('map_legend_container')[0];
+            legendButton.onclick = function() {
+                legendDiv.style.display = legendDiv.style.display === 'none' ? 'block' : 'none';
+            };
+        }
         legendDiv.style.marginLeft = 0;
         legendDiv.insertAdjacentHTML('beforeend',
             '<div class="guip_legend"><div class="dmc bossHint"></div><div> - ' + GUIp.i18n.boss_warning_hint + '</div></div>' +
