@@ -273,24 +273,6 @@ return '<p>\n' +
 '                    </div>\n' +
 '                </div>\n' +
 '                <div class="new_line">\n' +
-'                    <label class="l_capt" for="disable_pm_sound">' + GUIp.i18n.disable_pm_sound + '</label>\n' +
-'                    <div class="field_content">\n' +
-'                        <input id="disable_pm_sound" name="disable_pm_sound" class="option-checkbox" type="checkbox">\n' +
-'                    </div>\n' +
-'                </div>\n' +
-'                <div class="new_line">\n' +
-'                    <div class="g_desc">' + GUIp.i18n.disable_pm_sound_desc + '</div>\n' +
-'                </div>\n' +
-'                <div class="new_line">\n' +
-'                    <label class="l_capt" for="disable_arena_sound">' + GUIp.i18n.disable_arena_sound + '</label>\n' +
-'                    <div class="field_content">\n' +
-'                        <input id="disable_arena_sound" name="disable_arena_sound" class="option-checkbox" type="checkbox">\n' +
-'                    </div>\n' +
-'                </div>\n' +
-'                <div class="new_line">\n' +
-'                    <div class="g_desc">' + GUIp.i18n.disable_arena_sound_desc + '</div>\n' +
-'                </div>\n' +
-'                <div class="new_line">\n' +
 '                    <label class="l_capt" for="disable_links_autoreplace">' + GUIp.i18n.disable_links_autoreplace + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="disable_links_autoreplace" name="disable_links_autoreplace" class="option-checkbox" type="checkbox">\n' +
