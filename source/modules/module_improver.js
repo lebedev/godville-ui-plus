@@ -1224,13 +1224,9 @@ GUIp.improver.improveChat = function() {
     }
     this.friendsRegExp = new RegExp('^(?:' + friends.join('|') + ')$');
 
-    // links replacing and open chat with friend button adding
-    var text, $msgs = document.querySelectorAll('.fr_msg_l:not(.improved)');
+    // open chat with friend button adding
+    var $msgs = document.querySelectorAll('.fr_msg_l:not(.improved)');
     for (i = 0, len = $msgs.length; i < len; i++) {
-        text = $msgs[i].childNodes[0].textContent;
-        $msgs[i].removeChild($msgs[i].childNodes[0]);
-        $msgs[i].insertAdjacentHTML('afterbegin', '<span>' + GUIp.utils.escapeHTML(text).replace(/(https?:\/\/[^ \n\t]*[^\?\!\.\n\t\, ]+)/g, '<a href="$1" target="_blank" title="' + GUIp.i18n.open_in_a_new_tab + '">$1</a>') + '</span>');
-
         var friend = $msgs[i].getElementsByClassName('gc_fr_god')[0];
         if (friend && friend.textContent.match(this.friendsRegExp)) {
             friend.insertAdjacentHTML('beforebegin', '<span class="gc_fr_oc gc_fr_page" title="' + GUIp.i18n.open_chat_with + friend.textContent + '">[✎]</span>');
@@ -1238,40 +1234,6 @@ GUIp.improver.improveChat = function() {
         }
 
         $msgs[i].classList.add('improved');
-    }
-
-    // godnames in gc paste fix
-    window.$('.gc_fr_god:not(.improved)').unbind('click').click(function() {
-        var ta = this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('textarea'),
-            pos = ta.selectionDirection === 'backward' ? ta.selectionStart : ta.selectionEnd;
-        ta.value = ta.value.slice(0, pos) + '@' + this.textContent + ', ' + ta.value.slice(pos);
-        ta.focus();
-        ta.selectionStart = ta.selectionEnd = pos + this.textContent.length + 3;
-    }).addClass('improved');
-
-    // "Shift+Enter → new line" improvement
-    var keypresses, handlers,
-    $tas = window.$('.frInputArea textarea:not(.improved)');
-    if ($tas.length) {
-        var new_keypress = function(handlers) {
-            return function(e) {
-                if (e.which === 13 && !e.shiftKey) {
-                    for (var i = 0, len = handlers.length; i < len; i++) {
-                        handlers[i](e);
-                    }
-                }
-            };
-        };
-        for (i = 0, len = $tas.length; i < len; i++) {
-            keypresses = window.$._data($tas[i], 'events').keypress;
-            handlers = [];
-            for (var j = 0, klen = keypresses.length; j < klen; j++) {
-                handlers.push(keypresses[j].handler);
-            }
-            $tas.eq(i).unbind('keypress').keypress(new_keypress(handlers));
-        }
-        $tas.addClass('improved');
-        new_keypress = null;
     }
 };
 GUIp.improver.improveAllies = function() {
