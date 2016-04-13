@@ -4,10 +4,10 @@ window.GUIp = window.GUIp || {};
 GUIp.subs = {};
 
 GUIp.subs.init = function() {
-    if (!GUIp.storage.get('Subs')) {
+    if (!JSON.parse(GUIp.storage.get('Subs'))) {
         GUIp.storage.set('Subs', '{}');
     }
-    if (!GUIp.storage.get('SubsNotifications')) {
+    if (!JSON.parse(GUIp.storage.get('SubsNotifications'))) {
         GUIp.storage.set('SubsNotifications', '{}');
     }
 
