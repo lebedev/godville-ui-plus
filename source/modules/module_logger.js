@@ -82,6 +82,11 @@ GUIp.logger._appendStr = function(aCssClass, aText, aHint) {
         firstEntry.parentNode.removeChild(firstEntry);
     }
 
+    var firstWhitespace;
+    while ((firstWhitespace = this._container.querySelector('.whitespace:first-child'))) {
+        firstWhitespace.remove();
+    }
+
     this._container.scrollLeft = this._container.scrollWidth - this._container.getBoundingClientRect().width;
 
 };
