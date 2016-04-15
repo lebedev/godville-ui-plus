@@ -127,6 +127,12 @@ body {
 	padding: 0em 0.8em;
 }
 
+.c_col .gpbw {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
 .c_col .pbar .p_bar {
 	left: 0;
 	margin-left: 2px;
