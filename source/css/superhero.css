@@ -181,6 +181,7 @@ body {
 	position: relative;
 	white-space: nowrap;
 	width: 90%;
+	box-sizing: border-box;
 }
 .page_wrapper_5c #logger {
 	-webkit-mask-image: linear-gradient(to left, black 96%, transparent 100%);
