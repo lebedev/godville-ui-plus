@@ -22,13 +22,13 @@ return '<p>\n' +
 '        <div class="bl_cell">\n' +
 '            <div class="bl_capt">' + GUIp.i18n.guip_settings_capt + '</div>\n' +
 '            <div id="add_general" class="bl_content">\n' +
-'                <div class="new_line" style="margin-bottom: 0.8em;">\n' +
+'                <div class="new_line blocked" style="margin-bottom: 0.8em;">\n' +
 '                    <label class="l_capt" for="disable_voice_generators">' + GUIp.i18n.disable_voice_generators + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="disable_voice_generators" name="disable_voice_generators" class="option-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div style="clear: left; text-align: center;" id="voice_menu">\n' +
+'                <div style="clear: left; text-align: center;" id="voice_menu" class="blocked">\n' +
 '                    <div class="new_line">\n' +
 '                        <label class="l_capt" for="use_hero_name">' + GUIp.i18n.use_hero_name + '</label>\n' +
 '                        <div class="field_content">\n' +
@@ -81,34 +81,34 @@ return '<p>\n' +
 '                        </div>\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <label class="l_capt" for="disable_logger">' + GUIp.i18n.disable_logger + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="disable_logger" name="disable_logger" class="option-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.disable_logger_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="sum_allies_hp_h">\n' +
+'                <div class="new_line blocked" id="sum_allies_hp_h">\n' +
 '                    <label class="l_capt" for="sum_allies_hp">' + GUIp.i18n.sum_allies_hp + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="sum_allies_hp" name="sum_allies_hp" class="option-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="sum_allies_hp_desc">\n' +
+'                <div class="new_line blocked" id="sum_allies_hp_desc">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.sum_allies_hp_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <label class="l_capt" for="relocate_duel_buttons">' + GUIp.i18n.relocate_duel_buttons + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="relocate_duel_buttons" name="relocate_duel_buttons" class="option-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="relocate_duel_buttons_desc">\n' +
+'                <div class="new_line blocked" id="relocate_duel_buttons_desc">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.relocate_duel_buttons_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="relocate_duel_buttons_choice">\n' +
+'                <div class="new_line blocked" id="relocate_duel_buttons_choice">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.relocate_duel_buttons_hint + '<br>\n' +
 '                        <input type="checkbox" id="relocate_arena" name="relocate_arena">\n' +
 '                        <label for="relocate_arena">' + GUIp.i18n.relocate_duel_buttons_arena + '</label><br>\n' +
@@ -156,15 +156,15 @@ return '<p>\n' +
 '                        <span id="cb_status" style="margin-left: 0.5em; display: none;" />\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line"><label class="l_capt" for="voice_timeout">' + GUIp.i18n.voice_timeout + '</label>\n' +
+'                <div class="new_line blocked"><label class="l_capt" for="voice_timeout">' + GUIp.i18n.voice_timeout + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="voice_timeout" name="voice_timeout" class="menu-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="voice_timeout_desc">\n' +
+'                <div class="new_line blocked" id="voice_timeout_desc">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.voice_timeout_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="voice_timeout_choice">\n' +
+'                <div class="new_line blocked" id="voice_timeout_choice">\n' +
 '                    <div class="g_desc">\n' +
 '                        <label for="voice_timeout_value">' + GUIp.i18n.voice_timeout_hint + '</label>\n' +
 '                        <input type="number" id="voice_timeout_value" style="width: 136px;"/>\n' +
@@ -179,13 +179,13 @@ return '<p>\n' +
 '                <div class="new_line">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.hide_charge_button_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <label class="l_capt" for="freeze_voice_button">' + GUIp.i18n.freeze_voice_button + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="freeze_voice_button" name="freeze_voice_button" class="menu-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <div class="g_desc" id="freeze_voice_button_desc">' + GUIp.i18n.freeze_voice_button_desc + '</div>\n' +
 '                    <div class="g_desc" id="freeze_voice_button_choice">\n' +
 '                        <input type="checkbox" name="freeze_after_voice" id="freeze_after_voice">\n' +
@@ -203,21 +203,21 @@ return '<p>\n' +
 '                <div class="new_line">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.disable_page_refresh_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <label class="l_capt" for="disable_laying_timer">' + GUIp.i18n.disable_laying_timer + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="disable_laying_timer" name="disable_laying_timer" class="option-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.disable_laying_timer_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line"><label class="l_capt" for="forbidden_informers">' + GUIp.i18n.forbidden_informers + '</label>\n' +
+'                <div class="new_line blocked"><label class="l_capt" for="forbidden_informers">' + GUIp.i18n.forbidden_informers + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="forbidden_informers" name="forbidden_informers" type="checkbox" class="menu-checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.forbidden_informers_desc + '</div>\n' +
 '                    <div class="g_desc" id="informers">\n' +
 '                        <input class="informer-checkbox" id="full_godpower" name="full_godpower" type="checkbox"><label for="full_godpower">' + GUIp.i18n.forbidden_informers_full_godpower + '</label><br>\n' +
@@ -245,10 +245,10 @@ return '<p>\n' +
                         })() +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <div class="l_capt">' + GUIp.i18n.enable_desktop_alerts + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <div class="g_desc">\n' +
 '                        <input id="enable_informer_alerts" name="enable_informer_alerts" class="option-checkbox ksmall" type="checkbox">\n' +
 '                        <label for="enable_informer_alerts">' + GUIp.i18n.enable_informer_alerts + '</label>\n' +
@@ -258,15 +258,15 @@ return '<p>\n' +
 '                        <label for="enable_pm_alerts">' + GUIp.i18n.enable_pm_alerts + '</label>\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="informer_alerts_timeout_h"><label class="l_capt" for="informer_alerts_timeout">' + GUIp.i18n.informer_alerts_timeout + '</label>\n' +
+'                <div class="new_line blocked" id="informer_alerts_timeout_h"><label class="l_capt" for="informer_alerts_timeout">' + GUIp.i18n.informer_alerts_timeout + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="informer_alerts_timeout" name="informer_alerts_timeout" class="menu-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="informer_alerts_timeout_desc">\n' +
+'                <div class="new_line blocked" id="informer_alerts_timeout_desc">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.informer_alerts_timeout_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="informer_alerts_timeout_choice">\n' +
+'                <div class="new_line blocked" id="informer_alerts_timeout_choice">\n' +
 '                    <div class="g_desc">\n' +
 '                        <label for="informer_alerts_timeout_value">' + GUIp.i18n.informer_alerts_timeout_hint + '</label>\n' +
 '                        <input type="number" id="informer_alerts_timeout_value" min="0" max="600" style="width: 136px;"/>\n' +
@@ -281,46 +281,46 @@ return '<p>\n' +
 '                <div class="new_line">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.disable_links_autoreplace_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line"><label class="l_capt" for="custom_dungeon_chronicler">' + GUIp.i18n.custom_dungeon_chronicler + '</label>\n' +
+'                <div class="new_line blocked"><label class="l_capt" for="custom_dungeon_chronicler">' + GUIp.i18n.custom_dungeon_chronicler + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="custom_dungeon_chronicler" name="custom_dungeon_chronicler" class="menu-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="custom_dungeon_chronicler_desc">\n' +
+'                <div class="new_line blocked" id="custom_dungeon_chronicler_desc">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.custom_dungeon_chronicler_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="custom_dungeon_chronicler_choice">\n' +
+'                <div class="new_line blocked" id="custom_dungeon_chronicler_choice">\n' +
 '                    <div class="g_desc">\n' +
 '                        <label for="custom_dungeon_chronicler_value">' + GUIp.i18n.custom_dungeon_chronicler_hint + '</label>\n' +
 '                        <input type="text" id="custom_dungeon_chronicler_value" style="width: 136px;"/>\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <label class="l_capt" for="disable_godville_clock">' + GUIp.i18n.disable_godville_clock + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="disable_godville_clock" name="disable_godville_clock" class="option-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line">\n' +
+'                <div class="new_line blocked">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.disable_godville_clock_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="localtime_godville_clock_h">\n' +
+'                <div class="new_line blocked" id="localtime_godville_clock_h">\n' +
 '                    <label class="l_capt" for="localtime_godville_clock">' + GUIp.i18n.localtime_godville_clock + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="localtime_godville_clock" name="localtime_godville_clock" class="option-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line" id="localtime_godville_clock_desc">\n' +
+'                <div class="new_line blocked" id="localtime_godville_clock_desc">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.localtime_godville_clock_desc + '</div>\n' +
 '                </div>\n' +
 (isOpera ? '' :
-    '            <div class="new_line">\n' +
+    '            <div class="new_line blocked">\n' +
     '                <label class="l_capt" for="disable_favicon_flashing">' + GUIp.i18n.disable_favicon_flashing + '</label>\n' +
     '                <div class="field_content">\n' +
     '                    <input id="disable_favicon_flashing" name="disable_favicon_flashing" class="option-checkbox" type="checkbox">\n' +
     '                </div>\n' +
     '            </div>\n' +
-    '            <div class="new_line">\n' +
+    '            <div class="new_line blocked">\n' +
     '                <div class="g_desc">' + GUIp.i18n.disable_favicon_flashing_desc + '</div>\n' +
     '            </div>\n' +
     '            <div class="new_line">\n' +
@@ -350,7 +350,7 @@ return '<p>\n' +
 '            </div>\n' +
 '        </div>\n' +
 '    </div>\n' +
-'    <div id="words" style="margin-top: 2em;">\n' +
+'    <div id="words" style="margin-top: 2em;" class="blocked">\n' +
 '        <div class="bl_cell">\n' +
 '            <div class="bl_capt">' + GUIp.i18n.voices_capt + '</div>\n' +
 '            <div class="bl_content">\n' +

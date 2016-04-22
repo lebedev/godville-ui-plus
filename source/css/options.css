@@ -1,3 +1,7 @@
+.blocked {
+	display: none !important;
+}
+
 html {
 	height: 100%;
 }
