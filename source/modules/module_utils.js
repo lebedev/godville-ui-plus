@@ -128,38 +128,21 @@ GUIp.utils.postXHR = function(aParams) {
     aParams.type = 'POST';
     GUIp.utils.sendXHR(aParams);
 };
-GUIp.utils.showMessage = function(msg_no, msg) {
-    var id = 'msg' + msg_no;
-    if (isNaN(msg_no)) {
-        GUIp.utils.messagesShown.push(msg_no);
+GUIp.utils.showMessage = function(aMessageId, aMessage) {
+    if (isNaN(aMessageId)) {
+        GUIp.utils.messagesShown.push(aMessageId);
     }
-    document.getElementById('menu_bar').insertAdjacentHTML('afterend',
-        '<div id="' + id + '" class="hint_bar ui_msg">'+
-            '<div class="hint_bar_capt"><b>' + msg.title + '</b></div>'+
-            '<div class="hint_bar_content">' + msg.content + '</div>'+
-            '<div class="hint_bar_close"><a id="' + id + '_close">' + GUIp.i18n.close + '</a></div>' +
-        '</div>'
-    );
-    var msg_elem = document.getElementById(id);
-    document.getElementById(id + '_close').onclick = function() {
-        window.$(msg_elem).fadeToggle(function() {
-            msg_elem.parentNode.removeChild(msg_elem);
-            if (!isNaN(msg_no)) {
-                GUIp.storage.set('lastShownMessage', msg_no);
-            }
-        });
-        return false;
-    };
-
-    setTimeout(function() {
-        window.$(msg_elem).fadeToggle(1500, msg.callback);
-    }, 1000);
+    GUIp.common.showMessage(aMessageId, aMessage, function() {
+        if (!isNaN(aMessageId)) {
+            GUIp.storage.set('lastShownMessage', aMessageId);
+        }
+    });
 };
 GUIp.utils.inform = function() {
     var last_shown = !isNaN(GUIp.storage.get('lastShownMessage')) ? +GUIp.storage.get('lastShownMessage') : -1;
-    for (var i = 0, len = this.messages[GUIp.locale].length; i < len; i++) {
-        if (this.messages[GUIp.locale][i].msg_no > last_shown) {
-            GUIp.utils.showMessage(this.messages[GUIp.locale][i].msg_no, this.messages[GUIp.locale][i]);
+    for (var i = 0, len = GUIp.utils.messages[GUIp.locale].length; i < len; i++) {
+        if (GUIp.utils.messages[GUIp.locale][i].msg_no > last_shown) {
+            GUIp.utils.showMessage(GUIp.utils.messages[GUIp.locale][i].msg_no, GUIp.utils.messages[GUIp.locale][i]);
         }
     }
 };
@@ -302,48 +285,6 @@ GUIp.utils.checkVersion = function(isNewestCallback, isNotNewestCallback, failCa
     }
 };
 
-GUIp.utils.processError = function(error, isDebugMode) {
-    if (isDebugMode) {
-        window.console.warn(GUIp.i18n.debug_mode_warning);
-    }
-    var name_message = error.name + ': ' + error.message,
-        stack = error.stack && error.stack.replace(/(?:chrome-extension|@resource).*?:(\d+:\d+)/g, '@$1').split('\n').filter(function(step) {return !step.match(/GUIp\.trycatcher\.wrap/);}).join('\n') || 'no stacktrace';
-    window.console.error('Godville UI+ error log:\n' +
-                  name_message + '\n' +
-                  GUIp.i18n.error_message_stack_trace + ': ' + stack);
-    if (!~GUIp.utils.messagesShown.indexOf('error')) {
-        GUIp.utils.showMessage('error', {
-            title: GUIp.i18n.error_message_title,
-            content: (isDebugMode ? '<div><b class="debug_mode_warning">' + GUIp.i18n.debug_mode_warning + '</b></div>' : '') +
-                     '<div id="possible_actions">' +
-                        '<div>' + GUIp.i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
-                        '<div>' + GUIp.i18n.possible_actions + '</div>' +
-                        '<ol>' +
-                            '<li>' + GUIp.i18n.if_first_time + '<a id="press_here_to_reload">' + GUIp.i18n.press_here_to_reload + '</a></li>' +
-                            '<li>' + GUIp.i18n.if_repeats + '<a id="press_here_to_show_details">' + GUIp.i18n.press_here_to_show_details + '</a></li>' +
-                        '</ol>' +
-                     '</div>' +
-                     '<div id="error_details" class="hidden">' +
-                        '<div>' + GUIp.i18n.error_message_subtitle + '</div>' +
-                        '<div>' + GUIp.i18n.browser + ' <b>' + GUIp.browser + ' ' + navigator.userAgent.match(RegExp(GUIp.browser + '\/([\\d.]+)', 'i'))[1] +'</b>.</div>' +
-                        '<div>' + GUIp.i18n.version + ' <b>' + GUIp.version + '</b>.</div>' +
-                        '<div>' + GUIp.i18n.error_message_text + ' <b>' + name_message + '</b>.</div>' +
-                        '<div>' + GUIp.i18n.error_message_stack_trace + ': <b>' + stack.replace(/\n/g, '<br>') + '</b></div>' +
-                     '</div>',
-            callback: function() {
-                document.getElementById('press_here_to_reload').onclick = document.location.reload.bind(document.location);
-                document.getElementById('press_here_to_show_details').onclick = function() {
-                    GUIp.utils.hideElem(document.getElementById('possible_actions'), true);
-                    GUIp.utils.hideElem(document.getElementById('error_details'), false);
-                    if (!GUIp.storage.get('helpDialogVisible')) {
-                        GUIp.help.toggleDialog();
-                    }
-                };
-            }
-        });
-    }
-};
-
 GUIp.utils.informAboutOldVersion = function() {
     if (!~GUIp.utils.messagesShown.indexOf('update_required')) {
         GUIp.utils.showMessage('update_required', {
@@ -373,7 +314,7 @@ GUIp.utils.showNotification = function(title,text,callback) {
             setTimeout(function() { notification.close(); }, notificationTimeout * 1000);
         }
         setTimeout(function() { if (GUIp.utils.notiLaunch) { GUIp.utils.notiLaunch--; } }, 500);
-    }, 500 * this.notiLaunch++);
+    }, 500 * GUIp.utils.notiLaunch++);
 };
 
 GUIp.utils.getCurrentChat = function() {

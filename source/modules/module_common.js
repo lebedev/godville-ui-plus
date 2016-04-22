@@ -1,3 +1,20 @@
+var doc = document;
+GUIp.$id = function(id) {
+    return doc.getElementById(id);
+};
+GUIp.$C = function(classname) {
+    return doc.getElementsByClassName(classname);
+};
+GUIp.$c = function(classname) {
+    return doc.getElementsByClassName(classname)[0];
+};
+GUIp.$Q = function(sel, el) {
+    return (el || doc).querySelectorAll(sel);
+};
+GUIp.$q = function(sel, el) {
+    return (el || doc).querySelector(sel);
+};
+
 window.GUIp = window.GUIp || {};
 
 GUIp.common = GUIp.common || {};
@@ -71,6 +88,35 @@ GUIp.common.mapSubIteration = function(MapData, iPointer, jPointer, step, limit,
             }
         }
     }
+};
+
+GUIp.common.showMessage = function(aMessageId, aMessage, aCloseCallback) {
+    var id = 'msg' + aMessageId;
+    document.getElementById('guip').insertAdjacentHTML('beforeend',
+        '<div id="' + id + '" class="guip_message hint_bar transparent" default_message_style="true">'+
+            '<div class="hint_bar_capt"><b>' + aMessage.title + '</b></div>'+
+            '<div class="hint_bar_content">' + aMessage.content + '</div>'+
+            '<div class="hint_bar_close"><a id="' + id + '_close">' + GUIp.i18n.close + '</a></div>' +
+        '</div>'
+    );
+    if (typeof aMessage.callback === 'function') {
+        aMessage.callback();
+    }
+    var messageEl = document.getElementById(id);
+    document.getElementById(id + '_close').onclick = function() {
+        messageEl.classList.add('transparent');
+        setTimeout(function() {
+            messageEl.remove();
+            if (typeof aCloseCallback === 'function') {
+                aCloseCallback();
+            }
+        }, 1500);
+        return false;
+    };
+
+    setTimeout(function() {
+        messageEl.classList.remove('transparent');
+    }, 1000);
 };
 
 GUIp.common.loaded = true;
