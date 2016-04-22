@@ -1223,18 +1223,6 @@ GUIp.improver.improveChat = function() {
         friends.push($friends[i].textContent);
     }
     this.friendsRegExp = new RegExp('^(?:' + friends.join('|') + ')$');
-
-    // open chat with friend button adding
-    var $msgs = document.querySelectorAll('.fr_msg_l:not(.improved)');
-    for (i = 0, len = $msgs.length; i < len; i++) {
-        var friend = $msgs[i].getElementsByClassName('gc_fr_god')[0];
-        if (friend && friend.textContent.match(this.friendsRegExp)) {
-            friend.insertAdjacentHTML('beforebegin', '<span class="gc_fr_oc gc_fr_page" title="' + GUIp.i18n.open_chat_with + friend.textContent + '">[✎]</span>');
-            $msgs[i].getElementsByClassName('gc_fr_oc')[0].onclick = GUIp.utils.openChatWith.bind(null, friend.textContent);
-        }
-
-        $msgs[i].classList.add('improved');
-    }
 };
 GUIp.improver.improveAllies = function() {
     var ally, opp_n, star, anspan;
