@@ -52,7 +52,7 @@
 }
 #quote_button #quote_with_author::after,
 .formatting.godname {
-	background-image: url("http://wiki.godville.net/images/f/f6/Godicon.png");
+	background-image: url('https://wiki.godville.net/images/f/f6/Godicon.png');
 }
 .formatting.link {
 	color: #199bdc;
