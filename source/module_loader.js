@@ -64,9 +64,7 @@ GUIp.loader.waiter = (function(){
     var waiters = {
         superhero: function() {
             return window.$ &&
-                  (document.getElementById('m_info') || document.getElementById('stats')) &&
-                   window.so &&
-                   window.so.state;
+                  (document.getElementById('m_info') || document.getElementById('stats'));
         },
         options: function() {
             return document.getElementById('profile_main');
