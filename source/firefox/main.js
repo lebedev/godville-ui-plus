@@ -26,12 +26,3 @@ for (let tab of tabs) {
         tab.reload();
     }
 }
-
-// Hero state referefce interceptor.
-// Kreon, you're not allowed to steal this by the way, you baka :D.
-var pageMod = require('sdk/page-mod');
-pageMod.PageMod({
-    include: /https?:\/\/godville.net\/superhero.*/,
-    contentScriptFile: './interceptor.js',
-    contentScriptWhen: 'start'
-});
