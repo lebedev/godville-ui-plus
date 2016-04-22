@@ -4,7 +4,7 @@ window.GUIp = window.GUIp || {};
 GUIp.stats = {};
 
 GUIp.stats.init = function() {
-    GUIp.stats._fight_type = window.so.state.fight_type();
+    //GUIp.stats._fight_type = window.so.state.fight_type();
 };
 
 GUIp.stats._count = function(aParty) {
@@ -158,7 +158,7 @@ GUIp.stats.fightType = function() {
     return GUIp.stats._fight_type;
 };
 GUIp.stats.godName = function() {
-    return window.so.state.stats.godname.value;
+    return decodeURIComponent(document.cookie.split('; ').find(function(cookie) { return cookie.match(/^gn/); }).replace(/gn=|%22/g, ''));
 };
 GUIp.stats.guildName = function() {
     return window.so.state.stats.clan && window.so.state.stats.clan.value;

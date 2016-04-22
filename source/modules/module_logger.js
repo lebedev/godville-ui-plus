@@ -5,7 +5,8 @@ GUIp.logger = {};
 
 GUIp.logger.WIDTH_MARGIN = 100;
 
-GUIp.logger.init = function() {
+GUIp.logger.init = function() {};
+GUIp.logger.initOrig = function() {
     document.getElementById('hero_block').insertAdjacentHTML(
         'afterbegin',
         '<ul id="logger" style="mask: url(#fader_masking);"></ul>'

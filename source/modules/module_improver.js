@@ -5,7 +5,7 @@ GUIp.improver = {};
 
 GUIp.improver.init = function() {
     if (GUIp.stats.isField()) {
-        window.onmousemove = window.onscroll = window.ontouchmove = GUIp.improver.activity;
+        //window.onmousemove = window.onscroll = window.ontouchmove = GUIp.improver.activity;
     }
 
     if (GUIp.browser === 'firefox') {
@@ -77,9 +77,9 @@ GUIp.improver.hardRefresh = function() {
 };
 GUIp.improver.improve = function() {
     this.improveInProcess = true;
-    GUIp.informer.update('fight', !GUIp.stats.isField());
-    GUIp.informer.update('arena available', GUIp.stats.isArenaAvailable());
-    GUIp.informer.update('dungeon available', GUIp.stats.isDungeonAvailable());
+    //GUIp.informer.update('fight', !GUIp.stats.isField());
+    //GUIp.informer.update('arena available', GUIp.stats.isArenaAvailable());
+    //GUIp.informer.update('dungeon available', GUIp.stats.isDungeonAvailable());
 
     this.optionsChanged = this.isFirstTime ? false : GUIp.storage.get('optionsChanged');
     if (this.isFirstTime) {
@@ -89,25 +89,25 @@ GUIp.improver.improve = function() {
             GUIp.improver.getDungeonPhrases();
         }
     }
-    GUIp.improver.improveStats();
-    if (GUIp.stats.isField()) {
+    //GUIp.improver.improveStats();
+    /*if (GUIp.stats.isField()) {
         GUIp.improver.improvePet();
-    }
-    GUIp.improver.improveVoiceDialog();
-    if (GUIp.stats.isField()) {
+    }*/
+    //GUIp.improver.improveVoiceDialog();
+    /*if (GUIp.stats.isField()) {
         GUIp.improver.improveNews();
         GUIp.improver.improveEquip();
         GUIp.improver.improvePantheons();
-    }
-    if (this.isFirstTime && GUIp.stats.isDungeon()) {
+    }*/
+    /*if (this.isFirstTime && GUIp.stats.isDungeon()) {
         GUIp.improver.improveMap();
-    }
+    }*/
     GUIp.improver.improveInterface();
-    GUIp.improver.improveChat();
-    if (!GUIp.stats.isField()) {
+    //GUIp.improver.improveChat();
+    /*if (!GUIp.stats.isField()) {
         GUIp.improver.improveAllies();
-    }
-    GUIp.improver.calculateButtonsVisibility();
+    }*/
+    //GUIp.improver.calculateButtonsVisibility();
     this.isFirstTime = false;
     this.improveInProcess = false;
     GUIp.storage.set('optionsChanged', false);
@@ -1198,7 +1198,7 @@ GUIp.improver.improveInterface = function() {
     if (localStorage.getItem('ui_s') !== GUIp.storage.get('ui_s')) {
         GUIp.storage.set('ui_s', localStorage.getItem('ui_s') || 'th_classic');
         this.Shovel = false;
-        document.body.className = document.body.className.replace(/th_\w+/g, '') + ' ' + GUIp.storage.get('ui_s');
+        document.body.className = document.body.className.replace(/\s?th_\w+/g, '') + ' ' + GUIp.storage.get('ui_s');
     }
 
     if (this.isFirstTime || this.optionsChanged) {

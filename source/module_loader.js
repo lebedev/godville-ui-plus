@@ -30,9 +30,10 @@ GUIp.loader.modules = (function() {
 
     var modules = {
         superhero: [
-            'data',
-            'storage',
             'stats',
+            'storage',
+            'utils',
+            'data',
             'informer',
             'subs',
             'help',
@@ -42,7 +43,6 @@ GUIp.loader.modules = (function() {
             'observers',
             'timeout',
             'timers',
-            'utils',
             'improver'
         ],
         options: [

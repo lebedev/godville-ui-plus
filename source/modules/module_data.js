@@ -15,34 +15,33 @@ GUIp.data.init = function() {
         document.cookie = 'm_fl=1';
     }
 
-    /* [E] desktop notifications - asking user for a permission */
-    if ((GUIp.storage.get('Option:enableInformerAlerts') || GUIp.storage.get('Option:enablePmAlerts')) && GUIp.browser !== 'opera' && Notification.permission !== "granted") {
+    /*if ((GUIp.storage.get('Option:enableInformerAlerts') || GUIp.storage.get('Option:enablePmAlerts')) && GUIp.browser !== 'opera' && Notification.permission !== "granted") {
         Notification.requestPermission();
-    }
+    }*/
 
-    GUIp.data._getLEMRestrictions();
-    setInterval(function() { GUIp.data._getLEMRestrictions(); }, 60*60*1000);
+    //GUIp.data._getLEMRestrictions();
+    //setInterval(function() { GUIp.data._getLEMRestrictions(); }, 60*60*1000);
 
-    GUIp.data._getWantedMonster();
-    setInterval(function() { GUIp.data._getWantedMonster(); }, 5*60*1000);
+    //GUIp.data._getWantedMonster();
+    //setInterval(function() { GUIp.data._getWantedMonster(); }, 5*60*1000);
 };
 GUIp.data._initVariables = function() {
-    document.body.classList.add(
+    /*document.body.classList.add(
         GUIp.stats.isDungeon() ? 'dungeon' :
         GUIp.stats.isSail()    ? 'sail'    :
         GUIp.stats.isFight()   ? 'fight'   : 'field');
-    this.char_sex = GUIp.stats.isMale() ? GUIp.i18n.hero : GUIp.i18n.heroine;
+    this.char_sex = GUIp.stats.isMale() ? GUIp.i18n.hero : GUIp.i18n.heroine;*/
     GUIp.storage.set('ui_s', '');
-    GUIp.storage.set('charIsMale', GUIp.stats.isMale());
+    /*GUIp.storage.set('charIsMale', GUIp.stats.isMale());*/
 
     if (GUIp.storage.isNewProfile(GUIp.stats.godName())) {
         GUIp.storage.addToNames(GUIp.stats.godName());
     }
     localStorage.setItem('GUIp:lastGodname', GUIp.stats.godName());
 
-    if (GUIp.stats.hasTemple()) {
+    /*if (GUIp.stats.hasTemple()) {
         document.body.classList.add('has_temple');
-    }
+    }*/
 };
 GUIp.data._clearOldDungeonData = function() {
     if (GUIp.stats.isField()) {

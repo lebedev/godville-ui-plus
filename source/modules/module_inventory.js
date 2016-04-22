@@ -20,12 +20,12 @@ GUIp.inventory.observer = {
     target: ['#inventory ul']
 };
 GUIp.inventory.init = function() {
-    if (!GUIp.stats.isField()) {
+    /*if (!GUIp.stats.isField()) {
         return;
     }
     GUIp.inventory._createCraftButtons();
     GUIp.inventory._update();
-    GUIp.observers.start(GUIp.inventory.observer);
+    GUIp.observers.start(GUIp.inventory.observer);*/
 };
 GUIp.inventory._createCraftButtons = function() {
     var invContent = document.querySelector('#inventory .block_content');
