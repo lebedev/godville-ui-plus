@@ -148,7 +148,7 @@ GUIp.utils.inform = function() {
     }
 };
 GUIp.utils.messages = {
-    ru: [{
+    ru: [/*{
         msg_no: 0,
         title: 'Приветственное сообщение Godville UI+',
         get content() { return '<div>Приветствую бог' + (document.title.match('её') ? 'иню' : 'а') + ', использующ' + (document.title.match('её') ? 'ую' : 'его') +
@@ -172,14 +172,20 @@ GUIp.utils.messages = {
                 GUIp.help.toggleDialog();
             }
         }
+    }*/
+    {
+        msg_no: 10, // 0..9 are used
+        title: 'Godville UI+: новые мировые порядки',
+        content: '<div style="text-align: justify;">&emsp;С связи с требованиями Демиургов на текущий момент вся функциональность, которая работала на внутренних игровых объектах, отключена (а это почти вся вообще). Большую часть удастся восстановить в соответствии с требованиями Демиургов, но это, учитывая мою личную загруженность, займет некоторое время. Но я таки намерен это сделать. Такие дела.</div>' +
+                 '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
     }
     /*{
-        msg_no: 10, // 0..9 are used
+        msg_no: 11, // 0..10 are used
         title: 'Godville UI+: Заголовок',
         content: '<div style="text-align: justify;">&emsp;Текст.</div>' +
                  '<div style="text-align: right;">Подпись.<br>~~Бэдлак</div>'
     }*/],
-    en: [{
+    en: [/*{
         msg_no: 0,
         title: 'Godville UI+ greeting message',
         get content() { return '<div>Greetings to a god' + (document.title.match('his') ? '' : 'dess') + ', using <b>Godville UI+</b> ' + (GUIp.browser === 'Firefox' ? 'add-on' : 'extension') + '.</div>' +
@@ -200,9 +206,15 @@ GUIp.utils.messages = {
                 GUIp.help.toggleDialog();
             }
         }
+    }*/
+    {
+        msg_no: 5, // 0..4 are used
+        title: 'Godville UI+: new world orders',
+        content: '<div style="text-align: justify;">&emsp;In order to comply with demands of Godville Developers, to date all functionality, that worked on internal game objects, are disabled (and that\'s almost all functionality in general). Most part of it will be restored without violating new rules, but it would take some time, regarding my personal business. But I\'m intended to do that anyway. That\'s all.</div>' +
+                 '<div style="text-align: right;">Signature.<br>~~Bad Luck</div>'
     }
     /*{
-        msg_no: 5, // 0..4 are used
+        msg_no: 6, // 0..5 are used
         title: 'Godville UI+: Title',
         content: '<div style="text-align: justify;">&emsp;Text.</div>' +
                  '<div style="text-align: right;">Signature.<br>~~Bad Luck</div>'
