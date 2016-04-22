@@ -90,11 +90,11 @@ GUIp.loader.waitFor = function(aTargetCheckFunc) {
                 clearInterval(int);
                 aResolve();
             }
-            if (ticker++ > 6000) {
+            if (ticker++ > 1500) {
                 aReject();
             }
         }
-        var int = setInterval(checkIfTargetLoaded, 50);
+        var int = setInterval(checkIfTargetLoaded, 200);
         checkIfTargetLoaded();
     });
 };
@@ -150,6 +150,9 @@ GUIp.loader.waitFor(function() {
     }
 
     window.console.info('GUIp: started. Enjoy! :3');
+})
+.catch(function() {
+    window.console.timeEnd('GUIp: couldn\'t get initialized in 5 minutes.');
 });
 
 })();
