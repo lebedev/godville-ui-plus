@@ -176,9 +176,7 @@ GUIp.improver.improveVoiceDialog = function() {
             GUIp.utils.addVoicegen(gp_label, GUIp.i18n.pray, 'pray', GUIp.i18n.ask5 + GUIp.data.char_sex[0] + GUIp.i18n.to_pray);
         }
     }
-    //hide_charge_button
-    var charge_button = document.querySelector('#cntrl .hch_link');
-    charge_button.style.visibility = GUIp.storage.get('Option:hideChargeButton') ? 'hidden' : '';
+
     GUIp.informer.update('full godpower', GUIp.stats.Godpower() === GUIp.stats.Max_Godpower() && !GUIp.data.isDungeon);
 };
 GUIp.improver.improveNews = function() {
@@ -1211,6 +1209,12 @@ GUIp.improver.improveInterface = function() {
                 '}';
         }
         GUIp.common.addCSSFromString(cssRule, 'guip_background');
+
+        //hide_charge_button
+        var charge_button = document.querySelector('#cntrl .hch_link');
+        if (charge_button) {
+            charge_button.style.visibility = GUIp.storage.get('Option:hideChargeButton') ? 'hidden' : '';
+        }
     }
 };
 GUIp.improver.improveChat = function() {
