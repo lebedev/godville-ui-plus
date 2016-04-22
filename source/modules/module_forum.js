@@ -10,6 +10,7 @@ GUIp.forum.init = function() {
 
     if (GUIp.isTopic) {
         GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/forum.css'), 'forum_css');
+        GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/common.css'), 'common_css');
         GUIp.initTopicFormattingFeatures();
         GUIp.initOtherTopicFeatures();
     }

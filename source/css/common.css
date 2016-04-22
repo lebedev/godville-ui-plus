@@ -1,0 +1,72 @@
+a {
+	cursor: pointer;
+}
+
+/*
+ *   MESSAGES
+ */
+
+.guip_message {
+	background: #FEFFE3 none repeat scroll 0 50%;
+	border-radius: 5px;
+	border: 1px solid #DCDBB6;
+	left: 0;
+	margin-bottom: 3px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 0.7em;
+	padding-top: 1px;
+	position: fixed;
+	right: 0;
+	text-align: center;
+	top: 40px;
+	transition: opacity 1.5s ease;
+	width: 50em;
+	z-index: 301;
+}
+
+[default_message_style] {
+	background: #FFFEF4 -webkit-gradient(linear, left top, left 60, from(#FCFFDD), to(#FEFFF4), color-stop(0.5, #EDE7B3), color-stop(0.5, #F9F8D8));
+	background: #FFFEF4 -moz-linear-gradient(top, #FEFFDD, #EFE8B0 31px, #FDFFF4 31px, #FFFEE4);
+	background: #FFFEF4 -o-linear-gradient(top, #FEFFDD, #EFE8B0 31px, #FDFFF4 31px, #FFFEE4);
+	-webkit-box-shadow: 0px 0px 5px #CFCA7A;
+	-moz-box-shadow: 0px 0px 5px #CFCA7A;
+	box-shadow: 0px 0px 5px #CFCA7A;
+}
+
+[default_message_style] .hint_bar {
+	font-size: 90%;
+	text-align: center;
+}
+[default_message_style] .hint_bar_capt {
+	padding-top: 0.5em;
+	padding-bottom: 0.75em;
+}
+.hint_bar_content ol {
+	margin: 0;
+	padding: 0 0 0 20px;
+}
+
+#msgerror li {
+	text-align: left;
+}
+
+.guip_message .debug_mode_warning {
+	color: red;
+}
+
+.guip_message.transparent {
+	opacity: 0;
+}
+.guip_message .hint_bar_content {
+	padding: 0.5em 1em 0;
+}
+
+
+/* dialog box-shadows */
+.th_nightly .guip_message {
+	box-shadow: 2px 2px 15px #fff;
+}
+body:not(.th_nightly) .guip_message {
+	box-shadow: 2px 2px 15px #000;
+}

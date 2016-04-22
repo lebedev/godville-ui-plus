@@ -78,29 +78,6 @@ body {
 	float: left;
 }
 
-.ui_msg {
-	display: none;
-	left: 0;
-	padding-bottom: 0.7em;
-	position: fixed;
-	right: 0;
-	top: 40px;
-	z-index: 301;
-}
-.ui_msg .hint_bar_content {
-	padding: 0.5em 1em 0;
-}
-.hint_bar {
-	font-size: 90%;
-	text-align: center;
-}
-.hint_bar_capt {
-	padding-bottom: 0.75em;
-}
-.hint_bar_content ol {
-	margin: 0;
-	padding: 0 0 0 20px;
-}
 .th_nightly .ui_msg {
 	color: #999;
 }
@@ -359,10 +336,6 @@ body:not(.th_nightly) #timeout_bar {
 	pointer-events: auto;
 }
 
-a {
-	cursor: pointer;
-}
-
 a.inspect_button {
 	margin-left: 0.3em;
 }
@@ -581,14 +554,6 @@ body:not(.th_nightly) .dmc.boss.trapMoveLoss {
 	background: linear-gradient(135deg, #ff9f07 0%, #ff9f07 50%, #5c5c5c 50%, #5c5c5c 100%);
 }
 
-/* dialog box-shadows */
-.th_nightly .ui_msg {
-	box-shadow: 2px 2px 15px #fff;
-}
-body:not(.th_nightly) .ui_msg {
-	box-shadow: 2px 2px 15px #000;
-}
-
 /* shovel */
 #hk_gold_we .voice_generator:not(.shovel) {
 	background-size: 0 0;
@@ -718,14 +683,6 @@ body.has_temple.field #hk_health .p_bar:before {
 #pantheons .arena_link_wrap,
 #pantheons .chf_link_wrap {
 	padding-top: 0;
-}
-
-.debug_mode_warning {
-	color: red;
-}
-
-#msgerror li {
-	text-align: left;
 }
 
 /* hide godville allies pm-links */

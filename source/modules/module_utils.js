@@ -89,6 +89,7 @@ GUIp.utils.escapeHTML = function(str) {
 };
 GUIp.utils.addCSS = function () {
     GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/superhero.css'), 'guip_css');
+    GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/common.css'), 'guip_common_css');
 };
 /* aParams: {
     url:       string,
