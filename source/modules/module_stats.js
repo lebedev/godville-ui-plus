@@ -221,7 +221,13 @@ GUIp.stats.monsterName = function() {
     return window.so.state.stats.monster_name && window.so.state.stats.monster_name.value;
 };
 GUIp.stats.logId = function() {
-    return window.so.state.stats.perm_link.value;
+    if (GUIp.stats.isDungeon()) {
+        var translationLink = document.getElementById('fbclink');
+        if (translationLink && translationLink.href.match(/\w+$/)) {
+            return translationLink.href.match(/\w+$/)[0];
+        }
+    }
+    //return window.so.state.stats.perm_link.value;
 };
 GUIp.stats.petIsKnockedOut = function() {
     return window.so.state.pet.pet_is_dead && window.so.state.pet.pet_is_dead.value;

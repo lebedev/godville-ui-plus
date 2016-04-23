@@ -19,18 +19,18 @@ GUIp.data.init = function() {
         Notification.requestPermission();
     }*/
 
-    //GUIp.data._getLEMRestrictions();
-    //setInterval(function() { GUIp.data._getLEMRestrictions(); }, 60*60*1000);
+    GUIp.data._getLEMRestrictions();
+    setInterval(function() { GUIp.data._getLEMRestrictions(); }, 60*60*1000);
 
     //GUIp.data._getWantedMonster();
     //setInterval(function() { GUIp.data._getWantedMonster(); }, 5*60*1000);
 };
 GUIp.data._initVariables = function() {
-    /*document.body.classList.add(
+    document.body.classList.add(
         GUIp.stats.isDungeon() ? 'dungeon' :
         GUIp.stats.isSail()    ? 'sail'    :
         GUIp.stats.isFight()   ? 'fight'   : 'field');
-    this.char_sex = GUIp.stats.isMale() ? GUIp.i18n.hero : GUIp.i18n.heroine;*/
+    this.char_sex = GUIp.stats.isMale() ? GUIp.i18n.hero : GUIp.i18n.heroine;
     GUIp.storage.set('ui_s', '');
     /*GUIp.storage.set('charIsMale', GUIp.stats.isMale());*/
 

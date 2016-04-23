@@ -5,7 +5,7 @@ GUIp.improver = {};
 
 GUIp.improver.init = function() {
     if (GUIp.stats.isField()) {
-        //window.onmousemove = window.onscroll = window.ontouchmove = GUIp.improver.activity;
+        window.onmousemove = window.onscroll = window.ontouchmove = GUIp.improver.activity;
     }
 
     if (GUIp.browser === 'firefox') {
@@ -84,7 +84,7 @@ GUIp.improver.improve = function() {
     this.optionsChanged = this.isFirstTime ? false : GUIp.storage.get('optionsChanged');
     if (this.isFirstTime) {
         if (GUIp.stats.isField()) {
-            GUIp.improver.improveDiary();
+            //GUIp.improver.improveDiary();
         } else if (GUIp.stats.isDungeon()) {
             GUIp.improver.getDungeonPhrases();
         }
@@ -99,9 +99,9 @@ GUIp.improver.improve = function() {
         GUIp.improver.improveEquip();
         GUIp.improver.improvePantheons();
     }*/
-    /*if (this.isFirstTime && GUIp.stats.isDungeon()) {
+    if (this.isFirstTime && GUIp.stats.isDungeon()) {
         GUIp.improver.improveMap();
-    }*/
+    }
     GUIp.improver.improveInterface();
     //GUIp.improver.improveChat();
     /*if (!GUIp.stats.isField()) {
@@ -254,7 +254,7 @@ GUIp.improver.improveMap = function() {
         );
     }
     if (document.querySelectorAll('#map .dml').length) {
-        var i, j, ik, jk, len, directionVoicegens, chronolen = +Object.keys(this.chronicles).reverse()[0],
+        var i, j, ik, jk, len, directionVoicegens, chronolen = +Object.keys(GUIp.improver.chronicles).reverse()[0],
             mapRows = document.querySelectorAll('#map .dml'),
             kRow = mapRows.length,
             kColumn = mapRows[0].textContent.length,
@@ -286,7 +286,7 @@ GUIp.improver.improveMap = function() {
                     if (!GUIp.improver.isPureZPG && directionVoicegens.length) {
                         var isMoveLoss = [];
                         for (i = 0; i < 4; i++) {
-                            isMoveLoss[i] = chronolen > i && this.chronicles[chronolen - i].marks.indexOf('trapMoveLoss') !== -1;
+                            isMoveLoss[i] = chronolen > i && GUIp.improver.chronicles[chronolen - i].marks.indexOf('trapMoveLoss') !== -1;
                         }
                         var directionsShouldBeShown = !isMoveLoss[0] || (isMoveLoss[1] && (!isMoveLoss[2] || isMoveLoss[3]));
                         if (directionsShouldBeShown) {
@@ -308,7 +308,7 @@ GUIp.improver.improveMap = function() {
                 }
                 // Ищем указатели
                 var ij, ttl = '';
-                var chronopointers = chronolen > 1 ? this.chronicles[chronolen].pointers : [];
+                var chronopointers = chronolen > 1 ? GUIp.improver.chronicles[chronolen].pointers : [];
                 /* [E] check if current position has some directions in chronicle */
                 if (pointer === '@' && chronopointers.length) {
                     for (i = 0, len = chronopointers.length; i < len; i++) {
@@ -697,14 +697,14 @@ GUIp.improver.getDungeonPhrases = function() {
     }
 };
 GUIp.improver.parseSingleChronicle = function(texts, step) {
-    if (!this.chronicles[step]) {
-        this.chronicles[step] = { direction: null, marks: [], pointers: [], jumping: false, directionless: false, text: texts.join(' ') };
+    if (!GUIp.improver.chronicles[step]) {
+        GUIp.improver.chronicles[step] = { direction: null, marks: [], pointers: [], jumping: false, directionless: false, text: texts.join(' ') };
     }
     // First step isn't an actual "step".
     if (step === 1) {
         return;
     }
-    var i, len, j, len2, chronicle = this.chronicles[step];
+    var i, len, j, len2, chronicle = GUIp.improver.chronicles[step];
     for (j = 0, len2 = texts.length; j < len2; j++) {
         texts[j] = texts[j].replace(/offered to trust h.. gut feeling\./, '');
         for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
@@ -768,13 +768,13 @@ GUIp.improver.parseChronicles = function(xhr) {
     this.needLog = false;
     this.dungeonXHRCount++;
 
-    if (Object.keys(this.chronicles)[0] === '1') {
+    if (Object.keys(GUIp.improver.chronicles)[0] === '1') {
         return;
     }
 
     var lastNotParsed, texts = [],
         step = 1,
-        step_max = +Object.keys(this.chronicles)[0],
+        step_max = +Object.keys(GUIp.improver.chronicles)[0],
         matches = xhr.responseText.match(/<div class="new_line ?" style='[^']*'>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g);
     for (var i = 0; step <= step_max; i++) {
         lastNotParsed = true;
@@ -793,8 +793,8 @@ GUIp.improver.parseChronicles = function(xhr) {
     }
 
     //window.console.log('after log chronicles');
-    //window.console.log(this.chronicles);
-    //window.console.log(JSON.stringify(this.chronicles));
+    //window.console.log(GUIp.improver.chronicles);
+    //window.console.log(JSON.stringify(GUIp.improver.chronicles));
 
     GUIp.improver.colorDungeonMap();
 };
@@ -880,12 +880,12 @@ GUIp.improver.improveChronicles = function() {
         if (!this.initial) {
             this.initial = true;
             //window.console.log('initial chronicles');
-            //window.console.log(this.chronicles);
-            //window.console.log(JSON.stringify(this.chronicles));
+            //window.console.log(GUIp.improver.chronicles);
+            //window.console.log(JSON.stringify(GUIp.improver.chronicles));
         }
 
         if (this.needLog) {
-            if (Object.keys(this.chronicles)[0] === '1') {
+            if (Object.keys(GUIp.improver.chronicles)[0] === '1') {
                 this.needLog = false;
                 GUIp.improver.colorDungeonMap();
             } else if (this.dungeonXHRCount < 5) {
@@ -896,16 +896,26 @@ GUIp.improver.improveChronicles = function() {
             }
         }
         // informer
-        GUIp.informer.update('close to boss', this.chronicles[Object.keys(this.chronicles).reverse()[0]].marks.indexOf('bossHint') !== -1);
+        GUIp.informer.update('close to boss', GUIp.improver.chronicles[Object.keys(GUIp.improver.chronicles).reverse()[0]].marks.indexOf('bossHint') !== -1);
 
         if (GUIp.storage.get('Log:current') !== GUIp.stats.logId()) {
             GUIp.storage.set('Log:current', GUIp.stats.logId());
             GUIp.storage.set('Log:' + GUIp.stats.logId() + ':corrections', '');
         }
         GUIp.storage.set('Log:' + GUIp.stats.logId() + ':steps', (document.querySelector('#m_fight_log .block_title').textContent.match(/\d+/) || [0])[0]);
-        GUIp.storage.set('Log:' + GUIp.stats.logId() + ':map', JSON.stringify(window.so.state.d_map));
+        GUIp.storage.set('Log:' + GUIp.stats.logId() + ':map', JSON.stringify(GUIp.improver.getDungeonMap()));
     }
     GUIp.improver.improvementDebounce();
+};
+GUIp.improver.getDungeonMap = function() {
+    var dungeonRows = document.querySelectorAll('#map .dml');
+    var dungeonMap = Array.prototype.map.call(dungeonRows, function(aRow) {
+        var currentRowCells = aRow.querySelectorAll('.dmc');
+        return Array.prototype.map.call(currentRowCells, function(aCell) {
+            return aCell.textContent.trim();
+        });
+    });
+    return dungeonMap;
 };
 GUIp.improver.moveCoords = function(coords, chronicle) {
     if (chronicle.direction) {
@@ -943,15 +953,15 @@ GUIp.improver.calculateDirectionlessMove = function(initCoords, initStep) {
     var i, len, j, len2, coords = { x: initCoords.x, y: initCoords.y },
         dmap = document.querySelectorAll('#map .dml'),
         heroesCoords = GUIp.improver.calculateXY(GUIp.improver.getHeroesCell()),
-        steps = Object.keys(this.chronicles),
+        steps = Object.keys(GUIp.improver.chronicles),
         directionless = 0;
 
     //window.console.log('going to calculate directionless move from step #'+initStep);
     for (i = initStep, len = steps.length; i <= len; i++) {
-        if (this.chronicles[i].directionless) {
+        if (GUIp.improver.chronicles[i].directionless) {
             directionless++;
         }
-        GUIp.improver.moveCoords(coords, this.chronicles[i]);
+        GUIp.improver.moveCoords(coords, GUIp.improver.chronicles[i]);
     }
 
     var variations = this.getAllRPerms('nesw'.split(''),directionless);
@@ -961,11 +971,11 @@ GUIp.improver.calculateDirectionlessMove = function(initCoords, initStep) {
         coords = { x: initCoords.x, y: initCoords.y };
         directionless = 0;
         for (j = initStep, len2 = steps.length; j <= len2; j++) {
-            if (this.chronicles[j].directionless) {
-                GUIp.improver.moveCoords(coords, { direction: this.corrections[variations[i][directionless]] });
+            if (GUIp.improver.chronicles[j].directionless) {
+                GUIp.improver.moveCoords(coords, { direction: GUIp.improver.corrections[variations[i][directionless]] });
                 directionless++;
             } else {
-                GUIp.improver.moveCoords(coords, this.chronicles[j]);
+                GUIp.improver.moveCoords(coords, GUIp.improver.chronicles[j]);
             }
             if (!dmap[coords.y] || !dmap[coords.y].children[coords.x] || dmap[coords.y].children[coords.x].textContent.match(/#|!|\?/)) {
                 break;
@@ -975,7 +985,7 @@ GUIp.improver.calculateDirectionlessMove = function(initCoords, initStep) {
             var currentCorrections = GUIp.storage.get('Log:' + GUIp.stats.logId() + ':corrections') || '';
             //window.console.log('found result: '+variations[i].join());
             GUIp.storage.set('Log:' + GUIp.stats.logId() + ':corrections', currentCorrections + variations[i].join(''));
-            return this.corrections[variations[i][0]];
+            return GUIp.improver.corrections[variations[i][0]];
         }
     }
 };
@@ -991,36 +1001,36 @@ GUIp.improver.colorDungeonMapInternal = function() {
     var step, mark_no, marks_length, steptext, lasttext, titlemod, titletext, currentCell,
         trapMoveLossCount = 0,
         coords = GUIp.improver.calculateExitXY(),
-        steps = Object.keys(this.chronicles),
+        steps = Object.keys(GUIp.improver.chronicles),
         steps_length = steps.length;
     for (step = 1; step <= steps_length; step++) {
-        if (this.chronicles[step].directionless) {
+        if (GUIp.improver.chronicles[step].directionless) {
             var shortCorrection = GUIp.storage.get('Log:' + GUIp.stats.logId() + ':corrections')[this.directionlessMoveIndex++];
             if (shortCorrection) {
-                this.chronicles[step].direction = this.corrections[shortCorrection];
+                GUIp.improver.chronicles[step].direction = GUIp.improver.corrections[shortCorrection];
             } else {
-                this.chronicles[step].direction = GUIp.improver.calculateDirectionlessMove(coords, step);
+                GUIp.improver.chronicles[step].direction = GUIp.improver.calculateDirectionlessMove(coords, step);
             }
-            this.chronicles[step].directionless = false;
+            GUIp.improver.chronicles[step].directionless = false;
         }
-        GUIp.improver.moveCoords(coords, this.chronicles[step]);
+        GUIp.improver.moveCoords(coords, GUIp.improver.chronicles[step]);
         currentCell = document.querySelectorAll('#map .dml')[coords.y].children[coords.x];
-        for (mark_no = 0, marks_length = this.chronicles[step].marks.length; mark_no < marks_length; mark_no++) {
-            currentCell.classList.add(this.chronicles[step].marks[mark_no]);
+        for (mark_no = 0, marks_length = GUIp.improver.chronicles[step].marks.length; mark_no < marks_length; mark_no++) {
+            currentCell.classList.add(GUIp.improver.chronicles[step].marks[mark_no]);
         }
-        if (!currentCell.title.length && this.chronicles[step].pointers.length) {
-            currentCell.title = '[' + GUIp.i18n.map_pointer + ': ' + GUIp.i18n[this.chronicles[step].pointers[0]] + (this.chronicles[step].pointers[1] ? GUIp.i18n.or + GUIp.i18n[this.chronicles[step].pointers[1]] : '') + ']';
+        if (!currentCell.title.length && GUIp.improver.chronicles[step].pointers.length) {
+            currentCell.title = '[' + GUIp.i18n.map_pointer + ': ' + GUIp.i18n[GUIp.improver.chronicles[step].pointers[0]] + (GUIp.improver.chronicles[step].pointers[1] ? GUIp.i18n.or + GUIp.i18n[GUIp.improver.chronicles[step].pointers[1]] : '') + ']';
         }
-        //currentCell.title += (currentCell.title.length ? '\n\n' : '') + '#' + step + ' : ' + this.chronicles[step].text;
-        steptext = this.chronicles[step].text.replace('.»','».').replace(/(\!»|\?»)/g,'$1.'); // we're not going to do natural language processing, so just simplify nested sentence (yeah, result will be a bit incorrect)
+        //currentCell.title += (currentCell.title.length ? '\n\n' : '') + '#' + step + ' : ' + GUIp.improver.chronicles[step].text;
+        steptext = GUIp.improver.chronicles[step].text.replace('.»','».').replace(/(\!»|\?»)/g,'$1.'); // we're not going to do natural language processing, so just simplify nested sentence (yeah, result will be a bit incorrect)
         steptext = steptext.match(/[^\.]+[\.]+/g);
         if (step === 1) {
             steptext = steptext.slice(0,-1);
         } else if (step === steps_length) {
             steptext = steptext.slice(1);
-        } else if (this.chronicles[step].marks.indexOf('boss') !== -1) {
+        } else if (GUIp.improver.chronicles[step].marks.indexOf('boss') !== -1) {
             steptext = steptext.slice(1,-2);
-        } else if (this.chronicles[step].marks.indexOf('trapMoveLoss') !== -1 || trapMoveLossCount) {
+        } else if (GUIp.improver.chronicles[step].marks.indexOf('trapMoveLoss') !== -1 || trapMoveLossCount) {
             if (!trapMoveLossCount) {
                 steptext = steptext.slice(1);
                 trapMoveLossCount++;
@@ -1056,7 +1066,7 @@ GUIp.improver.colorDungeonMapInternal = function() {
         var heroesCoords = GUIp.improver.calculateXY(GUIp.improver.getHeroesCell());
         if (heroesCoords.x !== coords.x || heroesCoords.y !== coords.y) {
             /*window.console.log('current chronicles');
-            window.console.log(this.chronicles);
+            window.console.log(GUIp.improver.chronicles);
             window.console.log('m_fight_log');
             window.console.log(document.getElementById('m_fight_log').innerHTML);*/
             if (GUIp.utils.hasShownInfoMessage !== true) {
@@ -1349,7 +1359,7 @@ GUIp.improver.activity = function() {
         setTimeout(function() {
             GUIp.improver.updatingInFight = false;
         }, 500);
-        GUIp.logger.update();
+        //GUIp.logger.update();
     }
 };
 GUIp.improver.improvementDebounce = function() {
@@ -1357,7 +1367,7 @@ GUIp.improver.improvementDebounce = function() {
     GUIp.improver.improveTmt = setTimeout(function() {
         GUIp.improver.improve();
         if (!GUIp.stats.isField()) {
-            GUIp.logger.update();
+            //GUIp.logger.update();
         }
     }, 250);
 };
