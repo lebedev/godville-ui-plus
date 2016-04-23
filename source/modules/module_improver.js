@@ -998,6 +998,11 @@ GUIp.improver.colorDungeonMap = function() {
 GUIp.improver.colorDungeonMapTimer = null;
 GUIp.improver.colorDungeonMapInternal = function() {
     GUIp.improver.improveMap();
+
+    if (Object.keys(GUIp.improver.chronicles)[0] !== '1') {
+        return;
+    }
+
     var step, mark_no, marks_length, steptext, lasttext, titlemod, titletext, currentCell,
         trapMoveLossCount = 0,
         coords = GUIp.improver.calculateExitXY(),
