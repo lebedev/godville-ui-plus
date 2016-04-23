@@ -76,13 +76,13 @@ GUIp.improver.hardRefresh = function() {
     document.location.reload();
 };
 GUIp.improver.improve = function() {
-    this.improveInProcess = true;
+    GUIp.improver.improveInProcess = true;
     //GUIp.informer.update('fight', !GUIp.stats.isField());
     //GUIp.informer.update('arena available', GUIp.stats.isArenaAvailable());
     //GUIp.informer.update('dungeon available', GUIp.stats.isDungeonAvailable());
 
-    this.optionsChanged = this.isFirstTime ? false : GUIp.storage.get('optionsChanged');
-    if (this.isFirstTime) {
+    GUIp.improver.optionsChanged = GUIp.improver.isFirstTime ? false : GUIp.storage.get('optionsChanged');
+    if (GUIp.improver.isFirstTime) {
         if (GUIp.stats.isField()) {
             //GUIp.improver.improveDiary();
         } else if (GUIp.stats.isDungeon()) {
@@ -99,7 +99,7 @@ GUIp.improver.improve = function() {
         GUIp.improver.improveEquip();
         GUIp.improver.improvePantheons();
     }*/
-    if (this.isFirstTime && GUIp.stats.isDungeon()) {
+    if (GUIp.improver.isFirstTime && GUIp.stats.isDungeon()) {
         GUIp.improver.improveMap();
     }
     GUIp.improver.improveInterface();
@@ -108,25 +108,25 @@ GUIp.improver.improve = function() {
         GUIp.improver.improveAllies();
     }*/
     //GUIp.improver.calculateButtonsVisibility();
-    this.isFirstTime = false;
-    this.improveInProcess = false;
+    GUIp.improver.isFirstTime = false;
+    GUIp.improver.improveInProcess = false;
     GUIp.storage.set('optionsChanged', false);
 };
 GUIp.improver.improveVoiceDialog = function() {
     // If playing in pure ZPG mode there won't be control block at all.
     if (!document.querySelector('#control, #m_control')) {
-        if (this.isFirstTime) {
+        if (GUIp.improver.isFirstTime) {
             GUIp.improver.isPureZPG = true;
         }
         return;
     }
-    if (this.isFirstTime || this.optionsChanged) {
-        this.freezeVoiceButton = GUIp.storage.get('Option:freezeVoiceButton') || '';
+    if (GUIp.improver.isFirstTime || GUIp.improver.optionsChanged) {
+        GUIp.improver.freezeVoiceButton = GUIp.storage.get('Option:freezeVoiceButton') || '';
     }
     // Add voicegens and show timeout bar after saying
     var controlDialog = document.getElementById('cntrl');
     if (!GUIp.utils.isAlreadyImproved(controlDialog)) {
-        if (this.freezeVoiceButton.match('when_empty')) {
+        if (GUIp.improver.freezeVoiceButton.match('when_empty')) {
             GUIp.utils.setVoiceSubmitState(GUIp.utils.BUTTON_ENABLED);
         }
         var voiceInput = document.querySelector('#godvoice, #god_phrase');
@@ -190,7 +190,7 @@ GUIp.improver.improveNews = function() {
     // Если герой дерется с монстром
     var currentMonster = GUIp.stats.monsterName();
     if (currentMonster) {
-        isWantedMonster = this.wantedMonsters && currentMonster.match(this.wantedMonsters);
+        isWantedMonster = GUIp.improver.wantedMonsters && currentMonster.match(GUIp.improver.wantedMonsters);
         if (GUIp.words.base.special_monsters.length) {
             isSpecialMonster = currentMonster.match(new RegExp(GUIp.words.base.special_monsters.join('|'),'i'));
         }
@@ -215,14 +215,14 @@ GUIp.improver.improveNews = function() {
     GUIp.informer.update('tamable monster', isTamableMonster);
     GUIp.informer.update('chosen monster', isFavoriteMonster);
 
-    if (GUIp.stats.hasTemple() && this.optionsChanged) {
+    if (GUIp.stats.hasTemple() && GUIp.improver.optionsChanged) {
         GUIp.timers.layingTimerIsDisabled = GUIp.storage.get('Option:disableLayingTimer');
         GUIp.utils.hideElem(GUIp.timers.layingTimer ? GUIp.timers.layingTimer : GUIp.timers.logTimer, GUIp.timers.layingTimerIsDisabled); // todo: if it's got enabled, it should also be made clickable and switchable.
         GUIp.timers.tick();
     }
 };
 GUIp.improver.improveMap = function() {
-    if (this.isFirstTime) {
+    if (GUIp.improver.isFirstTime) {
         var legendDiv;
         try {
             legendDiv = document.getElementsByClassName('map_legend')[0].nextElementSibling;
@@ -521,7 +521,7 @@ GUIp.improver.improveStats = function() {
         return;
     }
     if (GUIp.stats.isFight() || GUIp.stats.isSail()) {
-        if (this.isFirstTime) {
+        if (GUIp.improver.isFirstTime) {
             GUIp.storage.set('Logger:Hero_HP', GUIp.stats.HP());
             GUIp.storage.set('Logger:Hero_Gold', GUIp.stats.Gold());
             GUIp.storage.set('Logger:Hero_Inv', GUIp.stats.Inv());
@@ -582,7 +582,7 @@ GUIp.improver.improveStats = function() {
 
     //Shovel pictogramm start
     var digVoice = document.querySelector('#hk_gold_we .voice_generator');
-    if (this.isFirstTime) {
+    if (GUIp.improver.isFirstTime) {
         digVoice.style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/shovel.png') + ')';
     }
     if (GUIp.stats.goldTextLength() > 16 - 2*document.getElementsByClassName('page_wrapper_5c').length) {
@@ -631,10 +631,10 @@ GUIp.improver.improveEquip = function() {
 };
 GUIp.improver.improvePantheons = function() {
     var pants = document.querySelector('#pantheons .block_content');
-    if (this.isFirstTime) {
+    if (GUIp.improver.isFirstTime) {
         pants.insertAdjacentHTML('afterbegin', '<div class="guip p_group_sep" />');
     }
-    if (this.isFirstTime || this.optionsChanged) {
+    if (GUIp.improver.isFirstTime || GUIp.improver.optionsChanged) {
         var relocateDuelButtons = GUIp.storage.get('Option:relocateDuelButtons') || '';
         var arenaRelocated = relocateDuelButtons.match('arena'),
             arenaInPantheons = document.querySelector('#pantheons .arena_link_wrap');
@@ -674,24 +674,24 @@ GUIp.improver.improveDiary = function() {
     GUIp.improver.improvementDebounce();
 };
 GUIp.improver.parseDungeonPhrases = function(xhr) {
-    for (var i = 0, temp, len = this.dungeonPhrases.length; i < len; i++) {
-        temp = xhr.responseText.match(new RegExp('<p>' + this.dungeonPhrases[i] + '\\b([\\s\\S]+?)<\/p>'))[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
-        this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(temp);
-        GUIp.storage.set('Dungeon:' + this.dungeonPhrases[i] + 'Phrases', temp);
+    for (var i = 0, temp, len = GUIp.improver.dungeonPhrases.length; i < len; i++) {
+        temp = xhr.responseText.match(new RegExp('<p>' + GUIp.improver.dungeonPhrases[i] + '\\b([\\s\\S]+?)<\/p>'))[1].replace(/&#8230;/g, '...').replace(/^<br>\n|<br>$/g, '').replace(/<br>\n/g, '|');
+        GUIp.improver[GUIp.improver.dungeonPhrases[i] + 'RegExp'] = new RegExp(temp);
+        GUIp.storage.set('Dungeon:' + GUIp.improver.dungeonPhrases[i] + 'Phrases', temp);
     }
     GUIp.improver.improveChronicles();
 };
 GUIp.improver.getDungeonPhrases = function() {
     if (!GUIp.storage.get('Dungeon:pointerMarkerPhrases')) {
-        this.dungeonXHRCount++;
+        GUIp.improver.dungeonXHRCount++;
         var customChronicler = GUIp.storage.get('Option:customDungeonChronicler') || '';
         GUIp.utils.getXHR({
             url: '/gods/' + (customChronicler.length >= 3 ? customChronicler : 'Dungeoneer'),
             onSuccess: GUIp.improver.parseDungeonPhrases.bind(GUIp.improver)
         });
     } else {
-        for (var i = 0, len = this.dungeonPhrases.length; i < len; i++) {
-            this[this.dungeonPhrases[i] + 'RegExp'] = new RegExp(GUIp.storage.get('Dungeon:' + this.dungeonPhrases[i] + 'Phrases'));
+        for (var i = 0, len = GUIp.improver.dungeonPhrases.length; i < len; i++) {
+            GUIp.improver[GUIp.improver.dungeonPhrases[i] + 'RegExp'] = new RegExp(GUIp.storage.get('Dungeon:' + GUIp.improver.dungeonPhrases[i] + 'Phrases'));
         }
         GUIp.improver.improveChronicles();
     }
@@ -707,9 +707,9 @@ GUIp.improver.parseSingleChronicle = function(texts, step) {
     var i, len, j, len2, chronicle = GUIp.improver.chronicles[step];
     for (j = 0, len2 = texts.length; j < len2; j++) {
         texts[j] = texts[j].replace(/offered to trust h.. gut feeling\./, '');
-        for (i = 0, len = this.dungeonPhrases.length - 1; i < len; i++) {
-            if (texts[j].match(this[this.dungeonPhrases[i] + 'RegExp']) && chronicle.marks.indexOf(this.dungeonPhrases[i]) === -1) {
-                chronicle.marks.push(this.dungeonPhrases[i]);
+        for (i = 0, len = GUIp.improver.dungeonPhrases.length - 1; i < len; i++) {
+            if (texts[j].match(GUIp.improver[GUIp.improver.dungeonPhrases[i] + 'RegExp']) && chronicle.marks.indexOf(GUIp.improver.dungeonPhrases[i]) === -1) {
+                chronicle.marks.push(GUIp.improver.dungeonPhrases[i]);
             }
         }
         var firstSentence = texts[j].match(/^.*?[\.!\?](?:\s|$)/);
@@ -719,12 +719,12 @@ GUIp.improver.parseSingleChronicle = function(texts, step) {
                 chronicle.direction = direction[1];
             }
             chronicle.directionless = chronicle.directionless || !!firstSentence[0].match(/went somewhere|too busy bickering to hear in which direction to go next|The obedient heroes move in the named direction/);
-            chronicle.jumping = chronicle.jumping || !!firstSentence[0].match(this.jumpingDungeonRegExp);
+            chronicle.jumping = chronicle.jumping || !!firstSentence[0].match(GUIp.improver.jumpingDungeonRegExp);
         }
     }
-    if (texts.join(' ').match(this.pointerMarkerRegExp)) {
+    if (texts.join(' ').match(GUIp.improver.pointerMarkerRegExp)) {
         var middle = texts.join(' ').match(/^.+?\.(.+)[.!?].+?[.!?]$/)[1];
-        var pointer, pointers = middle.match(this.pointerRegExp);
+        var pointer, pointers = middle.match(GUIp.improver.pointerRegExp);
         for (i = 0, len = pointers.length; i < len; i++) {
             switch (pointers[i].replace(/^./, '')) {
             case 'северо-восток':
@@ -765,8 +765,8 @@ GUIp.improver.parseSingleChronicle = function(texts, step) {
     }
 };
 GUIp.improver.parseChronicles = function(xhr) {
-    this.needLog = false;
-    this.dungeonXHRCount++;
+    GUIp.improver.needLog = false;
+    GUIp.improver.dungeonXHRCount++;
 
     if (Object.keys(GUIp.improver.chronicles)[0] === '1') {
         return;
@@ -840,7 +840,7 @@ GUIp.improver.deleteInvalidChronicles = function() {
 };
 GUIp.improver.improveChronicles = function() {
     if (!GUIp.storage.get('Dungeon:pointerMarkerPhrases')) {
-        if (this.dungeonXHRCount < 5) {
+        if (GUIp.improver.dungeonXHRCount < 5) {
             GUIp.improver.getDungeonPhrases();
         }
     } else {
@@ -867,7 +867,7 @@ GUIp.improver.improveChronicles = function() {
                 texts = [];
                 step--;
             }
-            if (chronicles[i].textContent.match(this.bossHintRegExp)) {
+            if (chronicles[i].textContent.match(GUIp.improver.bossHintRegExp)) {
                 chronicles[i].parentNode.classList.add('bossHint');
             }
             chronicles[i].classList.add('parsed');
@@ -877,21 +877,21 @@ GUIp.improver.improveChronicles = function() {
         }
         //window.console.log('last step #', step);
 
-        if (!this.initial) {
-            this.initial = true;
+        if (!GUIp.improver.initial) {
+            GUIp.improver.initial = true;
             //window.console.log('initial chronicles');
             //window.console.log(GUIp.improver.chronicles);
             //window.console.log(JSON.stringify(GUIp.improver.chronicles));
         }
 
-        if (this.needLog) {
+        if (GUIp.improver.needLog) {
             if (Object.keys(GUIp.improver.chronicles)[0] === '1') {
-                this.needLog = false;
+                GUIp.improver.needLog = false;
                 GUIp.improver.colorDungeonMap();
-            } else if (this.dungeonXHRCount < 5) {
+            } else if (GUIp.improver.dungeonXHRCount < 5) {
                 GUIp.utils.getXHR({
                     url: '/duels/log/' + GUIp.stats.logId(),
-                    onSuccess: GUIp.improver.parseChronicles.bind(GUIp.improver)
+                    onSuccess: GUIp.improver.parseChronicles
                 });
             }
         }
@@ -938,14 +938,14 @@ GUIp.improver.getRPerms = function(array, size, initialStuff, output) {
         output.push(initialStuff);
     } else {
         for (var i = 0; i < array.length; ++i) {
-            this.getRPerms(array, size, initialStuff.concat(array[i]), output);
+            GUIp.improver.getRPerms(array, size, initialStuff.concat(array[i]), output);
         }
     }
 };
 
 GUIp.improver.getAllRPerms = function(array, size) {
     var output = [];
-    this.getRPerms(array, size, [], output);
+    GUIp.improver.getRPerms(array, size, [], output);
     return output;
 };
 
@@ -964,7 +964,7 @@ GUIp.improver.calculateDirectionlessMove = function(initCoords, initStep) {
         GUIp.improver.moveCoords(coords, GUIp.improver.chronicles[i]);
     }
 
-    var variations = this.getAllRPerms('nesw'.split(''),directionless);
+    var variations = GUIp.improver.getAllRPerms('nesw'.split(''),directionless);
 
     for (i = 0, len = variations.length; i < len; i++) {
         //window.console.log('trying combo '+variations[i].join());
@@ -1005,7 +1005,7 @@ GUIp.improver.colorDungeonMapInternal = function() {
         steps_length = steps.length;
     for (step = 1; step <= steps_length; step++) {
         if (GUIp.improver.chronicles[step].directionless) {
-            var shortCorrection = GUIp.storage.get('Log:' + GUIp.stats.logId() + ':corrections')[this.directionlessMoveIndex++];
+            var shortCorrection = GUIp.storage.get('Log:' + GUIp.stats.logId() + ':corrections')[GUIp.improver.directionlessMoveIndex++];
             if (shortCorrection) {
                 GUIp.improver.chronicles[step].direction = GUIp.improver.corrections[shortCorrection];
             } else {
@@ -1151,7 +1151,7 @@ GUIp.improver._clockUpdate = function() {
 };
 
 GUIp.improver.improveInterface = function() {
-    if (this.isFirstTime) {
+    if (GUIp.improver.isFirstTime) {
         var links = document.querySelectorAll('a[href="#"]');
         for (var i = 0, len = links.length; i < len; i ++) {
             links[i].removeAttribute('href');
@@ -1174,18 +1174,18 @@ GUIp.improver.improveInterface = function() {
             controlTitle.onclick = GUIp.improver._clockToggle.bind(null);
         }
     }
-    if (this.isFirstTime || GUIp.storage.get('UserCssChanged') === true) {
+    if (GUIp.improver.isFirstTime || GUIp.storage.get('UserCssChanged') === true) {
         GUIp.storage.set('UserCssChanged', false);
         GUIp.common.addCSSFromString(GUIp.storage.get('UserCss'), 'guip_user_css');
     }
 
     if (localStorage.getItem('ui_s') !== GUIp.storage.get('ui_s')) {
         GUIp.storage.set('ui_s', localStorage.getItem('ui_s') || 'th_classic');
-        this.Shovel = false;
+        GUIp.improver.Shovel = false;
         document.body.className = document.body.className.replace(/\s?th_\w+/g, '') + ' ' + GUIp.storage.get('ui_s');
     }
 
-    if (this.isFirstTime || this.optionsChanged) {
+    if (GUIp.improver.isFirstTime || GUIp.improver.optionsChanged) {
         var background = GUIp.storage.get('Option:useBackground'),
             cssRule = '';
         if (background) {
@@ -1212,7 +1212,7 @@ GUIp.improver.improveChat = function() {
     for (i = 0, len = $friends.length; i < len; i++) {
         friends.push($friends[i].textContent);
     }
-    this.friendsRegExp = new RegExp('^(?:' + friends.join('|') + ')$');
+    GUIp.improver.friendsRegExp = new RegExp('^(?:' + friends.join('|') + ')$');
 };
 GUIp.improver.improveAllies = function() {
     var ally, opp_n, star, anspan;
@@ -1237,7 +1237,7 @@ GUIp.improver.improveAllies = function() {
             star.textContent = '★';
             star.onclick = GUIp.utils.openChatWith.bind(null, ally.god);
         }
-        GUIp.utils.hideElem(star, !ally.god.match(this.friendsRegExp));
+        GUIp.utils.hideElem(star, !ally.god.match(GUIp.improver.friendsRegExp));
     }
 };
 GUIp.improver.calculateButtonsVisibility = function() {
@@ -1261,30 +1261,30 @@ GUIp.improver.calculateButtonsVisibility = function() {
         }
         GUIp.improver.setButtonsVisibility(inspBtns, inspBtnsBefore, inspBtnsAfter);
         // craft buttons
-        if (this.isFirstTime) {
-            this.crftBtns = [document.getElementsByClassName('craft_button b_b')[0],
+        if (GUIp.improver.isFirstTime) {
+            GUIp.improver.crftBtns = [document.getElementsByClassName('craft_button b_b')[0],
                              document.getElementsByClassName('craft_button b_r')[0],
                              document.getElementsByClassName('craft_button r_r')[0],
                              document.getElementsByClassName('craft_button span')[0]
                             ];
         }
         var crftBtnsBefore = [], crftBtnsAfter = [];
-        for (i = 0, len = this.crftBtns.length; i < len; i++) {
-            crftBtnsBefore[i] = !this.crftBtns[i].classList.contains('hidden');
+        for (i = 0, len = GUIp.improver.crftBtns.length; i < len; i++) {
+            crftBtnsBefore[i] = !GUIp.improver.crftBtns[i].classList.contains('hidden');
             crftBtnsAfter[i] = baseCond && !isMonster;
         }
         crftBtnsAfter[0] = crftBtnsAfter[0] && GUIp.inventory.b_b.length;
         crftBtnsAfter[1] = crftBtnsAfter[1] && GUIp.inventory.b_r.length;
         crftBtnsAfter[2] = crftBtnsAfter[2] && GUIp.inventory.r_r.length;
         crftBtnsAfter[3] = crftBtnsAfter[0] || crftBtnsAfter[1] || crftBtnsAfter[2];
-        GUIp.improver.setButtonsVisibility(this.crftBtns, crftBtnsBefore, crftBtnsAfter);
+        GUIp.improver.setButtonsVisibility(GUIp.improver.crftBtns, crftBtnsBefore, crftBtnsAfter);
     }
     // voice generators
-    if (this.isFirstTime) {
-        this.voicegens = document.getElementsByClassName('voice_generator');
-        this.voicegenClasses = [];
-        for (i = 0, len = this.voicegens.length; i < len; i++) {
-            this.voicegenClasses[i] = this.voicegens[i].className;
+    if (GUIp.improver.isFirstTime) {
+        GUIp.improver.voicegens = document.getElementsByClassName('voice_generator');
+        GUIp.improver.voicegenClasses = [];
+        for (i = 0, len = GUIp.improver.voicegens.length; i < len; i++) {
+            GUIp.improver.voicegenClasses[i] = GUIp.improver.voicegens[i].className;
         }
     }
     var voicegensBefore = [], voicegensAfter = [],
@@ -1309,18 +1309,18 @@ GUIp.improver.calculateButtonsVisibility = function() {
                        ];
     }
     baseCond = baseCond && !window.$('.r_blocked:visible').length;
-    for (i = 0, len = this.voicegens.length; i < len; i++) {
-        voicegensBefore[i] = !this.voicegens[i].classList.contains('hidden');
+    for (i = 0, len = GUIp.improver.voicegens.length; i < len; i++) {
+        voicegensBefore[i] = !GUIp.improver.voicegens[i].classList.contains('hidden');
         voicegensAfter[i] = baseCond;
         if (baseCond && GUIp.stats.isField()) {
             for (var j = 0, len2 = specialConds.length; j < len2; j++) {
-                if (specialConds[j] && this.voicegenClasses[i].match(specialClasses[j])) {
+                if (specialConds[j] && GUIp.improver.voicegenClasses[i].match(specialClasses[j])) {
                     voicegensAfter[i] = false;
                 }
             }
         }
     }
-    GUIp.improver.setButtonsVisibility(this.voicegens, voicegensBefore, voicegensAfter);
+    GUIp.improver.setButtonsVisibility(GUIp.improver.voicegens, voicegensBefore, voicegensAfter);
 };
 GUIp.improver.setButtonsVisibility = function(btns, before, after) {
     for (var i = 0, len = btns.length; i < len; i++) {
