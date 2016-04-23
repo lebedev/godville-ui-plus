@@ -53,6 +53,7 @@ GUIp.loader.modules = (function() {
             'forum'
         ],
         log: [
+            'stats',
             'map_log'
         ]
     };

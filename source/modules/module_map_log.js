@@ -130,7 +130,6 @@ GUIp.map_log.init = function() {
     }
 };
 
-GUIp.map_log.godname = localStorage.getItem('GUIp:lastGodname');
 GUIp.map_log.customDomain = !document.location.href.match(/^https?:\/\/(godville\.net|godvillegame\.com)\/duels\/log/);
 GUIp.map_log.xhrCount = 0;
 GUIp.map_log.chronicles = {};
@@ -161,7 +160,7 @@ GUIp.map_log.pointerRegExp = new RegExp('[^а-яa-z](северо-восток|�
 
 
 GUIp.map_log.get_key = function(key) {
-    return 'GUIp_' + GUIp.map_log.godname + ':' + key;
+    return 'GUIp_' + GUIp.stats.godName() + ':' + key;
 };
 
 GUIp.map_log.storageSet = function(id, value) {
@@ -785,7 +784,7 @@ GUIp.map_log.getNodeIndex = function(node) {
 
 GUIp.map_log.deleteOldEntries = function() {
     for (var key in localStorage) {
-        if (key.match('GUIp_' + GUIp.map_log.godname + ':Log:\\w{5}:') && !key.match(GUIp.map_log.map_logID + '|' + GUIp.map_log.storageGet('Log:current'))) {
+        if (key.match('GUIp_' + GUIp.stats.godName() + ':Log:\\w{5}:') && !key.match(GUIp.map_log.map_logID + '|' + GUIp.map_log.storageGet('Log:current'))) {
             localStorage.removeItem(key);
         }
     }

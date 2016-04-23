@@ -158,7 +158,27 @@ GUIp.stats.fightType = function() {
     return GUIp.stats._fight_type;
 };
 GUIp.stats.godName = function() {
-    return decodeURIComponent(document.cookie.split('; ').find(function(cookie) { return cookie.match(/^gn/); }).replace(/gn=|%22/g, ''));
+    if (GUIp.stats._godName) {
+        return GUIp.stats._godName;
+    }
+    var godNameCookie = document.cookie.split('; ').find(function(cookie) { return cookie.match(/^gn/); });
+    if (godNameCookie) {
+        GUIp.stats._godName = decodeURIComponent(godNameCookie.replace(/gn=|%22/g, '').replace(/\+/, '%20'));
+        return GUIp.stats._godName;
+    }
+
+    var godNameLink = document.querySelector('#hk_godname a[href*="gods"], #hk_name a[href*="gods"]');
+    if (godNameLink) {
+        GUIp.stats._godName = decodeURIComponent(godNameLink.href.match(/[^/]+$/)[0]);
+        return GUIp.stats._godName;
+    }
+    var greetings = GUIp.$id('menu_top');
+    if (greetings) {
+        greetings = greetings.textContent;
+        GUIp.stats._godName = greetings.match(localStorage.getItem('GUIp:lastGodname'))[0] ||
+                              greetings.match(localStorage.getItem('GUIp:godnames'))[0];
+        return GUIp.stats._godName;
+    }
 };
 GUIp.stats.guildName = function() {
     return window.so.state.stats.clan && window.so.state.stats.clan.value;
