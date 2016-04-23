@@ -253,30 +253,6 @@ GUIp.improver.improveMap = function() {
             '<div class="guip_legend"><div class="dmc" style="color: darkorange;">?</div><div> - ' + GUIp.i18n.treasury_th_hint + '</div></div>'
         );
     }
-    if (this.isFirstTime || this.optionsChanged) {
-        var control = document.getElementById('m_control'),
-            map = document.getElementById('map'),
-            right_block = document.getElementById('a_right_block');
-        if (control) {
-            if (GUIp.storage.get('Option:relocateMap')) {
-                if (!document.querySelector('#a_central_block #map')) {
-                    control.parentNode.insertBefore(map, control);
-                    right_block.insertBefore(control, null);
-                    if (GUIp.locale === 'ru') {
-                        document.querySelector('#m_control .block_title').textContent = 'Пульт';
-                    }
-                }
-            } else {
-                if (!document.querySelector('#a_right_block #map')) {
-                    map.parentNode.insertBefore(control, map);
-                    right_block.insertBefore(map, null);
-                    if (GUIp.locale === 'ru') {
-                        document.querySelector('#m_control .block_title').textContent = 'Пульт вмешательства в личную жизнь';
-                    }
-                }
-            }
-        }
-    }
     if (document.querySelectorAll('#map .dml').length) {
         var i, j, ik, jk, len, directionVoicegens, chronolen = +Object.keys(this.chronicles).reverse()[0],
             mapRows = document.querySelectorAll('#map .dml'),
