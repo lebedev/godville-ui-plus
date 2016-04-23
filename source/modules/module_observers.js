@@ -4,8 +4,11 @@ window.GUIp = window.GUIp || {};
 GUIp.observers = {};
 
 GUIp.observers.init = function() {
+    var condition;
     for (var key in this) {
-        if (this[key].condition) {
+        if (typeof this[key].condition === 'function' && this[key].condition() ||
+            typeof this[key].condition === 'boolean'  && this[key].condition
+        ) {
             GUIp.observers.start(this[key]);
         }
     }
@@ -97,8 +100,8 @@ GUIp.observers.refresher = {
     },
     target: ['#main_wrapper']
 };
-GUIp.observers.diary = {
-    get condition() {
+/*GUIp.observers.diary = {
+    condition: function() {
         return GUIp.stats.isField();
     },
     config: { childList: true },
@@ -108,7 +111,7 @@ GUIp.observers.diary = {
     target: ['#diary .d_content']
 };
 GUIp.observers.news = {
-    get condition() {
+    condition: function() {
         return GUIp.stats.isField();
     },
     config: { childList: true, characterData: true, subtree: true },
@@ -116,9 +119,9 @@ GUIp.observers.news = {
         GUIp.improver.improvementDebounce();
     },
     target: ['.f_news']
-};
+};*/
 GUIp.observers.chronicles = {
-    get condition() {
+    condition: function() {
         return GUIp.stats.isDungeon();
     },
     config: { childList: true },
@@ -128,7 +131,7 @@ GUIp.observers.chronicles = {
     target: ['#m_fight_log .d_content']
 };
 GUIp.observers.map_colorization = {
-    get condition() {
+    condition: function() {
         return GUIp.stats.isDungeon();
     },
     config: {
