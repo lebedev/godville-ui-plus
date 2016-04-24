@@ -203,7 +203,7 @@ GUIp.stats.isDungeonAvailable = function() {
     //return window.so.state.dungeon_available();
 };
 GUIp.stats.isField = function() {
-    return !GUIp.stats._title.match(/\(!\)/);
+    return !GUIp.stats._title.match(/\([!@]\)/);
 };
 GUIp.stats.isFight = function() {
     return false;
