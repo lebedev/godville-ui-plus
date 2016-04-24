@@ -3,6 +3,16 @@
 
 window.GUIp = window.GUIp || {};
 
+// basic variables
+GUIp.version = '$VERSION';
+GUIp.browser = sessionStorage.getItem('GUIp_browser');
+GUIp.locale = document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en';
+GUIp.common = {
+    getResourceURL: function(aResName) {
+        return sessionStorage.getItem('GUIp_prefix') + aResName;
+    }
+};
+
 // modules_loader
 GUIp.loader = {};
 
