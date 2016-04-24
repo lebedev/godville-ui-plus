@@ -19,9 +19,6 @@ GUIp.data.init = function() {
         Notification.requestPermission();
     }*/
 
-    //GUIp.data._getLEMRestrictions();
-    //setInterval(function() { GUIp.data._getLEMRestrictions(); }, 60*60*1000);
-
     //GUIp.data._getWantedMonster();
     //setInterval(function() { GUIp.data._getWantedMonster(); }, 5*60*1000);
 };
@@ -51,21 +48,6 @@ GUIp.data._clearOldDungeonData = function() {
             }
         }
     }
-};
-GUIp.data._getLEMRestrictions = function() {
-    if (isNaN(GUIp.storage.get('LEMRestrictions:Date')) || Date.now() - GUIp.storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
-        GUIp.utils.getXHR({
-            url: '//www.godalert.info/Dungeons/guip.cgi',
-            onSuccess: GUIp.data._parseLEMRestrictions
-        });
-    }
-};
-GUIp.data._parseLEMRestrictions = function(xhr) {
-    var restrictions = JSON.parse(xhr.responseText);
-    GUIp.storage.set('LEMRestrictions:Date', Date.now());
-    GUIp.storage.set('LEMRestrictions:FirstRequest', restrictions.first_request);
-    GUIp.storage.set('LEMRestrictions:TimeFrame', restrictions.time_frame);
-    GUIp.storage.set('LEMRestrictions:RequestLimit', restrictions.request_limit);
 };
 GUIp.data._getWantedMonster = function() {
     if (isNaN(GUIp.storage.get('WantedMonster:Date')) ||

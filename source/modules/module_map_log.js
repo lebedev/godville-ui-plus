@@ -128,6 +128,25 @@ GUIp.map_log.init = function() {
     } catch(e) {
         window.console.log(e);
     }
+
+    GUIp.map_log._getLEMRestrictions();
+    setInterval(function() { GUIp.map_log._getLEMRestrictions(); }, 60*60*1000);
+};
+
+GUIp.map_log._getLEMRestrictions = function() {
+    if (isNaN(GUIp.storage.get('LEMRestrictions:Date')) || Date.now() - GUIp.storage.get('LEMRestrictions:Date') > 24*60*60*1000) {
+        GUIp.utils.getXHR({
+            url: '//www.godalert.info/Dungeons/guip.cgi',
+            onSuccess: GUIp.map_log._parseLEMRestrictions
+        });
+    }
+};
+GUIp.map_log._parseLEMRestrictions = function(xhr) {
+    var restrictions = JSON.parse(xhr.responseText);
+    GUIp.storage.set('LEMRestrictions:Date', Date.now());
+    GUIp.storage.set('LEMRestrictions:FirstRequest', restrictions.first_request);
+    GUIp.storage.set('LEMRestrictions:TimeFrame', restrictions.time_frame);
+    GUIp.storage.set('LEMRestrictions:RequestLimit', restrictions.request_limit);
 };
 
 GUIp.map_log.customDomain = !document.location.href.match(/^https?:\/\/(godville\.net|godvillegame\.com)\/duels\/log/);

@@ -26,6 +26,9 @@ GUIp.improver.init = function() {
         );
     }
 
+    GUIp.utils.addCSS();
+    GUIp.utils.inform();
+
     GUIp.improver.improve();
 };
 

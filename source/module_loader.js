@@ -35,14 +35,14 @@ GUIp.loader.modules = (function() {
     var common = [
         'trycatcher',
         'common',
-        'i18n_' + GUIp.locale
+        'i18n_' + GUIp.locale,
+        'storage',
+        'stats',
+        'utils'
     ];
 
     var modules = {
         superhero: [
-            'stats',
-            'storage',
-            'utils',
             'data',
             'informer',
             'subs',

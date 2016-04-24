@@ -3,10 +3,7 @@ window.GUIp = window.GUIp || {};
 
 GUIp.utils = {};
 
-GUIp.utils.init = function() {
-    GUIp.utils.addCSS();
-    GUIp.utils.inform();
-};
+GUIp.utils.init = function() {};
 
 GUIp.utils.BUTTON_ENABLED = true;
 GUIp.utils.BUTTON_DISABLED = false;
