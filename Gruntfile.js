@@ -24,7 +24,8 @@ module.exports = function(grunt) {
           }
         },
         files: [
-          { expand: true, cwd: 'source/chrome/', src: 'manifest.json', dest: '<%= compile_path %>/chrome/' }
+          { expand: true, cwd: 'source/chrome/', src: 'manifest.json', dest: '<%= compile_path %>/chrome/' },
+          { expand: true, cwd: '<%= compile_path %>/chrome/', src: 'module_loader.js', dest: '<%= compile_path %>/chrome/' }
         ]
       },
       firefox: {
@@ -47,7 +48,8 @@ module.exports = function(grunt) {
           }
         },
         files: [
-          { expand: true, cwd: 'source/firefox/', src: 'install.rdf', dest: '<%= compile_path %>/firefox/' }
+          { expand: true, cwd: 'source/firefox/', src: 'install.rdf', dest: '<%= compile_path %>/firefox/' },
+          { expand: true, cwd: '<%= compile_path %>/firefox/content/', src: 'module_loader.js', dest: '<%= compile_path %>/firefox/content/' }
         ]
       },
       opera: {
