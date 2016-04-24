@@ -3,8 +3,8 @@ window.GUIp = window.GUIp || {};
 
 GUIp.informer = {};
 
-GUIp.informer.iconBlank = 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=';
-GUIp.informer.iconGodville = GUIp.informer.iconBlank;
+GUIp.informer.iconBlank = GUIp.common.getResourceURL('images/icon_blank.png');
+GUIp.informer.iconGodville = GUIp.common.getResourceURL('images/icon_original.png');
 
 GUIp.informer.init = function() {
     //title saver
@@ -15,25 +15,8 @@ GUIp.informer.init = function() {
     document.getElementById('main_wrapper').insertAdjacentHTML('afterbegin', '<div id="informer_bar" />');
     this.container = document.getElementById('informer_bar');
 
-    // get favicon as base64-encoded data-string
-    GUIp.informer._getFavicon();
-
     // load
     GUIp.informer._load();
-};
-GUIp.informer._getFavicon = function() {
-    var favicon = new Image();
-    favicon.crossOrigin = 'Anonymous';
-    favicon.onload = function() {
-        var canvas = document.createElement('CANVAS');
-        var ctx = canvas.getContext('2d');
-        canvas.height = this.height;
-        canvas.width = this.width;
-        ctx.drawImage(this, 0, 0);
-        GUIp.informer.iconGodville = canvas.toDataURL('image/x-icon');
-        canvas = null;
-    };
-    favicon.src = 'images/favicon.ico';
 };
 
 GUIp.informer._load = function() {
