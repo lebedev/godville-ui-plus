@@ -46,7 +46,7 @@ if (document.location.pathname.match(validPathnames)) {
         };
     };
 
-    script = document.createElement('script');
+    /*script = document.createElement('script');
     script.textContent = '(' + basicScript.toString().replace('$VERSION', version) + ')();';
     container.appendChild(script);
 
@@ -58,7 +58,7 @@ if (document.location.pathname.match(validPathnames)) {
 
     script = document.createElement('script');
     script.src = window.localStorage.getItem('GUIp:beta') === 'true' ? externalLoaderURL : internalLoaderURL;
-    container.appendChild(script);
+    container.appendChild(script);*/
 }
 
 })();
