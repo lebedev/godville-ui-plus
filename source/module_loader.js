@@ -36,8 +36,8 @@ GUIp.loader.modules = (function() {
         'trycatcher',
         'common',
         'i18n_' + GUIp.locale,
-        'storage',
         'stats',
+        'storage',
         'utils'
     ];
 
