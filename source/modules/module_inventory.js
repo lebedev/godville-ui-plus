@@ -166,3 +166,5 @@ GUIp.inventory._pushItemCombo = function(combo, first, second) {
 };
 
 GUIp.inventory.loaded = true;
+
+document.currentScript.remove();

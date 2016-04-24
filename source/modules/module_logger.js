@@ -203,3 +203,5 @@ GUIp.logger.update = function() {
 };
 
 GUIp.logger.loaded = true;
+
+document.currentScript.remove();

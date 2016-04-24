@@ -1381,3 +1381,5 @@ GUIp.improver.improvementDebounce = function() {
 };
 
 GUIp.improver.loaded = true;
+
+document.currentScript.remove();

@@ -349,3 +349,5 @@ GUIp.utils.getCurrentChat = function() {
 };
 
 GUIp.utils.loaded = true;
+
+document.currentScript.remove();

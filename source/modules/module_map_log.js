@@ -914,3 +914,5 @@ GUIp.map_log.saverPrepareLog = function() {
 };
 
 GUIp.map_log.loaded = true;
+
+document.currentScript.remove();

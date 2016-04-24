@@ -144,3 +144,5 @@ GUIp.storage.addToNames = function(godname) {
 };
 
 GUIp.storage.loaded = true;
+
+document.currentScript.remove();

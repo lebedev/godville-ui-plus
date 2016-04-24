@@ -403,3 +403,5 @@ return '<p>\n' +
 };
 
 GUIp.options_page.loaded = true;
+
+document.currentScript.remove();

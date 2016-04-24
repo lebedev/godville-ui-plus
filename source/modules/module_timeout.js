@@ -49,3 +49,5 @@ GUIp.timeout._delayedStart = function() {
 };
 
 GUIp.timeout.loaded = true;
+
+document.currentScript.remove();

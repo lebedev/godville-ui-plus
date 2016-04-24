@@ -159,3 +159,5 @@ GUIp.informer.hide = function(flag) {
 };
 
 GUIp.informer.loaded = true;
+
+document.currentScript.remove();

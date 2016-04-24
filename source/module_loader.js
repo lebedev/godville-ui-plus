@@ -162,3 +162,5 @@ GUIp.loader.waitFor(function() {
 });
 
 })();
+
+document.currentScript.remove();

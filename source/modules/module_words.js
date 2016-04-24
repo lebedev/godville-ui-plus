@@ -99,3 +99,5 @@ GUIp.words.getUsableItemTypeOf = function(item) {
 };
 
 GUIp.words.loaded = true;
+
+document.currentScript.remove();

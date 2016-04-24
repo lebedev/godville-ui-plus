@@ -124,3 +124,5 @@ GUIp.subs._parse = function(xhr) {
 };
 
 GUIp.subs.loaded = true;
+
+document.currentScript.remove();

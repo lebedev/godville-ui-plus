@@ -120,3 +120,5 @@ GUIp.common.showMessage = function(aMessageId, aMessage, aCloseCallback) {
 };
 
 GUIp.common.loaded = true;
+
+document.currentScript.remove();

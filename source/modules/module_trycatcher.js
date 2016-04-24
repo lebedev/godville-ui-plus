@@ -104,3 +104,5 @@ GUIp.trycatcher.processError = function(error, isDebugMode) {
 };
 
 GUIp.trycatcher.loaded = true;
+
+document.currentScript.remove();

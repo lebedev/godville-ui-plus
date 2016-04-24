@@ -237,3 +237,5 @@ GUIp.stats.townName = function() {
 };
 
 GUIp.stats.loaded = true;
+
+document.currentScript.remove();

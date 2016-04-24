@@ -64,3 +64,5 @@ GUIp.help.toggleDialog = function() {
 };
 
 GUIp.help.loaded = true;
+
+document.currentScript.remove();

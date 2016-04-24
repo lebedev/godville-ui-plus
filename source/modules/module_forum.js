@@ -565,3 +565,5 @@ window.addChat = function() {
 GUIp.forum.loaded = true;
 
 })();
+
+document.currentScript.remove();

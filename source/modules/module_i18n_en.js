@@ -649,3 +649,5 @@ GUIp.i18n_en = {
 };
 
 })();
+
+document.currentScript.remove();

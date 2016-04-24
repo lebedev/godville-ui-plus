@@ -71,3 +71,5 @@ GUIp.data._parseWantedMonster = function(xhr) {
 };
 
 GUIp.data.loaded = true;
+
+document.currentScript.remove();

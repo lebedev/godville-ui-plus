@@ -158,3 +158,5 @@ GUIp.observers.node_insertion = {
 };
 
 GUIp.observers.loaded = true;
+
+document.currentScript.remove();

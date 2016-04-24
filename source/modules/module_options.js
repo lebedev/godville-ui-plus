@@ -765,3 +765,5 @@ var starterInt = setInterval(function() {
 }, 100);
 
 GUIp.options.loaded = true;
+
+document.currentScript.remove();

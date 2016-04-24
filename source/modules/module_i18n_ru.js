@@ -780,3 +780,5 @@ GUIp.i18n_ru = {
 };
 
 })();
+
+document.currentScript.remove();

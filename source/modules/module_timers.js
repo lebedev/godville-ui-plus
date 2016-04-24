@@ -141,3 +141,5 @@ GUIp.timers.toggleTimers = function(e) {
 };
 
 GUIp.timers.loaded = true;
+
+document.currentScript.remove();
