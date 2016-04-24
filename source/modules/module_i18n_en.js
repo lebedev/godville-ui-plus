@@ -538,8 +538,6 @@ GUIp.i18n = {
     hide_godville_clock: 'Hide Godville Clock',
     disable_favicon_flashing: 'Disable favicon flashing',
     disable_favicon_flashing_desc: 'fow those annoyed by it',
-    use_beta_channel: 'Use beta channel',
-    use_beta_channel_desc: 'loads modules from github instead of built-in',
     enable_debug_mode: 'Enable debugging mode',
     enable_debug_mode_desc: 'just for developers',
     apply: 'Apply',

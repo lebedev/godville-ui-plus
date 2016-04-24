@@ -145,11 +145,6 @@ GUIp.loader.waitFor(function() {
 
     window.console.timeEnd('GUIp: modules initialized in');
 
-    var betaWarning = document.getElementById('guip_beta_warning');
-    if (betaWarning) {
-        betaWarning.remove();
-    }
-
     window.console.info('GUIp: started. Enjoy! :3');
 })
 .catch(function() {
