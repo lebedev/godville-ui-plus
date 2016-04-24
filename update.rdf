@@ -7,9 +7,9 @@
                    em:minVersion="2.40"
                    em:maxVersion="2.42"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.xpi"
-                   em:updateHash="sha256:bdf784d5d74a9c037e52dcf0324ec9d416ed78c7000e89d98259e2a85f2440a8" />
+                   em:updateHash="sha256:150b60ad57e41d95aa9b18f71af79b94e433a2bbc37f1778bc76e89c09b2ccbe" />
   <RDF:Description RDF:about="rdf:#$SoUyq"
-                   em:version="1.2.2">
+                   em:version="1.2.3">
     <em:targetApplication RDF:resource="rdf:#$VoUyq"/>
     <em:targetApplication RDF:resource="rdf:#$0pUyq"/>
     <em:targetApplication RDF:resource="rdf:#$7pUyq"/>
@@ -22,15 +22,15 @@
                    em:minVersion="34.0"
                    em:maxVersion="46.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.xpi"
-                   em:updateHash="sha256:bdf784d5d74a9c037e52dcf0324ec9d416ed78c7000e89d98259e2a85f2440a8" />
+                   em:updateHash="sha256:150b60ad57e41d95aa9b18f71af79b94e433a2bbc37f1778bc76e89c09b2ccbe" />
   <RDF:Description RDF:about="rdf:#$0pUyq"
                    em:id="{aa3c5121-dab2-40e2-81ca-7ea25febc110}"
                    em:minVersion="34.0"
                    em:maxVersion="46.0"
                    em:updateLink="https://github.com/zeird/godville-ui-plus/releases/download/latest/godville-ui-plus.badluck.dicey.xpi"
-                   em:updateHash="sha256:bdf784d5d74a9c037e52dcf0324ec9d416ed78c7000e89d98259e2a85f2440a8" />
+                   em:updateHash="sha256:150b60ad57e41d95aa9b18f71af79b94e433a2bbc37f1778bc76e89c09b2ccbe" />
   <RDF:Description RDF:about="urn:mozilla:extension:godville-ui-plus@badluck.dicey"
-                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAEMg4JwW3Mxu/nFjFPr26yzF6vnwxeUXuNUyfH0+bmbaicEQJ0CdZmZpMccVxViOYN6Hg1vlSilGjBz+rB0OL4lpmAS3nNFOaHs8MEEr8I5rjbQMvDhgUiwksGtC74hksBQ1GleAV2HsvzsVz6WIQp9Qw55ARmjriMM3nitgqaiz">
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAHFj+zs74SwACAMh+og4DkZff4gKOcuq5vALKD3xaiBewyO3wqs2/Jx5geUskC9MCKu4OCIigvrUE7gXsTBFWW9bdbbNs80g59rYVrB+OeA3G+W6koy1fmoLzsMiukgiZNf6RfuJi1rTqGO+US0QS6qgHhNxDGkGF1RGQTaKum/n">
     <em:updates RDF:resource="rdf:#$RoUyq"/>
   </RDF:Description>
 </RDF:RDF>
