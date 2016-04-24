@@ -475,22 +475,6 @@ GUIp.initOtherTopicFeatures = function() {
 // base functions and variables initialization
 window.GUIp = window.GUIp || {};
 
-var doc = document;
-GUIp.$id = function(id) {
-    return doc.getElementById(id);
-};
-GUIp.$C = function(classname) {
-    return doc.getElementsByClassName(classname);
-};
-GUIp.$c = function(classname) {
-    return doc.getElementsByClassName(classname)[0];
-};
-GUIp.$Q = function(sel, el) {
-    return (el || doc).querySelectorAll(sel);
-};
-GUIp.$q = function(sel, el) {
-    return (el || doc).querySelector(sel);
-};
 GUIp.storage = {
     _getKey: function(key) {
         return "GUIp_" + this.god_name + ':' + key;
