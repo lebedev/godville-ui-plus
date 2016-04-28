@@ -12,7 +12,8 @@ body {
 }
 
 /* long god-name fix */
-#main_wrapper {
+#main_wrapper,
+#page_wrapper #menu_bar ~ [id*="central_block"] {
 	padding-top: 2.9em;
 }
 #menu_bar {
