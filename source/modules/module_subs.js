@@ -12,6 +12,8 @@ GUIp.subs.init = function() {
     }
 
     document.body.insertAdjacentHTML('afterbegin', '<div id="forum_informer_bar" />');
+
+    GUIp.subs._check();
     setInterval(function() { GUIp.subs._check(); }, (3*60 + 5)*1000);
 };
 GUIp.subs._check = function() {
