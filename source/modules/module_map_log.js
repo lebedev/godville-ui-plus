@@ -8,6 +8,10 @@ GUIp.map_log.init = function() {
     GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/superhero.css'), 'guip_css');
     GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/common.css'), 'guip_common_css');
 
+    if (document.getElementById('menu_top') && document.getElementById('search_status')) {
+        return;
+    }
+
     // add save links
     if (!GUIp.map_log.customDomain && GUIp.locale === 'ru' && (!document.getElementsByClassName('lastduelpl')[1] || !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/))) {
         document.getElementsByClassName('lastduelpl_f')[1].insertAdjacentHTML('beforeend', '<div>Сохранить в <a id="gdvltk_saver" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;">gdvl.tk</a></div>');
