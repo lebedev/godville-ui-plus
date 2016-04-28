@@ -411,25 +411,21 @@ GUIp.map_log.parseChronicles = function() {
 };
 
 GUIp.map_log.enumerateSteps = function() {
-    var i, len, step, stepholder, steplines = [], dcapt = false,
-        matches = document.querySelector('#last_items_arena').getElementsByClassName('new_line'),
-        reversed = !!document.location.href.match('sort=desc'),
-        duel = !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/) || document.location.href.match('boss=');
-    for (i = 0, len = matches.length; i < len; i++) {
-        steplines.push(matches[i]);
-    }
-    if (reversed) {
-        steplines.reverse();
-    }
-    for (i = 0, step = duel ? 0 : 1, len = steplines.length; i < len; i++) {
-        stepholder = steplines[i].getElementsByClassName('d_capt')[0];
-        stepholder.title = GUIp.i18n.step_n+step;
-        dcapt |= stepholder.textContent.length > 0;
-        if ((!reversed && steplines[i].style.length > 0 || reversed && (!steplines[i+1] || steplines[i+1].style.length > 0)) && (!duel || dcapt)) {
+    var duel = !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/) || document.location.href.match('boss=');
+    var reversed = !!document.location.href.match('sort=desc');
+    var stepHolders = Array.prototype.filter.call(document.querySelectorAll('.d_capt'), function(d_capt) {
+        return d_capt.textContent.trim();
+    });
+    var stepsTotal = stepHolders.length - (duel ? 1 : 0);
+    var step = reversed ? stepsTotal : (duel ? 0 : 1);
+    stepHolders.forEach(function(stepHolder) {
+        stepHolder.dataset.step = GUIp.i18n.step_n + step;
+        if (reversed) {
+            step--;
+        } else {
             step++;
-            dcapt = false;
         }
-    }
+    });
 };
 
 GUIp.map_log.describeMap = function() {
