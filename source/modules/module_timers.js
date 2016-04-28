@@ -5,7 +5,8 @@ GUIp.timers = {};
 
 GUIp.timers.init = function() {};
 GUIp.timers.initOrig = function() {
-    if (GUIp.stats.hasTemple() && !GUIp.stats.isSail()) {
+    var thirdEyeEntriesGettingMethodWorks = !!GUIp.timers._getThirdEyeEntries();
+    if (GUIp.stats.hasTemple() && !GUIp.stats.isSail() && thirdEyeEntriesGettingMethodWorks) {
         document.querySelector('#m_fight_log .block_h .l_slot, #diary .block_h .l_slot').insertAdjacentHTML('beforeend', '<div id=\"imp_timer\" class=\"fr_new_badge hidden\" />');
         if (GUIp.stats.isDungeon()) {
             GUIp.timers.logTimer = document.querySelector('#imp_timer');
@@ -28,12 +29,37 @@ GUIp.timers.initOrig = function() {
 GUIp.timers.getDate = function(entry) {
     return GUIp.storage.get('ThirdEye:' + entry) ? new Date(GUIp.storage.get('ThirdEye:' + entry)) : 0;
 };
+GUIp.timers._getThirdEyeEntries = function() {
+    try {
+        var rawThirdEye = localStorage.getItem('d_i_' + GUIp.stats.godName());
+        var thirdEyeObject = JSON.parse(rawThirdEye);
+        var thirdEye = [];
+        for (var entry in thirdEyeObject) {
+            thirdEye.push(thirdEyeObject[entry]);
+        }
+        thirdEye.sort(function(a, b) {
+            if (a.pos && b.pos) {
+                return +a.pos > +b.pos;
+            } else if (a.time && b.time) {
+                return Date(a.time) > Date(b.time);
+            } else {
+                throw 'Can\'t parse third eye entries';
+            }
+        });
+        return thirdEye;
+    } catch(e) {
+        return;
+    }
+};
 GUIp.timers.tick = function() {
+    var thirdEye = GUIp.timers._getThirdEyeEntries();
     GUIp.timers._lastLayingDate = GUIp.timers.getDate('LastLaying');
     GUIp.timers._lastLogDate = GUIp.timers.getDate('LastLog');
     GUIp.timers._penultLogDate = GUIp.timers.getDate('PenultLog');
-    for (var msg in window.so.state.diary_i) {
-        var curEntryDate = new Date(window.so.state.diary_i[msg].time);
+
+
+    for (var msg in thirdEye) {
+        var curEntryDate = new Date(thirdEye[msg].time);
         if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/i) && curEntryDate > GUIp.timers._lastLayingDate) {
             GUIp.timers._lastLayingDate = curEntryDate;
         }
