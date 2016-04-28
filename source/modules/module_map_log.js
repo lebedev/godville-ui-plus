@@ -132,8 +132,10 @@ GUIp.map_log.init = function() {
 };
 
 GUIp.map_log._addSaveLink = function() {
-    // add save links
-    if (!GUIp.map_log.customDomain && GUIp.locale === 'ru' && (!document.getElementsByClassName('lastduelpl')[1] || !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/))) {
+    var lastduelpls = document.getElementsByClassName('lastduelpl');
+    // TODO: add translation text for en
+    var isTranslation = lastduelpls && lastduelpls[1] && lastduelpls[1].textContent.match(/прямая трансляция/);
+    if (!GUIp.map_log.customDomain && GUIp.locale === 'ru' && !isTranslation) {
         document.getElementsByClassName('lastduelpl_f')[1].insertAdjacentHTML('beforeend', '<div>Сохранить в <a id="gdvltk_saver" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;">gdvl.tk</a></div>');
         document.getElementById('gdvltk_saver').onclick = function(e) {
             e.preventDefault();
