@@ -1175,12 +1175,12 @@ GUIp.improver.improveInterface = function() {
             document.querySelector('#map .block_title, #control .block_title, #m_control .block_title').insertAdjacentHTML('beforeend', ' <a class="broadcast" href="/duels/log/' + GUIp.stats.logId() + '" target="_blank">' + GUIp.i18n.broadcast + '</a>');
         }
         /* [E] clock is to be initialized somewhere here */
-        else if (!GUIp.storage.get('Option:disableGodvilleClock') && document.querySelector('#control .block_title')) {
+        /*else if (!GUIp.storage.get('Option:disableGodvilleClock') && document.querySelector('#control .block_title')) {
             var controlTitle = document.querySelector('#control .block_title');
             controlTitle.title = GUIp.i18n.show_godville_clock;
             controlTitle.style.cursor = 'pointer';
             controlTitle.onclick = GUIp.improver._clockToggle.bind(null);
-        }
+        }*/
     }
     if (GUIp.improver.isFirstTime || GUIp.storage.get('UserCssChanged') === true) {
         GUIp.storage.set('UserCssChanged', false);
