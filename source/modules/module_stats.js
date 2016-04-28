@@ -106,7 +106,11 @@ GUIp.stats.Inv = function() {
     return window.so.state.stats.inventory_num.value;
 };
 GUIp.stats.Level = function() {
-    return window.so.state.stats.level.value;
+    if (GUIp.stats.isField()) {
+        return +document.querySelector('#hk_level .l_val').textContent;
+    } else {
+        return +GUIp.storage.get('Logger:Level');
+    }
 };
 GUIp.stats.Logs = function() {
     return parseFloat(window.so.state.stats.wood.value)*10;
@@ -187,7 +191,10 @@ GUIp.stats.goldTextLength = function() {
     return window.so.state.stats.gold_we.value.length;
 };
 GUIp.stats.hasTemple = function() {
-    return GUIp.stats.Bricks() === 1000;
+    return GUIp.stats.isField() && document.querySelector('#hk_wood')       &&       document.querySelector('#hk_wood').style.display !== 'none' &&
+                                   document.querySelector('#hk_bricks_cnt') && document.querySelector('#hk_bricks_cnt').style.display === 'none' ||
+           GUIp.stats.isDungeon() ||
+           GUIp.stats.isSail();
 };
 GUIp.stats.heroHasPet = function() {
     return window.so.state.has_pet;
@@ -214,8 +221,7 @@ GUIp.stats.isMale = function() {
     //return window.so.state.stats.gender.value === 'male';
 };
 GUIp.stats.isSail = function() {
-    return false;
-    //return GUIp.stats._fight_type === 'sail';
+    return !GUIp.stats.isField() && document.getElementById('s_map') && document.getElementById('s_map').style.display !== 'none';
 };
 GUIp.stats.monsterName = function() {
     return window.so.state.stats.monster_name && window.so.state.stats.monster_name.value;

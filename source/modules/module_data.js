@@ -36,9 +36,9 @@ GUIp.data._initVariables = function() {
     }
     localStorage.setItem('GUIp:lastGodname', GUIp.stats.godName());
 
-    /*if (GUIp.stats.hasTemple()) {
+    if (GUIp.stats.hasTemple()) {
         document.body.classList.add('has_temple');
-    }*/
+    }
 };
 GUIp.data._clearOldDungeonData = function() {
     if (GUIp.stats.isField()) {
