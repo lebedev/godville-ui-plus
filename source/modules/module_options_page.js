@@ -153,8 +153,8 @@ return '<p>\n' +
 '                        <input type="radio" name="background" id="custom_background" value="custom">\n' +
 '                        <label for="custom_background">' + GUIp.i18n.use_background_file + '</label>\n' +
 '                        <input type="file" id="custom_file" style="width: 212px;"/><br>\n' +
-'                        <label for="custom_background" style="margin: 0 0.3em 0 2.4em">' + GUIp.i18n.use_background_link + ' </label>\n' +
-'                        <input type="text" id="custom_link" style="width: 136px;"/>\n' +
+'                        <label class="blocked" for="custom_background" style="margin: 0 0.3em 0 2.4em">' + GUIp.i18n.use_background_link + ' </label>\n' +
+'                        <input class="blocked" type="text" id="custom_link" style="width: 136px;"/>\n' +
 '                        <span id="cb_status" style="margin-left: 0.5em; display: none;" />\n' +
 '                    </div>\n' +
 '                </div>\n' +
