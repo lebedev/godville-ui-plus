@@ -3,8 +3,7 @@ window.GUIp = window.GUIp || {};
 
 GUIp.timers = {};
 
-GUIp.timers.init = function() {};
-GUIp.timers.initOrig = function() {
+GUIp.timers.init = function() {
     var thirdEyeEntriesGettingMethodWorks = !!GUIp.timers._getThirdEyeEntries();
     if (GUIp.stats.hasTemple() && !GUIp.stats.isSail() && thirdEyeEntriesGettingMethodWorks) {
         document.querySelector('#m_fight_log .block_h .l_slot, #diary .block_h .l_slot').insertAdjacentHTML('beforeend', '<div id=\"imp_timer\" class=\"fr_new_badge hidden\" />');

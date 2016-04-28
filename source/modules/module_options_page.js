@@ -205,13 +205,13 @@ return '<p>\n' +
 '                <div class="new_line">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.disable_page_refresh_desc + '</div>\n' +
 '                </div>\n' +
-'                <div class="new_line blocked">\n' +
+'                <div class="new_line">\n' +
 '                    <label class="l_capt" for="disable_laying_timer">' + GUIp.i18n.disable_laying_timer + '</label>\n' +
 '                    <div class="field_content">\n' +
 '                        <input id="disable_laying_timer" name="disable_laying_timer" class="option-checkbox" type="checkbox">\n' +
 '                    </div>\n' +
 '                </div>\n' +
-'                <div class="new_line blocked">\n' +
+'                <div class="new_line">\n' +
 '                    <div class="g_desc">' + GUIp.i18n.disable_laying_timer_desc + '</div>\n' +
 '                </div>\n' +
 '                <div class="new_line blocked"><label class="l_capt" for="forbidden_informers">' + GUIp.i18n.forbidden_informers + '</label>\n' +
