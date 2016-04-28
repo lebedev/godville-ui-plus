@@ -8,18 +8,18 @@ GUIp.timers.initOrig = function() {
     if (GUIp.stats.hasTemple() && !GUIp.stats.isSail()) {
         document.querySelector('#m_fight_log .block_h .l_slot, #diary .block_h .l_slot').insertAdjacentHTML('beforeend', '<div id=\"imp_timer\" class=\"fr_new_badge hidden\" />');
         if (GUIp.stats.isDungeon()) {
-            this.logTimer = document.querySelector('#imp_timer');
-            this.logTimerIsDisabled = GUIp.storage.get('Option:disableLogTimer');
-            GUIp.utils.hideElem(this.logTimer, this.logTimerIsDisabled);
+            GUIp.timers.logTimer = document.querySelector('#imp_timer');
+            GUIp.timers.logTimerIsDisabled = GUIp.storage.get('Option:disableLogTimer');
+            GUIp.utils.hideElem(GUIp.timers.logTimer, GUIp.timers.logTimerIsDisabled);
         } else {
-            this.layingTimer = document.querySelector('#imp_timer');
-            this.layingTimerIsDisabled = GUIp.storage.get('Option:disableLayingTimer');
-            GUIp.utils.hideElem(this.layingTimer, this.layingTimerIsDisabled);
+            GUIp.timers.layingTimer = document.querySelector('#imp_timer');
+            GUIp.timers.layingTimerIsDisabled = GUIp.storage.get('Option:disableLayingTimer');
+            GUIp.utils.hideElem(GUIp.timers.layingTimer, GUIp.timers.layingTimerIsDisabled);
         }
         if (!GUIp.storage.get('Option:disableLayingTimer') && !GUIp.storage.get('Option:disableLogTimer')) {
-            var curTimer = this.layingTimer ? this.layingTimer : this.logTimer;
+            var curTimer = GUIp.timers.layingTimer ? GUIp.timers.layingTimer : GUIp.timers.logTimer;
             curTimer.style.cursor = 'pointer';
-            curTimer.onclick = GUIp.timers.toggleTimers.bind(GUIp.timers);
+            curTimer.onclick = GUIp.timers.toggleTimers;
         }
         GUIp.timers.tick();
         setInterval(function() { GUIp.timers.tick(); }, 60000);
@@ -29,55 +29,55 @@ GUIp.timers.getDate = function(entry) {
     return GUIp.storage.get('ThirdEye:' + entry) ? new Date(GUIp.storage.get('ThirdEye:' + entry)) : 0;
 };
 GUIp.timers.tick = function() {
-    this._lastLayingDate = GUIp.timers.getDate('LastLaying');
-    this._lastLogDate = GUIp.timers.getDate('LastLog');
-    this._penultLogDate = GUIp.timers.getDate('PenultLog');
+    GUIp.timers._lastLayingDate = GUIp.timers.getDate('LastLaying');
+    GUIp.timers._lastLogDate = GUIp.timers.getDate('LastLog');
+    GUIp.timers._penultLogDate = GUIp.timers.getDate('PenultLog');
     for (var msg in window.so.state.diary_i) {
         var curEntryDate = new Date(window.so.state.diary_i[msg].time);
-        if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/i) && curEntryDate > this._lastLayingDate) {
-            this._lastLayingDate = curEntryDate;
+        if (msg.match(/^(?:Возложила?|Выставила? тридцать золотых столбиков|I placed \w+? bags of gold)/i) && curEntryDate > GUIp.timers._lastLayingDate) {
+            GUIp.timers._lastLayingDate = curEntryDate;
         }
         var logs;
         if (msg.match(/^Выдержка из хроники подземелья:|Notes from the dungeon:/i) && (logs = (msg.match(/бревно для ковчега|ещё одно бревно|log for the ark/gi) || []).length)) {
-            if (curEntryDate > this._lastLogDate) {
+            if (curEntryDate > GUIp.timers._lastLogDate) {
                 while (logs--) {
-                    this._penultLogDate = this._lastLogDate;
-                    this._lastLogDate = curEntryDate;
+                    GUIp.timers._penultLogDate = GUIp.timers._lastLogDate;
+                    GUIp.timers._lastLogDate = curEntryDate;
                 }
-            } else if (curEntryDate < this._lastLogDate && curEntryDate > this._penultLogDate) {
-                this._penultLogDate = curEntryDate;
+            } else if (curEntryDate < GUIp.timers._lastLogDate && curEntryDate > GUIp.timers._penultLogDate) {
+                GUIp.timers._penultLogDate = curEntryDate;
             }
         }
-        if (!this._latestEntryDate || this._latestEntryDate < curEntryDate) {
-            this._latestEntryDate = curEntryDate;
+        if (!GUIp.timers._latestEntryDate || GUIp.timers._latestEntryDate < curEntryDate) {
+            GUIp.timers._latestEntryDate = curEntryDate;
         }
-        if (!this._earliestEntryDate || this._earliestEntryDate > curEntryDate) {
-            this._earliestEntryDate = curEntryDate;
+        if (!GUIp.timers._earliestEntryDate || GUIp.timers._earliestEntryDate > curEntryDate) {
+            GUIp.timers._earliestEntryDate = curEntryDate;
         }
     }
-    if (GUIp.timers.getDate('Latest') >= this._earliestEntryDate) {
-        this._earliestEntryDate = GUIp.timers.getDate('Earliest');
-        if (this._lastLayingDate) {
-            GUIp.storage.set('ThirdEye:LastLaying', this._lastLayingDate);
+    if (GUIp.timers.getDate('Latest') >= GUIp.timers._earliestEntryDate) {
+        GUIp.timers._earliestEntryDate = GUIp.timers.getDate('Earliest');
+        if (GUIp.timers._lastLayingDate) {
+            GUIp.storage.set('ThirdEye:LastLaying', GUIp.timers._lastLayingDate);
         }
-        if (this._lastLogDate) {
-            GUIp.storage.set('ThirdEye:LastLog', this._lastLogDate);
+        if (GUIp.timers._lastLogDate) {
+            GUIp.storage.set('ThirdEye:LastLog', GUIp.timers._lastLogDate);
         }
-        if (this._penultLogDate) {
-            GUIp.storage.set('ThirdEye:PenultLog', this._penultLogDate);
+        if (GUIp.timers._penultLogDate) {
+            GUIp.storage.set('ThirdEye:PenultLog', GUIp.timers._penultLogDate);
         }
     } else {
-        GUIp.storage.set('ThirdEye:Earliest', this._earliestEntryDate);
-        GUIp.storage.set('ThirdEye:LastLaying', this._lastLayingDate || '');
-        GUIp.storage.set('ThirdEye:LastLog', this._lastLogDate || '');
-        GUIp.storage.set('ThirdEye:PenultLog', this._penultLogDate || '');
+        GUIp.storage.set('ThirdEye:Earliest', GUIp.timers._earliestEntryDate);
+        GUIp.storage.set('ThirdEye:LastLaying', GUIp.timers._lastLayingDate || '');
+        GUIp.storage.set('ThirdEye:LastLog', GUIp.timers._lastLogDate || '');
+        GUIp.storage.set('ThirdEye:PenultLog', GUIp.timers._penultLogDate || '');
     }
-    GUIp.storage.set('ThirdEye:Latest', this._latestEntryDate);
-    if (this.layingTimer && !this.layingTimerIsDisabled) {
-        GUIp.timers._calculateTime(true, this._lastLayingDate);
+    GUIp.storage.set('ThirdEye:Latest', GUIp.timers._latestEntryDate);
+    if (GUIp.timers.layingTimer && !GUIp.timers.layingTimerIsDisabled) {
+        GUIp.timers._calculateTime(true, GUIp.timers._lastLayingDate);
     }
-    if (this.logTimer && !this.logTimerIsDisabled) {
-        GUIp.timers._calculateTime(false, this._penultLogDate);
+    if (GUIp.timers.logTimer && !GUIp.timers.logTimerIsDisabled) {
+        GUIp.timers._calculateTime(false, GUIp.timers._penultLogDate);
     }
 };
 GUIp.timers._calculateTime = function(isLaying, fromDate) {
@@ -87,7 +87,7 @@ GUIp.timers._calculateTime = function(isLaying, fromDate) {
         totalMinutes = Math.ceil((Date.now() + 1 - fromDate)/1000/60);
         GUIp.timers._setTimer(isLaying, totalMinutes, totalMinutes > greenHours*60 ? 'green' : totalMinutes > yellowHours*60 ? 'yellow' : 'red');
     } else {
-        totalMinutes = Math.floor((Date.now() - this._earliestEntryDate)/1000/60);
+        totalMinutes = Math.floor((Date.now() - GUIp.timers._earliestEntryDate)/1000/60);
         GUIp.timers._setTimer(isLaying, totalMinutes, totalMinutes > greenHours*60 ? 'green' : 'grey');
     }
 };
@@ -109,7 +109,7 @@ GUIp.timers._calculateExp = function(totalMinutes) {
     return title.join('\n');
 };
 GUIp.timers._setTimer = function(isLaying, totalMinutes, color) {
-    var timer = isLaying ? this.layingTimer : this.logTimer;
+    var timer = isLaying ? GUIp.timers.layingTimer : GUIp.timers.logTimer;
     timer.className = timer.className.replace(/green|yellow|red|grey/g, '');
     timer.classList.add(color);
     if (color === 'grey') {
@@ -122,15 +122,15 @@ GUIp.timers._setTimer = function(isLaying, totalMinutes, color) {
 };
 GUIp.timers.toggleTimers = function(e) {
     e.stopPropagation();
-    if (!this.layingTimer && !this.logTimer) {
+    if (!GUIp.timers.layingTimer && !GUIp.timers.logTimer) {
         return;
     }
-    if (this.layingTimer) {
-        this.logTimer = this.layingTimer;
-        delete this.layingTimer;
+    if (GUIp.timers.layingTimer) {
+        GUIp.timers.logTimer = GUIp.timers.layingTimer;
+        delete GUIp.timers.layingTimer;
     } else {
-        this.layingTimer = this.logTimer;
-        delete this.logTimer;
+        GUIp.timers.layingTimer = GUIp.timers.logTimer;
+        delete GUIp.timers.logTimer;
     }
 
     var timerElem = window.$('#imp_timer');
