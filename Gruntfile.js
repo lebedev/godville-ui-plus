@@ -41,9 +41,9 @@ module.exports = function(grunt) {
         options: {
           process: function(aContent) {
             if (grunt.config('compile_path') === 'debug') {
-              return aContent.replace(/\$VERSION/g, grunt.config('debug_version') + ' debug build ' + grunt.config('debug_build'));
+              return aContent.replace(/\$VERSION_NAME|\$VERSION/g, grunt.config('debug_version') + ' debug build ' + grunt.config('debug_build'));
             } else {
-              return aContent.replace(/\$VERSION/g, grunt.config('new_version'));
+              return aContent.replace(/\$VERSION_NAME|\$VERSION/g, grunt.config('new_version'));
             }
           }
         },

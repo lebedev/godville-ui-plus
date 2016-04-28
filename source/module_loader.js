@@ -4,7 +4,7 @@
 window.GUIp = window.GUIp || {};
 
 // basic variables
-GUIp.version = '$VERSION';
+GUIp.version = '$VERSION_NAME';
 GUIp.browser = sessionStorage.getItem('GUIp_browser');
 GUIp.locale = document.location.hostname.match(/^(?:godville\.net|gdvl\.tk|gv\.erinome\.net)/) ? 'ru' : 'en';
 GUIp.common = {
