@@ -327,9 +327,10 @@ function saveOptions() {
             setTimeout(function() {
                 $id('cb_status').style.display = 'none';
             }, 1000);
-        }
-        else if ($id('cloud_background').checked) {
+        } else if ($id('cloud_background').checked) {
             storage.set('Option:useBackground', 'cloud');
+        } else if ($id('cloud_background_alt').checked) {
+            storage.set('Option:useBackground', 'cloud_alt');
         }
     } else {
         storage.set('Option:useBackground', '');
@@ -506,8 +507,10 @@ function restore_options() {
     if ($id('use_background').checked) {
         $id('background_desc').style.display = 'none';
         var bg = storage.get('Option:useBackground');
-        if (bg !== 'cloud') {
-            $id('custom_background').click();
+        switch(bg) {
+        case 'cloud': $id('cloud_background').click(); break;
+        case 'cloud_alt': $id('cloud_background_alt').click(); break;
+        default: $id('custom_background').click();
         }
     } else {
         $id('background_choice').style.display = 'none';
@@ -605,6 +608,8 @@ function set_theme_and_background() {
     var background = storage.get('Option:useBackground');
     if (background === 'cloud') {
         document.body.style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/background.jpg') + ')';
+    } else if (background === 'cloud_alt') {
+        document.body.style.backgroundImage = 'url(' + GUIp.common.getResourceURL('images/background_alt.png') + ')';
     } else {
         document.body.style.backgroundImage =  background ? 'url(' + background + ')' : '';
     }

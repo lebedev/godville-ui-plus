@@ -1197,9 +1197,10 @@ GUIp.improver.improveInterface = function() {
         var background = GUIp.storage.get('Option:useBackground'),
             cssRule = '';
         if (background) {
+            var cloud_background = background === 'cloud' && GUIp.common.getResourceURL('images/background.jpg') || background === 'cloud_alt' && GUIp.common.getResourceURL('images/background_alt.png');
             cssRule =
                 'body {\n' +
-                '    background-image: url(' + (background === 'cloud' ? GUIp.common.getResourceURL('images/background.jpg') : background) + ')\n' +
+                '    background-image: url(' + (cloud_background || background) + ')\n' +
                 '}';
         }
         GUIp.common.addCSSFromString(cssRule, 'guip_background');

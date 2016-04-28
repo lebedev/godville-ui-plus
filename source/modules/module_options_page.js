@@ -148,6 +148,8 @@ return '<p>\n' +
 '                        ' + GUIp.i18n.use_background_hint + '<br>\n' +
 '                        <input type="radio" name="background" id="cloud_background" value="cloud" checked="checked">\n' +
 '                        <label for="cloud_background">' + GUIp.i18n.use_background_cloud + '</label><br>\n' +
+'                        <input type="radio" name="background" id="cloud_background_alt" value="cloud_alt" checked="checked">\n' +
+'                        <label for="cloud_background_alt">' + GUIp.i18n.use_background_cloud_alt + '</label><br>\n' +
 '                        <input type="radio" name="background" id="custom_background" value="custom">\n' +
 '                        <label for="custom_background">' + GUIp.i18n.use_background_file + '</label>\n' +
 '                        <input type="file" id="custom_file" style="width: 212px;"/><br>\n' +

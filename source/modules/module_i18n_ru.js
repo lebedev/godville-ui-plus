@@ -586,6 +586,7 @@ GUIp.i18n = {
     use_background_desc: 'включает облачный или другой фон',
     use_background_hint: 'какой из них?',
     use_background_cloud: 'тот самый облачный',
+    use_background_cloud_alt: 'другой облачный',
     use_background_file: 'свой файлом',
     use_background_link: 'или ссылкой',
     voice_timeout: 'Выбрать продолжительность таймаута',

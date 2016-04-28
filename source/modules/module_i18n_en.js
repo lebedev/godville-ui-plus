@@ -457,6 +457,7 @@ GUIp.i18n = {
     use_background_desc: 'Enable cloudy or another background',
     use_background_hint: 'which one?',
     use_background_cloud: 'cloudy',
+    use_background_cloud_alt: 'another cloudy',
     use_background_file: 'from file',
     use_background_link: 'from link',
     voice_timeout: 'Choose timeout length',
