@@ -12,14 +12,7 @@ GUIp.map_log.init = function() {
         return;
     }
 
-    // add save links
-    if (!GUIp.map_log.customDomain && GUIp.locale === 'ru' && (!document.getElementsByClassName('lastduelpl')[1] || !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/))) {
-        document.getElementsByClassName('lastduelpl_f')[1].insertAdjacentHTML('beforeend', '<div>Сохранить в <a id="gdvltk_saver" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;">gdvl.tk</a></div>');
-        document.getElementById('gdvltk_saver').onclick = function(e) {
-            e.preventDefault();
-            var d=document,c="createElement",h=d.head,a="appendChild",tn="script",s=d[c](tn);s.src='//gdvl.tk/send.js';h[a](s);
-        };
-    }
+    GUIp.map_log._addSaveLink();
 
     if (document.location.href.match('boss=') || !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/)) {
         GUIp.map_log.enumerateSteps();
@@ -136,6 +129,17 @@ GUIp.map_log.init = function() {
 
     GUIp.map_log._getLEMRestrictions();
     setInterval(function() { GUIp.map_log._getLEMRestrictions(); }, 60*60*1000);
+};
+
+GUIp.map_log._addSaveLink = function() {
+    // add save links
+    if (!GUIp.map_log.customDomain && GUIp.locale === 'ru' && (!document.getElementsByClassName('lastduelpl')[1] || !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/))) {
+        document.getElementsByClassName('lastduelpl_f')[1].insertAdjacentHTML('beforeend', '<div>Сохранить в <a id="gdvltk_saver" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;">gdvl.tk</a></div>');
+        document.getElementById('gdvltk_saver').onclick = function(e) {
+            e.preventDefault();
+            var d=document,c="createElement",h=d.head,a="appendChild",tn="script",s=d[c](tn);s.src='//gdvl.tk/send.js';h[a](s);
+        };
+    }
 };
 
 GUIp.map_log._getLEMRestrictions = function() {
