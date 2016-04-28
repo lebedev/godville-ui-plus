@@ -6,6 +6,7 @@ GUIp.map_log = {};
 GUIp.map_log.init = function() {
     // add some styles
     GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/superhero.css'), 'guip_css');
+    GUIp.common.addCSSFromURL(GUIp.common.getResourceURL('css/common.css'), 'guip_common_css');
 
     // add save links
     if (!GUIp.map_log.customDomain && GUIp.locale === 'ru' && (!document.getElementsByClassName('lastduelpl')[1] || !document.getElementsByClassName('lastduelpl')[1].textContent.match(/прямая трансляция/))) {
