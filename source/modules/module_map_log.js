@@ -14,16 +14,18 @@ GUIp.map_log.init = function() {
 
     GUIp.map_log._addSaveLink();
 
-    if (document.location.href.match('boss=') || !document.getElementById('fight_log_capt').textContent.match(/Хроника подземелья|Dungeon Journal/)) {
-        GUIp.map_log.enumerateSteps();
-        return;
-    }
+    var isNotSail = !!document.location.pathname.match(/\/duels\/log\/\w{5}(?=\W|$)/);
+    var isBoss = !!document.location.search.match(/boss=/);
 
-    try {
-        GUIp.map_log.map_logID = 'Log:' + document.location.href.match(/duels\/log\/([^\?]+)/)[1] + ':';
-        var steps = +document.getElementById('fight_log_capt').textContent.match(/(?:Хроника подземелья \(шаг|Dungeon Journal \(step) (\d+)\)/)[1];
+    if (isNotSail) {
         // add step numbers to chronicle log
         GUIp.map_log.enumerateSteps();
+
+        if (isBoss) {
+            return;
+        }
+        GUIp.map_log.map_logID = 'Log:' + document.location.href.match(/duels\/log\/(\w+)/)[1] + ':';
+        var steps = +document.getElementById('fight_log_capt').textContent.match(/(?:Хроника подземелья \(шаг|Dungeon Journal \(step) (\d+)\)/)[1];
         // add a map for a translation-type chronicle
         if (!document.querySelector('#dmap') && steps === +GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'steps')) {
             var map = JSON.parse(GUIp.map_log.storageGet(GUIp.map_log.map_logID + 'map')),
@@ -123,12 +125,11 @@ GUIp.map_log.init = function() {
         high_contrast.onchange = function() {
             localStorage.setItem('GUIp_highContrast', document.getElementById('high_contrast').checked);
         };
-    } catch(e) {
-        window.console.log(e);
+
+        GUIp.map_log._getLEMRestrictions();
+        setInterval(function() { GUIp.map_log._getLEMRestrictions(); }, 60*60*1000);
     }
 
-    GUIp.map_log._getLEMRestrictions();
-    setInterval(function() { GUIp.map_log._getLEMRestrictions(); }, 60*60*1000);
 };
 
 GUIp.map_log._addSaveLink = function() {
@@ -376,7 +377,7 @@ GUIp.map_log.parseChronicles = function() {
     }
     var lastNotParsed, texts = [], infls = [],
         matches = document.querySelector('#last_items_arena').innerHTML.match(/<div class="new_line ?"( style="[^"]*")?>[\s\S]*?<div class="text_content .*?">[\s\S]+?<\/div>/g),
-        reversed = !!document.location.href.match('sort=desc');
+        reversed = !!document.location.search.match('sort=desc');
     if (reversed) {
         matches.reverse();
     }
