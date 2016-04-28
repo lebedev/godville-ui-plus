@@ -4,7 +4,9 @@ window.GUIp = window.GUIp || {};
 GUIp.storage = {};
 
 GUIp.storage.init = function() {
-    GUIp.storage._migrate();
+    if (document.location.href.match(/godville.net|godvillegame.com/)) {
+        GUIp.storage._migrate();
+    }
 };
 
 GUIp.storage._get_key = function(key) {
