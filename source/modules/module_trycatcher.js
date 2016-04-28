@@ -17,7 +17,7 @@ GUIp.trycatcher._wrap = function(method) {
         } catch (error) {
             if (!GUIp.trycatcher._recursive) {
                 GUIp.trycatcher._recursive = true;
-                if (GUIp.storage.get('Option:enableDebugMode')) {
+                if (GUIp.storage.get('Option:enableDebugMode') || !document.location.href.match(/godville.net|godvillegame.com/)) {
                     GUIp.trycatcher.processError(error, true);
                 } else {
                     GUIp.utils.checkVersion(GUIp.trycatcher.processError.bind(null, error, false), GUIp.utils.informAboutOldVersion);
